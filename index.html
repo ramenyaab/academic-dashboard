@@ -537,7 +537,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
 <div class="footer">A in Maths is non-negotiable · QMUL/Sussex/City all require it · every session counts</div>
 
- <script>
+<script>
 // ─────────────────────────────────────────────────────────────────────────────
 // SESSION DATA — keyed by YYYY-MM-DD
 // Edit entries here. Dashboard auto-renders from today's date.
@@ -549,7 +549,7 @@ const SESSIONS = {
   '2026-03-22': [
     { sub:'cs',     hw:true, label:'HW — CS: Boolean algebra + architecture', dur:'~2hrs',   detail:'Watch 3 Craig & Dave videos, answer Boolean_and_architecture_questions.pdf, mark, upload. Due Mon 9am.' },
     { sub:'econ',   hw:true, label:'HW — Econ: Paper 3 competition topics',   dur:'~1.5hrs', detail:'Revise 2.1, 2.2.2, 2.2.3, 2.3.1, 4.1.1. Answer revision Qs + info sheet comprehension. Upload. Due Mon 9am.' },
-    { sub:'maths',  label:'Maths: Graphs & transformations',    dur:'1.5hrs', detail:'Cold test first. 4 Qs total, mark all. Translations f(x��a), stretches, reflections, modulus.' },
+    { sub:'maths',  label:'Maths: Graphs & transformations',    dur:'1.5hrs', detail:'Cold test first. 4 Qs total, mark all. Translations f(x±a), stretches, reflections, modulus.' },
     { sub:'maths',  label:'Maths: Inverse trig + small angle',  dur:'1hr',    detail:'Write arcsin/arccos/arctan domains from memory. 2 small angle past paper Qs. Mark.' },
     { sub:'econ',   label:'Econ: D&S + price mechanism',        dur:'1.5hrs', detail:'If energy allows. Draw shifts, PED formula, 1 four-mark Q. Then price mechanism definitions + 1 Q.' },
     { sub:'cs',     label:'CS: Foreign key + push pseudocode',  dur:'30min',  detail:'Only if HW done. Foreign key ×5 from memory. Push pseudocode from scratch (array, top pointer, overflow check).' },
@@ -631,7 +631,29 @@ function switchTab(id, btn) {
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
 }
-item';
+
+// ── RENDER TODAY ─────────────────────────────────────────────────────────────
+function renderToday() {
+  const t = today();
+  const key = dateKey(t);
+  const sessions = SESSIONS[key] || [];
+  const label = `${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]}`;
+  document.getElementById('today-title').textContent = label;
+
+  const container = document.getElementById('today-tasks');
+  container.innerHTML = '';
+
+  if (!sessions.length) {
+    container.innerHTML = '<div style="font-size:0.82rem;color:var(--muted2);padding:14px 0">Nothing scheduled — rest day.</div>';
+    return;
+  }
+
+  sessions.forEach((s, i) => {
+    const id = 'chk'+i;
+    const col = SUB_COL[s.sub] || 'var(--muted)';
+    const badgeCls = SUB_BADGE_CLASS[s.sub] || 'badge-college';
+    const item = document.createElement('div');
+    item.className = 'task-item';
     item.innerHTML = `
       <div class="task-check"><input type="checkbox" id="${id}"></div>
       <div class="task-body">
