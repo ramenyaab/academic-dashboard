@@ -133,6 +133,10 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .badge-rest   { background: rgba(74,80,112,0.3);    color: var(--muted2); }
 .badge-college{ background: rgba(74,80,112,0.3);    color: var(--muted2); }
 
+/* MIN/STRETCH pills */
+.pill-min     { display:inline-block; font-size:0.6rem; font-weight:700; padding:1px 7px; border-radius:3px; background:rgba(74,222,128,0.15); color:var(--maths); margin-right:5px; letter-spacing:0.05em; }
+.pill-stretch { display:inline-block; font-size:0.6rem; font-weight:700; padding:1px 7px; border-radius:3px; background:rgba(251,146,60,0.15); color:var(--amber); margin-right:5px; letter-spacing:0.05em; margin-top:4px; }
+
 .tmr-list { display: flex; flex-direction: column; gap: 0; }
 .tmr-row {
   display: flex; align-items: flex-start; gap: 12px;
@@ -252,6 +256,10 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .tag-r  { background: rgba(74,80,112,0.3);    color: var(--muted2); }
 .sched-txt { font-size: 0.78rem; color: var(--text); line-height: 1.4; }
 
+/* Schedule done state */
+.sched-sess.sched-done .sched-txt { text-decoration: line-through; color: var(--muted); }
+.sched-check { width:14px; height:14px; accent-color:var(--maths); cursor:pointer; flex-shrink:0; margin-top:2px; }
+
 /* NEA */
 .nea-hero {
   display: flex; align-items: center; gap: 24px;
@@ -349,6 +357,8 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;">
     <div>
       <div class="card-title" id="today-title">Today</div>
+      <!-- PATCH: catch-up nudge banner -->
+      <div id="catchup-nudge" style="display:none"></div>
       <div class="task-list" id="today-tasks"></div>
     </div>
     <div>
@@ -371,21 +381,21 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <div class="schedule-wrap" id="schedule-wrap"></div>
 </div>
 
-<!-- SUBJECTS -->
+<!-- SUBJECTS — PATCH: updated accurate stats -->
 <div class="tab-pane" id="tab-subjects">
   <div class="subjects-grid">
     <div class="subj-card m">
       <div class="subj-name">Maths</div>
       <div class="subj-status-tag tag-critical">CRITICAL — A needed</div>
       <div class="bar-section">
-        <div class="bar-lbl">Topics revised <span>~2 / 30+</span></div>
-        <div class="bar"><div class="bar-fill" style="width:7%;background:var(--maths)"></div></div>
+        <div class="bar-lbl">Topics with sessions done <span>~8 / 30+</span></div>
+        <div class="bar"><div class="bar-fill" style="width:26%;background:var(--maths)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Full mock performance <span>~20% · U</span></div>
+        <div class="bar-lbl">Real mock (Feb) <span>~20% · U</span></div>
         <div class="bar"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
       </div>
-      <div class="subj-note">QMUL, Sussex &amp; City all require A in Maths. Pure 1 paper first on 3 Jun — heavy revision needed. Pure topics front-loaded through Easter.</div>
+      <div class="subj-note">QMUL, Sussex &amp; City all require A in Maths. Pure 1 on 3 Jun. Pure topics front-loaded through Easter. Key gaps: trig integration, integration by parts, partial fractions, parametric, implicit diff.</div>
     </div>
     <div class="subj-card e">
       <div class="subj-name">Economics</div>
@@ -398,7 +408,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
         <div class="bar-lbl">Class foundation <span>Strong · pred. A</span></div>
         <div class="bar"><div class="bar-fill" style="width:72%;background:var(--econ)"></div></div>
       </div>
-      <div class="subj-note">Whole spec covered in class. Revision = consolidation + exam technique. MOPS structure, MSC/MSB diagrams, essay chains. P1 on 11 May.</div>
+      <div class="subj-note">Full spec covered in class. Revision = consolidation + exam technique. Key gap: MSC/MSB/MPC/MPB diagrams. MOPS essay structure. P1 on 11 May — earliest exam.</div>
     </div>
     <div class="subj-card c">
       <div class="subj-name">Computer Science</div>
@@ -408,10 +418,10 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
         <div class="bar"><div class="bar-fill" style="width:30%;background:var(--cs)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Full mock (Feb) <span>20/90 · U</span></div>
-        <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
+        <div class="bar-lbl">Practice mock (Mar) <span>57/90 · 63%</span></div>
+        <div class="bar"><div class="bar-fill" style="width:63%;background:var(--cs)"></div></div>
       </div>
-      <div class="subj-note">Large spec gaps. Easter = CS foundation block. Boolean algebra, LMC, data types, networking, OS. NEA 52/70 reduces pressure.</div>
+      <div class="subj-note">Up from 20/90 (U) in Feb to 57/90 in March practice mock. NEA 52/70 reduces pressure. Key gaps: Boolean algebra, LMC/Assembly, normalisation, push/pop pseudocode.</div>
     </div>
   </div>
 
@@ -502,193 +512,193 @@ const SESSIONS = {
     { sub:'maths', label:'Maths (eve): Partial fractions', dur:'~1hr', detail:'Decomposition for standard + repeated factors. 2 Qs MIN.' },
   ],
   '2026-03-24': [
-    { sub:'maths', label:'Maths: Parametric equations', dur:'2hrs', detail:'Sketching + Cartesian conversion. 2 Qs MIN.' },
-    { sub:'econ',  label:'Econ: Market failure — externalities', dur:'1hr', detail:'Negative/positive externality diagrams (MSC>MPC, MSB>MPB). 1 four-mark Q.' },
-    { sub:'cs',    label:'CS: Trees/graphs + hash tables', dur:'1hr', detail:'Hash function, collision, chaining. 1 past paper Q.' },
+    { sub:'maths', label:'Maths: Parametric equations', dur:'2hrs', detail:'Sketching + Cartesian conversion. 2 Qs MIN. 3 more Qs STRETCH.' },
+    { sub:'econ',  label:'Econ: Market failure — externalities', dur:'1hr', detail:'Negative/positive externality diagrams (MSC>MPC, MSB>MPB). 1 four-mark Q MIN. Draw all four diagrams from memory STRETCH.' },
+    { sub:'cs',    label:'CS: Trees/graphs + hash tables', dur:'1hr', detail:'Hash function, collision, chaining. 1 past paper Q MIN. 2 Qs STRETCH.' },
   ],
   '2026-03-25': [
     { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',      label:'CS (eve): Merge sort + SQL basics', dur:'~1hr', detail:'Trace merge sort on 6 numbers. SELECT/WHERE/ORDER BY syntax. 1 Q each.' },
+    { sub:'cs',      label:'CS (eve): Merge sort + SQL basics', dur:'~1hr', detail:'Trace merge sort on 6 numbers. SELECT/WHERE/ORDER BY syntax. 1 Q each MIN.' },
   ],
   '2026-03-26': [
     { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'nea',     label:'NEA (afternoon + eve): Final edits', dur:'~3hrs', detail:'Final polish, check all placeholders resolved, read-through.' },
+    { sub:'nea',     label:'NEA (afternoon + eve): Final edits', dur:'~3hrs', detail:'Final polish, check all placeholders resolved, read-through MIN.' },
   ],
   '2026-03-27': [
-    { sub:'nea',   label:'⚠ SUBMIT NEA — Deadline today', detail:'NEA_Final_v4.docx — submit before midnight.' },
-    { sub:'maths', label:'Maths: Parametric practice', dur:'1hr', detail:'2 timed past paper Qs. Mark immediately.' },
-    { sub:'econ',  label:'Econ: Public goods + info failure', dur:'1hr', detail:'Non-excludable/non-rival, asymmetric info. 1 four-mark Q.' },
-    { sub:'cs',    label:'CS: Sort + SQL practice', dur:'1hr', detail:'1 merge sort trace Q + 1 SQL Q timed.' },
+    { sub:'nea',   label:'⚠ SUBMIT NEA — Deadline today', detail:'NEA_Final_v4.docx — submit before midnight MIN.' },
+    { sub:'maths', label:'Maths: Parametric practice', dur:'1hr', detail:'2 timed past paper Qs MIN. Mark immediately.' },
+    { sub:'econ',  label:'Econ: Public goods + info failure', dur:'1hr', detail:'Non-excludable/non-rival, asymmetric info. 1 four-mark Q MIN.' },
+    { sub:'cs',    label:'CS: Sort + SQL practice', dur:'1hr', detail:'1 merge sort trace Q + 1 SQL Q timed MIN.' },
   ],
   '2026-03-28': [
     { sub:'rest', label:'Rest day — Easter starts', detail:'NEA submitted. Rest.' },
   ],
   '2026-03-29': [
-    { sub:'maths', label:'Maths (am): Inequalities (overdue)', dur:'2hrs', detail:'Cold test first. Rational inequalities — do NOT multiply both sides by unknown-sign expression.' },
-    { sub:'cs',    label:'CS (pm): Boolean algebra intro', dur:'2hrs', detail:'Logic gates, truth tables, De Morgan\'s law, basic simplification.' },
+    { sub:'maths', label:'Maths (am): Inequalities (overdue)', dur:'2hrs', detail:'Cold test first. 2 Qs MIN. Rational inequalities — do NOT multiply both sides by unknown-sign expression. 2 more harder Qs STRETCH.' },
+    { sub:'cs',    label:'CS (pm): Boolean algebra intro', dur:'2hrs', detail:'Logic gates, truth tables, De Morgan\'s. 1 past paper Q MIN. K-map simplification STRETCH.' },
   ],
   '2026-03-30': [
-    { sub:'maths', label:'Maths (am): Graphs + transformations', dur:'3hrs', detail:'f(x±a), stretches, reflections, modulus. 3 past paper Qs.' },
-    { sub:'cs',    label:'CS (pm): Boolean algebra — Karnaugh maps + flip-flops + adders', dur:'3hrs', detail:'K-maps simplification, D-type flip-flops, half adder, full adder.' },
+    { sub:'maths', label:'Maths (am): Graphs + transformations', dur:'3hrs', detail:'f(x±a), stretches, reflections, modulus. 3 past paper Qs MIN.' },
+    { sub:'cs',    label:'CS (pm): Boolean algebra — Karnaugh maps + flip-flops + adders', dur:'3hrs', detail:'K-maps simplification, D-type flip-flops, half adder, full adder. 1 past paper Q MIN. 2 Qs STRETCH.' },
   ],
   '2026-03-31': [
-    { sub:'maths', label:'Maths (am): Radians, arc length, sector area', dur:'3hrs', detail:'Convert degrees/radians, arc length s=rθ, sector area A=½r²θ. 3 Qs.' },
-    { sub:'cs',    label:'CS (pm): LMC / Assembly language', dur:'3hrs', detail:'LMC instruction set: ADD, SUB, STA, LDA, BRA, BRZ, BRP, INP, OUT, HLT. Write + trace simple programs.' },
+    { sub:'maths', label:'Maths (am): Radians, arc length, sector area', dur:'3hrs', detail:'Convert degrees/radians, arc length s=rθ, sector area A=½r²θ. 3 Qs MIN.' },
+    { sub:'cs',    label:'CS (pm): LMC / Assembly language', dur:'3hrs', detail:'LMC instruction set: ADD, SUB, STA, LDA, BRA, BRZ, BRP, INP, OUT, HLT. Write + trace simple programs. 1 program MIN. 2 programs STRETCH.' },
   ],
   '2026-04-01': [
-    { sub:'maths', label:'Maths (am): Chain rule + connected rates + first principles', dur:'3hrs', detail:'Chain rule on composite functions. Connected rates. Differentiation from first principles.' },
-    { sub:'econ',  label:'Econ (pm): D&S, PED, PES, tax incidence', dur:'3hrs', detail:'Demand/supply shifts, elasticity formulas, tax incidence diagrams. 2 Qs.' },
+    { sub:'maths', label:'Maths (am): Chain rule + connected rates + first principles', dur:'3hrs', detail:'Chain rule on composite functions. Connected rates. First principles. 3 Qs MIN.' },
+    { sub:'econ',  label:'Econ (pm): D&S, PED, PES, tax incidence', dur:'3hrs', detail:'Demand/supply shifts, elasticity formulas, tax incidence diagrams. 2 Qs MIN. Essay-style Q STRETCH.' },
   ],
   '2026-04-02': [
-    { sub:'maths', label:'Maths (am): Trig identities, double angles, trig proofs', dur:'3hrs', detail:'sin²+cos²=1, sec²=1+tan², double angle formulae, compound angle formulae. Construct proofs.' },
-    { sub:'cs',    label:'CS (pm): Data types — binary, hex, two\'s complement, floating point', dur:'3hrs', detail:'Binary↔hex↔denary, sign+magnitude, two\'s complement, floating point normalisation, bitwise ops, ASCII/Unicode.' },
+    { sub:'maths', label:'Maths (am): Trig identities, double angles, trig proofs', dur:'3hrs', detail:'sin²+cos²=1, sec²=1+tan², double angle formulae. 3 Qs MIN.' },
+    { sub:'cs',    label:'CS (pm): Data types — binary, hex, two\'s complement, floating point', dur:'3hrs', detail:'Binary↔hex↔denary, sign+magnitude, two\'s complement, floating point normalisation. 2 Qs MIN. 2 more Qs STRETCH.' },
   ],
   '2026-04-03': [
-    { sub:'maths', label:'Maths (am): Trig equations + harmonic form', dur:'3hrs', detail:'Solve equations in given intervals, r·cos(θ±α) and r·sin(θ±α) forms. 3 Qs.' },
-    { sub:'econ',  label:'Econ (pm): Market structures + entrepreneurship/stakeholders', dur:'3hrs', detail:'PC, monopoly, oligopoly features. Business objectives, stakeholder conflicts, enterprise.' },
+    { sub:'maths', label:'Maths (am): Trig equations + harmonic form', dur:'3hrs', detail:'Solve equations in given intervals, r·cos(θ±α) and r·sin(θ±α) forms. 3 Qs MIN.' },
+    { sub:'econ',  label:'Econ (pm): Market structures + entrepreneurship/stakeholders', dur:'3hrs', detail:'PC, monopoly, oligopoly features. Business objectives. 2 Qs MIN. Essay-style Q STRETCH.' },
   ],
   '2026-04-04': [
-    { sub:'maths', label:'Maths (am): Partial fractions (full)', dur:'3hrs', detail:'Linear, repeated, improper, algebraic long division. 3 Qs.' },
-    { sub:'cs',    label:'CS (pm): Data structures — stacks, queues, linked lists, arrays', dur:'3hrs', detail:'Create, traverse, add, remove from each. Push/pop. Enqueue/dequeue. Linked list traversal.' },
+    { sub:'maths', label:'Maths (am): Partial fractions (full)', dur:'3hrs', detail:'Linear, repeated, improper, algebraic long division. 3 Qs MIN.' },
+    { sub:'cs',    label:'CS (pm): Data structures — stacks, queues, linked lists, arrays', dur:'3hrs', detail:'Create, traverse, add, remove from each. Push/pop. Enqueue/dequeue. 2 Qs MIN. Linked list traversal STRETCH.' },
   ],
   '2026-04-05': [
-    { sub:'maths', label:'Maths (am): Parametric equations + parametric differentiation', dur:'3hrs', detail:'Cartesian conversion, dy/dx=(dy/dt)/(dx/dt), stationary points parametrically. 3 Qs.' },
-    { sub:'econ',  label:'Econ (pm): Labour markets — MRP, monopsony, min wage, global labour', dur:'3hrs', detail:'MRP theory, monopsony diagram, national min wage effects, global labour market comparisons.' },
+    { sub:'maths', label:'Maths (am): Parametric equations + parametric differentiation', dur:'3hrs', detail:'Cartesian conversion, dy/dx=(dy/dt)/(dx/dt), stationary points. 3 Qs MIN.' },
+    { sub:'econ',  label:'Econ (pm): Labour markets — MRP, monopsony, min wage, global labour', dur:'3hrs', detail:'MRP theory, monopsony diagram, national min wage effects. 2 Qs MIN. Essay-style Q STRETCH.' },
   ],
   '2026-04-06': [
-    { sub:'maths', label:'Maths (am): Implicit differentiation', dur:'3hrs', detail:'Differentiate implicitly, find dy/dx, stationary points on implicit curves. 3 Qs.' },
-    { sub:'cs',    label:'CS (pm): Push/pop + stack/queue pseudocode', dur:'3hrs', detail:'Write push/pop from scratch with overflow/underflow. Enqueue/dequeue with front/rear pointers. 2 Qs.' },
+    { sub:'maths', label:'Maths (am): Implicit differentiation', dur:'3hrs', detail:'Differentiate implicitly, find dy/dx, stationary points. 3 Qs MIN.' },
+    { sub:'cs',    label:'CS (pm): Push/pop + stack/queue pseudocode', dur:'3hrs', detail:'Write push/pop from scratch with overflow/underflow. 2 Qs MIN. Enqueue/dequeue with front/rear pointers STRETCH.' },
   ],
   '2026-04-07': [
-    { sub:'maths', label:'Maths (am): Integration by parts (incl. repeated)', dur:'3hrs', detail:'∫u·dv = uv − ∫v·du. Repeated application. ∫ln(x)dx. 3 Qs.' },
-    { sub:'econ',  label:'Econ (pm): Market failure — MSC/MSB/MPC/MPB diagrams depth', dur:'3hrs', detail:'Draw all four-line diagrams from memory. Welfare loss triangles. 2 essay-style Qs.' },
+    { sub:'maths', label:'Maths (am): Integration by parts (incl. repeated)', dur:'3hrs', detail:'∫u·dv = uv − ∫v·du. Repeated application. ∫ln(x)dx. 3 Qs MIN.' },
+    { sub:'econ',  label:'Econ (pm): Market failure — MSC/MSB/MPC/MPB diagrams depth', dur:'3hrs', detail:'Draw all four-line diagrams from memory. Welfare loss triangles. 2 Qs MIN. Full essay Q STRETCH.' },
   ],
   '2026-04-08': [
-    { sub:'maths', label:'Maths (am): Trig integration', dur:'3hrs', detail:'∫sin²x, ∫cos²x using double angle. Trig substitution. 3 Qs.' },
-    { sub:'cs',    label:'CS (pm): Networking — TCP/IP, DNS, LANs/WANs, packet switching, security', dur:'3hrs', detail:'TCP/IP stack layers, DNS, LAN vs WAN, packet vs circuit switching, firewalls, proxies, encryption.' },
+    { sub:'maths', label:'Maths (am): Trig integration', dur:'3hrs', detail:'∫sin²x, ∫cos²x using double angle. Trig substitution. 3 Qs MIN.' },
+    { sub:'cs',    label:'CS (pm): Networking — TCP/IP, DNS, LANs/WANs, packet switching, security', dur:'3hrs', detail:'TCP/IP stack layers, DNS, LAN vs WAN, packet vs circuit switching, firewalls, encryption. 2 Qs MIN. 2 more Qs STRETCH.' },
   ],
   '2026-04-09': [
-    { sub:'maths', label:'Maths (am): Integration by substitution + ln|f(x)| forms', dur:'3hrs', detail:'Choose u, substitute, integrate, back-substitute. ∫f\'(x)/f(x)dx = ln|f(x)|+c. 3 Qs.' },
-    { sub:'econ',  label:'Econ (pm): Govt intervention — taxes, subsidies, price controls, regulation', dur:'3hrs', detail:'Per-unit tax diagrams, subsidy effects, price floor/ceiling. Govt failure. 2 Qs.' },
+    { sub:'maths', label:'Maths (am): Integration by substitution + ln|f(x)| forms', dur:'3hrs', detail:'Choose u, substitute, integrate, back-substitute. ∫f\'(x)/f(x)dx = ln|f(x)|+c. 3 Qs MIN.' },
+    { sub:'econ',  label:'Econ (pm): Govt intervention — taxes, subsidies, price controls, regulation', dur:'3hrs', detail:'Per-unit tax diagrams, subsidy effects, price floor/ceiling. Govt failure. 2 Qs MIN. Essay STRETCH.' },
   ],
   '2026-04-10': [
-    { sub:'maths', label:'Maths (am): Vectors (2D + 3D)', dur:'3hrs', detail:'Column vectors, i/j/k notation, magnitude, unit vectors, position vectors, distance. 3 Qs.' },
-    { sub:'cs',    label:'CS (pm): Hardware — FDE cycle, ALU/registers, CISC/RISC, Von Neumann/Harvard, pipelining', dur:'3hrs', detail:'FDE cycle, ALU/ACC/PC/MAR/MDR/CIR, clock speed/cores/cache, pipelining, CISC vs RISC, architectures.' },
+    { sub:'maths', label:'Maths (am): Vectors (2D + 3D)', dur:'3hrs', detail:'Column vectors, i/j/k notation, magnitude, unit vectors, position vectors. 3 Qs MIN.' },
+    { sub:'cs',    label:'CS (pm): Hardware — FDE cycle, ALU/registers, CISC/RISC, Von Neumann/Harvard, pipelining', dur:'3hrs', detail:'FDE cycle, ALU/ACC/PC/MAR/MDR/CIR, clock speed/cores/cache, pipelining, CISC vs RISC. 2 Qs MIN. 2 more Qs STRETCH.' },
   ],
   '2026-04-11': [
-    { sub:'maths', label:'Maths (am): Proof — deduction, exhaustion, contradiction', dur:'3hrs', detail:'Proof by deduction, exhaustion, contradiction. Prove irrationality of √2. Disproof by counterexample. 3 Qs.' },
-    { sub:'cs',    label:'CS (pm): OS (scheduling, memory, interrupts) + compression/encryption/hashing', dur:'3hrs', detail:'Round robin/SJF/FCFS scheduling, paging/segmentation/virtual memory, ISR. Lossy/lossless compression, RLE, symmetric/asymmetric encryption, hashing.' },
+    { sub:'maths', label:'Maths (am): Proof — deduction, exhaustion, contradiction', dur:'3hrs', detail:'Proof by deduction, exhaustion, contradiction. Prove irrationality of √2. 3 Qs MIN.' },
+    { sub:'cs',    label:'CS (pm): OS (scheduling, memory, interrupts) + compression/encryption/hashing', dur:'3hrs', detail:'Round robin/SJF/FCFS scheduling, paging/segmentation/virtual memory, ISR. Lossy/lossless compression, hashing. 2 Qs MIN. 2 more Qs STRETCH.' },
   ],
   '2026-04-12': [
-    { sub:'maths', label:'Maths (am): Numerical methods — Newton-Raphson, iterative, trapezium rule', dur:'3hrs', detail:'Newton-Raphson formula + failure modes. Iteration, cobweb/staircase diagrams. Trapezium rule. 3 Qs.' },
-    { sub:'econ',  label:'Econ (pm): Exchange rates + international trade', dur:'3hrs', detail:'Exchange rate determination, appreciation/depreciation, comparative advantage, J-curve. 2 Qs.' },
+    { sub:'maths', label:'Maths (am): Numerical methods — Newton-Raphson, iterative, trapezium rule', dur:'3hrs', detail:'Newton-Raphson formula + failure modes. Iteration, cobweb/staircase. Trapezium rule. 3 Qs MIN.' },
+    { sub:'econ',  label:'Econ (pm): Exchange rates + international trade', dur:'3hrs', detail:'Exchange rate determination, appreciation/depreciation, comparative advantage, J-curve. 2 Qs MIN. Essay STRETCH.' },
   ],
   '2026-04-13': [
     { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'Back at college.' },
-    { sub:'maths', label:'Maths (eve): Binomial expansion + sequences/series verify', dur:'1.5hrs', detail:'Binomial expansion (positive + general n). Arithmetic/geometric sequences, sigma notation — quick verify.' },
+    { sub:'maths', label:'Maths (eve): Binomial expansion + sequences/series verify', dur:'1.5hrs', detail:'Binomial expansion (positive + general n). Sigma notation — quick verify. 2 Qs MIN.' },
   ],
   '2026-04-14': [
-    { sub:'maths', label:'Maths (am): Differential equations (separable variables)', dur:'3hrs', detail:'Separate variables, integrate both sides, particular solutions. 3 Qs.' },
-    { sub:'econ',  label:'Econ (pm): Poverty, inequality, Gini/Lorenz + emerging economies', dur:'3hrs', detail:'Lorenz curve, Gini coefficient, relative/absolute poverty. Growing power of China/India/Africa.' },
+    { sub:'maths', label:'Maths (am): Differential equations (separable variables)', dur:'3hrs', detail:'Separate variables, integrate both sides, particular solutions. 3 Qs MIN.' },
+    { sub:'econ',  label:'Econ (pm): Poverty, inequality, Gini/Lorenz + emerging economies', dur:'3hrs', detail:'Lorenz curve, Gini coefficient, relative/absolute poverty. 2 Qs MIN. Essay STRETCH.' },
   ],
   '2026-04-15': [
     { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',    label:'CS (eve): OOP + functional programming', dur:'1.5hrs', detail:'Classes, objects, inheritance, encapsulation, polymorphism. Functional programming: first-class functions, higher-order functions, map/filter/reduce.' },
+    { sub:'cs',    label:'CS (eve): OOP + functional programming', dur:'1.5hrs', detail:'Classes, objects, inheritance, encapsulation, polymorphism. Map/filter/reduce. 1 Q MIN. Write actual OOP code STRETCH.' },
   ],
   '2026-04-16': [
     { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'maths', label:'Maths (eve): Volumes of revolution + area between curves', dur:'1.5hrs', detail:'π∫y²dx about x-axis, area between two curves. 2 Qs.' },
+    { sub:'maths', label:'Maths (eve): Volumes of revolution + area between curves', dur:'1.5hrs', detail:'π∫y²dx about x-axis, area between two curves. 2 Qs MIN.' },
   ],
   '2026-04-17': [
-    { sub:'maths', label:'Maths (am): Past paper drill', dur:'3hrs', detail:'Full set of past paper Qs — weakest topics only. Mark all.' },
-    { sub:'econ',  label:'Econ (pm): Globalisation — trade blocs, WTO, tariffs/quotas, protectionism, MNCs', dur:'3hrs', detail:'Trade liberalisation vs protectionism, WTO, trade blocs, tariffs/quotas/subsidies, MNC impact, ethical issues.' },
+    { sub:'maths', label:'Maths (am): Past paper drill', dur:'3hrs', detail:'Full set of past paper Qs — weakest topics only. Mark all MIN.' },
+    { sub:'econ',  label:'Econ (pm): Globalisation — trade blocs, WTO, tariffs/quotas, protectionism, MNCs', dur:'3hrs', detail:'Trade liberalisation vs protectionism, WTO, trade blocs, tariffs/quotas/subsidies, MNC impact. 2 Qs MIN. Essay STRETCH.' },
   ],
   '2026-04-18': [
-    { sub:'maths', label:'Maths (am): Past paper drill', dur:'3hrs', detail:'Continue drilling weakest topics.' },
-    { sub:'cs',    label:'CS (pm): SQL + foreign keys + ACID + referential integrity', dur:'3hrs', detail:'SQL: SELECT/INSERT/UPDATE/DELETE/JOIN. Foreign keys, referential integrity, ACID, transaction processing, record locking.' },
+    { sub:'maths', label:'Maths (am): Past paper drill', dur:'3hrs', detail:'Continue drilling weakest topics MIN.' },
+    { sub:'cs',    label:'CS (pm): SQL + foreign keys + ACID + referential integrity', dur:'3hrs', detail:'SQL: SELECT/INSERT/UPDATE/DELETE/JOIN. Foreign keys, referential integrity, ACID, transaction processing, record locking. 2 Qs MIN. 2 more Qs STRETCH.' },
   ],
   '2026-04-19': [
-    { sub:'maths', label:'Maths (am): Weakest topic catch-up', dur:'3hrs', detail:'Review errors from week. Re-drill weakest area.' },
-    { sub:'econ',  label:'Econ (pm): P1 past paper questions', dur:'3hrs', detail:'Timed P1 questions. Mark. Log gaps.' },
+    { sub:'maths', label:'Maths (am): Weakest topic catch-up', dur:'3hrs', detail:'Review errors from week. Re-drill weakest area MIN.' },
+    { sub:'econ',  label:'Econ (pm): P1 past paper questions', dur:'3hrs', detail:'Timed P1 questions. Mark. Log gaps MIN.' },
   ],
   '2026-04-20': [
     { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'' },
-    { sub:'maths', label:'Maths (eve): Stats — sampling + large data set + data presentation', dur:'1.5hrs', detail:'Sampling methods (random, stratified, systematic, quota, opportunity). Large data set context. Histograms, box plots, cumulative frequency.' },
+    { sub:'maths', label:'Maths (eve): Stats — sampling + large data set + data presentation', dur:'1.5hrs', detail:'Sampling methods. Large data set context. Histograms, box plots. 2 Qs MIN.' },
   ],
   '2026-04-21': [
-    { sub:'maths', label:'Maths (am): Stats — correlation, regression, summary statistics', dur:'3hrs', detail:'PMCC, regression lines y on x, interpolation vs extrapolation, interpretation of summary statistics.' },
-    { sub:'econ',  label:'Econ (pm): AD/AS model + macro objectives', dur:'3hrs', detail:'AD/AS diagram, shifts, SRAS/LRAS. Macro objectives: growth, inflation, unemployment, BOP. Conflicts.' },
+    { sub:'maths', label:'Maths (am): Stats — correlation, regression, summary statistics', dur:'3hrs', detail:'PMCC, regression lines y on x, interpolation vs extrapolation. 3 Qs MIN.' },
+    { sub:'econ',  label:'Econ (pm): AD/AS model + macro objectives', dur:'3hrs', detail:'AD/AS diagram, shifts, SRAS/LRAS. Macro objectives: growth, inflation, unemployment, BOP. 2 Qs MIN. Essay STRETCH.' },
   ],
   '2026-04-22': [
     { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',    label:'CS (eve): Compilation stages + linkers/loaders', dur:'1.5hrs', detail:'Lexical analysis, syntax analysis, semantic analysis, code generation, optimisation. Linkers, loaders, libraries.' },
+    { sub:'cs',    label:'CS (eve): Compilation stages + linkers/loaders', dur:'1.5hrs', detail:'Lexical analysis, syntax analysis, semantic analysis, code generation, optimisation. 1 Q MIN. 2 Qs STRETCH.' },
   ],
   '2026-04-23': [
     { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'maths', label:'Maths (eve): Stats — normal + binomial distributions', dur:'1.5hrs', detail:'Normal distribution Z-scores. Binomial B(n,p). Normal approximation to binomial.' },
+    { sub:'maths', label:'Maths (eve): Stats — normal + binomial distributions', dur:'1.5hrs', detail:'Normal distribution Z-scores. Binomial B(n,p). Normal approximation to binomial. 2 Qs MIN.' },
   ],
   '2026-04-24': [
-    { sub:'maths', label:'Maths (am): Stats — hypothesis testing', dur:'3hrs', detail:'One/two-tailed tests, critical regions, p-values, Type I/II errors. 3 Qs.' },
-    { sub:'econ',  label:'Econ (pm): Fiscal + monetary + supply-side policy instruments', dur:'3hrs', detail:'Fiscal: taxation/govt spending. Monetary: interest rates/QE. Supply-side: deregulation/privatisation. Policy conflicts.' },
+    { sub:'maths', label:'Maths (am): Stats — hypothesis testing', dur:'3hrs', detail:'One/two-tailed tests, critical regions, p-values, Type I/II errors. 3 Qs MIN.' },
+    { sub:'econ',  label:'Econ (pm): Fiscal + monetary + supply-side policy instruments', dur:'3hrs', detail:'Fiscal: taxation/govt spending. Monetary: interest rates/QE. Supply-side: deregulation/privatisation. 2 Qs MIN. Essay STRETCH.' },
   ],
   '2026-04-25': [
-    { sub:'maths', label:'Maths (am): Mech — quantities/units + SUVAT + projectiles + vector kinematics', dur:'3hrs', detail:'Base/derived units. SUVAT equations, projectile motion. Velocity/acceleration as vectors. 3 Qs.' },
-    { sub:'cs',    label:'CS (pm): Algorithms — BFS/DFS, Dijkstra, A*, Big-O', dur:'3hrs', detail:'BFS vs DFS traversal. Dijkstra\'s shortest path. A* algorithm. Big-O notation and comparisons.' },
+    { sub:'maths', label:'Maths (am): Mech — quantities/units + SUVAT + projectiles + vector kinematics', dur:'3hrs', detail:'Base/derived units. SUVAT equations, projectile motion. Velocity/acceleration as vectors. 3 Qs MIN.' },
+    { sub:'cs',    label:'CS (pm): Algorithms — BFS/DFS, Dijkstra, A*, Big-O', dur:'3hrs', detail:'BFS vs DFS traversal. Dijkstra\'s shortest path. A* algorithm. Big-O notation. 2 Qs MIN. 2 more Qs STRETCH.' },
   ],
   '2026-04-26': [
-    { sub:'maths', label:'Maths (am): Mech — forces, Newton\'s laws, inclined planes, friction', dur:'3hrs', detail:'Resolving forces, F=ma, inclined planes, F≤μR, limiting friction. 3 Qs.' },
-    { sub:'econ',  label:'Econ (pm): P1 timed essay practice', dur:'3hrs', detail:'Full timed 12-mark or 20-mark P1 essay. Mark against MOPS structure.' },
+    { sub:'maths', label:'Maths (am): Mech — forces, Newton\'s laws, inclined planes, friction', dur:'3hrs', detail:'Resolving forces, F=ma, inclined planes, F≤μR, limiting friction. 3 Qs MIN.' },
+    { sub:'econ',  label:'Econ (pm): P1 timed essay practice', dur:'3hrs', detail:'Full timed 12-mark or 20-mark P1 essay. Mark against MOPS structure MIN.' },
   ],
   '2026-04-27': [
     { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'' },
-    { sub:'maths', label:'Maths (eve): Mech — connected particles + moments', dur:'1.5hrs', detail:'Particles over pulley. Moments: turning effects, uniform rod, equilibrium, reactions at supports.' },
+    { sub:'maths', label:'Maths (eve): Mech — connected particles + moments', dur:'1.5hrs', detail:'Particles over pulley. Moments: turning effects, uniform rod, equilibrium, reactions. 2 Qs MIN.' },
   ],
   '2026-04-28': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full past paper under exam conditions. Mark. Log errors.' },
-    { sub:'econ',  label:'Econ (pm): P1 full past paper timed', dur:'3hrs', detail:'Full timed P1 paper. Mark.' },
+    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full past paper under exam conditions. Mark. Log errors MIN.' },
+    { sub:'econ',  label:'Econ (pm): P1 full past paper timed', dur:'3hrs', detail:'Full timed P1 paper. Mark MIN.' },
   ],
   '2026-04-29': [
     { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',    label:'CS (eve): Sorting algorithms + web technologies', dur:'1.5hrs', detail:'Bubble/insertion/merge/quick sort traces + complexity. HTML/CSS/JS basics, search engine indexing, PageRank, client vs server-side.' },
+    { sub:'cs',    label:'CS (eve): Sorting algorithms + web technologies', dur:'1.5hrs', detail:'Bubble/insertion/merge/quick sort traces + complexity. 1 Q MIN. HTML/CSS/JS basics, PageRank STRETCH.' },
   ],
   '2026-04-30': [
     { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'econ',  label:'Econ (eve): P1 mark scheme review + gap fix', dur:'1.5hrs', detail:'Go through all errors from 28 Apr paper. Fix specific gaps.' },
+    { sub:'econ',  label:'Econ (eve): P1 mark scheme review + gap fix', dur:'1.5hrs', detail:'Go through all errors from 28 Apr paper. Fix specific gaps MIN.' },
   ],
   '2026-05-01': [
-    { sub:'maths', label:'Maths (am): Weakest topics drill', dur:'3hrs', detail:'From past paper errors — drill specific question types.' },
-    { sub:'econ',  label:'Econ (pm): T4 depth — barriers to entry, oligopoly, price discrimination, contestability, regulatory bodies', dur:'3hrs', detail:'Barriers to entry, game theory/Nash equilibrium, price discrimination degrees, contestable markets, CMA/Ofgem.' },
+    { sub:'maths', label:'Maths (am): Weakest topics drill', dur:'3hrs', detail:'From past paper errors — drill specific question types MIN.' },
+    { sub:'econ',  label:'Econ (pm): T4 depth — barriers to entry, oligopoly, price discrimination, contestability', dur:'3hrs', detail:'Barriers to entry, game theory/Nash equilibrium, price discrimination degrees, contestable markets, CMA/Ofgem. 2 Qs MIN. Essay STRETCH.' },
   ],
   '2026-05-02': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark. Log errors.' },
-    { sub:'cs',    label:'CS (pm): P2 programming practice', dur:'3hrs', detail:'Write and trace actual code. OOP problem. Algorithm implementation.' },
+    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark. Log errors MIN.' },
+    { sub:'cs',    label:'CS (pm): P2 programming practice', dur:'3hrs', detail:'Write and trace actual code. OOP problem. Algorithm implementation MIN.' },
   ],
   '2026-05-03': [
-    { sub:'econ',  label:'Econ (all day): T1 gaps — revenue/costs/profit + credit/banks + market research/digital economy', dur:'6hrs', detail:'Revenue/costs/profit: TR, TC, AC, breakeven. Credit: role of banks, BoE, sources of finance. Market research: primary/secondary, digital economy, online competition, small vs big firm behaviour.' },
+    { sub:'econ',  label:'Econ (all day): T1 gaps — revenue/costs/profit + credit/banks + market research/digital economy', dur:'6hrs', detail:'Revenue/costs/profit: TR, TC, AC, breakeven. Credit: role of banks, BoE, sources of finance. Market research: primary/secondary, digital economy. 3 Qs MIN. 2 essays STRETCH.' },
   ],
   '2026-05-04': [
     { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'' },
-    { sub:'econ',  label:'Econ (eve): P1 timed essay + mark', dur:'1.5hrs', detail:'One full timed essay. Mark strictly.' },
+    { sub:'econ',  label:'Econ (eve): P1 timed essay + mark', dur:'1.5hrs', detail:'One full timed essay. Mark strictly MIN.' },
   ],
   '2026-05-05': [
-    { sub:'econ',  label:'Econ (am): P1 full past paper timed', dur:'3hrs', detail:'Second full timed P1 paper.' },
-    { sub:'maths', label:'Maths (pm): Drill', dur:'3hrs', detail:'Drill weakest pure topics from recent papers.' },
+    { sub:'econ',  label:'Econ (am): P1 full past paper timed', dur:'3hrs', detail:'Second full timed P1 paper MIN.' },
+    { sub:'maths', label:'Maths (pm): Drill', dur:'3hrs', detail:'Drill weakest pure topics from recent papers MIN.' },
   ],
   '2026-05-06': [
     { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'econ',  label:'Econ (eve): P1 gap fix + diagrams', dur:'1.5hrs', detail:'Target specific diagram weaknesses from recent papers.' },
+    { sub:'econ',  label:'Econ (eve): P1 gap fix + diagrams', dur:'1.5hrs', detail:'Target specific diagram weaknesses from recent papers MIN.' },
   ],
   '2026-05-07': [
     { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'maths', label:'Maths (eve): Full past paper', dur:'1.5hrs', detail:'Past paper — focus on stats/mechanics.' },
+    { sub:'maths', label:'Maths (eve): Full past paper', dur:'1.5hrs', detail:'Past paper — focus on stats/mechanics MIN.' },
   ],
   '2026-05-08': [
-    { sub:'econ',  label:'Econ (am): P1 weak topics + logs/exponentials verify', dur:'3hrs', detail:'Quick verify on logs/exponentials. Target remaining weak topics from past papers.' },
-    { sub:'cs',    label:'CS (pm): FSMs + computational thinking', dur:'3hrs', detail:'Finite state machines: states, transitions, accepting states, FSM diagrams. Computational thinking: abstraction, decomposition, thinking ahead/logically/concurrently.' },
+    { sub:'econ',  label:'Econ (am): P1 weak topics + logs/exponentials verify', dur:'3hrs', detail:'Quick verify on logs/exponentials. Target remaining weak topics MIN.' },
+    { sub:'cs',    label:'CS (pm): FSMs + computational thinking', dur:'3hrs', detail:'Finite state machines: states, transitions, accepting states, FSM diagrams. Computational thinking: abstraction, decomposition. 2 Qs MIN. 2 more Qs STRETCH.' },
   ],
   '2026-05-09': [
-    { sub:'econ',  label:'Econ (am): P1 final read-through + diagrams', dur:'3hrs', detail:'All key diagrams from memory. Key model definitions. Past essay plans.' },
-    { sub:'maths', label:'Maths (pm): Drill', dur:'3hrs', detail:'Drill weakest topics.' },
+    { sub:'econ',  label:'Econ (am): P1 final read-through + diagrams', dur:'3hrs', detail:'All key diagrams from memory. Key model definitions. Past essay plans MIN.' },
+    { sub:'maths', label:'Maths (pm): Drill', dur:'3hrs', detail:'Drill weakest topics MIN.' },
   ],
   '2026-05-10': [
     { sub:'exam',  label:'⚠ Exam eve — Econ P1 ONLY', detail:'Diagrams, key models, essay plans. Nothing new.' },
@@ -697,24 +707,24 @@ const SESSIONS = {
     { sub:'exam',  label:'EXAM: Economics P1 — Markets & How They Work', detail:'9:30–11:30' },
   ],
   '2026-05-12': [
-    { sub:'econ',  label:'Econ (am): P2 — business growth, productive efficiency, capacity utilisation, innovation', dur:'3hrs', detail:'Business growth methods, economies of scale, productive efficiency, capacity utilisation, R&D, innovation.' },
-    { sub:'maths', label:'Maths (pm): Drill', dur:'3hrs', detail:'Past paper drill — pure topics.' },
+    { sub:'econ',  label:'Econ (am): P2 — business growth, productive efficiency, capacity utilisation, innovation', dur:'3hrs', detail:'Business growth methods, economies of scale, productive efficiency, capacity utilisation, R&D. 2 Qs MIN. Essay STRETCH.' },
+    { sub:'maths', label:'Maths (pm): Drill', dur:'3hrs', detail:'Past paper drill — pure topics MIN.' },
   ],
   '2026-05-13': [
     { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'econ',  label:'Econ (eve): P2 — economic cycle, inflation, employment, AD/AS depth', dur:'1.5hrs', detail:'Economic cycle phases, demand-pull/cost-push inflation, unemployment types, AD/AS in detail.' },
+    { sub:'econ',  label:'Econ (eve): P2 — economic cycle, inflation, employment, AD/AS depth', dur:'1.5hrs', detail:'Economic cycle phases, demand-pull/cost-push inflation, unemployment types, AD/AS in detail. 1 Q MIN. Essay STRETCH.' },
   ],
   '2026-05-14': [
     { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'econ',  label:'Econ (eve): P2 timed essay', dur:'1.5hrs', detail:'Full timed P2 essay. Mark against writing frame.' },
+    { sub:'econ',  label:'Econ (eve): P2 timed essay', dur:'1.5hrs', detail:'Full timed P2 essay. Mark against writing frame MIN.' },
   ],
   '2026-05-15': [
-    { sub:'econ',  label:'Econ (am): P2 full past paper timed', dur:'3hrs', detail:'Full timed P2 paper. Mark all.' },
-    { sub:'maths', label:'Maths (pm): Full past paper', dur:'3hrs', detail:'Full timed past paper.' },
+    { sub:'econ',  label:'Econ (am): P2 full past paper timed', dur:'3hrs', detail:'Full timed P2 paper. Mark all MIN.' },
+    { sub:'maths', label:'Maths (pm): Full past paper', dur:'3hrs', detail:'Full timed past paper MIN.' },
   ],
   '2026-05-16': [
-    { sub:'econ',  label:'Econ (am): P2 gap fix', dur:'3hrs', detail:'Fix errors from 15 May paper.' },
-    { sub:'cs',    label:'CS (pm): CS theory recall', dur:'3hrs', detail:'Mixed recall across all P1 topics.' },
+    { sub:'econ',  label:'Econ (am): P2 gap fix', dur:'3hrs', detail:'Fix errors from 15 May paper MIN.' },
+    { sub:'cs',    label:'CS (pm): CS theory recall', dur:'3hrs', detail:'Mixed recall across all P1 topics MIN.' },
   ],
   '2026-05-17': [
     { sub:'exam',  label:'⚠ Exam eve — Econ P2 ONLY', detail:'Global economy key models. Exchange rates, comparative advantage, trade policy.' },
@@ -723,58 +733,58 @@ const SESSIONS = {
     { sub:'exam',  label:'EXAM: Economics P2 — Competing in the Global Economy', detail:'13:30–15:30' },
   ],
   '2026-05-19': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark all.' },
-    { sub:'econ',  label:'Econ (pm): P3 synoptic — 25-mark structure + all 4 themes', dur:'3hrs', detail:'25-mark MOPS structure. Practice linking all 4 themes.' },
+    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark all MIN.' },
+    { sub:'econ',  label:'Econ (pm): P3 synoptic — 25-mark structure + all 4 themes', dur:'3hrs', detail:'25-mark MOPS structure. Practice linking all 4 themes MIN. Full timed 25-mark Q STRETCH.' },
   ],
   '2026-05-20': [
     { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',    label:'CS (eve): P1 past paper timed section', dur:'1.5hrs', detail:'Timed CS P1 section. Mark all.' },
+    { sub:'cs',    label:'CS (eve): P1 past paper timed section', dur:'1.5hrs', detail:'Timed CS P1 section. Mark all MIN.' },
   ],
   '2026-05-21': [
     { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'maths', label:'Maths (eve): Weakest topics drill', dur:'1.5hrs', detail:'Drill specific weak topics from recent papers.' },
+    { sub:'maths', label:'Maths (eve): Weakest topics drill', dur:'1.5hrs', detail:'Drill specific weak topics from recent papers MIN.' },
   ],
   '2026-05-22': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark all.' },
-    { sub:'econ',  label:'Econ (pm): P3 — financial sector + risk + global financial crisis + QE', dur:'3hrs', detail:'Role of central bank, BoE, financial sector risks, GFC causes/effects, quantitative easing, systemic risk.' },
+    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark all MIN.' },
+    { sub:'econ',  label:'Econ (pm): P3 — financial sector + risk + global financial crisis + QE', dur:'3hrs', detail:'Role of central bank, BoE, financial sector risks, GFC causes/effects, QE, systemic risk. 2 Qs MIN. Essay STRETCH.' },
   ],
   '2026-05-23': [
-    { sub:'maths', label:'Maths (am): Drill', dur:'3hrs', detail:'Weakest topics from recent papers.' },
-    { sub:'cs',    label:'CS (pm): P2 programming practice', dur:'3hrs', detail:'Write actual code. OOP + algorithm problems.' },
+    { sub:'maths', label:'Maths (am): Drill', dur:'3hrs', detail:'Weakest topics from recent papers MIN.' },
+    { sub:'cs',    label:'CS (pm): P2 programming practice', dur:'3hrs', detail:'Write actual code. OOP + algorithm problems MIN.' },
   ],
   '2026-05-24': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark all.' },
-    { sub:'econ',  label:'Econ (pm): P3 past paper timed', dur:'3hrs', detail:'Full timed P3 paper. Mark.' },
+    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark all MIN.' },
+    { sub:'econ',  label:'Econ (pm): P3 past paper timed', dur:'3hrs', detail:'Full timed P3 paper. Mark MIN.' },
   ],
   '2026-05-25': [
     { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'' },
-    { sub:'maths', label:'Maths (eve): Full timed past paper', dur:'1.5hrs', detail:'Timed paper or section.' },
+    { sub:'maths', label:'Maths (eve): Full timed past paper', dur:'1.5hrs', detail:'Timed paper or section MIN.' },
   ],
   '2026-05-26': [
-    { sub:'maths', label:'Maths (am): Weakest topics', dur:'3hrs', detail:'From past paper errors.' },
-    { sub:'econ',  label:'Econ (pm): P3 synoptic — all 4 themes, 25-mark Q', dur:'3hrs', detail:'Full 25-mark timed response. Mark strictly.' },
+    { sub:'maths', label:'Maths (am): Weakest topics', dur:'3hrs', detail:'From past paper errors MIN.' },
+    { sub:'econ',  label:'Econ (pm): P3 synoptic — all 4 themes, 25-mark Q', dur:'3hrs', detail:'Full 25-mark timed response. Mark strictly MIN.' },
   ],
   '2026-05-27': [
     { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',    label:'CS (eve): P1 timed past paper', dur:'1.5hrs', detail:'Full timed CS P1 section.' },
+    { sub:'cs',    label:'CS (eve): P1 timed past paper', dur:'1.5hrs', detail:'Full timed CS P1 section MIN.' },
   ],
   '2026-05-28': [
     { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'maths', label:'Maths (eve): Full timed past paper', dur:'1.5hrs', detail:'Timed paper.' },
+    { sub:'maths', label:'Maths (eve): Full timed past paper', dur:'1.5hrs', detail:'Timed paper MIN.' },
   ],
   '2026-05-29': [
-    { sub:'maths', label:'Maths (am): Weakest topics', dur:'3hrs', detail:'Final push on weak spots.' },
-    { sub:'econ',  label:'Econ (pm): P3 final timed past paper', dur:'3hrs', detail:'Final P3 practice paper.' },
+    { sub:'maths', label:'Maths (am): Weakest topics', dur:'3hrs', detail:'Final push on weak spots MIN.' },
+    { sub:'econ',  label:'Econ (pm): P3 final timed past paper', dur:'3hrs', detail:'Final P3 practice paper MIN.' },
   ],
   '2026-05-30': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark.' },
-    { sub:'cs',    label:'CS (pm): P1 + P2 mixed practice', dur:'3hrs', detail:'Mixed past paper Qs across both papers.' },
+    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark MIN.' },
+    { sub:'cs',    label:'CS (pm): P1 + P2 mixed practice', dur:'3hrs', detail:'Mixed past paper Qs across both papers MIN.' },
   ],
   '2026-05-31': [
     { sub:'exam',  label:'⚠ Exam eve — Maths Pure 1 ONLY', detail:'Key formulas. Timed Qs on weak spots only. Nothing new.' },
   ],
   '2026-06-01': [
-    { sub:'maths', label:'Maths (all day): Pure 1 final prep', dur:'6hrs', detail:'Everything is Pure 1 today. Past paper Qs, formula recap, weak topics.' },
+    { sub:'maths', label:'Maths (all day): Pure 1 final prep', dur:'6hrs', detail:'Everything is Pure 1 today. Past paper Qs, formula recap, weak topics MIN.' },
   ],
   '2026-06-02': [
     { sub:'exam',  label:'⚠ Exam eve — Econ P3 ONLY', detail:'25-mark essay plans. Synoptic links across all 4 themes.' },
@@ -786,20 +796,20 @@ const SESSIONS = {
     { sub:'exam',  label:'EXAM: Economics P3 — Economic Environment & Business', detail:'9:30–11:30' },
   ],
   '2026-06-05': [
-    { sub:'maths', label:'Maths (am): Pure 2 — review Pure 1 errors + weak topics', dur:'3hrs', detail:'Go through Pure 1 errors. Start Pure 2 prep on weak spots.' },
-    { sub:'cs',    label:'CS (pm): P1 timed', dur:'3hrs', detail:'Full timed CS P1 paper.' },
+    { sub:'maths', label:'Maths (am): Pure 2 — review Pure 1 errors + weak topics', dur:'3hrs', detail:'Go through Pure 1 errors. Start Pure 2 prep on weak spots MIN.' },
+    { sub:'cs',    label:'CS (pm): P1 timed', dur:'3hrs', detail:'Full timed CS P1 paper MIN.' },
   ],
   '2026-06-06': [
-    { sub:'maths', label:'Maths (am): Pure 2 full timed past paper', dur:'3hrs', detail:'Full paper. Mark.' },
-    { sub:'cs',    label:'CS (pm): P2 programming', dur:'3hrs', detail:'Write actual code. OOP problems.' },
+    { sub:'maths', label:'Maths (am): Pure 2 full timed past paper', dur:'3hrs', detail:'Full paper. Mark MIN.' },
+    { sub:'cs',    label:'CS (pm): P2 programming', dur:'3hrs', detail:'Write actual code. OOP problems MIN.' },
   ],
   '2026-06-07': [
-    { sub:'maths', label:'Maths (am): Pure 2 weak topics', dur:'3hrs', detail:'Drill from Pure 2 past paper errors.' },
-    { sub:'cs',    label:'CS (pm): P1 past paper', dur:'3hrs', detail:'Full CS P1 paper.' },
+    { sub:'maths', label:'Maths (am): Pure 2 weak topics', dur:'3hrs', detail:'Drill from Pure 2 past paper errors MIN.' },
+    { sub:'cs',    label:'CS (pm): P1 past paper', dur:'3hrs', detail:'Full CS P1 paper MIN.' },
   ],
   '2026-06-08': [
-    { sub:'maths', label:'Maths (am): Pure 2 full timed past paper', dur:'3hrs', detail:'Final Pure 2 paper. Mark.' },
-    { sub:'cs',    label:'CS (pm): P1 final recall', dur:'3hrs', detail:'Key theory recall. All topics from Component 01.' },
+    { sub:'maths', label:'Maths (am): Pure 2 full timed past paper', dur:'3hrs', detail:'Final Pure 2 paper. Mark MIN.' },
+    { sub:'cs',    label:'CS (pm): P1 final recall', dur:'3hrs', detail:'Key theory recall. All topics from Component 01 MIN.' },
   ],
   '2026-06-09': [
     { sub:'exam',  label:'⚠ Exam eve — CS P1 ONLY', detail:'Theory, past Q weak spots. Nothing new.' },
@@ -811,19 +821,19 @@ const SESSIONS = {
     { sub:'exam',  label:'EXAM: Maths Pure 2 (9MA0/02)', detail:'13:30–15:30' },
   ],
   '2026-06-12': [
-    { sub:'cs',    label:'CS (am): P2 programming + OOP', dur:'3hrs', detail:'OOP problems, recursion, algorithm tracing.' },
-    { sub:'maths', label:'Maths (pm): S&M — normal distribution + SUVAT', dur:'3hrs', detail:'Normal distribution Z-scores, SUVAT, projectiles recap.' },
+    { sub:'cs',    label:'CS (am): P2 programming + OOP', dur:'3hrs', detail:'OOP problems, recursion, algorithm tracing MIN.' },
+    { sub:'maths', label:'Maths (pm): S&M — normal distribution + SUVAT', dur:'3hrs', detail:'Normal distribution Z-scores, SUVAT, projectiles recap MIN.' },
   ],
   '2026-06-13': [
-    { sub:'cs',    label:'CS (am): P2 timed past paper', dur:'3hrs', detail:'Full timed CS P2 paper.' },
-    { sub:'maths', label:'Maths (pm): S&M — mechanics + moments', dur:'3hrs', detail:'Forces, Newton\'s laws, moments, connected particles recap.' },
+    { sub:'cs',    label:'CS (am): P2 timed past paper', dur:'3hrs', detail:'Full timed CS P2 paper MIN.' },
+    { sub:'maths', label:'Maths (pm): S&M — mechanics + moments', dur:'3hrs', detail:'Forces, Newton\'s laws, moments, connected particles recap MIN.' },
   ],
   '2026-06-14': [
     { sub:'exam',  label:'⚠ Exam eve — CS P2 ONLY', detail:'Programming Qs, OOP, algorithm tracing. Nothing new.' },
   ],
   '2026-06-15': [
-    { sub:'cs',    label:'CS (am): P2 final prep', dur:'3hrs', detail:'Final programming practice.' },
-    { sub:'maths', label:'Maths (pm): S&M timed past paper', dur:'3hrs', detail:'Full S&M paper. Mark.' },
+    { sub:'cs',    label:'CS (am): P2 final prep', dur:'3hrs', detail:'Final programming practice MIN.' },
+    { sub:'maths', label:'Maths (pm): S&M timed past paper', dur:'3hrs', detail:'Full S&M paper. Mark MIN.' },
   ],
   '2026-06-16': [
     { sub:'exam',  label:'⚠ Exam eve — S&M ONLY', detail:'SUVAT, moments, stats key formulas. Nothing new.' },
@@ -836,9 +846,6 @@ const SESSIONS = {
   ],
 };
 
-// ─────────────────────────────────────────────────────────────────────────────
-// SCHEDULE STRUCTURE
-// ─────────────────────────────────────────────────────────────────────────────
 const SCHEDULE_PHASES = [
   {
     label: 'This week — 23 Mar · NEA final push',
@@ -1008,7 +1015,113 @@ function switchTab(id, btn) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// RENDER TODAY
+// PATCH 1: localStorage persistence helpers
+// ─────────────────────────────────────────────────────────────────────────────
+const LS_PREFIX = 'abd-done-';
+
+function saveDone(dKey, idx, checked) {
+  const k = LS_PREFIX + dKey + '-' + idx;
+  if (checked) localStorage.setItem(k, '1');
+  else localStorage.removeItem(k);
+}
+
+function loadDone(dKey, idx) {
+  return localStorage.getItem(LS_PREFIX + dKey + '-' + idx) === '1';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PATCH 2: MIN/STRETCH detail renderer
+// ─────────────────────────────────────────────────────────────────────────────
+function renderDetail(detail) {
+  if (!detail) return '';
+  // Split on MIN / STRETCH markers
+  const minIdx = detail.search(/\bMIN\b/i);
+  const stretchIdx = detail.search(/\bSTRETCH\b/i);
+
+  if (minIdx === -1 && stretchIdx === -1) {
+    return `<div class="task-detail">${detail}</div>`;
+  }
+
+  let html = '<div style="margin-top:6px;display:flex;flex-direction:column;gap:5px;">';
+
+  if (minIdx !== -1) {
+    // Get text up to and including MIN marker
+    let minText = detail.substring(0, minIdx).replace(/[.\s]+$/, '').trim();
+    if (stretchIdx !== -1 && stretchIdx > minIdx) {
+      minText = detail.substring(0, stretchIdx).replace(/\bMIN[.\s]*/i,'').replace(/[.\s]+$/, '').trim();
+    } else {
+      minText = detail.replace(/\s*MIN[.\s]*/i, '').trim();
+    }
+    // Actually just grab everything up to STRETCH or end, strip MIN keyword
+    const beforeStretch = stretchIdx !== -1 ? detail.substring(0, stretchIdx) : detail;
+    const cleanMin = beforeStretch.replace(/\bMIN\b\.?/gi, '').replace(/\s+/g,' ').trim().replace(/\.$/, '');
+    html += `<div style="display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;">
+      <span class="pill-min">MIN</span>
+      <span class="task-detail" style="display:inline">${cleanMin}</span>
+    </div>`;
+  }
+
+  if (stretchIdx !== -1) {
+    const afterStretch = detail.substring(stretchIdx).replace(/\bSTRETCH\b\.?/gi,'').replace(/\s+/g,' ').trim().replace(/\.$/, '');
+    html += `<div style="display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;">
+      <span class="pill-stretch">STRETCH</span>
+      <span class="task-detail" style="display:inline">${afterStretch}</span>
+    </div>`;
+  }
+
+  html += '</div>';
+  return html;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PATCH 3: catch-up nudge
+// ─────────────────────────────────────────────────────────────────────────────
+function renderCatchupNudge() {
+  const todayKey = dateKey(today());
+  const missed = [];
+
+  for (let i = 1; i <= 21; i++) {
+    const d = new Date(today());
+    d.setDate(d.getDate() - i);
+    const k = dateKey(d);
+    const sessions = SESSIONS[k] || [];
+    const academic = sessions.filter(s => !['rest','college','exam'].includes(s.sub));
+    if (!academic.length) continue;
+    // Check if ANY academic session has been ticked
+    const anyDone = academic.some((_, idx) => loadDone(k, idx));
+    if (!anyDone) {
+      const dateObj = toDate(k);
+      const dateLabel = `${dateObj.getDate()} ${MONTHS_FULL[dateObj.getMonth()].slice(0,3)}`;
+      missed.push({ key: k, count: academic.count, dateLabel, firstLabel: academic[0].label.replace(/ \(.*?\)/,'').substring(0,50) });
+    }
+  }
+
+  const container = document.getElementById('catchup-nudge');
+  if (!container) return;
+  if (!missed.length) { container.style.display = 'none'; return; }
+  container.style.display = 'block';
+
+  const totalDays = missed.length;
+  container.innerHTML = `
+    <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.25);border-radius:10px;margin-bottom:20px">
+      <div style="font-size:1rem;flex-shrink:0;margin-top:1px">⚠</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:0.78rem;font-weight:600;color:var(--amber);margin-bottom:8px">${totalDays} day${totalDays>1?'s':''} with unchecked sessions in the past 3 weeks</div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          ${missed.slice(0,5).map(m => `
+            <div style="display:flex;align-items:center;gap:10px;font-size:0.72rem;color:var(--muted2)">
+              <span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted);min-width:48px;flex-shrink:0">${m.dateLabel}</span>
+              <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.firstLabel}</span>
+            </div>`).join('')}
+          ${missed.length > 5 ? `<div style="font-size:0.7rem;color:var(--muted);margin-top:3px">+ ${missed.length-5} more — check Full Schedule to tick sessions off</div>` : ''}
+        </div>
+        <div style="font-size:0.68rem;color:var(--muted);margin-top:10px;border-top:1px solid rgba(251,146,60,0.15);padding-top:8px">Tick sessions in Full Schedule to clear this nudge.</div>
+      </div>
+    </div>`;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER TODAY — patched with localStorage + MIN/STRETCH rendering
 // ─────────────────────────────────────────────────────────────────────────────
 function renderToday() {
   const t = today();
@@ -1022,29 +1135,41 @@ function renderToday() {
 
   if (!sessions.length) {
     container.innerHTML = '<div style="font-size:0.82rem;color:var(--muted2);padding:14px 0">Nothing scheduled — rest day.</div>';
+    renderCatchupNudge();
     return;
   }
+
   sessions.forEach((s, i) => {
     const col = SUB_COL[s.sub] || 'var(--muted)';
     const badgeCls = SUB_BADGE[s.sub] || 'badge-college';
+    const isDone = loadDone(key, i);
+
     const item = document.createElement('div');
-    item.className = 'task-item';
+    item.className = 'task-item' + (isDone ? ' done-item' : '');
     item.innerHTML = `
-      <div class="task-check"><input type="checkbox" id="chk${i}"></div>
+      <div class="task-check"><input type="checkbox" id="chk${i}"${isDone ? ' checked' : ''}></div>
       <div class="task-body">
         <div class="task-top">
-          <span class="sub-badge ${badgeCls}">${s.sub||'—'}</span>
+          <span class="sub-badge ${badgeCls}">${s.sub || '—'}</span>
+          ${s.dur ? `<span style="font-family:var(--mono);font-size:0.62rem;color:var(--muted)">${s.dur}</span>` : ''}
         </div>
-        <div class="task-name" id="lbl${i}">${s.label}</div>
-        ${s.detail ? `<div class="task-detail">${s.detail}</div>` : ''}
-      </div>
-      ${s.dur ? `<div class="task-dur">${s.dur}</div>` : ''}`;
-    item.querySelector('input').addEventListener('change', function(){
-      item.classList.toggle('done-item', this.checked);
-      document.getElementById('lbl'+i).classList.toggle('done', this.checked);
+        <div class="task-name${isDone ? ' done' : ''}" id="lbl${i}">${s.label}</div>
+        ${renderDetail(s.detail)}
+      </div>`;
+
+    item.querySelector('input').addEventListener('change', function() {
+      const checked = this.checked;
+      item.classList.toggle('done-item', checked);
+      document.getElementById('lbl' + i).classList.toggle('done', checked);
+      saveDone(key, i, checked);
+      // Re-render nudge in case this clears it
+      renderCatchupNudge();
     });
+
     container.appendChild(item);
   });
+
+  renderCatchupNudge();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1072,7 +1197,7 @@ function renderTomorrow() {
       <div class="tmr-left-dot" style="background:${col}"></div>
       <div class="tmr-body">
         <div class="tmr-name">${s.label}${s.dur ? ` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>` : ''}</div>
-        ${s.detail ? `<div class="tmr-detail">${s.detail}</div>` : ''}
+        ${s.detail ? `<div class="tmr-detail">${s.detail.replace(/\b(MIN|STRETCH)\b\.?/gi, '<span style="font-weight:700;color:var(--amber)">$1</span>')}</div>` : ''}
       </div>`;
     container.appendChild(row);
   });
@@ -1127,7 +1252,7 @@ function renderWeek() {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// RENDER FULL SCHEDULE
+// RENDER FULL SCHEDULE — patched: checkboxes in schedule rows + localStorage
 // ─────────────────────────────────────────────────────────────────────────────
 function renderSchedule() {
   const wrap = document.getElementById('schedule-wrap');
@@ -1179,14 +1304,20 @@ function renderSchedule() {
         const dateObj = toDate(dayInfo.date);
         const dateStr = dateObj.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
 
-        const sessionsHtml = sessions.map(s => {
+        const sessionsHtml = sessions.map((s, sIdx) => {
           const tagCls = TAG_CLS[s.sub] || 'tag-r';
-          const label = s.sub==='college' ? s.sub.toUpperCase() :
+          const label = s.sub==='college' ? 'COLLEGE' :
                         s.sub==='exam'    ? 'EXAM' :
                         s.sub==='nea'     ? 'NEA' :
                         s.sub==='rest'    ? 'REST' :
                         s.sub.toUpperCase();
-          return `<div class="sched-sess">
+          const isAcademic = !['rest','college','exam'].includes(s.sub);
+          const isDone = isAcademic && loadDone(dayInfo.date, sIdx);
+          const doneClass = isDone ? ' sched-done' : '';
+          const checkboxId = `sched-chk-${dayInfo.date}-${sIdx}`;
+
+          return `<div class="sched-sess${doneClass}" id="srow-${dayInfo.date}-${sIdx}">
+            ${isAcademic ? `<input type="checkbox" class="sched-check" id="${checkboxId}" ${isDone ? 'checked' : ''} onchange="toggleSchedDone('${dayInfo.date}',${sIdx},this)">` : ''}
             <span class="sched-tag ${tagCls}">${label}</span>
             <span class="sched-txt">${s.label}${s.dur ? ` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted)">(${s.dur})</span>` : ''}</span>
           </div>`;
@@ -1203,6 +1334,25 @@ function renderSchedule() {
       wrap.appendChild(wDiv);
     });
   });
+}
+
+function toggleSchedDone(dKey, idx, checkbox) {
+  const checked = checkbox.checked;
+  saveDone(dKey, idx, checked);
+  const row = document.getElementById(`srow-${dKey}-${idx}`);
+  if (row) row.classList.toggle('sched-done', checked);
+  // Also sync today tab if same date
+  if (dKey === dateKey(today())) {
+    const todayChk = document.getElementById(`chk${idx}`);
+    if (todayChk) {
+      todayChk.checked = checked;
+      const item = todayChk.closest('.task-item');
+      if (item) item.classList.toggle('done-item', checked);
+      const lbl = document.getElementById(`lbl${idx}`);
+      if (lbl) lbl.classList.toggle('done', checked);
+    }
+  }
+  renderCatchupNudge();
 }
 
 function toggleSchedWeek(head) {
