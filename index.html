@@ -706,10 +706,15 @@ function renderTomorrow() {
 // ── RENDER OVERDUE MINI ───────────────────────────────────────────────────────
 function renderOverdueMini() {
   const items = [
-    { sub:'m', name:'Inequalities' }, { sub:'m', name:'Graphs & transformations' },
+    { sub:'m', name:'Inequalities' },
+    { sub:'m', name:'Graphs & transformations' },
     { sub:'m', name:'Radians + chain rule' },
-    { sub:'e', name:'D&S, PED, PES, tax incidence' }, { sub:'e', name:'Price mechanism' },
-    { sub:'c', name:'Foreign key definition' }, { sub:'c', name:'Push pseudocode' },
+    { sub:'m', name:'Inverse trig + small angle' },
+    { sub:'m', name:'Partial fractions' },
+    { sub:'e', name:'D&S, PED, PES, tax incidence' },
+    { sub:'e', name:'Price mechanism' },
+    { sub:'c', name:'Foreign key definition' },
+    { sub:'c', name:'Push pseudocode' },
   ];
   const el = document.getElementById('overdue-mini');
   el.innerHTML = items.map(it => {
