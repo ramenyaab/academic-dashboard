@@ -328,7 +328,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     </div>
     <div class="topbar-phase" id="live-phase"></div>
   </div>
-  <span class="nea-pill">✓ NEA Done · 52/70 · Grade B</span>
+  <span class="nea-pill" id="nea-status-pill">NEA due Thu 26 Mar</span>
 </div>
 
 <!-- ── COUNTDOWN STRIP ── -->
@@ -527,8 +527,8 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     <div class="nea-big">52</div>
     <div class="nea-hero-info">
       <h2>Grade B · OCR H446 NEA</h2>
-      <p>NEA_Final_v4.docx · Submitted 27 March 2026</p>
-      <div class="nea-deadline">✓ Submitted on deadline</div>
+      <p>NEA_Final_v4.docx · Target: Thu 26 Mar · Hard cutoff: Fri 27 Mar</p>
+      <div class="nea-deadline">Target deadline: Thu 26 Mar midnight</div>
     </div>
   </div>
 
@@ -711,10 +711,11 @@ const SESSIONS = {
   ],
   '2026-03-26': [
     { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
+    { sub:'nea',   hw:true, label:'SUBMIT NEA — Target deadline tonight', detail:'Upload NEA_Final_v4.docx by midnight tonight (Thu). Teacher prefers Thursday. Friday midnight is the hard cutoff but will cause friction.' },
     { sub:'maths',   label:'Maths (eve): Parametric diff + integration', dur:'~1hr', detail:'dy/dx = (dy/dt)/(dx/dt). 2 Qs MIN.' },
   ],
   '2026-03-27': [
-    { sub:'nea',   hw:true, label:'SUBMIT NEA — Deadline today', detail:'NEA_Final_v4.docx — do not miss this.' },
+    { sub:'nea',   label:'NEA hard cutoff — Fri midnight', detail:'If not submitted Thu: upload tonight without fail. After this it is late.' },
     { sub:'maths', label:'Maths: Parametric practice',            dur:'1hr', detail:'2 timed past paper Qs. Mark immediately.' },
     { sub:'econ',  label:'Econ: Public goods + info failure',     dur:'1hr', detail:'Non-excludable/non-rival, asymmetric info. 1 four-mark Q.' },
     { sub:'cs',    label:'CS: Sort + SQL practice',               dur:'1hr', detail:'1 merge sort trace Q + 1 SQL Q timed. Mark both.' },
@@ -1033,6 +1034,19 @@ function unrescheduleItem(itemKey) {
   renderOverdueMini();
 }
 
+function markBacklogDone(itemKey) {
+  const done = lsGet('done_backlog', []);
+  if (!done.includes(itemKey)) { done.push(itemKey); lsSet('done_backlog', done); }
+  // Also remove from rescheduled queue so it doesn't clog up future days
+  lsSet('rescheduled', lsGet('rescheduled', []).filter(r => r.key !== itemKey));
+  renderOverdueMini();
+}
+
+function undoneBacklog(itemKey) {
+  lsSet('done_backlog', lsGet('done_backlog', []).filter(k => k !== itemKey));
+  renderOverdueMini();
+}
+
 function autoRescheduleBacklog() {
   // Auto-slot all OLDER_BACKLOG items into coming days on page load,
   // unless the user has explicitly unrescheduled them
@@ -1047,17 +1061,32 @@ function autoRescheduleBacklog() {
 function renderOverdueMini() {
   const rescheduled = lsGet('rescheduled', []);
 
-  function rowHtml(it, showWhen) {
+  const doneBacklog = lsGet('done_backlog', []);
+
+  function rowHtml(it, showWhen, autoSlotted) {
     const tag = it.sub==='m'?'badge-m':it.sub==='e'?'badge-e':'badge-c';
     const lab = it.sub==='m'?'Maths':it.sub==='e'?'Econ':'CS';
     const r = rescheduled.find(x => x.key === it.key);
-    const actionBtns = r
-      ? `<span class="reschedule-btn rescheduled">✓ ${r.label}</span>
-         <button class="unreschedule-btn" onclick="unrescheduleItem('${it.key}')" title="Undo reschedule">×</button>`
-      : `<button class="reschedule-btn" onclick="rescheduleItem('${it.key}','${it.name}','${it.sub}')">Reschedule →</button>`;
-    return `<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border)">
+    const isDone = doneBacklog.includes(it.key);
+
+    let actionBtns;
+    if (isDone) {
+      // Show as caught up, with an undo link
+      actionBtns = `<span style="font-family:var(--mono);font-size:0.6rem;color:var(--maths)">✓ caught up</span>
+        <button class="unreschedule-btn" onclick="undoneBacklog('${it.key}')" title="Undo">×</button>`;
+    } else if (r) {
+      // Rescheduled — show destination, undo, and a "done" tick
+      actionBtns = `<span class="reschedule-btn rescheduled">✓ ${r.label}</span>
+        <button class="unreschedule-btn" onclick="unrescheduleItem('${it.key}')" title="Undo slot">×</button>
+        ${autoSlotted ? `<button class="reschedule-btn" style="background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.3);color:var(--maths)" onclick="markBacklogDone('${it.key}')">Done ✓</button>` : ''}`;
+    } else if (autoSlotted) {
+      actionBtns = `<span style="font-family:var(--mono);font-size:0.55rem;color:var(--muted)">pending…</span>`;
+    } else {
+      actionBtns = `<button class="reschedule-btn" onclick="rescheduleItem('${it.key}','${it.name}','${it.sub}')">Reschedule →</button>`;
+    }
+    return `<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border);${isDone?'opacity:0.4':''}">
       <span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span>
-      <span style="font-size:0.76rem;flex:1">${it.name}</span>
+      <span style="font-size:0.76rem;flex:1${isDone?';text-decoration:line-through':''}">${it.name}</span>
       ${showWhen && it.when ? `<span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted);margin-right:4px">${it.when}</span>` : ''}
       ${actionBtns}
     </div>`;
@@ -1065,8 +1094,8 @@ function renderOverdueMini() {
 
   const mini  = document.getElementById('overdue-mini');
   const older = document.getElementById('overdue-older');
-  if (mini)  mini.innerHTML  = RECENT_OVERDUE.map(it=>rowHtml(it,true)).join('');
-  if (older) older.innerHTML = OLDER_BACKLOG.map(it=>rowHtml(it,false)).join('');
+  if (mini)  mini.innerHTML  = RECENT_OVERDUE.map(it=>rowHtml(it,true,false)).join('');
+  if (older) older.innerHTML = OLDER_BACKLOG.map(it=>rowHtml(it,false,true)).join('');
 }
 
 // ── AUTO BONUS SECTION ───────────────────────────────────────────────────────
@@ -1285,7 +1314,7 @@ function renderWeek() {
     const key = dateKey(day);
     const sessions = SESSIONS[key] || [];
     const isToday = key===todayKey;
-    const isDeadline = key==='2026-03-27';
+    const isDeadline = key==='2026-03-26' || key==='2026-03-27';
     const dayNames = ['Mon','Tue','Wed','Thu','Fri'];
 
     const col = document.createElement('div');
@@ -1605,6 +1634,28 @@ function init() {
   document.getElementById('live-date').textContent =
     `${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]} ${t.getFullYear()}`;
   document.getElementById('live-phase').textContent = getPhase();
+
+  // NEA pill — show as done after submission deadline passes
+  const neaPill = document.getElementById('nea-status-pill');
+  if (neaPill) {
+    const pastDeadline = today() > toDate('2026-03-27');
+    if (pastDeadline) {
+      neaPill.textContent = '✓ NEA Submitted · 52/70 · B';
+      neaPill.style.background = 'rgba(74,222,128,0.12)';
+      neaPill.style.borderColor = 'rgba(74,222,128,0.3)';
+      neaPill.style.color = 'var(--maths)';
+    } else {
+      const daysToNEA = daysUntil('2026-03-26');
+      if (daysToNEA <= 0) {
+        neaPill.textContent = 'NEA — submit tonight';
+        neaPill.style.color = 'var(--red)';
+        neaPill.style.borderColor = 'rgba(233,69,96,0.4)';
+        neaPill.style.background = 'rgba(233,69,96,0.1)';
+      } else {
+        neaPill.textContent = `NEA due in ${daysToNEA}d — Thu 26 Mar`;
+      }
+    }
+  }
 
   renderCountdowns();
   renderFocusCard();
