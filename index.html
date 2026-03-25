@@ -33,8 +33,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 /* ── TOP BAR ── */
 .topbar {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(12,14,19,0.92);
-  backdrop-filter: blur(12px);
+  background: rgba(12,14,19,0.92); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   padding: 0 28px;
   display: flex; align-items: center; justify-content: space-between;
@@ -52,15 +51,8 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 }
 
 /* ── COUNTDOWN STRIP ── */
-.cd-strip {
-  display: grid; grid-template-columns: repeat(3,1fr);
-  border-bottom: 1px solid var(--border);
-}
-.cd-item {
-  padding: 20px 28px;
-  border-right: 1px solid var(--border);
-  display: flex; align-items: center; gap: 20px;
-}
+.cd-strip { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1px solid var(--border); }
+.cd-item { padding: 20px 28px; border-right: 1px solid var(--border); display: flex; align-items: center; gap: 20px; }
 .cd-item:last-child { border-right: none; }
 .cd-num { font-family: var(--mono); font-size: 3rem; font-weight: 700; line-height: 1; flex-shrink: 0; transition: color 0.4s; }
 .cd-meta { flex: 1; }
@@ -76,15 +68,9 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .cd-urgency { font-family: var(--mono); font-size: 0.52rem; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 5px; }
 
 /* ── TABS ── */
-.tabs-nav {
-  display: flex; gap: 0;
-  border-bottom: 1px solid var(--border);
-  padding: 0 28px;
-  background: var(--bg);
-}
+.tabs-nav { display: flex; border-bottom: 1px solid var(--border); padding: 0 28px; background: var(--bg); }
 .tab-btn {
-  padding: 14px 20px;
-  font-size: 0.82rem; font-weight: 500; font-family: var(--sans);
+  padding: 14px 20px; font-size: 0.82rem; font-weight: 500; font-family: var(--sans);
   color: var(--muted2); background: none; border: none; cursor: pointer;
   border-bottom: 2px solid transparent; margin-bottom: -1px;
   transition: color 0.15s, border-color 0.15s;
@@ -93,46 +79,32 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .tab-btn:hover { color: var(--text); }
 .tab-btn.active { color: var(--text); border-bottom-color: var(--amber); }
 .tab-dot { width: 7px; height: 7px; border-radius: 50%; }
-
 .tab-pane { display: none; padding: 28px; max-width: 1200px; margin: 0 auto; }
 .tab-pane.active { display: block; }
 
 /* ── FOCUS CARD ── */
 .focus-card {
   background: linear-gradient(135deg, rgba(251,146,60,0.07) 0%, rgba(233,69,96,0.04) 100%);
-  border: 1px solid rgba(251,146,60,0.28);
-  border-left: 4px solid var(--amber);
-  border-radius: var(--radius);
-  padding: 16px 22px;
-  margin-bottom: 20px;
+  border: 1px solid rgba(251,146,60,0.28); border-left: 4px solid var(--amber);
+  border-radius: var(--radius); padding: 16px 22px; margin-bottom: 20px;
   display: flex; align-items: center; gap: 18px;
 }
-.focus-label {
-  font-family: var(--mono); font-size: 0.57rem; text-transform: uppercase;
-  letter-spacing: 0.12em; color: var(--amber); margin-bottom: 5px;
-}
+.focus-label { font-family: var(--mono); font-size: 0.57rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--amber); margin-bottom: 5px; }
 .focus-topic { font-size: 0.98rem; font-weight: 700; margin-bottom: 3px; }
 .focus-reason { font-size: 0.73rem; color: var(--muted2); }
 .focus-icon { font-size: 1.6rem; flex-shrink: 0; }
 
 /* ── CARDS ── */
-.card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); padding: 22px 24px;
-}
-.card-title {
-  font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
-  color: var(--muted); font-family: var(--mono); margin-bottom: 18px;
-}
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; }
+.card-title { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); font-family: var(--mono); margin-bottom: 18px; }
 
 /* ── TODAY TASKS ── */
 .task-list { display: flex; flex-direction: column; gap: 8px; }
 .task-item {
   display: flex; align-items: flex-start; gap: 14px;
-  padding: 14px 16px;
-  background: var(--surface2); border-radius: 10px;
-  border: 1px solid transparent;
-  cursor: pointer; transition: background 0.12s, border-color 0.12s;
+  padding: 14px 16px; background: var(--surface2); border-radius: 10px;
+  border: 1px solid transparent; cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
 }
 .task-item:hover { background: var(--surface3); border-color: var(--border2); }
 .task-item.done-item { opacity: 0.45; }
@@ -144,10 +116,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .task-name.done { text-decoration: line-through; color: var(--muted2); }
 .task-detail { font-size: 0.76rem; color: var(--muted2); line-height: 1.5; }
 .task-dur { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); flex-shrink: 0; margin-top: 3px; }
-.sub-badge {
-  font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 20px;
-  text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; flex-shrink: 0;
-}
+.sub-badge { font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; flex-shrink: 0; }
 .badge-m { background: rgba(74,222,128,0.15); color: var(--maths); }
 .badge-e { background: rgba(96,165,250,0.15); color: var(--econ); }
 .badge-c { background: rgba(251,191,36,0.15); color: var(--cs); }
@@ -155,12 +124,24 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .badge-hw { background: rgba(233,69,96,0.2); color: var(--red); }
 .badge-college { background: rgba(74,80,112,0.3); color: var(--muted2); }
 
-/* ── TOMORROW PREVIEW ── */
-.tmr-list { display: flex; flex-direction: column; gap: 0; }
-.tmr-row {
-  display: flex; align-items: flex-start; gap: 12px;
-  padding: 12px 0; border-top: 1px solid var(--border);
+/* ── BONUS SESSION ── */
+.bonus-section {
+  margin-top: 8px; padding: 12px 14px;
+  background: rgba(74,80,112,0.1); border: 1px dashed var(--border2);
+  border-radius: 10px;
 }
+.bonus-lbl { font-family: var(--mono); font-size: 0.5rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 7px; }
+.bonus-row { display: flex; align-items: center; gap: 8px; }
+.bonus-dismiss-btn {
+  font-family: var(--mono); font-size: 0.54rem; padding: 2px 9px; border-radius: 8px;
+  background: transparent; border: 1px solid var(--border2); color: var(--muted);
+  cursor: pointer; flex-shrink: 0; transition: all 0.15s;
+}
+.bonus-dismiss-btn:hover { border-color: var(--muted2); color: var(--text); }
+
+/* ── TOMORROW PREVIEW ── */
+.tmr-list { display: flex; flex-direction: column; }
+.tmr-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-top: 1px solid var(--border); }
 .tmr-row:first-child { border-top: none; }
 .tmr-left-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
 .tmr-body { flex: 1; }
@@ -169,20 +150,13 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
 /* ── WEEK VIEW ── */
 .week-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
-.wday {
-  background: var(--surface2); border-radius: 10px; padding: 16px;
-  border: 1px solid var(--border); min-height: 120px;
-  transition: border-color 0.12s;
-}
+.wday { background: var(--surface2); border-radius: 10px; padding: 16px; border: 1px solid var(--border); min-height: 120px; transition: border-color 0.12s; }
 .wday.today-col { border-color: var(--amber); background: rgba(251,146,60,0.04); }
 .wday.deadline  { border-color: var(--red);   background: rgba(233,69,96,0.05); }
 .wday-head { font-family: var(--mono); font-size: 0.65rem; margin-bottom: 10px; font-weight: 700; }
 .wday.today-col .wday-head { color: var(--amber); }
 .wday.deadline  .wday-head { color: var(--red); }
-.wday-task {
-  display: flex; align-items: flex-start; gap: 6px;
-  font-size: 0.72rem; line-height: 1.35; margin-bottom: 6px; color: var(--text);
-}
+.wday-task { display: flex; align-items: flex-start; gap: 6px; font-size: 0.72rem; line-height: 1.35; margin-bottom: 6px; }
 .wday-task:last-child { margin-bottom: 0; }
 .wday-task-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
 .wday-task.college-task { color: var(--muted); }
@@ -190,10 +164,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
 /* ── SUBJECT STATUS ── */
 .subjects-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
-.subj-card {
-  background: var(--surface); border-radius: var(--radius); padding: 22px 24px;
-  border: 1px solid var(--border); border-top: 3px solid;
-}
+.subj-card { background: var(--surface); border-radius: var(--radius); padding: 22px 24px; border: 1px solid var(--border); border-top: 3px solid; }
 .subj-card.m { border-top-color: var(--maths); }
 .subj-card.e { border-top-color: var(--econ); }
 .subj-card.c { border-top-color: var(--cs); }
@@ -201,10 +172,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .subj-card.m .subj-name { color: var(--maths); }
 .subj-card.e .subj-name { color: var(--econ); }
 .subj-card.c .subj-name { color: var(--cs); }
-.subj-status-tag {
-  display: inline-block; font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
-  padding: 2px 10px; border-radius: 20px; margin-bottom: 18px; letter-spacing: 0.06em;
-}
+.subj-status-tag { display: inline-block; font-family: var(--mono); font-size: 0.62rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-bottom: 18px; letter-spacing: 0.06em; }
 .tag-critical { background: rgba(233,69,96,0.2); color: var(--red); }
 .tag-protect  { background: rgba(96,165,250,0.15); color: var(--econ); }
 .tag-target   { background: rgba(251,191,36,0.15); color: var(--cs); }
@@ -215,71 +183,69 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
 .subj-note { font-size: 0.74rem; color: var(--muted2); line-height: 1.5; padding-top: 14px; border-top: 1px solid var(--border); }
 
+/* ── GRADE BOUNDARIES ── */
+.gb-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.gb-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.gb-section-lbl { font-family: var(--mono); font-size: 0.52rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.gb-edit-btn { font-family: var(--mono); font-size: 0.52rem; padding: 2px 8px; border-radius: 8px; background: rgba(74,80,112,0.3); border: 1px solid var(--border2); color: var(--muted); cursor: pointer; transition: all 0.15s; }
+.gb-edit-btn:hover { color: var(--text); border-color: var(--muted2); }
+.gb-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
+.gb-cell { background: var(--surface2); border-radius: 8px; padding: 9px 10px; text-align: center; }
+.gb-lbl { font-family: var(--mono); font-size: 0.48rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+.gb-val { font-family: var(--mono); font-size: 0.82rem; font-weight: 700; }
+
 /* ── PERFORMANCE CHART ── */
 .chart-wrap { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
-.chart-wrap-title {
-  font-family: var(--mono); font-size: 0.58rem; text-transform: uppercase;
-  letter-spacing: 0.1em; color: var(--muted2); margin-bottom: 8px;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.add-mock-btn {
-  font-family: var(--mono); font-size: 0.56rem; padding: 2px 8px; border-radius: 10px;
-  background: rgba(74,80,112,0.3); border: 1px solid var(--border2);
-  color: var(--muted2); cursor: pointer; transition: color 0.15s, border-color 0.15s;
-}
+.chart-wrap-title { font-family: var(--mono); font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted2); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+.add-mock-btn { font-family: var(--mono); font-size: 0.56rem; padding: 2px 8px; border-radius: 10px; background: rgba(74,80,112,0.3); border: 1px solid var(--border2); color: var(--muted2); cursor: pointer; transition: color 0.15s, border-color 0.15s; }
 .add-mock-btn:hover { color: var(--text); border-color: var(--muted2); }
 
 /* ── SMART PRIORITY GAPS ── */
 .gaps-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-top: 16px; }
 .gaps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
 .gaps-col-title { font-size: 0.68rem; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
-.gap-row {
-  display: flex; align-items: center; gap: 7px;
-  font-size: 0.78rem; margin-bottom: 3px; line-height: 1.35;
-  cursor: pointer; padding: 5px 6px; border-radius: 6px;
-  transition: background 0.12s; user-select: none;
-}
+.gap-row { display: flex; align-items: center; gap: 7px; font-size: 0.78rem; margin-bottom: 3px; line-height: 1.35; cursor: pointer; padding: 5px 6px; border-radius: 6px; transition: background 0.12s; user-select: none; }
 .gap-row:hover { background: var(--surface2); }
 .gap-row.gap-done { opacity: 0.28; }
 .gap-row.gap-done .gap-name { text-decoration: line-through; }
-.gap-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.gap-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; cursor: pointer; transition: transform 0.12s; title: "Click to change priority"; }
+.gap-dot:hover { transform: scale(1.5); }
 .dot-hot { background: var(--red); }
 .dot-med { background: var(--amber); }
+.dot-low { background: var(--muted); }
 .gap-name { flex: 1; min-width: 0; font-size: 0.76rem; }
 .gap-conf { display: flex; gap: 3px; flex-shrink: 0; }
-.conf-dot {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--surface3); border: 1px solid var(--border2);
-  cursor: pointer; transition: background 0.15s, border-color 0.15s; flex-shrink: 0;
-}
+.conf-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--surface3); border: 1px solid var(--border2); cursor: pointer; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
 .conf-dot:hover { border-color: var(--muted2); }
-.gaps-hint { font-family: var(--mono); font-size: 0.58rem; color: var(--muted); margin-left: 6px; }
+.gaps-hint { font-family: var(--mono); font-size: 0.56rem; color: var(--muted); margin-left: 6px; }
 
 /* ── RESCHEDULE ── */
-.reschedule-btn {
-  font-family: var(--mono); font-size: 0.57rem; padding: 3px 9px; border-radius: 12px;
-  background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.25);
-  color: var(--econ); cursor: pointer; white-space: nowrap; flex-shrink: 0;
-  transition: background 0.15s;
-}
+.reschedule-btn { font-family: var(--mono); font-size: 0.57rem; padding: 3px 9px; border-radius: 12px; background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.25); color: var(--econ); cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: background 0.15s; }
 .reschedule-btn:hover { background: rgba(96,165,250,0.2); }
 .reschedule-btn.rescheduled { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.25); color: var(--maths); cursor: default; }
+.unreschedule-btn { font-family: var(--mono); font-size: 0.57rem; padding: 3px 7px; border-radius: 12px; background: rgba(233,69,96,0.08); border: 1px solid rgba(233,69,96,0.2); color: var(--red); cursor: pointer; flex-shrink: 0; margin-left: 4px; transition: background 0.15s; }
+.unreschedule-btn:hover { background: rgba(233,69,96,0.18); }
+
+/* ── STREAK HEATMAP ── */
+.streak-section { margin-top: 28px; }
+.streak-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.streak-title { font-family: var(--mono); font-size: 0.58rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
+.streak-stat { font-family: var(--mono); font-size: 0.62rem; }
+.streak-grid { display: grid; grid-template-columns: repeat(28,1fr); gap: 3px; }
+.streak-cell { aspect-ratio: 1; border-radius: 3px; cursor: default; transition: transform 0.1s; border: 1px solid var(--border); position: relative; }
+.streak-cell:hover { transform: scale(1.35); z-index: 2; }
+.streak-cell.today-cell { border-color: var(--amber) !important; }
+.streak-labels { display: grid; grid-template-columns: repeat(28,1fr); gap: 3px; margin-top: 3px; }
+.streak-day-lbl { font-family: var(--mono); font-size: 0.38rem; color: var(--muted); text-align: center; }
 
 /* ── NEA ── */
-.nea-hero {
-  display: flex; align-items: center; gap: 24px;
-  background: rgba(74,222,128,0.06); border: 1px solid rgba(74,222,128,0.2);
-  border-radius: 12px; padding: 24px 28px; margin-bottom: 24px;
-}
+.nea-hero { display: flex; align-items: center; gap: 24px; background: rgba(74,222,128,0.06); border: 1px solid rgba(74,222,128,0.2); border-radius: 12px; padding: 24px 28px; margin-bottom: 24px; }
 .nea-big { font-family: var(--mono); font-size: 4rem; font-weight: 700; color: var(--maths); line-height: 1; }
 .nea-hero-info h2 { font-size: 1.3rem; font-weight: 700; color: var(--maths); margin-bottom: 4px; }
 .nea-hero-info p { font-size: 0.82rem; color: var(--muted2); }
 .nea-deadline { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-family: var(--mono); font-size: 0.72rem; color: var(--amber); }
 .nea-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.nea-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 16px; background: var(--surface2); border-radius: 8px;
-}
+.nea-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--surface2); border-radius: 8px; }
 .nea-row-name { font-size: 0.82rem; font-weight: 500; }
 .nea-row-score { font-family: var(--mono); font-size: 0.82rem; font-weight: 700; }
 .nea-row.weak .nea-row-score { color: var(--amber); }
@@ -291,29 +257,62 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .uni-note { font-size: 0.7rem; color: var(--muted2); }
 
 /* ── TIMER FAB ── */
-.timer-fab {
-  position: fixed; bottom: 28px; right: 28px; z-index: 200;
-  display: flex; flex-direction: column; align-items: center; gap: 7px;
-}
-.timer-btn {
-  width: 72px; height: 72px; border-radius: 50%;
-  background: var(--surface2); border: 2px solid var(--border2);
-  color: var(--text); font-family: var(--mono); cursor: pointer;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
-  transition: border-color 0.2s, background 0.2s;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
-}
+.timer-fab { position: fixed; bottom: 28px; right: 28px; z-index: 200; display: flex; flex-direction: column; align-items: center; gap: 7px; }
+.timer-btn { width: 72px; height: 72px; border-radius: 50%; background: var(--surface2); border: 2px solid var(--border2); color: var(--text); font-family: var(--mono); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; transition: border-color 0.2s, background 0.2s; box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
 .timer-btn:hover { border-color: var(--amber); }
 .timer-btn.running { border-color: var(--maths); background: rgba(74,222,128,0.08); }
 .timer-btn.urgent  { border-color: var(--red); animation: pulse-t 1.2s ease-in-out infinite; }
-@keyframes pulse-t {
-  0%,100%{ box-shadow:0 4px 24px rgba(233,69,96,0.2) }
-  50%    { box-shadow:0 4px 32px rgba(233,69,96,0.65) }
-}
-.timer-time-txt  { font-size: 0.82rem; font-weight: 700; line-height: 1; }
-.timer-sub-txt   { font-size: 0.48rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.08em; }
-.timer-sess-txt  { font-family: var(--mono); font-size: 0.58rem; color: var(--muted); text-align: center; white-space: nowrap; }
+@keyframes pulse-t { 0%,100%{ box-shadow:0 4px 24px rgba(233,69,96,0.2) } 50%{ box-shadow:0 4px 32px rgba(233,69,96,0.65) } }
+.timer-time-txt { font-size: 0.82rem; font-weight: 700; line-height: 1; }
+.timer-sub-txt  { font-size: 0.48rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.08em; }
+.timer-sess-txt { font-family: var(--mono); font-size: 0.58rem; color: var(--muted); text-align: center; white-space: nowrap; }
+.log-fab-btn { font-family: var(--mono); font-size: 0.55rem; padding: 5px 12px; border-radius: 10px; background: rgba(74,80,112,0.35); border: 1px solid var(--border2); color: var(--muted2); cursor: pointer; white-space: nowrap; transition: all 0.15s; text-align: center; }
+.log-fab-btn:hover { color: var(--text); border-color: var(--amber); background: rgba(251,146,60,0.1); }
 
+/* ── SESSION LOG MODAL ── */
+.slog-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.78); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.18s; }
+.slog-overlay.open { opacity: 1; pointer-events: auto; }
+.slog-modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 20px; padding: 28px 30px; width: min(540px, 92vw); max-height: 85vh; overflow-y: auto; }
+.slog-title { font-size: 1.08rem; font-weight: 700; margin-bottom: 3px; }
+.slog-sub { font-size: 0.76rem; color: var(--muted2); margin-bottom: 20px; }
+.slog-sec-lbl { font-family: var(--mono); font-size: 0.54rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 7px; margin-top: 16px; }
+.slog-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 4px; }
+.slog-sub-lbl { font-family: var(--mono); font-size: 0.52rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; margin-top: 10px; }
+.slog-chip { display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 16px; background: var(--surface2); border: 1px solid var(--border2); font-size: 0.73rem; cursor: pointer; transition: all 0.12s; user-select: none; }
+.slog-chip:hover { border-color: var(--muted2); }
+.slog-chip.sel { background: rgba(251,146,60,0.1); border-color: var(--amber); }
+.slog-conf-row { display: flex; gap: 8px; }
+.slog-conf-btn { flex: 1; padding: 9px 0; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border2); font-family: var(--mono); font-size: 0.65rem; color: var(--muted2); cursor: pointer; text-align: center; transition: all 0.12s; }
+.slog-conf-btn:hover { border-color: var(--muted2); color: var(--text); }
+.slog-conf-btn.act-1 { border-color: var(--red);   color: var(--red);   background: rgba(233,69,96,0.08); }
+.slog-conf-btn.act-2 { border-color: var(--amber); color: var(--amber); background: rgba(251,146,60,0.08); }
+.slog-conf-btn.act-3 { border-color: var(--maths); color: var(--maths); background: rgba(74,222,128,0.08); }
+.slog-sess-row { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 10px 14px; background: var(--surface2); border-radius: 10px; }
+.slog-sess-row input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--maths); cursor: pointer; }
+.slog-sess-label { font-size: 0.76rem; color: var(--muted2); cursor: pointer; user-select: none; }
+.slog-actions { display: flex; gap: 10px; margin-top: 18px; }
+.slog-submit { flex: 1; padding: 11px; border-radius: 10px; background: rgba(251,146,60,0.15); border: 1px solid rgba(251,146,60,0.4); color: var(--amber); font-family: var(--mono); font-size: 0.74rem; font-weight: 700; cursor: pointer; transition: all 0.12s; }
+.slog-submit:hover { background: rgba(251,146,60,0.25); }
+.slog-cancel { padding: 11px 18px; border-radius: 10px; background: transparent; border: 1px solid var(--border2); color: var(--muted2); font-family: var(--mono); font-size: 0.72rem; cursor: pointer; transition: all 0.12s; }
+.slog-cancel:hover { color: var(--text); border-color: var(--muted2); }
+
+/* ── GUIDE TAB ── */
+.guide-wrap { max-width: 780px; }
+.guide-section { margin-bottom: 30px; padding-bottom: 26px; border-bottom: 1px solid var(--border); }
+.guide-section:last-child { border-bottom: none; }
+.guide-h { font-size: 0.9rem; font-weight: 700; color: var(--amber); margin-bottom: 10px; font-family: var(--sans); }
+.guide-p { font-size: 0.8rem; color: var(--muted2); line-height: 1.75; margin-bottom: 8px; }
+.guide-p:last-child { margin-bottom: 0; }
+.guide-p b { color: var(--text); font-weight: 600; }
+.guide-p em { color: var(--text); font-style: normal; border-bottom: 1px dashed var(--border2); }
+.guide-p code { font-family: var(--mono); font-size: 0.72rem; background: var(--surface2); padding: 1px 7px; border-radius: 4px; color: var(--cs); }
+.guide-list { margin: 8px 0 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.guide-list li { font-size: 0.78rem; color: var(--muted2); line-height: 1.6; padding-left: 16px; position: relative; }
+.guide-list li::before { content: '—'; position: absolute; left: 0; color: var(--border2); }
+.guide-list li b { color: var(--text); font-weight: 600; }
+.guide-kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin-top: 10px; }
+.guide-key { font-family: var(--mono); font-size: 0.68rem; color: var(--amber); white-space: nowrap; }
+.guide-val { font-size: 0.76rem; color: var(--muted2); line-height: 1.6; }
 /* ── FOOTER ── */
 .footer { padding: 20px 28px; text-align: center; font-family: var(--mono); font-size: 0.62rem; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 0.05em; }
 </style>
@@ -368,30 +367,23 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
 <!-- ── TABS NAV ── -->
 <div class="tabs-nav">
-  <button class="tab-btn active" onclick="switchTab('today', this)">
-    <span class="tab-dot" style="background:var(--amber)"></span> Today
-  </button>
-  <button class="tab-btn" onclick="switchTab('week', this)">
-    <span class="tab-dot" style="background:var(--econ)"></span> This Week
-  </button>
-  <button class="tab-btn" onclick="switchTab('subjects', this)">
-    <span class="tab-dot" style="background:var(--maths)"></span> Subjects
-  </button>
-  <button class="tab-btn" onclick="switchTab('nea', this)">
-    <span class="tab-dot" style="background:var(--purple)"></span> NEA + Offers
-  </button>
+  <button class="tab-btn active" onclick="switchTab('today',this)"><span class="tab-dot" style="background:var(--amber)"></span> Today</button>
+  <button class="tab-btn" onclick="switchTab('week',this)"><span class="tab-dot" style="background:var(--econ)"></span> This Week</button>
+  <button class="tab-btn" onclick="switchTab('subjects',this)"><span class="tab-dot" style="background:var(--maths)"></span> Subjects</button>
+  <button class="tab-btn" onclick="switchTab('nea',this)"><span class="tab-dot" style="background:var(--purple)"></span> NEA + Offers</button>
+  <button class="tab-btn" onclick="switchTab('guide',this)"><span class="tab-dot" style="background:var(--muted2)"></span> Guide</button>
 </div>
 
 <!-- ══ TAB: TODAY ══ -->
 <div class="tab-pane active" id="tab-today">
 
-  <!-- #1 Focus Card -->
   <div id="focus-card" class="focus-card"></div>
 
   <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;">
     <div>
       <div class="card-title" id="today-title">Today</div>
       <div class="task-list" id="today-tasks"></div>
+      <div id="bonus-section"></div>
     </div>
 
     <div>
@@ -401,20 +393,31 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
       </div>
 
       <div style="margin-top:20px">
-        <div class="card-title" style="color:var(--red)">⚠ Missed this week</div>
+        <div class="card-title" style="color:var(--red)">△ Missed this week</div>
         <div class="card" style="border-color:rgba(233,69,96,0.3);padding:18px 20px;">
           <div id="overdue-mini"></div>
         </div>
       </div>
 
       <div style="margin-top:14px">
-        <div class="card-title" style="color:var(--muted2)">📋 Older backlog</div>
+        <div class="card-title" style="color:var(--muted2)">Older backlog</div>
         <div class="card" style="border-color:rgba(74,80,112,0.4);padding:18px 20px;">
           <div id="overdue-older"></div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- STREAK HEATMAP -->
+  <div class="streak-section">
+    <div class="streak-header">
+      <span class="streak-title">28-Day Revision Streak</span>
+      <span class="streak-stat" id="streak-stat"></span>
+    </div>
+    <div class="streak-grid" id="streak-grid"></div>
+    <div class="streak-labels" id="streak-labels"></div>
+  </div>
+
 </div>
 
 <!-- ══ TAB: THIS WEEK ══ -->
@@ -432,22 +435,24 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
       <div class="subj-name">Maths</div>
       <div class="subj-status-tag tag-critical">CRITICAL — A needed</div>
       <div class="bar-section">
-        <div class="bar-lbl">Topics revised <span id="maths-topics-lbl">~2 / 30+</span></div>
+        <div class="bar-lbl">Topics revised <span id="maths-topics-lbl">0 / 7 gaps</span></div>
         <div class="bar"><div class="bar-fill" id="maths-topics-bar" style="width:7%;background:var(--maths)"></div></div>
       </div>
       <div class="bar-section">
         <div class="bar-lbl">Full mock performance <span>~20% · U</span></div>
         <div class="bar"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
       </div>
-      <div class="subj-note">QMUL, Sussex &amp; City all require A in Maths. Pure 1 paper first on 3 Jun — ~10 weeks of heavy revision needed. Start now.</div>
+      <div class="subj-note">QMUL, Sussex &amp; City all require A in Maths. Pure 1 on 3 Jun — heavy revision needed.</div>
+      <div class="gb-section">
+        <div class="gb-header">
+          <span class="gb-section-lbl">Grade boundaries</span>
+          <button class="gb-edit-btn" onclick="editGradeBounds('maths')">✏ edit</button>
+        </div>
+        <div class="gb-grid" id="gb-maths"></div>
+      </div>
       <div class="chart-wrap">
-        <div class="chart-wrap-title">
-          Mock trend
-          <button class="add-mock-btn" onclick="promptAddMock('maths')">+ Add score</button>
-        </div>
-        <div style="height:80px;position:relative">
-          <canvas id="chart-maths"></canvas>
-        </div>
+        <div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('maths')">+ Add score</button></div>
+        <div style="height:80px;position:relative"><canvas id="chart-maths"></canvas></div>
       </div>
     </div>
 
@@ -463,15 +468,17 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
         <div class="bar-lbl">Class foundation <span>Strong · pred. A</span></div>
         <div class="bar"><div class="bar-fill" style="width:72%;background:var(--econ)"></div></div>
       </div>
-      <div class="subj-note">Strong foundation from class. Needs essay technique drilling — MOPS structure, K→AP→AP→AN for 4-mark, MSC/MSB diagrams. P1 on 11 May.</div>
+      <div class="subj-note">Strong foundation. Needs essay technique drilling — MOPS structure, MSC/MSB diagrams. P1 on 11 May.</div>
+      <div class="gb-section">
+        <div class="gb-header">
+          <span class="gb-section-lbl">Grade boundaries</span>
+          <button class="gb-edit-btn" onclick="editGradeBounds('econ')">✏ edit</button>
+        </div>
+        <div class="gb-grid" id="gb-econ"></div>
+      </div>
       <div class="chart-wrap">
-        <div class="chart-wrap-title">
-          Mock trend
-          <button class="add-mock-btn" onclick="promptAddMock('econ')">+ Add score</button>
-        </div>
-        <div style="height:80px;position:relative">
-          <canvas id="chart-econ"></canvas>
-        </div>
+        <div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('econ')">+ Add score</button></div>
+        <div style="height:80px;position:relative"><canvas id="chart-econ"></canvas></div>
       </div>
     </div>
 
@@ -487,15 +494,17 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
         <div class="bar-lbl">Full mock (Feb) <span>20/90 · U</span></div>
         <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
       </div>
-      <div class="subj-note">Large spec gaps. Boolean algebra, LMC/Assembly, networking are biggest holes. NEA 52/70 reduces pressure — focus on boosting written paper.</div>
+      <div class="subj-note">Boolean algebra, LMC/Assembly, networking are biggest gaps. NEA 52/70 reduces pressure.</div>
+      <div class="gb-section">
+        <div class="gb-header">
+          <span class="gb-section-lbl">Grade boundaries</span>
+          <button class="gb-edit-btn" onclick="editGradeBounds('cs')">✏ edit</button>
+        </div>
+        <div class="gb-grid" id="gb-cs"></div>
+      </div>
       <div class="chart-wrap">
-        <div class="chart-wrap-title">
-          Mock trend
-          <button class="add-mock-btn" onclick="promptAddMock('cs')">+ Add score</button>
-        </div>
-        <div style="height:80px;position:relative">
-          <canvas id="chart-cs"></canvas>
-        </div>
+        <div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('cs')">+ Add score</button></div>
+        <div style="height:80px;position:relative"><canvas id="chart-cs"></canvas></div>
       </div>
     </div>
   </div>
@@ -504,7 +513,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <div class="gaps-card">
     <div class="card-title" style="display:flex;align-items:center;gap:8px">
       Priority Gaps
-      <span class="gaps-hint">· click topic = done · dots = confidence</span>
+      <span class="gaps-hint">· click row = done · click dot = change priority · conf dots = confidence</span>
     </div>
     <div id="gaps-container"></div>
   </div>
@@ -525,71 +534,109 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
   <div class="card-title">Breakdown by Section</div>
   <div class="nea-breakdown">
-    <div class="nea-row strong">
-      <span class="nea-row-name">Analysis</span>
-      <span class="nea-row-score" style="color:var(--maths)">8 / 10</span>
-    </div>
-    <div class="nea-row strong">
-      <span class="nea-row-name">Design</span>
-      <span class="nea-row-score" style="color:var(--maths)">12 / 15</span>
-    </div>
-    <div class="nea-row strong">
-      <span class="nea-row-name">Development — iterative</span>
-      <span class="nea-row-score" style="color:var(--maths)">12 / 15</span>
-    </div>
-    <div class="nea-row strong">
-      <span class="nea-row-name">Development — testing</span>
-      <span class="nea-row-score" style="color:var(--maths)">8 / 10</span>
-    </div>
-    <div class="nea-row strong">
-      <span class="nea-row-name">Testing</span>
-      <span class="nea-row-score" style="color:var(--maths)">4 / 5</span>
-    </div>
-    <div class="nea-row weak" style="border:1px solid rgba(251,146,60,0.3)">
-      <span class="nea-row-name">Evaluation ⚡ weakest</span>
-      <span class="nea-row-score" style="color:var(--amber)">8 / 15</span>
-    </div>
+    <div class="nea-row strong"><span class="nea-row-name">Analysis</span><span class="nea-row-score" style="color:var(--maths)">8 / 10</span></div>
+    <div class="nea-row strong"><span class="nea-row-name">Design</span><span class="nea-row-score" style="color:var(--maths)">12 / 15</span></div>
+    <div class="nea-row strong"><span class="nea-row-name">Development — iterative</span><span class="nea-row-score" style="color:var(--maths)">12 / 15</span></div>
+    <div class="nea-row strong"><span class="nea-row-name">Development — testing</span><span class="nea-row-score" style="color:var(--maths)">8 / 10</span></div>
+    <div class="nea-row strong"><span class="nea-row-name">Testing</span><span class="nea-row-score" style="color:var(--maths)">4 / 5</span></div>
+    <div class="nea-row weak" style="border:1px solid rgba(251,146,60,0.3)"><span class="nea-row-name">Evaluation <span style="font-family:var(--mono);font-size:0.65rem;color:var(--amber)">(weakest)</span></span><span class="nea-row-score" style="color:var(--amber)">8 / 15</span></div>
   </div>
 
   <div style="margin-top:28px">
     <div class="card-title">University Offers</div>
     <div class="uni-grid">
-      <div class="uni-card" style="border-top:3px solid var(--maths)">
-        <div class="uni-name">QMUL</div>
-        <div class="uni-offer">ABB + A in Maths</div>
-        <div class="uni-note">Non-negotiable A requirement</div>
-      </div>
-      <div class="uni-card" style="border-top:3px solid var(--maths)">
-        <div class="uni-name">Sussex</div>
-        <div class="uni-offer">ABB + A in Maths</div>
-        <div class="uni-note">Non-negotiable A requirement</div>
-      </div>
-      <div class="uni-card" style="border-top:3px solid var(--maths)">
-        <div class="uni-name">City</div>
-        <div class="uni-offer">ABB + A in Maths</div>
-        <div class="uni-note">Non-negotiable A requirement</div>
-      </div>
-      <div class="uni-card" style="border-top:3px solid var(--econ)">
-        <div class="uni-name">Exeter</div>
-        <div class="uni-offer">BBB</div>
-        <div class="uni-note">No specific subject requirement</div>
-      </div>
-      <div class="uni-card" style="border-top:3px solid var(--econ)">
-        <div class="uni-name">Reading</div>
-        <div class="uni-offer">BCC</div>
-        <div class="uni-note">Insurance — achievable</div>
-      </div>
+      <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">QMUL</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">Non-negotiable A requirement</div></div>
+      <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">Sussex</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">Non-negotiable A requirement</div></div>
+      <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">City</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">Non-negotiable A requirement</div></div>
+      <div class="uni-card" style="border-top:3px solid var(--econ)"><div class="uni-name">Exeter</div><div class="uni-offer">BBB</div><div class="uni-note">No specific subject requirement</div></div>
+      <div class="uni-card" style="border-top:3px solid var(--econ)"><div class="uni-name">Reading</div><div class="uni-offer">BCC</div><div class="uni-note">Insurance — achievable</div></div>
       <div class="uni-card" style="border-top:3px solid var(--border2);background:rgba(74,80,112,0.12)">
         <div class="uni-name" style="color:var(--muted2)">Outcome paths</div>
-        <div style="font-size:0.72rem;color:var(--muted2);margin-top:6px;line-height:1.6">
-          A: A in Maths → QMUL/Sussex/City<br>
-          B: Maths B → Exeter<br>
-          C: Maths C → Reading (insurance)
-        </div>
+        <div style="font-size:0.72rem;color:var(--muted2);margin-top:6px;line-height:1.6">A in Maths → QMUL/Sussex/City<br>Maths B → Exeter<br>Maths C → Reading</div>
       </div>
     </div>
   </div>
 
+</div>
+
+<!-- ══ TAB: GUIDE ══ -->
+<div class="tab-pane" id="tab-guide">
+<div class="guide-wrap">
+
+  <div style="margin-bottom:28px">
+    <div style="font-size:1.15rem;font-weight:700;margin-bottom:5px">Dashboard Guide</div>
+    <div style="font-size:0.8rem;color:var(--muted2)">How everything works, start to finish.</div>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-h">Countdown strip</div>
+    <p class="guide-p">The three panels at the top count down days to each subject's first exam. The progress bar fills as revision time passes since 9 March. The label colour shifts to amber when under 90 days and red under 60.</p>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-h">Today tab</div>
+    <p class="guide-p"><b>Session checklist</b> — tick sessions as you finish them. Ticked rows grey out for the current browser session; they reset on reload (the dashboard is read-only, not a permanent to-do app).</p>
+    <p class="guide-p"><b>Today's Focus card</b> — the amber panel at the top shows your single highest-priority knowledge gap right now. It's calculated from: <code>priority weight × 100 ÷ (days to exam × confidence)</code>. Marking a gap done or raising its confidence will shift focus to the next item.</p>
+    <p class="guide-p"><b>Missed this week</b> — sessions from earlier this week that weren't in today's schedule. Use <em>Reschedule →</em> to slot them into the next free evening. Click <em>×</em> to undo a reschedule.</p>
+    <p class="guide-p"><b>Older backlog</b> — earlier missed topics. These <b>auto-reschedule into coming days</b> every time you load the page, so you never have to press anything. If you deliberately remove one with <em>×</em> it stays removed.</p>
+    <p class="guide-p"><b>Bonus session</b> — one extra topic suggestion that appears only after the main sessions are scheduled. Click <em>Skip today</em> to dismiss it for the day.</p>
+    <p class="guide-p"><b>28-day heatmap</b> — the grid below the tasks shows the last 28 days. Each cell darkens with sessions logged that day (1 = light, 2 = medium, 3+ = bright green). Hover any cell for the date and count. The amber-bordered cell is today.</p>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-h">Timer (bottom-right button)</div>
+    <p class="guide-p">A 1-hour countdown timer. Click to start / pause. Right-click (or long-press on touchscreen) to reset. When the hour completes, one session is automatically added to the heatmap and the Session Log opens.</p>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-h">Session Log</div>
+    <p class="guide-p">Click <em>Log session</em> (below the timer) at any time. Select every topic you covered, pick a confidence level, then save. This updates the Priority Gaps tracker and shifts your Focus card accordingly.</p>
+    <div class="guide-kv">
+      <span class="guide-key">Seen it</span><span class="guide-val">You've looked at it but it's not sticking yet.</span>
+      <span class="guide-key">Getting there</span><span class="guide-val">You can attempt questions but still make errors.</span>
+      <span class="guide-key">Confident</span><span class="guide-val">You can answer exam questions reliably under time pressure.</span>
+    </div>
+    <p class="guide-p" style="margin-top:10px">If you're logging without using the timer, tick <em>Count as a new session</em> to add it to the heatmap as well.</p>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-h">Subjects tab — Priority Gaps panel</div>
+    <p class="guide-p">Lists every tracked knowledge gap sorted by urgency score. You can interact with each row in three ways:</p>
+    <ul class="guide-list">
+      <li><b>Click the row</b> — marks the gap as done. It fades out and is excluded from the Focus card and urgency ranking.</li>
+      <li><b>Click the coloured dot (left)</b> — cycles priority: red (hot) → amber (medium) → grey (low). Hot gaps get a ×2 weight in the urgency score.</li>
+      <li><b>Three small dots (right)</b> — your confidence rating. Click dot 1, 2, or 3 to set it; click the same dot again to clear. Higher confidence lowers urgency.</li>
+    </ul>
+    <p class="guide-p" style="margin-top:10px">Topics labelled as "log-only" appear in the Session Log chips but not here — they're things like Graphs &amp; transformations that are covered in class but not high-priority gaps.</p>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-h">Subjects tab — Grade boundaries</div>
+    <p class="guide-p">Click the pencil icon next to any subject to set your target grade and boundary percentage. The dashboard then shows three cells: <b>Target</b>, <b>Latest mock</b>, and <b>Gap</b> (positive = above target, negative = below). The gap cell turns red/amber/green based on distance.</p>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-h">Subjects tab — Mock trend charts</div>
+    <p class="guide-p">Click <em>+ Add score</em> under any subject to log a new mock result. Enter a fraction like <code>45/100</code> or a percentage like <code>72</code>. The chart plots your trajectory and a dashed line shows your target boundary if set.</p>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-h">This Week tab</div>
+    <p class="guide-p">Mon–Fri grid of scheduled sessions. Today's column is highlighted amber; deadlines are highlighted red. Rescheduled backlog items appear in their assigned day alongside the regular schedule.</p>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-h">NEA + Offers tab</div>
+    <p class="guide-p">Your OCR H446 NEA breakdown (52/70, Grade B, submitted 27 Mar 2026) and all five university offers. The key constraint: QMUL, Sussex, and City all require an A in Maths.</p>
+  </div>
+
+  <div class="guide-section">
+    <div class="guide-h">Data &amp; storage</div>
+    <p class="guide-p">All persistent data — session counts, gap progress, mock history, grade boundaries, rescheduled items — lives in your browser's <code>localStorage</code>. It survives page reloads and browser restarts on the same device and browser. Clearing site data, using private/incognito mode, or switching to a different browser will reset everything.</p>
+    <p class="guide-p">The schedule itself (your session plan, gaps list, backlog) is hardcoded in the page — update those by editing the source file and re-deploying to GitHub Pages.</p>
+  </div>
+
+</div>
 </div>
 
 <div class="footer">A in Maths is non-negotiable · QMUL/Sussex/City all require it · every session counts</div>
@@ -600,16 +647,43 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <button class="timer-btn" id="timer-btn"
     onclick="toggleTimer()"
     oncontextmenu="event.preventDefault();resetTimer()"
-    title="Click to start/pause · Right-click to reset">
+    title="Click: start/pause · Right-click: reset">
     <div class="timer-time-txt" id="timer-time">1:00</div>
     <div class="timer-sub-txt" id="timer-lbl">START</div>
   </button>
+  <button class="log-fab-btn" onclick="showSessionLog(false)" title="Log what you studied">Log session</button>
+</div>
+
+<!-- ── SESSION LOG MODAL ── -->
+<div class="slog-overlay" id="slog-overlay" onclick="if(event.target===this)closeSessionLog()">
+  <div class="slog-modal">
+    <div class="slog-title">Session Log</div>
+    <div class="slog-sub" id="slog-sub-text">What did you cover? Select topics below.</div>
+
+    <div class="slog-sec-lbl">Topics covered</div>
+    <div id="slog-chips-wrap"></div>
+
+    <div class="slog-sec-lbl" style="margin-top:18px">How well did it go? (applies to all selected topics)</div>
+    <div class="slog-conf-row">
+      <button class="slog-conf-btn" id="slog-c1" onclick="setSlogConf(1)">Seen it</button>
+      <button class="slog-conf-btn" id="slog-c2" onclick="setSlogConf(2)">Getting there</button>
+      <button class="slog-conf-btn" id="slog-c3" onclick="setSlogConf(3)">Confident</button>
+    </div>
+
+    <div class="slog-sess-row" id="slog-sess-row">
+      <input type="checkbox" id="slog-count-sess">
+      <label class="slog-sess-label" for="slog-count-sess">Count this as a new 1-hour session (for heatmap)</label>
+    </div>
+
+    <div class="slog-actions">
+      <button class="slog-submit" onclick="submitSessionLog()">Save log</button>
+      <button class="slog-cancel" onclick="closeSessionLog()">Cancel</button>
+    </div>
+  </div>
 </div>
 
 <script>
-// ─────────────────────────────────────────────────────────────────────────────
-// SESSION DATA — keyed by YYYY-MM-DD
-// ─────────────────────────────────────────────────────────────────────────────
+// ── SESSION DATA ────────────────────────────────────────────────────────────
 const SESSIONS = {
   '2026-03-21': [
     { sub:'nea', label:'NEA tweaks', detail:'Read through, humanise, polish wording. Deadline 27 Mar.' },
@@ -640,7 +714,7 @@ const SESSIONS = {
     { sub:'maths',   label:'Maths (eve): Parametric diff + integration', dur:'~1hr', detail:'dy/dx = (dy/dt)/(dx/dt). 2 Qs MIN.' },
   ],
   '2026-03-27': [
-    { sub:'nea',   hw:true, label:'⚠ SUBMIT NEA — Deadline today', detail:'NEA_Final_v4.docx — do not miss this.' },
+    { sub:'nea',   hw:true, label:'SUBMIT NEA — Deadline today', detail:'NEA_Final_v4.docx — do not miss this.' },
     { sub:'maths', label:'Maths: Parametric practice',            dur:'1hr', detail:'2 timed past paper Qs. Mark immediately.' },
     { sub:'econ',  label:'Econ: Public goods + info failure',     dur:'1hr', detail:'Non-excludable/non-rival, asymmetric info. 1 four-mark Q.' },
     { sub:'cs',    label:'CS: Sort + SQL practice',               dur:'1hr', detail:'1 merge sort trace Q + 1 SQL Q timed. Mark both.' },
@@ -666,56 +740,68 @@ const PHASES = [
   { label:'Phase 5', start:'2026-06-03', end:'2026-06-18', desc:'Exam season' },
 ];
 
-// ── PRIORITY GAPS DATA ───────────────────────────────────────────────────────
+// ── PRIORITY GAPS ────────────────────────────────────────────────────────────
+// defPrio: default priority ('hot'/'med'/'low') — user can override by clicking the dot
 const PRIORITY_GAPS = [
-  { key:'m_ineq',  sub:'maths', name:'Inequalities (rational)',    hot:true,  examDate:'2026-06-03' },
-  { key:'m_trig',  sub:'maths', name:'Trig integration',           hot:true,  examDate:'2026-06-03' },
-  { key:'m_ibp',   sub:'maths', name:'Integration by parts',       hot:true,  examDate:'2026-06-03' },
-  { key:'m_pf',    sub:'maths', name:'Partial fractions',          hot:true,  examDate:'2026-06-03' },
-  { key:'m_incl',  sub:'maths', name:'Inclined planes / friction', hot:false, examDate:'2026-06-18' },
-  { key:'m_impl',  sub:'maths', name:'Implicit differentiation',   hot:false, examDate:'2026-06-03' },
-  { key:'m_para',  sub:'maths', name:'Parametric equations',       hot:false, examDate:'2026-06-03' },
-  { key:'e_msc',   sub:'econ',  name:'MSC/MSB/MPC/MPB diagrams ⭐', hot:true,  examDate:'2026-05-11' },
-  { key:'e_ds',    sub:'econ',  name:'D&S shifts + PED/PES',       hot:true,  examDate:'2026-05-11' },
-  { key:'e_pm',    sub:'econ',  name:'Price mechanism / efficiency',hot:true, examDate:'2026-05-11' },
-  { key:'e_govt',  sub:'econ',  name:'Govt intervention frameworks',hot:false,examDate:'2026-05-11' },
-  { key:'e_eval',  sub:'econ',  name:'Evaluation judgement technique',hot:false,examDate:'2026-05-11'},
-  { key:'e_behav', sub:'econ',  name:'Behavioural economics',       hot:false, examDate:'2026-05-11' },
-  { key:'c_bool',  sub:'cs',    name:'Boolean algebra + logic gates',hot:true, examDate:'2026-06-10' },
-  { key:'c_lmc',   sub:'cs',    name:'LMC / Assembly',              hot:true,  examDate:'2026-06-10' },
-  { key:'c_fk',    sub:'cs',    name:'Foreign key (lost 4 marks)',  hot:true,  examDate:'2026-06-10' },
-  { key:'c_pp',    sub:'cs',    name:'Push/pop pseudocode',         hot:true,  examDate:'2026-06-10' },
-  { key:'c_bfs',   sub:'cs',    name:'BFS/DFS traversal',          hot:false, examDate:'2026-06-10' },
-  { key:'c_comp',  sub:'cs',    name:'Compression + ISR',          hot:false, examDate:'2026-06-10' },
-  { key:'c_norm',  sub:'cs',    name:'Normalisation 1NF→3NF',      hot:false, examDate:'2026-06-10' },
+  { key:'m_ineq',  sub:'maths', name:'Inequalities (rational)',       defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_trig',  sub:'maths', name:'Trig integration',              defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_ibp',   sub:'maths', name:'Integration by parts',          defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_pf',    sub:'maths', name:'Partial fractions',             defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_incl',  sub:'maths', name:'Inclined planes / friction',    defPrio:'med', examDate:'2026-06-18' },
+  { key:'m_impl',  sub:'maths', name:'Implicit differentiation',      defPrio:'med', examDate:'2026-06-03' },
+  { key:'m_para',  sub:'maths', name:'Parametric equations',          defPrio:'med', examDate:'2026-06-03' },
+  { key:'e_msc',   sub:'econ',  name:'MSC/MSB/MPC/MPB diagrams',      defPrio:'hot', examDate:'2026-05-11' },
+  { key:'e_ds',    sub:'econ',  name:'D&S shifts + PED/PES',          defPrio:'hot', examDate:'2026-05-11' },
+  { key:'e_pm',    sub:'econ',  name:'Price mechanism / efficiency',  defPrio:'hot', examDate:'2026-05-11' },
+  { key:'e_govt',  sub:'econ',  name:'Govt intervention frameworks',  defPrio:'med', examDate:'2026-05-11' },
+  { key:'e_eval',  sub:'econ',  name:'Evaluation judgement technique',defPrio:'med', examDate:'2026-05-11' },
+  { key:'e_behav', sub:'econ',  name:'Behavioural economics',         defPrio:'low', examDate:'2026-05-11' },
+  { key:'c_bool',  sub:'cs',    name:'Boolean algebra + logic gates', defPrio:'hot', examDate:'2026-06-10' },
+  { key:'c_lmc',   sub:'cs',    name:'LMC / Assembly',                defPrio:'hot', examDate:'2026-06-10' },
+  { key:'c_fk',    sub:'cs',    name:'Foreign key (lost 4 marks)',    defPrio:'hot', examDate:'2026-06-10' },
+  { key:'c_pp',    sub:'cs',    name:'Push/pop pseudocode',           defPrio:'hot', examDate:'2026-06-10' },
+  { key:'c_bfs',   sub:'cs',    name:'BFS/DFS traversal',             defPrio:'med', examDate:'2026-06-10' },
+  { key:'c_comp',  sub:'cs',    name:'Compression + ISR',             defPrio:'med', examDate:'2026-06-10' },
+  { key:'c_norm',  sub:'cs',    name:'Normalisation 1NF→3NF',         defPrio:'med', examDate:'2026-06-10' },
+  // logOnly: appear in session log chips but not in the priority gaps panel
+  { key:'m_graphs',  sub:'maths', name:'Graphs & transformations',      defPrio:'low', examDate:'2026-06-03', logOnly:true },
+  { key:'m_invtrig', sub:'maths', name:'Inverse trig + small angle',    defPrio:'low', examDate:'2026-06-03', logOnly:true },
+  { key:'m_radians', sub:'maths', name:'Radians + chain rule',          defPrio:'low', examDate:'2026-06-03', logOnly:true },
+  { key:'m_diff',    sub:'maths', name:'Differentiation (general)',      defPrio:'low', examDate:'2026-06-03', logOnly:true },
+  { key:'m_proofint',sub:'maths', name:'Proof by contradiction',         defPrio:'low', examDate:'2026-06-03', logOnly:true },
+  { key:'e_extrnl',  sub:'econ',  name:'Externalities diagrams',         defPrio:'low', examDate:'2026-05-11', logOnly:true },
+  { key:'e_publgood',sub:'econ',  name:'Public goods + info failure',    defPrio:'low', examDate:'2026-05-11', logOnly:true },
+  { key:'e_taxsub',  sub:'econ',  name:'Tax, subsidy & price controls',  defPrio:'low', examDate:'2026-05-11', logOnly:true },
+  { key:'e_labour',  sub:'econ',  name:'Labour markets',                 defPrio:'low', examDate:'2026-05-18', logOnly:true },
+  { key:'c_sql',     sub:'cs',    name:'SQL (SELECT / JOIN / WHERE)',     defPrio:'low', examDate:'2026-06-10', logOnly:true },
+  { key:'c_sort',    sub:'cs',    name:'Merge sort / bubble sort',        defPrio:'low', examDate:'2026-06-10', logOnly:true },
+  { key:'c_trees',   sub:'cs',    name:'Trees + hash tables',             defPrio:'low', examDate:'2026-06-10', logOnly:true },
+  { key:'c_net',     sub:'cs',    name:'Networking / protocols',          defPrio:'low', examDate:'2026-06-10', logOnly:true },
+  { key:'c_os',      sub:'cs',    name:'Operating systems / scheduling',  defPrio:'low', examDate:'2026-06-10', logOnly:true },
+];
+
+// ── OLDER BACKLOG (auto-scheduled as bonus sessions) ─────────────────────────
+const OLDER_BACKLOG = [
+  { sub:'m', name:'Inequalities',               key:'ob_ineq' },
+  { sub:'m', name:'Graphs & transformations',   key:'ob_graphs' },
+  { sub:'m', name:'Radians + chain rule',       key:'ob_rad' },
+  { sub:'m', name:'Inverse trig + small angle', key:'ob_invtrig' },
+  { sub:'e', name:'D&S, PED, PES, tax incidence',key:'ob_ds' },
+  { sub:'e', name:'Price mechanism',            key:'ob_pm' },
+  { sub:'c', name:'Foreign key definition',     key:'ob_fk' },
+  { sub:'c', name:'Push pseudocode',            key:'ob_pp' },
 ];
 
 // ── MOCK HISTORY ─────────────────────────────────────────────────────────────
 const MOCK_DEFAULTS = {
-  maths: [
-    { label:'Sep',  pct:32 },
-    { label:'Nov',  pct:26 },
-    { label:'Feb',  pct:20 },
-  ],
-  econ: [
-    { label:'Sep',  pct:60 },
-    { label:'Nov',  pct:70 },
-    { label:'Feb',  pct:76 },
-  ],
-  cs: [
-    { label:'Nov',  pct:27 },
-    { label:'Feb',  pct:22 },
-  ],
+  maths: [{ label:'Sep', pct:32 },{ label:'Nov', pct:26 },{ label:'Feb', pct:20 }],
+  econ:  [{ label:'Sep', pct:60 },{ label:'Nov', pct:70 },{ label:'Feb', pct:76 }],
+  cs:    [{ label:'Nov', pct:27 },{ label:'Feb', pct:22 }],
 };
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
-const SUB_COL = {
-  maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)',
-  nea:'var(--purple)', am:'var(--amber)', college:'var(--muted2)', '':'var(--muted)'
-};
-const SUB_BADGE_CLASS = {
-  maths:'badge-m', econ:'badge-e', cs:'badge-c', nea:'badge-nea', college:'badge-college'
-};
+const SUB_COL = { maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)', nea:'var(--purple)', am:'var(--amber)', college:'var(--muted2)', '':'var(--muted)' };
+const SUB_BADGE_CLASS = { maths:'badge-m', econ:'badge-e', cs:'badge-c', nea:'badge-nea', college:'badge-college' };
 const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -733,14 +819,11 @@ function getPhase() {
   return 'Exam prep';
 }
 
-// ── localStorage helpers ─────────────────────────────────────────────────────
-function lsGet(k, def={}) {
+function lsGet(k, def) {
   try { return JSON.parse(localStorage.getItem(k) || 'null') ?? def; }
   catch(e) { return def; }
 }
-function lsSet(k, v) {
-  try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){}
-}
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
 
 // ── TAB SWITCH ───────────────────────────────────────────────────────────────
 function switchTab(id, btn) {
@@ -748,10 +831,7 @@ function switchTab(id, btn) {
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
-  if (id === 'subjects') {
-    renderSmartGaps();
-    setTimeout(renderCharts, 60);
-  }
+  if (id === 'subjects') { renderSmartGaps(); renderGradeBounds(); setTimeout(renderCharts, 60); }
 }
 
 // ── COUNTDOWN ────────────────────────────────────────────────────────────────
@@ -765,12 +845,9 @@ function renderCountdowns() {
   exams.forEach(e => {
     const d = daysUntil(e.date);
     const urgCol  = d < 60 ? 'var(--red)' : d < 90 ? 'var(--amber)' : e.subCol;
-    const urgText = d < 60 ? '🔴 URGENT' : d < 90 ? '🟠 BUILD NOW' : '🟢 ON TRACK';
-
+    const urgText = d < 60 ? 'URGENT' : d < 90 ? 'BUILD NOW' : 'ON TRACK';
     document.getElementById('cd-'+e.id).textContent = d;
     document.getElementById('cd-'+e.id).style.color = urgCol;
-
-    // Progress bar: elapsed from revision start → exam date
     const examDate = toDate(e.date);
     const totalSpan = Math.max(1, examDate - revStart);
     const elapsed   = today() - revStart;
@@ -778,21 +855,40 @@ function renderCountdowns() {
     const bar = document.getElementById('cd-'+e.id+'-bar');
     bar.style.width = pct + '%';
     bar.style.background = urgCol;
-
     const urg = document.getElementById('cd-'+e.id+'-urg');
     if (urg) { urg.textContent = urgText; urg.style.color = urgCol; }
   });
 }
 
-// ── FOCUS CARD ───────────────────────────────────────────────────────────────
-function gapUrgencyScore(g, state) {
-  if (state[g.key]?.done) return -1;
-  const days = Math.max(1, daysUntil(g.examDate));
-  const conf = state[g.key]?.confidence || 1;
-  const hotW = g.hot ? 2 : 1;
-  return (hotW * 100) / (days * conf);
+// ── PRIORITY SYSTEM ──────────────────────────────────────────────────────────
+function getGapPriority(g) {
+  const user = lsGet('user_priority', {});
+  return user[g.key] ?? g.defPrio;
 }
 
+function cyclePriority(key, event) {
+  event.stopPropagation();
+  const g = PRIORITY_GAPS.find(x => x.key === key);
+  const cur = getGapPriority(g);
+  const next = cur === 'hot' ? 'med' : cur === 'med' ? 'low' : 'hot';
+  const user = lsGet('user_priority', {});
+  user[key] = next;
+  lsSet('user_priority', user);
+  renderSmartGaps();
+  renderFocusCard();
+}
+
+// ── URGENCY SCORE ────────────────────────────────────────────────────────────
+function gapUrgencyScore(g, state) {
+  if (state[g.key]?.done) return -1;
+  const prio = getGapPriority(g);
+  const days = Math.max(1, daysUntil(g.examDate));
+  const conf = state[g.key]?.confidence || 1;
+  const w = prio === 'hot' ? 2 : prio === 'med' ? 1 : 0.3;
+  return (w * 100) / (days * conf);
+}
+
+// ── FOCUS CARD ───────────────────────────────────────────────────────────────
 function renderFocusCard() {
   const state = lsGet('gap_state', {});
   let best = null, bestScore = -Infinity;
@@ -804,14 +900,15 @@ function renderFocusCard() {
   const days = daysUntil(best.examDate);
   const subCols  = { maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)' };
   const subNames = { maths:'Maths', econ:'Economics', cs:'Computer Science' };
-  const icons    = { maths:'📐', econ:'📈', cs:'💻' };
+  const iconSymbols = { maths:'∫', econ:'↗', cs:'λ' };
   const daysCol  = days < 60 ? 'var(--red)' : days < 90 ? 'var(--amber)' : subCols[best.sub];
+  const prioLabel = getGapPriority(best) === 'hot' ? ' · high priority' : '';
   document.getElementById('focus-card').innerHTML = `
-    <div class="focus-icon">${icons[best.sub]}</div>
+    <div class="focus-icon" style="font-family:var(--mono);font-size:1.8rem;color:${subCols[best.sub]};flex-shrink:0;line-height:1">${iconSymbols[best.sub]}</div>
     <div style="flex:1;min-width:0">
       <div class="focus-label">Today's #1 Focus</div>
       <div class="focus-topic" style="color:${subCols[best.sub]}">${best.name}</div>
-      <div class="focus-reason">${subNames[best.sub]} · exam in ${days} days${best.hot?' · high priority gap':''}</div>
+      <div class="focus-reason">${subNames[best.sub]} · exam in ${days} days${prioLabel}</div>
     </div>
     <div style="text-align:right;flex-shrink:0">
       <div style="font-family:var(--mono);font-size:2rem;font-weight:700;color:${daysCol};line-height:1">${days}</div>
@@ -841,20 +938,21 @@ function setGapConfidence(key, level) {
 function renderSmartGaps() {
   const state = lsGet('gap_state', {});
   const subs = ['maths','econ','cs'];
-  const subCols  = { maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)' };
-  const subTitles= { maths:'MATHS', econ:'ECONOMICS', cs:'COMPUTER SCIENCE' };
-  const confCols = { 1:'var(--red)', 2:'var(--amber)', 3:'var(--maths)' };
+  const subCols   = { maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)' };
+  const subTitles = { maths:'MATHS', econ:'ECONOMICS', cs:'COMPUTER SCIENCE' };
+  const confCols  = { 1:'var(--red)', 2:'var(--amber)', 3:'var(--maths)' };
 
   const cols = subs.map(sub => {
     const gaps = PRIORITY_GAPS
-      .filter(g => g.sub === sub)
+      .filter(g => g.sub === sub && !g.logOnly)
       .sort((a,b) => gapUrgencyScore(b,state) - gapUrgencyScore(a,state));
 
     const rows = gaps.map(g => {
       const s = state[g.key] || {};
       const conf = s.confidence || 0;
       const done = s.done || false;
-      const dotCls = g.hot ? 'dot-hot' : 'dot-med';
+      const prio = getGapPriority(g);
+      const dotCls = prio === 'hot' ? 'dot-hot' : prio === 'med' ? 'dot-med' : 'dot-low';
       const confColor = confCols[conf] || '';
       const dots = [1,2,3].map(n => {
         const filled = n <= conf;
@@ -863,8 +961,9 @@ function renderSmartGaps() {
           onclick="event.stopPropagation();setGapConfidence('${g.key}',${n})"
           title="${n===1?'Seen it':n===2?'Getting there':'Confident'}"></div>`;
       }).join('');
+      const prioTitle = prio==='hot'?'Hot (click to change)':prio==='med'?'Medium (click to change)':'Low (click to change)';
       return `<div class="gap-row${done?' gap-done':''}" onclick="toggleGapDone('${g.key}')">
-        <div class="gap-dot ${dotCls}"></div>
+        <div class="gap-dot ${dotCls}" onclick="cyclePriority('${g.key}',event)" title="${prioTitle}"></div>
         <span class="gap-name">${g.name}</span>
         <div class="gap-conf">${dots}</div>
       </div>`;
@@ -892,6 +991,12 @@ function updateMathsTopicsBar() {
 }
 
 // ── BACKLOG / RESCHEDULE ─────────────────────────────────────────────────────
+const RECENT_OVERDUE = [
+  { sub:'m', name:'Partial fractions',              when:'Mon 23', key:'od_pf' },
+  { sub:'e', name:'Market failure — externalities', when:'Tue 24', key:'od_mfe' },
+  { sub:'c', name:'Trees/graphs + hash tables',     when:'Tue 24', key:'od_tg' },
+];
+
 function findNextFreeEvening() {
   const rescheduled = lsGet('rescheduled', []);
   const t = today();
@@ -901,10 +1006,7 @@ function findNextFreeEvening() {
     const base  = (SESSIONS[key] || []).filter(s => s.sub !== 'college' && s.sub !== 'am');
     const extra = rescheduled.filter(r => r.targetKey === key);
     if (base.length + extra.length < 2) {
-      return {
-        key,
-        label: d.toLocaleDateString('en-GB',{ weekday:'short', day:'numeric', month:'short' })
-      };
+      return { key, label: d.toLocaleDateString('en-GB',{ weekday:'short', day:'numeric', month:'short' }) };
     }
   }
   return null;
@@ -917,7 +1019,168 @@ function rescheduleItem(itemKey, itemName, itemSub) {
   if (!slot) return;
   rescheduled.push({ key: itemKey, name: itemName, sub: itemSub, targetKey: slot.key, label: slot.label });
   lsSet('rescheduled', rescheduled);
-  renderOverdueMini(); // refresh
+  renderOverdueMini();
+}
+
+function unrescheduleItem(itemKey) {
+  // Track that the user explicitly removed this so auto-reschedule skips it
+  const manuallyRemoved = lsGet('manual_unrescheduled', []);
+  if (!manuallyRemoved.includes(itemKey)) {
+    manuallyRemoved.push(itemKey);
+    lsSet('manual_unrescheduled', manuallyRemoved);
+  }
+  lsSet('rescheduled', lsGet('rescheduled', []).filter(r => r.key !== itemKey));
+  renderOverdueMini();
+}
+
+function autoRescheduleBacklog() {
+  // Auto-slot all OLDER_BACKLOG items into coming days on page load,
+  // unless the user has explicitly unrescheduled them
+  const manuallyRemoved = lsGet('manual_unrescheduled', []);
+  for (const it of OLDER_BACKLOG) {
+    if (!manuallyRemoved.includes(it.key)) {
+      rescheduleItem(it.key, it.name, it.sub);
+    }
+  }
+}
+
+function renderOverdueMini() {
+  const rescheduled = lsGet('rescheduled', []);
+
+  function rowHtml(it, showWhen) {
+    const tag = it.sub==='m'?'badge-m':it.sub==='e'?'badge-e':'badge-c';
+    const lab = it.sub==='m'?'Maths':it.sub==='e'?'Econ':'CS';
+    const r = rescheduled.find(x => x.key === it.key);
+    const actionBtns = r
+      ? `<span class="reschedule-btn rescheduled">✓ ${r.label}</span>
+         <button class="unreschedule-btn" onclick="unrescheduleItem('${it.key}')" title="Undo reschedule">×</button>`
+      : `<button class="reschedule-btn" onclick="rescheduleItem('${it.key}','${it.name}','${it.sub}')">Reschedule →</button>`;
+    return `<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border)">
+      <span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span>
+      <span style="font-size:0.76rem;flex:1">${it.name}</span>
+      ${showWhen && it.when ? `<span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted);margin-right:4px">${it.when}</span>` : ''}
+      ${actionBtns}
+    </div>`;
+  }
+
+  const mini  = document.getElementById('overdue-mini');
+  const older = document.getElementById('overdue-older');
+  if (mini)  mini.innerHTML  = RECENT_OVERDUE.map(it=>rowHtml(it,true)).join('');
+  if (older) older.innerHTML = OLDER_BACKLOG.map(it=>rowHtml(it,false)).join('');
+}
+
+// ── AUTO BONUS SECTION ───────────────────────────────────────────────────────
+function getTodayBonusItem() {
+  const dismissed = lsGet('dismissed_bonuses', []);
+  const todayKey  = dateKey(today());
+  const state     = lsGet('gap_state', {});
+  return OLDER_BACKLOG.find(item => {
+    if (dismissed.includes(item.key + '_' + todayKey)) return false;
+    // skip if related gap is already done
+    const related = PRIORITY_GAPS.find(g => g.name.toLowerCase().includes(item.name.toLowerCase().split(' ')[0]));
+    if (related && state[related.key]?.done) return false;
+    return true;
+  }) || null;
+}
+
+function dismissBonus(key) {
+  const dismissed = lsGet('dismissed_bonuses', []);
+  dismissed.push(key + '_' + dateKey(today()));
+  lsSet('dismissed_bonuses', dismissed);
+  renderBonusSection();
+}
+
+function renderBonusSection() {
+  const el = document.getElementById('bonus-section');
+  if (!el) return;
+  const item = getTodayBonusItem();
+  if (!item) { el.innerHTML = ''; return; }
+  const tag = item.sub==='m'?'badge-m':item.sub==='e'?'badge-e':'badge-c';
+  const lab = item.sub==='m'?'Maths':item.sub==='e'?'Econ':'CS';
+  el.innerHTML = `
+    <div class="bonus-section">
+      <div class="bonus-lbl">Bonus — only if main tasks done</div>
+      <div class="bonus-row">
+        <span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span>
+        <span style="font-size:0.78rem;flex:1;color:var(--muted2)">${item.name}</span>
+        <button class="bonus-dismiss-btn" onclick="dismissBonus('${item.key}')">Skip today</button>
+      </div>
+    </div>`;
+}
+
+// ── GRADE BOUNDARIES ────────────────────────────────────────────────────────
+// Boundaries are entirely user-defined — stored in localStorage 'grade_bounds'
+// { maths: { targetLabel: 'A ≥72%' }, econ: {...}, cs: {...} }
+// Latest mock is auto-pulled from mock_history
+
+function getLatestMock(sub) {
+  const h = loadMockHistory();
+  const entries = h[sub] || [];
+  if (!entries.length) return null;
+  return entries[entries.length - 1].pct;
+}
+
+function renderGradeBounds() {
+  const subs = ['maths','econ','cs'];
+  const subCols = { maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)' };
+  const bounds = lsGet('grade_bounds', {});
+
+  subs.forEach(sub => {
+    const el = document.getElementById('gb-' + sub);
+    if (!el) return;
+    const b = bounds[sub] || {};
+    const latestMock = getLatestMock(sub);
+    const targetPct = b.targetPct ?? null;
+    const targetLabel = b.targetLabel || (sub === 'cs' ? 'B' : 'A');
+
+    let targetHTML, mockHTML, gapHTML;
+
+    if (targetPct !== null) {
+      targetHTML = `<div class="gb-val" style="color:${subCols[sub]}">${targetLabel} · ${targetPct}%</div>`;
+    } else {
+      targetHTML = `<div class="gb-val" style="color:var(--muted)">—</div>`;
+    }
+
+    if (latestMock !== null) {
+      const mockCol = latestMock >= (targetPct || 999) ? 'var(--maths)' : latestMock >= (targetPct || 999) * 0.75 ? 'var(--amber)' : 'var(--red)';
+      mockHTML = `<div class="gb-val" style="color:${mockCol}">${latestMock}%</div>`;
+    } else {
+      mockHTML = `<div class="gb-val" style="color:var(--muted)">—</div>`;
+    }
+
+    if (targetPct !== null && latestMock !== null) {
+      const gap = latestMock - targetPct;
+      const gapCol = gap >= 0 ? 'var(--maths)' : gap >= -15 ? 'var(--amber)' : 'var(--red)';
+      const gapStr = gap >= 0 ? `+${gap}pp` : `${gap}pp`;
+      gapHTML = `<div class="gb-val" style="color:${gapCol}">${gapStr}</div>`;
+    } else {
+      gapHTML = `<div class="gb-val" style="color:var(--muted)">—</div>`;
+    }
+
+    el.innerHTML = `
+      <div class="gb-cell"><div class="gb-lbl">Target</div>${targetHTML}</div>
+      <div class="gb-cell"><div class="gb-lbl">Latest mock</div>${mockHTML}</div>
+      <div class="gb-cell"><div class="gb-lbl">Gap</div>${gapHTML}</div>`;
+  });
+}
+
+function editGradeBounds(sub) {
+  const bounds = lsGet('grade_bounds', {});
+  const b = bounds[sub] || {};
+  const subName = { maths:'Maths', econ:'Economics', cs:'CS' }[sub];
+  const gradeDefault = sub === 'cs' ? 'B' : 'A';
+
+  const gradeLabel = prompt(`${subName} — target grade (e.g. A, B):`, b.targetLabel || gradeDefault);
+  if (gradeLabel === null) return;
+  const pctRaw = prompt(`${subName} — approx boundary % for ${gradeLabel} (enter number, or leave blank if unknown):`, b.targetPct ?? '');
+  if (pctRaw === null) return;
+
+  if (!bounds[sub]) bounds[sub] = {};
+  bounds[sub].targetLabel = gradeLabel.trim().toUpperCase();
+  const pct = parseInt(pctRaw);
+  bounds[sub].targetPct = isNaN(pct) ? null : Math.max(0, Math.min(100, pct));
+  lsSet('grade_bounds', bounds);
+  renderGradeBounds();
 }
 
 // ── RENDER TODAY ──────────────────────────────────────────────────────────────
@@ -932,6 +1195,7 @@ function renderToday() {
   container.innerHTML = '';
   if (!sessions.length) {
     container.innerHTML = '<div style="font-size:0.82rem;color:var(--muted2);padding:14px 0">Nothing scheduled — rest day.</div>';
+    renderBonusSection();
     return;
   }
   sessions.forEach((s, i) => {
@@ -968,6 +1232,7 @@ function renderToday() {
     }
     container.appendChild(item);
   });
+  renderBonusSection();
 }
 
 // ── RENDER TOMORROW ───────────────────────────────────────────────────────────
@@ -991,50 +1256,11 @@ function renderTomorrow() {
     row.innerHTML = `
       <div class="tmr-left-dot" style="background:${col}"></div>
       <div class="tmr-body">
-        <div class="tmr-name">${s.hw?'<span style="color:var(--red);font-weight:700">⚠ HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>
+        <div class="tmr-name">${s.hw?'<span style="color:var(--red);font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>
         ${s.detail?`<div class="tmr-detail">${s.detail}</div>`:''}
       </div>`;
     container.appendChild(row);
   });
-}
-
-// ── RENDER OVERDUE (with Reschedule) ─────────────────────────────────────────
-function renderOverdueMini() {
-  const rescheduled = lsGet('rescheduled', []);
-
-  const recent = [
-    { sub:'m', name:'Partial fractions',              when:'Mon 23', key:'od_pf' },
-    { sub:'e', name:'Market failure — externalities', when:'Tue 24', key:'od_mfe' },
-    { sub:'c', name:'Trees/graphs + hash tables',     when:'Tue 24', key:'od_tg' },
-  ];
-  const older = [
-    { sub:'m', name:'Inequalities',               key:'od_ineq' },
-    { sub:'m', name:'Graphs & transformations',   key:'od_graphs' },
-    { sub:'m', name:'Radians + chain rule',        key:'od_rad' },
-    { sub:'m', name:'Inverse trig + small angle',  key:'od_invtrig' },
-    { sub:'e', name:'D&S, PED, PES, tax incidence',key:'od_ds' },
-    { sub:'e', name:'Price mechanism',             key:'od_pm' },
-    { sub:'c', name:'Foreign key definition',      key:'od_fk' },
-    { sub:'c', name:'Push pseudocode',             key:'od_pp' },
-  ];
-
-  function rowHtml(it, showWhen) {
-    const tag = it.sub==='m'?'badge-m':it.sub==='e'?'badge-e':'badge-c';
-    const lab = it.sub==='m'?'Maths':it.sub==='e'?'Econ':'CS';
-    const r = rescheduled.find(x => x.key === it.key);
-    const btn = r
-      ? `<span class="reschedule-btn rescheduled">✓ ${r.label}</span>`
-      : `<button class="reschedule-btn" onclick="rescheduleItem('${it.key}','${it.name}','${it.sub}')">Reschedule →</button>`;
-    return `<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border)">
-      <span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span>
-      <span style="font-size:0.76rem;flex:1">${it.name}</span>
-      ${showWhen && it.when ? `<span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted);margin-right:4px">${it.when}</span>` : ''}
-      ${btn}
-    </div>`;
-  }
-
-  document.getElementById('overdue-mini').innerHTML  = recent.map(it=>rowHtml(it,true)).join('');
-  document.getElementById('overdue-older').innerHTML = older.map(it=>rowHtml(it,false)).join('');
 }
 
 // ── RENDER WEEK ───────────────────────────────────────────────────────────────
@@ -1065,14 +1291,14 @@ function renderWeek() {
     const col = document.createElement('div');
     col.className = 'wday'+(isDeadline?' deadline':'')+(isToday?' today-col':'');
     const headStr = isDeadline
-      ? `${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)} — ⚠ NEA DUE`
+      ? `${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)} — NEA DUE`
       : `${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)}`;
 
     const tasksHtml = sessions.length
       ? sessions.map(s => {
-          const col2 = SUB_COL[s.sub]||'var(--muted)';
+          const c2 = SUB_COL[s.sub]||'var(--muted)';
           const cls = s.sub==='college'?' college-task':s.hw?' hw-task':'';
-          return `<div class="wday-task${cls}"><div class="wday-task-dot" style="background:${col2}"></div><span>${s.hw?'⚠ ':''}${s.label}</span></div>`;
+          return `<div class="wday-task${cls}"><div class="wday-task-dot" style="background:${c2}"></div><span>${s.hw?'<b style="color:var(--red)">HW</b> · ':''}${s.label}</span></div>`;
         }).join('')
       : '<div style="color:var(--muted);font-size:0.7rem">—</div>';
 
@@ -1088,20 +1314,16 @@ function loadMockHistory() {
   const stored = lsGet('mock_history', null);
   return stored || JSON.parse(JSON.stringify(MOCK_DEFAULTS));
 }
-
 function saveMockHistory(h) { lsSet('mock_history', h); }
 
 function promptAddMock(sub) {
   const subName = { maths:'Maths', econ:'Economics', cs:'CS' }[sub];
-  const raw = prompt(`Add ${subName} mock score:\nEnter score/max — e.g. "45/100" or just a %  like "45":`);
+  const raw = prompt(`Add ${subName} mock score:\nEnter score/max e.g. "45/100" or just "45" for %:`);
   if (!raw) return;
   const match = raw.match(/(\d+)\s*[\/of]\s*(\d+)/);
   let pct;
-  if (match) {
-    pct = Math.round(parseInt(match[1]) / parseInt(match[2]) * 100);
-  } else {
-    pct = parseInt(raw.replace('%','').trim());
-  }
+  if (match) { pct = Math.round(parseInt(match[1]) / parseInt(match[2]) * 100); }
+  else { pct = parseInt(raw.replace('%','').trim()); }
   if (isNaN(pct)) return;
   pct = Math.max(0, Math.min(100, pct));
   const h = loadMockHistory();
@@ -1110,86 +1332,136 @@ function promptAddMock(sub) {
   h[sub].push({ label: monthLabel, pct });
   saveMockHistory(h);
   renderCharts();
+  renderGradeBounds(); // refresh gap display
 }
 
 function renderCharts() {
   const h = loadMockHistory();
+  const bounds = lsGet('grade_bounds', {});
   const cfgs = [
-    { sub:'maths', id:'chart-maths', color:'#4ade80', target:80 },
-    { sub:'econ',  id:'chart-econ',  color:'#60a5fa', target:70 },
-    { sub:'cs',    id:'chart-cs',    color:'#fbbf24', target:55 },
+    { sub:'maths', id:'chart-maths', color:'#4ade80' },
+    { sub:'econ',  id:'chart-econ',  color:'#60a5fa' },
+    { sub:'cs',    id:'chart-cs',    color:'#fbbf24' },
   ];
   cfgs.forEach(c => {
     const canvas = document.getElementById(c.id);
     if (!canvas) return;
     if (chartInstances[c.sub]) { chartInstances[c.sub].destroy(); }
-    const data = h[c.sub] || [];
+    const data   = h[c.sub] || [];
+    const target = (bounds[c.sub]?.targetPct) || null;
+    const datasets = [
+      {
+        data: data.map(d => d.pct),
+        borderColor: c.color, backgroundColor: c.color + '18',
+        borderWidth: 2, pointRadius: 4, pointBackgroundColor: c.color,
+        tension: 0.3, fill: true,
+      },
+    ];
+    if (target !== null) {
+      datasets.push({
+        data: data.map(() => target),
+        borderColor: 'rgba(255,255,255,0.15)', borderWidth: 1,
+        borderDash: [4,4], pointRadius: 0, fill: false,
+      });
+    }
     chartInstances[c.sub] = new Chart(canvas, {
       type: 'line',
-      data: {
-        labels: data.map(d => d.label),
-        datasets: [
-          {
-            data: data.map(d => d.pct),
-            borderColor: c.color,
-            backgroundColor: c.color + '15',
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBackgroundColor: c.color,
-            tension: 0.3,
-            fill: true,
-          },
-          {
-            data: data.map(() => c.target),
-            borderColor: 'rgba(255,255,255,0.12)',
-            borderWidth: 1,
-            borderDash: [4,4],
-            pointRadius: 0,
-            fill: false,
-          }
-        ]
-      },
+      data: { labels: data.map(d => d.label), datasets },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
+        responsive: true, maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
-          tooltip: {
-            backgroundColor: 'rgba(19,22,31,0.95)',
-            borderColor: 'rgba(255,255,255,0.08)',
-            borderWidth: 1,
-            titleColor: '#e8eaf0',
-            bodyColor: '#6b7490',
-            callbacks: { label: ctx => ` ${ctx.parsed.y}%` }
-          }
+          tooltip: { backgroundColor:'rgba(19,22,31,0.95)', borderColor:'rgba(255,255,255,0.08)', borderWidth:1, titleColor:'#e8eaf0', bodyColor:'#6b7490', callbacks:{ label:ctx=>` ${ctx.parsed.y}%` } }
         },
         scales: {
-          y: {
-            min: 0, max: 100,
-            grid: { color: 'rgba(255,255,255,0.04)' },
-            ticks: { color: '#4a5070', font: { size: 9 }, callback: v => v+'%', maxTicksLimit: 4 }
-          },
-          x: {
-            grid: { display: false },
-            ticks: { color: '#4a5070', font: { size: 9 } }
-          }
+          y: { min:0, max:100, grid:{ color:'rgba(255,255,255,0.04)' }, ticks:{ color:'#4a5070', font:{size:9}, callback:v=>v+'%', maxTicksLimit:4 } },
+          x: { grid:{ display:false }, ticks:{ color:'#4a5070', font:{size:9} } }
         }
       }
     });
   });
 }
 
+// ── STREAK HEATMAP (28 days) ─────────────────────────────────────────────────
+function renderStreak() {
+  const grid   = document.getElementById('streak-grid');
+  const labels = document.getElementById('streak-labels');
+  const stat   = document.getElementById('streak-stat');
+  if (!grid) return;
+
+  const t = today();
+  const todayStr = dateKey(t);
+
+  // 28 cells: day[0] = 27 days ago, day[27] = today
+  const cells = [];
+  for (let i = 27; i >= 0; i--) {
+    const d = new Date(t.getTime() - i * 864e5);
+    cells.push(d);
+  }
+
+  let streakCount = 0;
+  let totalSessions = 0;
+  // count current streak (consecutive days with sessions ending today)
+  for (let i = cells.length - 1; i >= 0; i--) {
+    const n = lsGet('sess_' + dateKey(cells[i]), 0);
+    if (n > 0) { streakCount++; totalSessions += n; }
+    else if (dateKey(cells[i]) !== todayStr) break;
+    else break;
+  }
+
+  grid.innerHTML = '';
+  labels.innerHTML = '';
+
+  cells.forEach((d, idx) => {
+    const key = dateKey(d);
+    const n   = lsGet('sess_' + key, 0);
+    const isToday = key === todayStr;
+    const cell = document.createElement('div');
+    cell.className = 'streak-cell' + (isToday ? ' today-cell' : '');
+
+    if (n === 0) {
+      cell.style.background = isToday ? 'rgba(251,146,60,0.08)' : 'var(--surface2)';
+    } else if (n === 1) {
+      cell.style.background = 'rgba(74,222,128,0.25)';
+      cell.style.borderColor = 'rgba(74,222,128,0.4)';
+    } else if (n === 2) {
+      cell.style.background = 'rgba(74,222,128,0.5)';
+      cell.style.borderColor = 'rgba(74,222,128,0.65)';
+    } else {
+      cell.style.background = 'rgba(74,222,128,0.82)';
+      cell.style.borderColor = 'rgba(74,222,128,0.9)';
+    }
+    cell.title = `${d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}: ${n} session${n!==1?'s':''}`;
+    grid.appendChild(cell);
+
+    // label — show day number for every 7th cell + today
+    const lbl = document.createElement('div');
+    lbl.className = 'streak-day-lbl';
+    const dayNum = d.getDate();
+    if (isToday) { lbl.textContent = 'today'; lbl.style.color = 'var(--amber)'; }
+    else if (dayNum % 7 === 0 || idx === 0) { lbl.textContent = d.toLocaleDateString('en-GB',{day:'numeric',month:'short'}); }
+    labels.appendChild(lbl);
+  });
+
+  // streak stat
+  const totalToday = lsGet('sess_' + todayStr, 0);
+  const streakStr = streakCount > 0 ? `★ ${streakCount}-day streak` : '';
+  const todayStr2 = totalToday > 0 ? `${totalToday} session${totalToday!==1?'s':''} today` : 'No sessions yet today';
+  stat.textContent = [streakStr, todayStr2].filter(Boolean).join(' · ');
+  stat.style.color = streakCount >= 7 ? 'var(--maths)' : streakCount >= 3 ? 'var(--amber)' : 'var(--muted2)';
+}
+
 // ── 1-HOUR TIMER ─────────────────────────────────────────────────────────────
 const TIMER_TOTAL = 3600;
-let timerSecs     = TIMER_TOTAL;
-let timerRunning  = false;
+let timerSecs    = TIMER_TOTAL;
+let timerRunning = false;
 let timerInterval = null;
 
-function sessionsToday() {
-  return lsGet('sess_' + dateKey(today()), 0);
-}
+function sessionsToday() { return lsGet('sess_' + dateKey(today()), 0); }
 function incrementSessions() {
   lsSet('sess_' + dateKey(today()), sessionsToday() + 1);
+  renderStreak();
+  updateTimerUI();
 }
 
 function updateTimerUI() {
@@ -1218,10 +1490,9 @@ function toggleTimer() {
     timerInterval = setInterval(() => {
       timerSecs--;
       if (timerSecs <= 0) {
-        timerSecs = 0;
-        timerRunning = false;
-        clearInterval(timerInterval);
+        timerSecs = 0; timerRunning = false; clearInterval(timerInterval);
         incrementSessions();
+        showSessionLog(true); // auto-open log on timer completion
       }
       updateTimerUI();
     }, 1000);
@@ -1236,6 +1507,98 @@ function resetTimer() {
   updateTimerUI();
 }
 
+// ── SESSION LOG MODAL ─────────────────────────────────────────────────────────
+let slogTopics   = new Set();
+let slogConf     = 0;
+let slogFromTimer = false;
+
+function showSessionLog(fromTimer) {
+  slogFromTimer = !!fromTimer;
+  slogTopics    = new Set();
+  slogConf      = 0;
+
+  // sub text
+  const subText = document.getElementById('slog-sub-text');
+  if (subText) subText.textContent = fromTimer
+    ? '1-hour session complete. What did you cover?'
+    : 'What did you study? Select topics below.';
+
+  // session count checkbox visibility
+  const sessRow = document.getElementById('slog-sess-row');
+  if (sessRow) {
+    sessRow.style.display = fromTimer ? 'none' : 'flex';
+    const chk = document.getElementById('slog-count-sess');
+    if (chk) chk.checked = false;
+  }
+
+  renderSlogChips();
+  renderSlogConf();
+  document.getElementById('slog-overlay').classList.add('open');
+}
+
+function closeSessionLog() {
+  document.getElementById('slog-overlay').classList.remove('open');
+}
+
+function toggleSlogTopic(key) {
+  if (slogTopics.has(key)) slogTopics.delete(key);
+  else slogTopics.add(key);
+  renderSlogChips();
+}
+
+function renderSlogChips() {
+  const wrap = document.getElementById('slog-chips-wrap');
+  if (!wrap) return;
+  const subOrder = ['maths','econ','cs'];
+  const subCols  = { maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)' };
+  const subLabel = { maths:'Maths', econ:'Econ', cs:'CS' };
+
+  wrap.innerHTML = subOrder.map(sub => {
+    const gaps = PRIORITY_GAPS.filter(g => g.sub === sub);
+    const chips = gaps.map(g => {
+      const sel = slogTopics.has(g.key);
+      return `<span class="slog-chip${sel?' sel':''}" onclick="toggleSlogTopic('${g.key}')">${g.name}</span>`;
+    }).join('');
+    return `<div style="margin-bottom:6px">
+      <div class="slog-sub-lbl" style="color:${subCols[sub]}">${subLabel[sub]}</div>
+      <div class="slog-chips">${chips}</div>
+    </div>`;
+  }).join('');
+}
+
+function setSlogConf(n) {
+  slogConf = (slogConf === n) ? 0 : n;
+  renderSlogConf();
+}
+
+function renderSlogConf() {
+  [1,2,3].forEach(n => {
+    const btn = document.getElementById('slog-c'+n);
+    if (!btn) return;
+    btn.className = 'slog-conf-btn' + (slogConf === n ? ' act-'+n : '');
+  });
+}
+
+function submitSessionLog() {
+  if (slogTopics.size > 0) {
+    const state = lsGet('gap_state', {});
+    slogTopics.forEach(key => {
+      state[key] = { ...state[key], lastRevised: Date.now() };
+      if (slogConf > 0) state[key].confidence = slogConf;
+    });
+    lsSet('gap_state', state);
+    renderSmartGaps();
+    renderFocusCard();
+    updateMathsTopicsBar();
+  }
+  // if manual log and user wants to count as session
+  if (!slogFromTimer) {
+    const chk = document.getElementById('slog-count-sess');
+    if (chk && chk.checked) incrementSessions();
+  }
+  closeSessionLog();
+}
+
 // ── INIT ──────────────────────────────────────────────────────────────────────
 function init() {
   const t = today();
@@ -1245,11 +1608,14 @@ function init() {
 
   renderCountdowns();
   renderFocusCard();
+  autoRescheduleBacklog();   // slot older missed sessions before rendering
   renderToday();
   renderTomorrow();
   renderOverdueMini();
   renderWeek();
   renderSmartGaps();
+  updateMathsTopicsBar();
+  renderStreak();
   updateTimerUI();
 }
 
