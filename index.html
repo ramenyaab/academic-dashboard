@@ -1213,6 +1213,16 @@ function editGradeBounds(sub) {
 }
 
 // ── RENDER TODAY ──────────────────────────────────────────────────────────────
+function getTodayChecked(dateKey) {
+  return lsGet('tasks_done_' + dateKey, []);
+}
+function setTaskChecked(dateKey, idx, checked) {
+  const done = getTodayChecked(dateKey);
+  if (checked && !done.includes(idx)) done.push(idx);
+  if (!checked) { const p = done.indexOf(idx); if (p !== -1) done.splice(p, 1); }
+  lsSet('tasks_done_' + dateKey, done);
+}
+
 function renderToday() {
   const t = today();
   const key = dateKey(t);
@@ -1227,6 +1237,7 @@ function renderToday() {
     renderBonusSection();
     return;
   }
+  const checkedIdxs = getTodayChecked(key);
   sessions.forEach((s, i) => {
     const isTimetable = s.sub === 'college' || s.sub === 'am';
     const id = 'chk'+i;
@@ -1243,20 +1254,23 @@ function renderToday() {
         </div>
         ${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
     } else {
+      const isChecked = checkedIdxs.includes(i);
       item.innerHTML = `
-        <div class="task-check"><input type="checkbox" id="${id}"></div>
+        <div class="task-check"><input type="checkbox" id="${id}"${isChecked?' checked':''}></div>
         <div class="task-body">
           <div class="task-top">
             <span class="sub-badge ${badgeCls}">${s.sub||'—'}</span>
             ${s.hw?'<span class="sub-badge badge-hw">HW DUE</span>':''}
           </div>
-          <div class="task-name" id="lbl${i}">${s.label}</div>
+          <div class="task-name" id="lbl${i}"${isChecked?' class="done"':''}>${s.label}</div>
           ${s.detail?`<div class="task-detail">${s.detail}</div>`:''}
         </div>
         ${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
+      if (isChecked) item.classList.add('done-item');
       item.querySelector('input').addEventListener('change', function(){
         item.classList.toggle('done-item', this.checked);
         document.getElementById('lbl'+i).classList.toggle('done', this.checked);
+        setTaskChecked(key, i, this.checked);
       });
     }
     container.appendChild(item);
