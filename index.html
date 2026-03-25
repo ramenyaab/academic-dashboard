@@ -29,6 +29,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
 
+/* ── TOP BAR ── */
 .topbar {
   position: sticky; top: 0; z-index: 100;
   background: rgba(12,14,19,0.92);
@@ -49,6 +50,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   letter-spacing: 0.06em; white-space: nowrap;
 }
 
+/* ── COUNTDOWN STRIP ── */
 .cd-strip {
   display: grid; grid-template-columns: repeat(3,1fr);
   border-bottom: 1px solid var(--border);
@@ -71,12 +73,12 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .cd-bar { width: 100%; height: 3px; background: var(--border); border-radius: 2px; margin-top: 8px; overflow: hidden; }
 .cd-bar-fill { height: 100%; border-radius: 2px; }
 
+/* ── TABS ── */
 .tabs-nav {
   display: flex; gap: 0;
   border-bottom: 1px solid var(--border);
   padding: 0 28px;
   background: var(--bg);
-  overflow-x: auto;
 }
 .tab-btn {
   padding: 14px 20px;
@@ -85,15 +87,15 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   border-bottom: 2px solid transparent; margin-bottom: -1px;
   transition: color 0.15s, border-color 0.15s;
   display: flex; align-items: center; gap: 7px;
-  white-space: nowrap;
 }
 .tab-btn:hover { color: var(--text); }
 .tab-btn.active { color: var(--text); border-bottom-color: var(--amber); }
-.tab-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.tab-dot { width: 7px; height: 7px; border-radius: 50%; }
 
 .tab-pane { display: none; padding: 28px; max-width: 1200px; margin: 0 auto; }
 .tab-pane.active { display: block; }
 
+/* ── CARDS ── */
 .card {
   background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 22px 24px;
@@ -102,7 +104,13 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
   color: var(--muted); font-family: var(--mono); margin-bottom: 18px;
 }
+.section-label {
+  font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
+  color: var(--muted); font-family: var(--mono); margin-bottom: 12px; margin-top: 28px;
+}
+.section-label:first-child { margin-top: 0; }
 
+/* ── TODAY TASKS ── */
 .task-list { display: flex; flex-direction: column; gap: 8px; }
 .task-item {
   display: flex; align-items: flex-start; gap: 14px;
@@ -125,18 +133,14 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 20px;
   text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; flex-shrink: 0;
 }
-.badge-m      { background: rgba(74,222,128,0.15);  color: var(--maths); }
-.badge-e      { background: rgba(96,165,250,0.15);  color: var(--econ); }
-.badge-c      { background: rgba(251,191,36,0.15);  color: var(--cs); }
-.badge-nea    { background: rgba(192,132,252,0.15); color: var(--purple); }
-.badge-exam   { background: rgba(233,69,96,0.2);    color: var(--red); }
-.badge-rest   { background: rgba(74,80,112,0.3);    color: var(--muted2); }
-.badge-college{ background: rgba(74,80,112,0.3);    color: var(--muted2); }
+.badge-m { background: rgba(74,222,128,0.15); color: var(--maths); }
+.badge-e { background: rgba(96,165,250,0.15); color: var(--econ); }
+.badge-c { background: rgba(251,191,36,0.15); color: var(--cs); }
+.badge-nea { background: rgba(192,132,252,0.15); color: var(--purple); }
+.badge-hw { background: rgba(233,69,96,0.2); color: var(--red); }
+.badge-college { background: rgba(74,80,112,0.3); color: var(--muted2); }
 
-/* MIN/STRETCH pills */
-.pill-min     { display:inline-block; font-size:0.6rem; font-weight:700; padding:1px 7px; border-radius:3px; background:rgba(74,222,128,0.15); color:var(--maths); margin-right:5px; letter-spacing:0.05em; }
-.pill-stretch { display:inline-block; font-size:0.6rem; font-weight:700; padding:1px 7px; border-radius:3px; background:rgba(251,146,60,0.15); color:var(--amber); margin-right:5px; letter-spacing:0.05em; margin-top:4px; }
-
+/* ── TOMORROW PREVIEW ── */
 .tmr-list { display: flex; flex-direction: column; gap: 0; }
 .tmr-row {
   display: flex; align-items: flex-start; gap: 12px;
@@ -148,18 +152,18 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .tmr-name { font-size: 0.8rem; font-weight: 500; line-height: 1.35; }
 .tmr-detail { font-size: 0.71rem; color: var(--muted2); margin-top: 3px; }
 
+/* ── WEEK VIEW ── */
 .week-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
 .wday {
   background: var(--surface2); border-radius: 10px; padding: 16px;
   border: 1px solid var(--border); min-height: 120px;
+  transition: border-color 0.12s;
 }
 .wday.today-col { border-color: var(--amber); background: rgba(251,146,60,0.04); }
 .wday.deadline  { border-color: var(--red);   background: rgba(233,69,96,0.05); }
-.wday.exam-day  { border-color: var(--red);   background: rgba(233,69,96,0.05); }
 .wday-head { font-family: var(--mono); font-size: 0.65rem; margin-bottom: 10px; font-weight: 700; }
 .wday.today-col .wday-head { color: var(--amber); }
 .wday.deadline  .wday-head { color: var(--red); }
-.wday.exam-day  .wday-head { color: var(--red); }
 .wday-task {
   display: flex; align-items: flex-start; gap: 6px;
   font-size: 0.72rem; line-height: 1.35; margin-bottom: 6px; color: var(--text);
@@ -167,8 +171,9 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .wday-task:last-child { margin-bottom: 0; }
 .wday-task-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
 .wday-task.college-task { color: var(--muted); }
-.wday-task.exam-task { color: var(--red); font-weight: 600; }
+.wday-task.hw-task { color: var(--red); }
 
+/* ── SUBJECT STATUS ── */
 .subjects-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
 .subj-card {
   background: var(--surface); border-radius: var(--radius); padding: 22px 24px;
@@ -185,15 +190,16 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   display: inline-block; font-family: var(--mono); font-size: 0.62rem; font-weight: 700;
   padding: 2px 10px; border-radius: 20px; margin-bottom: 18px; letter-spacing: 0.06em;
 }
-.tag-critical { background: rgba(233,69,96,0.2);    color: var(--red); }
-.tag-protect  { background: rgba(96,165,250,0.15);  color: var(--econ); }
-.tag-target   { background: rgba(251,191,36,0.15);  color: var(--cs); }
+.tag-critical { background: rgba(233,69,96,0.2); color: var(--red); }
+.tag-protect  { background: rgba(96,165,250,0.15); color: var(--econ); }
+.tag-target   { background: rgba(251,191,36,0.15); color: var(--cs); }
 
 .bar-section { margin-bottom: 16px; }
 .bar-lbl { font-size: 0.7rem; color: var(--muted2); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
 .bar-lbl span { font-family: var(--mono); font-size: 0.65rem; }
 .bar { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 4px; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+
 .subj-note { font-size: 0.74rem; color: var(--muted2); line-height: 1.5; padding-top: 14px; border-top: 1px solid var(--border); }
 
 .gaps-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-top: 16px; }
@@ -204,63 +210,21 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .dot-hot { background: var(--red); }
 .dot-med { background: var(--amber); }
 
-/* ── SCHEDULE TAB ── */
-.schedule-wrap { display: flex; flex-direction: column; gap: 0; }
-.phase-sep {
-  font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase;
-  letter-spacing: 0.1em; color: var(--amber);
-  padding: 20px 0 8px; border-bottom: 1px solid var(--border2);
-  margin-bottom: 8px;
-}
-.sched-week {
-  border: 1px solid var(--border); border-radius: 10px;
-  margin-bottom: 6px; overflow: hidden;
-}
-.sched-week-head {
+.overdue-section { margin-top: 16px; }
+.od-list { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.od-item {
   display: flex; align-items: center; gap: 10px;
-  padding: 10px 16px; background: var(--surface2);
-  cursor: pointer; user-select: none;
+  padding: 11px 14px; background: var(--surface2);
+  border-radius: 8px; font-size: 0.78rem;
 }
-.sched-week-head:hover { background: var(--surface3); }
-.sched-wlabel { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; color: var(--text); min-width: 80px; }
-.sched-wdates { font-size: 0.72rem; color: var(--muted2); flex: 1; }
-.sched-pills { display: flex; gap: 4px; flex-wrap: wrap; }
-.sp { font-size: 0.58rem; font-weight: 700; padding: 2px 6px; border-radius: 3px; letter-spacing: 0.04em; }
-.sp-m { background: rgba(74,222,128,0.15);  color: var(--maths); }
-.sp-e { background: rgba(96,165,250,0.15);  color: var(--econ); }
-.sp-c { background: rgba(251,191,36,0.15);  color: var(--cs); }
-.sp-x { background: rgba(233,69,96,0.2);    color: var(--red); }
-.sp-n { background: rgba(192,132,252,0.15); color: var(--purple); }
-.sched-chev { font-size: 0.7rem; color: var(--muted); transition: transform 0.15s; }
-.sched-chev.open { transform: rotate(90deg); }
-.sched-body { display: none; border-top: 1px solid var(--border); }
-.sched-body.open { display: block; }
-.sched-day {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 8px 16px; border-bottom: 1px solid var(--border);
+.od-badge {
+  font-size: 0.58rem; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; flex-shrink: 0;
 }
-.sched-day:last-child { border-bottom: none; }
-.sched-day.exam-row { background: rgba(233,69,96,0.06); }
-.sched-day.eve-row  { background: rgba(251,146,60,0.03); }
-.sched-day.nea-row  { background: rgba(192,132,252,0.06); }
-.sched-dn { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; color: var(--muted2); min-width: 32px; padding-top: 3px; flex-shrink: 0; }
-.sched-dd { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); min-width: 52px; padding-top: 4px; flex-shrink: 0; }
-.sched-sessions { display: flex; flex-direction: column; gap: 4px; flex: 1; }
-.sched-sess { display: flex; align-items: baseline; gap: 7px; }
-.sched-tag { font-size: 0.58rem; font-weight: 700; padding: 1px 5px; border-radius: 3px; white-space: nowrap; flex-shrink: 0; letter-spacing: 0.04em; }
-.tag-m  { background: rgba(74,222,128,0.15);  color: var(--maths); }
-.tag-e  { background: rgba(96,165,250,0.15);  color: var(--econ); }
-.tag-c  { background: rgba(251,191,36,0.15);  color: var(--cs); }
-.tag-x  { background: rgba(233,69,96,0.2);    color: var(--red); }
-.tag-n  { background: rgba(192,132,252,0.15); color: var(--purple); }
-.tag-r  { background: rgba(74,80,112,0.3);    color: var(--muted2); }
-.sched-txt { font-size: 0.78rem; color: var(--text); line-height: 1.4; }
+.od-name { flex: 1; }
+.od-note { font-size: 0.68rem; color: var(--muted2); }
 
-/* Schedule done state */
-.sched-sess.sched-done .sched-txt { text-decoration: line-through; color: var(--muted); }
-.sched-check { width:14px; height:14px; accent-color:var(--maths); cursor:pointer; flex-shrink:0; margin-top:2px; }
-
-/* NEA */
+/* ── NEA ── */
 .nea-hero {
   display: flex; align-items: center; gap: 24px;
   background: rgba(74,222,128,0.06); border: 1px solid rgba(74,222,128,0.2);
@@ -269,6 +233,8 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .nea-big { font-family: var(--mono); font-size: 4rem; font-weight: 700; color: var(--maths); line-height: 1; }
 .nea-hero-info h2 { font-size: 1.3rem; font-weight: 700; color: var(--maths); margin-bottom: 4px; }
 .nea-hero-info p { font-size: 0.82rem; color: var(--muted2); }
+.nea-deadline { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-family: var(--mono); font-size: 0.72rem; color: var(--amber); }
+
 .nea-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .nea-row {
   display: flex; justify-content: space-between; align-items: center;
@@ -288,11 +254,13 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .uni-offer { font-family: var(--mono); font-size: 0.75rem; color: var(--econ); margin-bottom: 4px; }
 .uni-note { font-size: 0.7rem; color: var(--muted2); }
 
+/* ── FOOTER ── */
 .footer { padding: 20px 28px; text-align: center; font-family: var(--mono); font-size: 0.62rem; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 0.05em; }
 </style>
 </head>
 <body>
 
+<!-- ── TOP BAR ── -->
 <div class="topbar">
   <div class="topbar-left">
     <div>
@@ -304,6 +272,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <span class="nea-pill">✓ NEA Done · 52/70 · Grade B</span>
 </div>
 
+<!-- ── COUNTDOWN STRIP ── -->
 <div class="cd-strip">
   <div class="cd-item e">
     <div class="cd-num" id="cd-econ">—</div>
@@ -334,69 +303,81 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   </div>
 </div>
 
+<!-- ── TABS NAV ── -->
 <div class="tabs-nav">
-  <button class="tab-btn active" onclick="switchTab('today',this)">
+  <button class="tab-btn active" onclick="switchTab('today', this)">
     <span class="tab-dot" style="background:var(--amber)"></span> Today
   </button>
-  <button class="tab-btn" onclick="switchTab('week',this)">
+  <button class="tab-btn" onclick="switchTab('week', this)">
     <span class="tab-dot" style="background:var(--econ)"></span> This Week
   </button>
-  <button class="tab-btn" onclick="switchTab('schedule',this)">
-    <span class="tab-dot" style="background:var(--maths)"></span> Full Schedule
+  <button class="tab-btn" onclick="switchTab('subjects', this)">
+    <span class="tab-dot" style="background:var(--maths)"></span> Subjects
   </button>
-  <button class="tab-btn" onclick="switchTab('subjects',this)">
-    <span class="tab-dot" style="background:var(--muted2)"></span> Subjects
-  </button>
-  <button class="tab-btn" onclick="switchTab('nea',this)">
+  <button class="tab-btn" onclick="switchTab('nea', this)">
     <span class="tab-dot" style="background:var(--purple)"></span> NEA + Offers
   </button>
 </div>
 
-<!-- TODAY -->
+<!-- ══ TAB: TODAY ══ -->
 <div class="tab-pane active" id="tab-today">
   <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;">
+
     <div>
       <div class="card-title" id="today-title">Today</div>
-      <!-- PATCH: catch-up nudge banner -->
-      <div id="catchup-nudge" style="display:none"></div>
       <div class="task-list" id="today-tasks"></div>
     </div>
+
     <div>
       <div class="card-title" id="tmr-title">Tomorrow</div>
       <div class="card" style="padding:18px 20px;">
         <div class="tmr-list" id="tmr-tasks"></div>
       </div>
+
+      <!-- Overdue: missed this week -->
+      <div style="margin-top:20px">
+        <div class="card-title" style="color:var(--red)">⚠ Missed this week</div>
+        <div class="card" style="border-color:rgba(233,69,96,0.3);padding:18px 20px;">
+          <div id="overdue-mini"></div>
+        </div>
+      </div>
+      <!-- Overdue: older backlog -->
+      <div style="margin-top:14px">
+        <div class="card-title" style="color:var(--muted2)">📋 Older backlog</div>
+        <div class="card" style="border-color:rgba(74,80,112,0.4);padding:18px 20px;">
+          <div id="overdue-older"></div>
+        </div>
+      </div>
     </div>
+
   </div>
 </div>
 
-<!-- THIS WEEK -->
+<!-- ══ TAB: THIS WEEK ══ -->
 <div class="tab-pane" id="tab-week">
   <div class="card-title" id="week-title">Week</div>
   <div class="week-grid" id="week-grid"></div>
 </div>
 
-<!-- FULL SCHEDULE -->
-<div class="tab-pane" id="tab-schedule">
-  <div class="schedule-wrap" id="schedule-wrap"></div>
-</div>
-
-<!-- SUBJECTS — PATCH: updated accurate stats -->
+<!-- ══ TAB: SUBJECTS ══ -->
 <div class="tab-pane" id="tab-subjects">
+
   <div class="subjects-grid">
+    <!-- MATHS -->
     <div class="subj-card m">
       <div class="subj-name">Maths</div>
       <div class="subj-status-tag tag-critical">CRITICAL — A needed</div>
       <div class="bar-section">
-        <div class="bar-lbl">Topics with sessions done <span>~8 / 30+</span></div>
-        <div class="bar"><div class="bar-fill" style="width:26%;background:var(--maths)"></div></div>
+        <div class="bar-lbl">Topics revised <span>~2 / 30+</span></div>
+        <div class="bar"><div class="bar-fill" style="width:7%;background:var(--maths)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Real mock (Feb) <span>~20% · U</span></div>
+        <div class="bar-lbl">Full mock performance <span>~20% · U</span></div>
         <div class="bar"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
       </div>
-      <div class="subj-note">QMUL, Sussex &amp; City all require A in Maths. Pure 1 on 3 Jun. Pure topics front-loaded through Easter. Key gaps: trig integration, integration by parts, partial fractions, parametric, implicit diff.</div>
+      <div class="subj-note">QMUL, Sussex &amp; City all require A in Maths. Pure 1 paper first on 3 Jun — ~10 weeks of heavy revision needed. Start now.</div>
     </div>
+    <!-- ECON -->
     <div class="subj-card e">
       <div class="subj-name">Economics</div>
       <div class="subj-status-tag tag-protect">Protect A</div>
@@ -408,8 +389,9 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
         <div class="bar-lbl">Class foundation <span>Strong · pred. A</span></div>
         <div class="bar"><div class="bar-fill" style="width:72%;background:var(--econ)"></div></div>
       </div>
-      <div class="subj-note">Full spec covered in class. Revision = consolidation + exam technique. Key gap: MSC/MSB/MPC/MPB diagrams. MOPS essay structure. P1 on 11 May — earliest exam.</div>
+      <div class="subj-note">Strong foundation from class. Needs essay technique drilling — MOPS structure, K→AP→AP→AN for 4-mark, MSC/MSB diagrams. P1 on 11 May.</div>
     </div>
+    <!-- CS -->
     <div class="subj-card c">
       <div class="subj-name">Computer Science</div>
       <div class="subj-status-tag tag-target">B target</div>
@@ -418,86 +400,146 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
         <div class="bar"><div class="bar-fill" style="width:30%;background:var(--cs)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Practice mock (Mar) <span>57/90 · 63%</span></div>
-        <div class="bar"><div class="bar-fill" style="width:63%;background:var(--cs)"></div></div>
+        <div class="bar-lbl">Full mock (Feb) <span>20/90 · U</span></div>
+        <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
       </div>
-      <div class="subj-note">Up from 20/90 (U) in Feb to 57/90 in March practice mock. NEA 52/70 reduces pressure. Key gaps: Boolean algebra, LMC/Assembly, normalisation, push/pop pseudocode.</div>
+      <div class="subj-note">Large spec gaps. Boolean algebra, LMC/Assembly, networking are biggest holes. NEA 52/70 reduces pressure — focus on boosting written paper.</div>
     </div>
   </div>
 
+  <!-- PRIORITY GAPS -->
   <div class="gaps-card">
     <div class="card-title">Priority Gaps</div>
     <div class="gaps-grid">
       <div>
         <div class="gaps-col-title" style="color:var(--maths)">Maths</div>
+        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Inequalities (rational)</span></div>
         <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Trig integration</span></div>
         <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Integration by parts</span></div>
         <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Partial fractions</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Implicit differentiation</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Parametric equations</span></div>
         <div class="gap-row"><div class="gap-dot dot-med"></div><span>Inclined planes / friction</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Proof techniques</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Large data set + regression</span></div>
+        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Implicit differentiation</span></div>
+        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Parametric equations</span></div>
       </div>
       <div>
         <div class="gaps-col-title" style="color:var(--econ)">Economics</div>
         <div class="gap-row"><div class="gap-dot dot-hot"></div><span>MSC/MSB/MPC/MPB diagrams ⭐</span></div>
         <div class="gap-row"><div class="gap-dot dot-hot"></div><span>D&amp;S shifts + PED/PES</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Revenue/costs/profit (T1.6)</span></div>
+        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Price mechanism / efficiency</span></div>
         <div class="gap-row"><div class="gap-dot dot-med"></div><span>Govt intervention frameworks</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>T4 competition policy depth</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Financial sector + QE (T4.5)</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Trade policy / protectionism</span></div>
+        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Evaluation judgement technique</span></div>
+        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Behavioural economics</span></div>
       </div>
       <div>
         <div class="gaps-col-title" style="color:var(--cs)">Computer Science</div>
         <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Boolean algebra + logic gates</span></div>
         <div class="gap-row"><div class="gap-dot dot-hot"></div><span>LMC / Assembly</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Data types (binary/floating pt)</span></div>
         <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Foreign key (lost 4 marks)</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>OS scheduling + memory mgmt</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Compilation stages</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>FSMs + functional programming</span></div>
+        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Push/pop pseudocode</span></div>
+        <div class="gap-row"><div class="gap-dot dot-med"></div><span>BFS/DFS traversal</span></div>
+        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Compression + ISR</span></div>
+        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Normalisation 1NF→3NF</span></div>
       </div>
     </div>
   </div>
+
+  <!-- OVERDUE -->
+  <div class="overdue-section">
+    <div class="card-title" style="color:var(--red)">⚠ Overdue — Week beginning 9 March</div>
+    <div class="od-list">
+      <div class="od-item"><span class="od-badge badge-m">Maths</span><span class="od-name">Inequalities</span><span class="od-note">due 9 Mar · cold test first</span></div>
+      <div class="od-item"><span class="od-badge badge-m">Maths</span><span class="od-name">Graphs &amp; transformations</span><span class="od-note">due 10 Mar</span></div>
+      <div class="od-item"><span class="od-badge badge-m">Maths</span><span class="od-name">Radians, arc length, sector area</span><span class="od-note">due 12 Mar</span></div>
+      <div class="od-item"><span class="od-badge badge-m">Maths</span><span class="od-name">Chain rule + connected rates</span><span class="od-note">due 15 Mar</span></div>
+      <div class="od-item"><span class="od-badge badge-e">Econ</span><span class="od-name">D&amp;S, PED, PES, tax incidence</span><span class="od-note">all W1 sessions missed</span></div>
+      <div class="od-item"><span class="od-badge badge-e">Econ</span><span class="od-name">Price mechanism</span><span class="od-note">due 13 Mar</span></div>
+      <div class="od-item"><span class="od-badge badge-c">CS</span><span class="od-name">Foreign key definition</span><span class="od-note">lost 4 marks twice — fix this week</span></div>
+      <div class="od-item"><span class="od-badge badge-c">CS</span><span class="od-name">Push pseudocode (stack)</span><span class="od-note">top pointer logic wrong</span></div>
+      <div class="od-item"><span class="od-badge badge-c">CS</span><span class="od-name">Floating point positive</span><span class="od-note">direction error on mock</span></div>
+    </div>
+  </div>
+
 </div>
 
-<!-- NEA + OFFERS -->
+<!-- ══ TAB: NEA + OFFERS ══ -->
 <div class="tab-pane" id="tab-nea">
+
   <div class="nea-hero">
     <div class="nea-big">52</div>
     <div class="nea-hero-info">
       <h2>Grade B · OCR H446 NEA</h2>
-      <p>NEA_Final_v4.docx · Submitted 27 March 2026</p>
-      <div style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-family:var(--mono);font-size:0.72rem;color:var(--maths)">✓ Submitted</div>
+      <p>NEA_Final_v4.docx · Final human tweaks then submit</p>
+      <div class="nea-deadline">⚠ Deadline: Friday 27 March 2026</div>
     </div>
   </div>
 
   <div class="card-title">Breakdown by Section</div>
   <div class="nea-breakdown">
-    <div class="nea-row strong"><span class="nea-row-name">Analysis</span><span class="nea-row-score" style="color:var(--maths)">8 / 10</span></div>
-    <div class="nea-row strong"><span class="nea-row-name">Design</span><span class="nea-row-score" style="color:var(--maths)">12 / 15</span></div>
-    <div class="nea-row strong"><span class="nea-row-name">Development — iterative</span><span class="nea-row-score" style="color:var(--maths)">12 / 15</span></div>
-    <div class="nea-row strong"><span class="nea-row-name">Development — testing</span><span class="nea-row-score" style="color:var(--maths)">8 / 10</span></div>
-    <div class="nea-row strong"><span class="nea-row-name">Testing</span><span class="nea-row-score" style="color:var(--maths)">4 / 5</span></div>
-    <div class="nea-row weak" style="border:1px solid rgba(251,146,60,0.3)"><span class="nea-row-name">Evaluation ⚡ weakest</span><span class="nea-row-score" style="color:var(--amber)">8 / 15</span></div>
+    <div class="nea-row strong">
+      <span class="nea-row-name">Analysis</span>
+      <span class="nea-row-score" style="color:var(--maths)">8 / 10</span>
+    </div>
+    <div class="nea-row strong">
+      <span class="nea-row-name">Design</span>
+      <span class="nea-row-score" style="color:var(--maths)">12 / 15</span>
+    </div>
+    <div class="nea-row strong">
+      <span class="nea-row-name">Development — iterative</span>
+      <span class="nea-row-score" style="color:var(--maths)">12 / 15</span>
+    </div>
+    <div class="nea-row strong">
+      <span class="nea-row-name">Development — testing</span>
+      <span class="nea-row-score" style="color:var(--maths)">8 / 10</span>
+    </div>
+    <div class="nea-row strong">
+      <span class="nea-row-name">Testing</span>
+      <span class="nea-row-score" style="color:var(--maths)">4 / 5</span>
+    </div>
+    <div class="nea-row weak" style="border:1px solid rgba(251,146,60,0.3)">
+      <span class="nea-row-name">Evaluation ⚡ weakest</span>
+      <span class="nea-row-score" style="color:var(--amber)">8 / 15</span>
+    </div>
   </div>
 
   <div style="margin-top:28px">
     <div class="card-title">University Offers</div>
     <div class="uni-grid">
-      <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">QMUL</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">Non-negotiable A requirement</div></div>
-      <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">Sussex</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">Non-negotiable A requirement</div></div>
-      <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">City</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">Non-negotiable A requirement</div></div>
-      <div class="uni-card" style="border-top:3px solid var(--econ)"><div class="uni-name">Exeter</div><div class="uni-offer">BBB</div><div class="uni-note">No specific subject requirement</div></div>
-      <div class="uni-card" style="border-top:3px solid var(--econ)"><div class="uni-name">Reading</div><div class="uni-offer">BCC</div><div class="uni-note">Insurance — achievable</div></div>
+      <div class="uni-card" style="border-top:3px solid var(--maths)">
+        <div class="uni-name">QMUL</div>
+        <div class="uni-offer">ABB + A in Maths</div>
+        <div class="uni-note">Non-negotiable A requirement</div>
+      </div>
+      <div class="uni-card" style="border-top:3px solid var(--maths)">
+        <div class="uni-name">Sussex</div>
+        <div class="uni-offer">ABB + A in Maths</div>
+        <div class="uni-note">Non-negotiable A requirement</div>
+      </div>
+      <div class="uni-card" style="border-top:3px solid var(--maths)">
+        <div class="uni-name">City</div>
+        <div class="uni-offer">ABB + A in Maths</div>
+        <div class="uni-note">Non-negotiable A requirement</div>
+      </div>
+      <div class="uni-card" style="border-top:3px solid var(--econ)">
+        <div class="uni-name">Exeter</div>
+        <div class="uni-offer">BBB</div>
+        <div class="uni-note">No specific subject requirement</div>
+      </div>
+      <div class="uni-card" style="border-top:3px solid var(--econ)">
+        <div class="uni-name">Reading</div>
+        <div class="uni-offer">BCC</div>
+        <div class="uni-note">Insurance — achievable</div>
+      </div>
       <div class="uni-card" style="border-top:3px solid var(--border2);background:rgba(74,80,112,0.12)">
         <div class="uni-name" style="color:var(--muted2)">Outcome paths</div>
-        <div style="font-size:0.72rem;color:var(--muted2);margin-top:6px;line-height:1.6">A: A in Maths → QMUL/Sussex/City<br>B: Maths B → Exeter<br>C: Maths C → Reading (insurance)</div>
+        <div style="font-size:0.72rem;color:var(--muted2);margin-top:6px;line-height:1.6">
+          A: A in Maths → QMUL/Sussex/City<br>
+          B: Maths B → Exeter<br>
+          C: Maths C → Reading (insurance)
+        </div>
       </div>
     </div>
   </div>
+
 </div>
 
 <div class="footer">A in Maths is non-negotiable · QMUL/Sussex/City all require it · every session counts</div>
@@ -505,492 +547,57 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 <script>
 // ─────────────────────────────────────────────────────────────────────────────
 // SESSION DATA — keyed by YYYY-MM-DD
+// Edit entries here. Dashboard auto-renders from today's date.
 // ─────────────────────────────────────────────────────────────────────────────
 const SESSIONS = {
+  '2026-03-21': [
+    { sub:'nea', label:'NEA tweaks', detail:'Read through, humanise, polish wording. Deadline 27 Mar.' },
+  ],
+  '2026-03-22': [
+    { sub:'cs',     hw:true, label:'HW — CS: Boolean algebra + architecture', dur:'~2hrs',   detail:'Watch 3 Craig & Dave videos, answer Boolean_and_architecture_questions.pdf, mark, upload. Due Mon 9am.' },
+    { sub:'econ',   hw:true, label:'HW — Econ: Paper 3 competition topics',   dur:'~1.5hrs', detail:'Revise 2.1, 2.2.2, 2.2.3, 2.3.1, 4.1.1. Answer revision Qs + info sheet comprehension. Upload. Due Mon 9am.' },
+    { sub:'maths',  label:'Maths: Graphs & transformations',    dur:'1.5hrs', detail:'Cold test first. 4 Qs total, mark all. Translations f(x±a), stretches, reflections, modulus.' },
+    { sub:'maths',  label:'Maths: Inverse trig + small angle',  dur:'1hr',    detail:'Write arcsin/arccos/arctan domains from memory. 2 small angle past paper Qs. Mark.' },
+    { sub:'econ',   label:'Econ: D&S + price mechanism',        dur:'1.5hrs', detail:'If energy allows. Draw shifts, PED formula, 1 four-mark Q. Then price mechanism definitions + 1 Q.' },
+    { sub:'cs',     label:'CS: Foreign key + push pseudocode',  dur:'30min',  detail:'Only if HW done. Foreign key ×5 from memory. Push pseudocode from scratch (array, top pointer, overflow check).' },
+  ],
   '2026-03-23': [
     { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'' },
-    { sub:'maths', label:'Maths (eve): Partial fractions', dur:'~1hr', detail:'Decomposition for standard + repeated factors. 2 Qs MIN.' },
+    { sub:'maths',   label:'Maths (eve): Partial fractions', dur:'~1hr', detail:'Decomposition for standard + repeated factors. 2 Qs MIN.' },
   ],
   '2026-03-24': [
-    { sub:'maths', label:'Maths: Parametric equations', dur:'2hrs', detail:'Sketching + Cartesian conversion. 2 Qs MIN. 3 more Qs STRETCH.' },
-    { sub:'econ',  label:'Econ: Market failure — externalities', dur:'1hr', detail:'Negative/positive externality diagrams (MSC>MPC, MSB>MPB). 1 four-mark Q MIN. Draw all four diagrams from memory STRETCH.' },
-    { sub:'cs',    label:'CS: Trees/graphs + hash tables', dur:'1hr', detail:'Hash function, collision, chaining. 1 past paper Q MIN. 2 Qs STRETCH.' },
+    { sub:'maths', label:'Maths: Parametric equations',         dur:'2hrs',  detail:'Sketching + Cartesian conversion. 2 Qs MIN.' },
+    { sub:'econ',  label:'Econ: Market failure — externalities',dur:'1hr',   detail:'Negative/positive externality diagrams (MSC>MPC, MSB>MPB). 1 four-mark Q.' },
+    { sub:'cs',    label:'CS: Trees/graphs + hash tables',      dur:'1hr',   detail:'Hash function, collision, chaining. 1 past paper Q.' },
   ],
   '2026-03-25': [
     { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',      label:'CS (eve): Merge sort + SQL basics', dur:'~1hr', detail:'Trace merge sort on 6 numbers. SELECT/WHERE/ORDER BY syntax. 1 Q each MIN.' },
+    { sub:'cs',      label:'CS (eve): Merge sort + SQL basics', dur:'~1hr',  detail:'Trace merge sort on 6 numbers. SELECT/WHERE/ORDER BY syntax. 1 Q each.' },
   ],
   '2026-03-26': [
     { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'nea',     label:'NEA (afternoon + eve): Final edits', dur:'~3hrs', detail:'Final polish, check all placeholders resolved, read-through MIN.' },
+    { sub:'maths',   label:'Maths (eve): Parametric diff + integration', dur:'~1hr', detail:'dy/dx = (dy/dt)/(dx/dt). 2 Qs MIN.' },
   ],
   '2026-03-27': [
-    { sub:'nea',   label:'⚠ SUBMIT NEA — Deadline today', detail:'NEA_Final_v4.docx — submit before midnight MIN.' },
-    { sub:'maths', label:'Maths: Parametric practice', dur:'1hr', detail:'2 timed past paper Qs MIN. Mark immediately.' },
-    { sub:'econ',  label:'Econ: Public goods + info failure', dur:'1hr', detail:'Non-excludable/non-rival, asymmetric info. 1 four-mark Q MIN.' },
-    { sub:'cs',    label:'CS: Sort + SQL practice', dur:'1hr', detail:'1 merge sort trace Q + 1 SQL Q timed MIN.' },
+    { sub:'nea',   hw:true, label:'⚠ SUBMIT NEA — Deadline today', detail:'NEA_Final_v4.docx — do not miss this.' },
+    { sub:'maths', label:'Maths: Parametric practice',           dur:'1hr', detail:'2 timed past paper Qs. Mark immediately.' },
+    { sub:'econ',  label:'Econ: Public goods + info failure',    dur:'1hr', detail:'Non-excludable/non-rival, asymmetric info. 1 four-mark Q.' },
+    { sub:'cs',    label:'CS: Sort + SQL practice',              dur:'1hr', detail:'1 merge sort trace Q + 1 SQL Q timed. Mark both.' },
+    { sub:'maths', label:'Maths (eve): Implicit differentiation',dur:'1hr', detail:'2 implicit equations, chain rule on y terms. 1 past paper Q.' },
   ],
   '2026-03-28': [
-    { sub:'rest', label:'Rest day — Easter starts', detail:'NEA submitted. Rest.' },
+    { sub:'econ',  label:'Econ: Govt intervention',  dur:'2hrs', detail:'Tax, subsidy, regulation, price controls. Diagrams + welfare loss. 1 six-mark Q.' },
+    { sub:'am',    label:'AM 1hr', detail:'Continue current plan.' },
   ],
   '2026-03-29': [
-    { sub:'maths', label:'Maths (am): Inequalities (overdue)', dur:'2hrs', detail:'Cold test first. 2 Qs MIN. Rational inequalities — do NOT multiply both sides by unknown-sign expression. 2 more harder Qs STRETCH.' },
-    { sub:'cs',    label:'CS (pm): Boolean algebra intro', dur:'2hrs', detail:'Logic gates, truth tables, De Morgan\'s. 1 past paper Q MIN. K-map simplification STRETCH.' },
-  ],
-  '2026-03-30': [
-    { sub:'maths', label:'Maths (am): Graphs + transformations', dur:'3hrs', detail:'f(x±a), stretches, reflections, modulus. 3 past paper Qs MIN.' },
-    { sub:'cs',    label:'CS (pm): Boolean algebra — Karnaugh maps + flip-flops + adders', dur:'3hrs', detail:'K-maps simplification, D-type flip-flops, half adder, full adder. 1 past paper Q MIN. 2 Qs STRETCH.' },
-  ],
-  '2026-03-31': [
-    { sub:'maths', label:'Maths (am): Radians, arc length, sector area', dur:'3hrs', detail:'Convert degrees/radians, arc length s=rθ, sector area A=½r²θ. 3 Qs MIN.' },
-    { sub:'cs',    label:'CS (pm): LMC / Assembly language', dur:'3hrs', detail:'LMC instruction set: ADD, SUB, STA, LDA, BRA, BRZ, BRP, INP, OUT, HLT. Write + trace simple programs. 1 program MIN. 2 programs STRETCH.' },
-  ],
-  '2026-04-01': [
-    { sub:'maths', label:'Maths (am): Chain rule + connected rates + first principles', dur:'3hrs', detail:'Chain rule on composite functions. Connected rates. First principles. 3 Qs MIN.' },
-    { sub:'econ',  label:'Econ (pm): D&S, PED, PES, tax incidence', dur:'3hrs', detail:'Demand/supply shifts, elasticity formulas, tax incidence diagrams. 2 Qs MIN. Essay-style Q STRETCH.' },
-  ],
-  '2026-04-02': [
-    { sub:'maths', label:'Maths (am): Trig identities, double angles, trig proofs', dur:'3hrs', detail:'sin²+cos²=1, sec²=1+tan², double angle formulae. 3 Qs MIN.' },
-    { sub:'cs',    label:'CS (pm): Data types — binary, hex, two\'s complement, floating point', dur:'3hrs', detail:'Binary↔hex↔denary, sign+magnitude, two\'s complement, floating point normalisation. 2 Qs MIN. 2 more Qs STRETCH.' },
-  ],
-  '2026-04-03': [
-    { sub:'maths', label:'Maths (am): Trig equations + harmonic form', dur:'3hrs', detail:'Solve equations in given intervals, r·cos(θ±α) and r·sin(θ±α) forms. 3 Qs MIN.' },
-    { sub:'econ',  label:'Econ (pm): Market structures + entrepreneurship/stakeholders', dur:'3hrs', detail:'PC, monopoly, oligopoly features. Business objectives. 2 Qs MIN. Essay-style Q STRETCH.' },
-  ],
-  '2026-04-04': [
-    { sub:'maths', label:'Maths (am): Partial fractions (full)', dur:'3hrs', detail:'Linear, repeated, improper, algebraic long division. 3 Qs MIN.' },
-    { sub:'cs',    label:'CS (pm): Data structures — stacks, queues, linked lists, arrays', dur:'3hrs', detail:'Create, traverse, add, remove from each. Push/pop. Enqueue/dequeue. 2 Qs MIN. Linked list traversal STRETCH.' },
-  ],
-  '2026-04-05': [
-    { sub:'maths', label:'Maths (am): Parametric equations + parametric differentiation', dur:'3hrs', detail:'Cartesian conversion, dy/dx=(dy/dt)/(dx/dt), stationary points. 3 Qs MIN.' },
-    { sub:'econ',  label:'Econ (pm): Labour markets — MRP, monopsony, min wage, global labour', dur:'3hrs', detail:'MRP theory, monopsony diagram, national min wage effects. 2 Qs MIN. Essay-style Q STRETCH.' },
-  ],
-  '2026-04-06': [
-    { sub:'maths', label:'Maths (am): Implicit differentiation', dur:'3hrs', detail:'Differentiate implicitly, find dy/dx, stationary points. 3 Qs MIN.' },
-    { sub:'cs',    label:'CS (pm): Push/pop + stack/queue pseudocode', dur:'3hrs', detail:'Write push/pop from scratch with overflow/underflow. 2 Qs MIN. Enqueue/dequeue with front/rear pointers STRETCH.' },
-  ],
-  '2026-04-07': [
-    { sub:'maths', label:'Maths (am): Integration by parts (incl. repeated)', dur:'3hrs', detail:'∫u·dv = uv − ∫v·du. Repeated application. ∫ln(x)dx. 3 Qs MIN.' },
-    { sub:'econ',  label:'Econ (pm): Market failure — MSC/MSB/MPC/MPB diagrams depth', dur:'3hrs', detail:'Draw all four-line diagrams from memory. Welfare loss triangles. 2 Qs MIN. Full essay Q STRETCH.' },
-  ],
-  '2026-04-08': [
-    { sub:'maths', label:'Maths (am): Trig integration', dur:'3hrs', detail:'∫sin²x, ∫cos²x using double angle. Trig substitution. 3 Qs MIN.' },
-    { sub:'cs',    label:'CS (pm): Networking — TCP/IP, DNS, LANs/WANs, packet switching, security', dur:'3hrs', detail:'TCP/IP stack layers, DNS, LAN vs WAN, packet vs circuit switching, firewalls, encryption. 2 Qs MIN. 2 more Qs STRETCH.' },
-  ],
-  '2026-04-09': [
-    { sub:'maths', label:'Maths (am): Integration by substitution + ln|f(x)| forms', dur:'3hrs', detail:'Choose u, substitute, integrate, back-substitute. ∫f\'(x)/f(x)dx = ln|f(x)|+c. 3 Qs MIN.' },
-    { sub:'econ',  label:'Econ (pm): Govt intervention — taxes, subsidies, price controls, regulation', dur:'3hrs', detail:'Per-unit tax diagrams, subsidy effects, price floor/ceiling. Govt failure. 2 Qs MIN. Essay STRETCH.' },
-  ],
-  '2026-04-10': [
-    { sub:'maths', label:'Maths (am): Vectors (2D + 3D)', dur:'3hrs', detail:'Column vectors, i/j/k notation, magnitude, unit vectors, position vectors. 3 Qs MIN.' },
-    { sub:'cs',    label:'CS (pm): Hardware — FDE cycle, ALU/registers, CISC/RISC, Von Neumann/Harvard, pipelining', dur:'3hrs', detail:'FDE cycle, ALU/ACC/PC/MAR/MDR/CIR, clock speed/cores/cache, pipelining, CISC vs RISC. 2 Qs MIN. 2 more Qs STRETCH.' },
-  ],
-  '2026-04-11': [
-    { sub:'maths', label:'Maths (am): Proof — deduction, exhaustion, contradiction', dur:'3hrs', detail:'Proof by deduction, exhaustion, contradiction. Prove irrationality of √2. 3 Qs MIN.' },
-    { sub:'cs',    label:'CS (pm): OS (scheduling, memory, interrupts) + compression/encryption/hashing', dur:'3hrs', detail:'Round robin/SJF/FCFS scheduling, paging/segmentation/virtual memory, ISR. Lossy/lossless compression, hashing. 2 Qs MIN. 2 more Qs STRETCH.' },
-  ],
-  '2026-04-12': [
-    { sub:'maths', label:'Maths (am): Numerical methods — Newton-Raphson, iterative, trapezium rule', dur:'3hrs', detail:'Newton-Raphson formula + failure modes. Iteration, cobweb/staircase. Trapezium rule. 3 Qs MIN.' },
-    { sub:'econ',  label:'Econ (pm): Exchange rates + international trade', dur:'3hrs', detail:'Exchange rate determination, appreciation/depreciation, comparative advantage, J-curve. 2 Qs MIN. Essay STRETCH.' },
-  ],
-  '2026-04-13': [
-    { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'Back at college.' },
-    { sub:'maths', label:'Maths (eve): Binomial expansion + sequences/series verify', dur:'1.5hrs', detail:'Binomial expansion (positive + general n). Sigma notation — quick verify. 2 Qs MIN.' },
-  ],
-  '2026-04-14': [
-    { sub:'maths', label:'Maths (am): Differential equations (separable variables)', dur:'3hrs', detail:'Separate variables, integrate both sides, particular solutions. 3 Qs MIN.' },
-    { sub:'econ',  label:'Econ (pm): Poverty, inequality, Gini/Lorenz + emerging economies', dur:'3hrs', detail:'Lorenz curve, Gini coefficient, relative/absolute poverty. 2 Qs MIN. Essay STRETCH.' },
-  ],
-  '2026-04-15': [
-    { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',    label:'CS (eve): OOP + functional programming', dur:'1.5hrs', detail:'Classes, objects, inheritance, encapsulation, polymorphism. Map/filter/reduce. 1 Q MIN. Write actual OOP code STRETCH.' },
-  ],
-  '2026-04-16': [
-    { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'maths', label:'Maths (eve): Volumes of revolution + area between curves', dur:'1.5hrs', detail:'π∫y²dx about x-axis, area between two curves. 2 Qs MIN.' },
-  ],
-  '2026-04-17': [
-    { sub:'maths', label:'Maths (am): Past paper drill', dur:'3hrs', detail:'Full set of past paper Qs — weakest topics only. Mark all MIN.' },
-    { sub:'econ',  label:'Econ (pm): Globalisation — trade blocs, WTO, tariffs/quotas, protectionism, MNCs', dur:'3hrs', detail:'Trade liberalisation vs protectionism, WTO, trade blocs, tariffs/quotas/subsidies, MNC impact. 2 Qs MIN. Essay STRETCH.' },
-  ],
-  '2026-04-18': [
-    { sub:'maths', label:'Maths (am): Past paper drill', dur:'3hrs', detail:'Continue drilling weakest topics MIN.' },
-    { sub:'cs',    label:'CS (pm): SQL + foreign keys + ACID + referential integrity', dur:'3hrs', detail:'SQL: SELECT/INSERT/UPDATE/DELETE/JOIN. Foreign keys, referential integrity, ACID, transaction processing, record locking. 2 Qs MIN. 2 more Qs STRETCH.' },
-  ],
-  '2026-04-19': [
-    { sub:'maths', label:'Maths (am): Weakest topic catch-up', dur:'3hrs', detail:'Review errors from week. Re-drill weakest area MIN.' },
-    { sub:'econ',  label:'Econ (pm): P1 past paper questions', dur:'3hrs', detail:'Timed P1 questions. Mark. Log gaps MIN.' },
-  ],
-  '2026-04-20': [
-    { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'' },
-    { sub:'maths', label:'Maths (eve): Stats — sampling + large data set + data presentation', dur:'1.5hrs', detail:'Sampling methods. Large data set context. Histograms, box plots. 2 Qs MIN.' },
-  ],
-  '2026-04-21': [
-    { sub:'maths', label:'Maths (am): Stats — correlation, regression, summary statistics', dur:'3hrs', detail:'PMCC, regression lines y on x, interpolation vs extrapolation. 3 Qs MIN.' },
-    { sub:'econ',  label:'Econ (pm): AD/AS model + macro objectives', dur:'3hrs', detail:'AD/AS diagram, shifts, SRAS/LRAS. Macro objectives: growth, inflation, unemployment, BOP. 2 Qs MIN. Essay STRETCH.' },
-  ],
-  '2026-04-22': [
-    { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',    label:'CS (eve): Compilation stages + linkers/loaders', dur:'1.5hrs', detail:'Lexical analysis, syntax analysis, semantic analysis, code generation, optimisation. 1 Q MIN. 2 Qs STRETCH.' },
-  ],
-  '2026-04-23': [
-    { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'maths', label:'Maths (eve): Stats — normal + binomial distributions', dur:'1.5hrs', detail:'Normal distribution Z-scores. Binomial B(n,p). Normal approximation to binomial. 2 Qs MIN.' },
-  ],
-  '2026-04-24': [
-    { sub:'maths', label:'Maths (am): Stats — hypothesis testing', dur:'3hrs', detail:'One/two-tailed tests, critical regions, p-values, Type I/II errors. 3 Qs MIN.' },
-    { sub:'econ',  label:'Econ (pm): Fiscal + monetary + supply-side policy instruments', dur:'3hrs', detail:'Fiscal: taxation/govt spending. Monetary: interest rates/QE. Supply-side: deregulation/privatisation. 2 Qs MIN. Essay STRETCH.' },
-  ],
-  '2026-04-25': [
-    { sub:'maths', label:'Maths (am): Mech — quantities/units + SUVAT + projectiles + vector kinematics', dur:'3hrs', detail:'Base/derived units. SUVAT equations, projectile motion. Velocity/acceleration as vectors. 3 Qs MIN.' },
-    { sub:'cs',    label:'CS (pm): Algorithms — BFS/DFS, Dijkstra, A*, Big-O', dur:'3hrs', detail:'BFS vs DFS traversal. Dijkstra\'s shortest path. A* algorithm. Big-O notation. 2 Qs MIN. 2 more Qs STRETCH.' },
-  ],
-  '2026-04-26': [
-    { sub:'maths', label:'Maths (am): Mech — forces, Newton\'s laws, inclined planes, friction', dur:'3hrs', detail:'Resolving forces, F=ma, inclined planes, F≤μR, limiting friction. 3 Qs MIN.' },
-    { sub:'econ',  label:'Econ (pm): P1 timed essay practice', dur:'3hrs', detail:'Full timed 12-mark or 20-mark P1 essay. Mark against MOPS structure MIN.' },
-  ],
-  '2026-04-27': [
-    { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'' },
-    { sub:'maths', label:'Maths (eve): Mech — connected particles + moments', dur:'1.5hrs', detail:'Particles over pulley. Moments: turning effects, uniform rod, equilibrium, reactions. 2 Qs MIN.' },
-  ],
-  '2026-04-28': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full past paper under exam conditions. Mark. Log errors MIN.' },
-    { sub:'econ',  label:'Econ (pm): P1 full past paper timed', dur:'3hrs', detail:'Full timed P1 paper. Mark MIN.' },
-  ],
-  '2026-04-29': [
-    { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',    label:'CS (eve): Sorting algorithms + web technologies', dur:'1.5hrs', detail:'Bubble/insertion/merge/quick sort traces + complexity. 1 Q MIN. HTML/CSS/JS basics, PageRank STRETCH.' },
-  ],
-  '2026-04-30': [
-    { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'econ',  label:'Econ (eve): P1 mark scheme review + gap fix', dur:'1.5hrs', detail:'Go through all errors from 28 Apr paper. Fix specific gaps MIN.' },
-  ],
-  '2026-05-01': [
-    { sub:'maths', label:'Maths (am): Weakest topics drill', dur:'3hrs', detail:'From past paper errors — drill specific question types MIN.' },
-    { sub:'econ',  label:'Econ (pm): T4 depth — barriers to entry, oligopoly, price discrimination, contestability', dur:'3hrs', detail:'Barriers to entry, game theory/Nash equilibrium, price discrimination degrees, contestable markets, CMA/Ofgem. 2 Qs MIN. Essay STRETCH.' },
-  ],
-  '2026-05-02': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark. Log errors MIN.' },
-    { sub:'cs',    label:'CS (pm): P2 programming practice', dur:'3hrs', detail:'Write and trace actual code. OOP problem. Algorithm implementation MIN.' },
-  ],
-  '2026-05-03': [
-    { sub:'econ',  label:'Econ (all day): T1 gaps — revenue/costs/profit + credit/banks + market research/digital economy', dur:'6hrs', detail:'Revenue/costs/profit: TR, TC, AC, breakeven. Credit: role of banks, BoE, sources of finance. Market research: primary/secondary, digital economy. 3 Qs MIN. 2 essays STRETCH.' },
-  ],
-  '2026-05-04': [
-    { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'' },
-    { sub:'econ',  label:'Econ (eve): P1 timed essay + mark', dur:'1.5hrs', detail:'One full timed essay. Mark strictly MIN.' },
-  ],
-  '2026-05-05': [
-    { sub:'econ',  label:'Econ (am): P1 full past paper timed', dur:'3hrs', detail:'Second full timed P1 paper MIN.' },
-    { sub:'maths', label:'Maths (pm): Drill', dur:'3hrs', detail:'Drill weakest pure topics from recent papers MIN.' },
-  ],
-  '2026-05-06': [
-    { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'econ',  label:'Econ (eve): P1 gap fix + diagrams', dur:'1.5hrs', detail:'Target specific diagram weaknesses from recent papers MIN.' },
-  ],
-  '2026-05-07': [
-    { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'maths', label:'Maths (eve): Full past paper', dur:'1.5hrs', detail:'Past paper — focus on stats/mechanics MIN.' },
-  ],
-  '2026-05-08': [
-    { sub:'econ',  label:'Econ (am): P1 weak topics + logs/exponentials verify', dur:'3hrs', detail:'Quick verify on logs/exponentials. Target remaining weak topics MIN.' },
-    { sub:'cs',    label:'CS (pm): FSMs + computational thinking', dur:'3hrs', detail:'Finite state machines: states, transitions, accepting states, FSM diagrams. Computational thinking: abstraction, decomposition. 2 Qs MIN. 2 more Qs STRETCH.' },
-  ],
-  '2026-05-09': [
-    { sub:'econ',  label:'Econ (am): P1 final read-through + diagrams', dur:'3hrs', detail:'All key diagrams from memory. Key model definitions. Past essay plans MIN.' },
-    { sub:'maths', label:'Maths (pm): Drill', dur:'3hrs', detail:'Drill weakest topics MIN.' },
-  ],
-  '2026-05-10': [
-    { sub:'exam',  label:'⚠ Exam eve — Econ P1 ONLY', detail:'Diagrams, key models, essay plans. Nothing new.' },
-  ],
-  '2026-05-11': [
-    { sub:'exam',  label:'EXAM: Economics P1 — Markets & How They Work', detail:'9:30–11:30' },
-  ],
-  '2026-05-12': [
-    { sub:'econ',  label:'Econ (am): P2 — business growth, productive efficiency, capacity utilisation, innovation', dur:'3hrs', detail:'Business growth methods, economies of scale, productive efficiency, capacity utilisation, R&D. 2 Qs MIN. Essay STRETCH.' },
-    { sub:'maths', label:'Maths (pm): Drill', dur:'3hrs', detail:'Past paper drill — pure topics MIN.' },
-  ],
-  '2026-05-13': [
-    { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'econ',  label:'Econ (eve): P2 — economic cycle, inflation, employment, AD/AS depth', dur:'1.5hrs', detail:'Economic cycle phases, demand-pull/cost-push inflation, unemployment types, AD/AS in detail. 1 Q MIN. Essay STRETCH.' },
-  ],
-  '2026-05-14': [
-    { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'econ',  label:'Econ (eve): P2 timed essay', dur:'1.5hrs', detail:'Full timed P2 essay. Mark against writing frame MIN.' },
-  ],
-  '2026-05-15': [
-    { sub:'econ',  label:'Econ (am): P2 full past paper timed', dur:'3hrs', detail:'Full timed P2 paper. Mark all MIN.' },
-    { sub:'maths', label:'Maths (pm): Full past paper', dur:'3hrs', detail:'Full timed past paper MIN.' },
-  ],
-  '2026-05-16': [
-    { sub:'econ',  label:'Econ (am): P2 gap fix', dur:'3hrs', detail:'Fix errors from 15 May paper MIN.' },
-    { sub:'cs',    label:'CS (pm): CS theory recall', dur:'3hrs', detail:'Mixed recall across all P1 topics MIN.' },
-  ],
-  '2026-05-17': [
-    { sub:'exam',  label:'⚠ Exam eve — Econ P2 ONLY', detail:'Global economy key models. Exchange rates, comparative advantage, trade policy.' },
-  ],
-  '2026-05-18': [
-    { sub:'exam',  label:'EXAM: Economics P2 — Competing in the Global Economy', detail:'13:30–15:30' },
-  ],
-  '2026-05-19': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark all MIN.' },
-    { sub:'econ',  label:'Econ (pm): P3 synoptic — 25-mark structure + all 4 themes', dur:'3hrs', detail:'25-mark MOPS structure. Practice linking all 4 themes MIN. Full timed 25-mark Q STRETCH.' },
-  ],
-  '2026-05-20': [
-    { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',    label:'CS (eve): P1 past paper timed section', dur:'1.5hrs', detail:'Timed CS P1 section. Mark all MIN.' },
-  ],
-  '2026-05-21': [
-    { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'maths', label:'Maths (eve): Weakest topics drill', dur:'1.5hrs', detail:'Drill specific weak topics from recent papers MIN.' },
-  ],
-  '2026-05-22': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark all MIN.' },
-    { sub:'econ',  label:'Econ (pm): P3 — financial sector + risk + global financial crisis + QE', dur:'3hrs', detail:'Role of central bank, BoE, financial sector risks, GFC causes/effects, QE, systemic risk. 2 Qs MIN. Essay STRETCH.' },
-  ],
-  '2026-05-23': [
-    { sub:'maths', label:'Maths (am): Drill', dur:'3hrs', detail:'Weakest topics from recent papers MIN.' },
-    { sub:'cs',    label:'CS (pm): P2 programming practice', dur:'3hrs', detail:'Write actual code. OOP + algorithm problems MIN.' },
-  ],
-  '2026-05-24': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark all MIN.' },
-    { sub:'econ',  label:'Econ (pm): P3 past paper timed', dur:'3hrs', detail:'Full timed P3 paper. Mark MIN.' },
-  ],
-  '2026-05-25': [
-    { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'' },
-    { sub:'maths', label:'Maths (eve): Full timed past paper', dur:'1.5hrs', detail:'Timed paper or section MIN.' },
-  ],
-  '2026-05-26': [
-    { sub:'maths', label:'Maths (am): Weakest topics', dur:'3hrs', detail:'From past paper errors MIN.' },
-    { sub:'econ',  label:'Econ (pm): P3 synoptic — all 4 themes, 25-mark Q', dur:'3hrs', detail:'Full 25-mark timed response. Mark strictly MIN.' },
-  ],
-  '2026-05-27': [
-    { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',    label:'CS (eve): P1 timed past paper', dur:'1.5hrs', detail:'Full timed CS P1 section MIN.' },
-  ],
-  '2026-05-28': [
-    { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'maths', label:'Maths (eve): Full timed past paper', dur:'1.5hrs', detail:'Timed paper MIN.' },
-  ],
-  '2026-05-29': [
-    { sub:'maths', label:'Maths (am): Weakest topics', dur:'3hrs', detail:'Final push on weak spots MIN.' },
-    { sub:'econ',  label:'Econ (pm): P3 final timed past paper', dur:'3hrs', detail:'Final P3 practice paper MIN.' },
-  ],
-  '2026-05-30': [
-    { sub:'maths', label:'Maths (am): Full timed past paper', dur:'3hrs', detail:'Full paper. Mark MIN.' },
-    { sub:'cs',    label:'CS (pm): P1 + P2 mixed practice', dur:'3hrs', detail:'Mixed past paper Qs across both papers MIN.' },
-  ],
-  '2026-05-31': [
-    { sub:'exam',  label:'⚠ Exam eve — Maths Pure 1 ONLY', detail:'Key formulas. Timed Qs on weak spots only. Nothing new.' },
-  ],
-  '2026-06-01': [
-    { sub:'maths', label:'Maths (all day): Pure 1 final prep', dur:'6hrs', detail:'Everything is Pure 1 today. Past paper Qs, formula recap, weak topics MIN.' },
-  ],
-  '2026-06-02': [
-    { sub:'exam',  label:'⚠ Exam eve — Econ P3 ONLY', detail:'25-mark essay plans. Synoptic links across all 4 themes.' },
-  ],
-  '2026-06-03': [
-    { sub:'exam',  label:'EXAM: Maths Pure 1 (9MA0/01)', detail:'13:30–15:30' },
-  ],
-  '2026-06-04': [
-    { sub:'exam',  label:'EXAM: Economics P3 — Economic Environment & Business', detail:'9:30–11:30' },
-  ],
-  '2026-06-05': [
-    { sub:'maths', label:'Maths (am): Pure 2 — review Pure 1 errors + weak topics', dur:'3hrs', detail:'Go through Pure 1 errors. Start Pure 2 prep on weak spots MIN.' },
-    { sub:'cs',    label:'CS (pm): P1 timed', dur:'3hrs', detail:'Full timed CS P1 paper MIN.' },
-  ],
-  '2026-06-06': [
-    { sub:'maths', label:'Maths (am): Pure 2 full timed past paper', dur:'3hrs', detail:'Full paper. Mark MIN.' },
-    { sub:'cs',    label:'CS (pm): P2 programming', dur:'3hrs', detail:'Write actual code. OOP problems MIN.' },
-  ],
-  '2026-06-07': [
-    { sub:'maths', label:'Maths (am): Pure 2 weak topics', dur:'3hrs', detail:'Drill from Pure 2 past paper errors MIN.' },
-    { sub:'cs',    label:'CS (pm): P1 past paper', dur:'3hrs', detail:'Full CS P1 paper MIN.' },
-  ],
-  '2026-06-08': [
-    { sub:'maths', label:'Maths (am): Pure 2 full timed past paper', dur:'3hrs', detail:'Final Pure 2 paper. Mark MIN.' },
-    { sub:'cs',    label:'CS (pm): P1 final recall', dur:'3hrs', detail:'Key theory recall. All topics from Component 01 MIN.' },
-  ],
-  '2026-06-09': [
-    { sub:'exam',  label:'⚠ Exam eve — CS P1 ONLY', detail:'Theory, past Q weak spots. Nothing new.' },
-  ],
-  '2026-06-10': [
-    { sub:'exam',  label:'EXAM: CS Paper 1 — Computer Systems', detail:'9:00–11:30' },
-  ],
-  '2026-06-11': [
-    { sub:'exam',  label:'EXAM: Maths Pure 2 (9MA0/02)', detail:'13:30–15:30' },
-  ],
-  '2026-06-12': [
-    { sub:'cs',    label:'CS (am): P2 programming + OOP', dur:'3hrs', detail:'OOP problems, recursion, algorithm tracing MIN.' },
-    { sub:'maths', label:'Maths (pm): S&M — normal distribution + SUVAT', dur:'3hrs', detail:'Normal distribution Z-scores, SUVAT, projectiles recap MIN.' },
-  ],
-  '2026-06-13': [
-    { sub:'cs',    label:'CS (am): P2 timed past paper', dur:'3hrs', detail:'Full timed CS P2 paper MIN.' },
-    { sub:'maths', label:'Maths (pm): S&M — mechanics + moments', dur:'3hrs', detail:'Forces, Newton\'s laws, moments, connected particles recap MIN.' },
-  ],
-  '2026-06-14': [
-    { sub:'exam',  label:'⚠ Exam eve — CS P2 ONLY', detail:'Programming Qs, OOP, algorithm tracing. Nothing new.' },
-  ],
-  '2026-06-15': [
-    { sub:'cs',    label:'CS (am): P2 final prep', dur:'3hrs', detail:'Final programming practice MIN.' },
-    { sub:'maths', label:'Maths (pm): S&M timed past paper', dur:'3hrs', detail:'Full S&M paper. Mark MIN.' },
-  ],
-  '2026-06-16': [
-    { sub:'exam',  label:'⚠ Exam eve — S&M ONLY', detail:'SUVAT, moments, stats key formulas. Nothing new.' },
-  ],
-  '2026-06-17': [
-    { sub:'exam',  label:'EXAM: CS Paper 2 — Algorithms and Programming', detail:'9:00–11:30' },
-  ],
-  '2026-06-18': [
-    { sub:'exam',  label:'EXAM: Maths S&M (9MA0/03)', detail:'13:30–16:00' },
+    { sub:'maths', label:'Maths: Implicit diff + stationary points', dur:'2hrs', detail:'2 more implicit Qs + find stationary points using f\'(x)=0 and second derivative test.' },
+    { sub:'cs',    label:'CS: Normalisation — 1NF, 2NF, 3NF',       dur:'1hr',  detail:'Convert 1 unnormalised table to 3NF step by step. 1 past paper Q.' },
+    { sub:'econ',  label:'Econ: Spec sweep P1',                      dur:'2hrs', detail:'Open Edexcel B spec, check Theme 1 gaps. Behavioural econ, price discrimination, contestable markets, govt failure.' },
   ],
 };
 
-const SCHEDULE_PHASES = [
-  {
-    label: 'This week — 23 Mar · NEA final push',
-    weeks: [
-      { label:'Wk 23 Mar', dates:'23–29 Mar', pills:['m','e','c','n'],
-        days:[
-          { d:'Mon', date:'2026-03-23' }, { d:'Tue', date:'2026-03-24' },
-          { d:'Wed', date:'2026-03-25' }, { d:'Thu', date:'2026-03-26' },
-          { d:'Fri', date:'2026-03-27' }, { d:'Sat', date:'2026-03-28' },
-          { d:'Sun', date:'2026-03-29' },
-        ]
-      }
-    ]
-  },
-  {
-    label: 'Easter — 28 Mar–12 Apr · Main revision block',
-    weeks: [
-      { label:'Easter W1', dates:'30 Mar–5 Apr', pills:['m','c','e'],
-        days:[
-          { d:'Mon', date:'2026-03-30' }, { d:'Tue', date:'2026-03-31' },
-          { d:'Wed', date:'2026-04-01' }, { d:'Thu', date:'2026-04-02' },
-          { d:'Fri', date:'2026-04-03' }, { d:'Sat', date:'2026-04-04' },
-          { d:'Sun', date:'2026-04-05' },
-        ]
-      },
-      { label:'Easter W2', dates:'6–12 Apr', pills:['m','c','e'],
-        days:[
-          { d:'Mon', date:'2026-04-06' }, { d:'Tue', date:'2026-04-07' },
-          { d:'Wed', date:'2026-04-08' }, { d:'Thu', date:'2026-04-09' },
-          { d:'Fri', date:'2026-04-10' }, { d:'Sat', date:'2026-04-11' },
-          { d:'Sun', date:'2026-04-12' },
-        ]
-      },
-    ]
-  },
-  {
-    label: 'Term time — 13 Apr–10 May · Consolidation + Econ exam prep',
-    weeks: [
-      { label:'Wk 13 Apr', dates:'13–19 Apr', pills:['m','e','c'],
-        days:[
-          { d:'Mon', date:'2026-04-13' }, { d:'Tue', date:'2026-04-14' },
-          { d:'Wed', date:'2026-04-15' }, { d:'Thu', date:'2026-04-16' },
-          { d:'Fri', date:'2026-04-17' }, { d:'Sat', date:'2026-04-18' },
-          { d:'Sun', date:'2026-04-19' },
-        ]
-      },
-      { label:'Wk 20 Apr', dates:'20–26 Apr', pills:['m','e','c'],
-        days:[
-          { d:'Mon', date:'2026-04-20' }, { d:'Tue', date:'2026-04-21' },
-          { d:'Wed', date:'2026-04-22' }, { d:'Thu', date:'2026-04-23' },
-          { d:'Fri', date:'2026-04-24' }, { d:'Sat', date:'2026-04-25' },
-          { d:'Sun', date:'2026-04-26' },
-        ]
-      },
-      { label:'Wk 27 Apr', dates:'27 Apr–3 May', pills:['m','e','c'],
-        days:[
-          { d:'Mon', date:'2026-04-27' }, { d:'Tue', date:'2026-04-28' },
-          { d:'Wed', date:'2026-04-29' }, { d:'Thu', date:'2026-04-30' },
-          { d:'Fri', date:'2026-05-01' }, { d:'Sat', date:'2026-05-02' },
-          { d:'Sun', date:'2026-05-03' },
-        ]
-      },
-      { label:'Wk 4 May', dates:'4–10 May · Econ P1 on 11 May', pills:['e','m','c'],
-        days:[
-          { d:'Mon', date:'2026-05-04' }, { d:'Tue', date:'2026-05-05' },
-          { d:'Wed', date:'2026-05-06' }, { d:'Thu', date:'2026-05-07' },
-          { d:'Fri', date:'2026-05-08' }, { d:'Sat', date:'2026-05-09' },
-          { d:'Sun', date:'2026-05-10' },
-        ]
-      },
-    ]
-  },
-  {
-    label: 'Exam season — 11 May–18 Jun',
-    weeks: [
-      { label:'Wk 11 May', dates:'Econ P1 Mon · P2 Mon 18', pills:['x','e','m','c'],
-        days:[
-          { d:'Mon', date:'2026-05-11' }, { d:'Tue', date:'2026-05-12' },
-          { d:'Wed', date:'2026-05-13' }, { d:'Thu', date:'2026-05-14' },
-          { d:'Fri', date:'2026-05-15' }, { d:'Sat', date:'2026-05-16' },
-          { d:'Sun', date:'2026-05-17' },
-        ]
-      },
-      { label:'Wk 18 May', dates:'Econ P2 Mon · P3 prep begins', pills:['x','m','c','e'],
-        days:[
-          { d:'Mon', date:'2026-05-18' }, { d:'Tue', date:'2026-05-19' },
-          { d:'Wed', date:'2026-05-20' }, { d:'Thu', date:'2026-05-21' },
-          { d:'Fri', date:'2026-05-22' }, { d:'Sat', date:'2026-05-23' },
-          { d:'Sun', date:'2026-05-24' },
-        ]
-      },
-      { label:'Wk 25 May', dates:'25–31 May · Maths push', pills:['m','c','e'],
-        days:[
-          { d:'Mon', date:'2026-05-25' }, { d:'Tue', date:'2026-05-26' },
-          { d:'Wed', date:'2026-05-27' }, { d:'Thu', date:'2026-05-28' },
-          { d:'Fri', date:'2026-05-29' }, { d:'Sat', date:'2026-05-30' },
-          { d:'Sun', date:'2026-05-31' },
-        ]
-      },
-      { label:'Wk 1 Jun', dates:'Pure 1 Wed · Econ P3 Thu', pills:['x','m','c'],
-        days:[
-          { d:'Mon', date:'2026-06-01' }, { d:'Tue', date:'2026-06-02' },
-          { d:'Wed', date:'2026-06-03' }, { d:'Thu', date:'2026-06-04' },
-          { d:'Fri', date:'2026-06-05' }, { d:'Sat', date:'2026-06-06' },
-          { d:'Sun', date:'2026-06-07' },
-        ]
-      },
-      { label:'Wk 8 Jun', dates:'CS P1 Wed · Maths P2 Thu', pills:['x','m','c'],
-        days:[
-          { d:'Mon', date:'2026-06-08' }, { d:'Tue', date:'2026-06-09' },
-          { d:'Wed', date:'2026-06-10' }, { d:'Thu', date:'2026-06-11' },
-          { d:'Fri', date:'2026-06-12' }, { d:'Sat', date:'2026-06-13' },
-          { d:'Sun', date:'2026-06-14' },
-        ]
-      },
-      { label:'Final week', dates:'CS P2 Tue · S&M Wed', pills:['x'],
-        days:[
-          { d:'Mon', date:'2026-06-15' }, { d:'Tue', date:'2026-06-16' },
-          { d:'Wed', date:'2026-06-17' }, { d:'Thu', date:'2026-06-18' },
-        ]
-      },
-    ]
-  },
-];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// HELPERS
-// ─────────────────────────────────────────────────────────────────────────────
-const SUB_COL = {
-  maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)',
-  nea:'var(--purple)', exam:'var(--red)', rest:'var(--muted)', college:'var(--muted2)'
-};
-const SUB_BADGE = {
-  maths:'badge-m', econ:'badge-e', cs:'badge-c',
-  nea:'badge-nea', exam:'badge-exam', rest:'badge-rest', college:'badge-college'
-};
-const DAYS_FULL   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const MONTHS_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-function today()    { const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
-function toDate(s)  { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
-function dateKey(d) { return d.toISOString().slice(0,10); }
-function daysUntil(s){ return Math.ceil((toDate(s)-today())/864e5); }
-
-const PHASES_META = [
+// ── PHASES ──────────────────────────────────────────────────────────────────
+const PHASES = [
   { label:'Phase 1', start:'2026-03-09', end:'2026-04-08', desc:'Foundation' },
   { label:'Phase 2', start:'2026-04-09', end:'2026-04-29', desc:'Easter ramp-up' },
   { label:'Phase 3', start:'2026-04-30', end:'2026-05-10', desc:'Pre-Econ' },
@@ -998,15 +605,33 @@ const PHASES_META = [
   { label:'Phase 5', start:'2026-06-03', end:'2026-06-18', desc:'Exam season' },
 ];
 
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+const SUB_COL = {
+  maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)',
+  nea:'var(--purple)', am:'var(--amber)', college:'var(--muted2)', '':'var(--muted)'
+};
+const SUB_BADGE_CLASS = {
+  maths:'badge-m', econ:'badge-e', cs:'badge-c', nea:'badge-nea', college:'badge-college'
+};
+const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const SHORT  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+
+function today()    { const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
+function toDate(s)  { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function dateKey(d) { return d.toISOString().slice(0,10); }
+function daysUntil(s){ return Math.ceil((toDate(s)-today())/864e5); }
+
 function getPhase() {
   const t=today();
-  for(const p of PHASES_META){
+  for(const p of PHASES){
     const ps=toDate(p.start), pe=toDate(p.end);
     if(t>=ps && t<=pe){ const w=Math.floor((t-ps)/6048e5)+1; return `${p.label} · Week ${w} · ${p.desc}`; }
   }
   return 'Exam prep';
 }
 
+// ── TAB SWITCH ───────────────────────────────────────────────────────────────
 function switchTab(id, btn) {
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -1014,177 +639,72 @@ function switchTab(id, btn) {
   btn.classList.add('active');
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// PATCH 1: localStorage persistence helpers
-// ─────────────────────────────────────────────────────────────────────────────
-const LS_PREFIX = 'abd-done-';
-
-function saveDone(dKey, idx, checked) {
-  const k = LS_PREFIX + dKey + '-' + idx;
-  if (checked) localStorage.setItem(k, '1');
-  else localStorage.removeItem(k);
-}
-
-function loadDone(dKey, idx) {
-  return localStorage.getItem(LS_PREFIX + dKey + '-' + idx) === '1';
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// PATCH 2: MIN/STRETCH detail renderer
-// ─────────────────────────────────────────────────────────────────────────────
-function renderDetail(detail) {
-  if (!detail) return '';
-  // Split on MIN / STRETCH markers
-  const minIdx = detail.search(/\bMIN\b/i);
-  const stretchIdx = detail.search(/\bSTRETCH\b/i);
-
-  if (minIdx === -1 && stretchIdx === -1) {
-    return `<div class="task-detail">${detail}</div>`;
-  }
-
-  let html = '<div style="margin-top:6px;display:flex;flex-direction:column;gap:5px;">';
-
-  if (minIdx !== -1) {
-    // Get text up to and including MIN marker
-    let minText = detail.substring(0, minIdx).replace(/[.\s]+$/, '').trim();
-    if (stretchIdx !== -1 && stretchIdx > minIdx) {
-      minText = detail.substring(0, stretchIdx).replace(/\bMIN[.\s]*/i,'').replace(/[.\s]+$/, '').trim();
-    } else {
-      minText = detail.replace(/\s*MIN[.\s]*/i, '').trim();
-    }
-    // Actually just grab everything up to STRETCH or end, strip MIN keyword
-    const beforeStretch = stretchIdx !== -1 ? detail.substring(0, stretchIdx) : detail;
-    const cleanMin = beforeStretch.replace(/\bMIN\b\.?/gi, '').replace(/\s+/g,' ').trim().replace(/\.$/, '');
-    html += `<div style="display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;">
-      <span class="pill-min">MIN</span>
-      <span class="task-detail" style="display:inline">${cleanMin}</span>
-    </div>`;
-  }
-
-  if (stretchIdx !== -1) {
-    const afterStretch = detail.substring(stretchIdx).replace(/\bSTRETCH\b\.?/gi,'').replace(/\s+/g,' ').trim().replace(/\.$/, '');
-    html += `<div style="display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;">
-      <span class="pill-stretch">STRETCH</span>
-      <span class="task-detail" style="display:inline">${afterStretch}</span>
-    </div>`;
-  }
-
-  html += '</div>';
-  return html;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// PATCH 3: catch-up nudge
-// ─────────────────────────────────────────────────────────────────────────────
-function renderCatchupNudge() {
-  const todayKey = dateKey(today());
-  const missed = [];
-
-  for (let i = 1; i <= 21; i++) {
-    const d = new Date(today());
-    d.setDate(d.getDate() - i);
-    const k = dateKey(d);
-    const sessions = SESSIONS[k] || [];
-    const academic = sessions.filter(s => !['rest','college','exam'].includes(s.sub));
-    if (!academic.length) continue;
-    // Check if ANY academic session has been ticked
-    const anyDone = academic.some((_, idx) => loadDone(k, idx));
-    if (!anyDone) {
-      const dateObj = toDate(k);
-      const dateLabel = `${dateObj.getDate()} ${MONTHS_FULL[dateObj.getMonth()].slice(0,3)}`;
-      missed.push({ key: k, count: academic.count, dateLabel, firstLabel: academic[0].label.replace(/ \(.*?\)/,'').substring(0,50) });
-    }
-  }
-
-  const container = document.getElementById('catchup-nudge');
-  if (!container) return;
-  if (!missed.length) { container.style.display = 'none'; return; }
-  container.style.display = 'block';
-
-  const totalDays = missed.length;
-  container.innerHTML = `
-    <div style="display:flex;align-items:flex-start;gap:14px;padding:14px 18px;background:rgba(251,146,60,0.08);border:1px solid rgba(251,146,60,0.25);border-radius:10px;margin-bottom:20px">
-      <div style="font-size:1rem;flex-shrink:0;margin-top:1px">⚠</div>
-      <div style="flex:1;min-width:0">
-        <div style="font-size:0.78rem;font-weight:600;color:var(--amber);margin-bottom:8px">${totalDays} day${totalDays>1?'s':''} with unchecked sessions in the past 3 weeks</div>
-        <div style="display:flex;flex-direction:column;gap:4px">
-          ${missed.slice(0,5).map(m => `
-            <div style="display:flex;align-items:center;gap:10px;font-size:0.72rem;color:var(--muted2)">
-              <span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted);min-width:48px;flex-shrink:0">${m.dateLabel}</span>
-              <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.firstLabel}</span>
-            </div>`).join('')}
-          ${missed.length > 5 ? `<div style="font-size:0.7rem;color:var(--muted);margin-top:3px">+ ${missed.length-5} more — check Full Schedule to tick sessions off</div>` : ''}
-        </div>
-        <div style="font-size:0.68rem;color:var(--muted);margin-top:10px;border-top:1px solid rgba(251,146,60,0.15);padding-top:8px">Tick sessions in Full Schedule to clear this nudge.</div>
-      </div>
-    </div>`;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// RENDER TODAY — patched with localStorage + MIN/STRETCH rendering
-// ─────────────────────────────────────────────────────────────────────────────
+// ── RENDER TODAY ─────────────────────────────────────────────────────────────
 function renderToday() {
   const t = today();
   const key = dateKey(t);
   const sessions = SESSIONS[key] || [];
-  document.getElementById('today-title').textContent =
-    `${DAYS_FULL[t.getDay()]} ${t.getDate()} ${MONTHS_FULL[t.getMonth()]}`;
+  const label = `${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]}`;
+  document.getElementById('today-title').textContent = label;
 
   const container = document.getElementById('today-tasks');
   container.innerHTML = '';
 
   if (!sessions.length) {
     container.innerHTML = '<div style="font-size:0.82rem;color:var(--muted2);padding:14px 0">Nothing scheduled — rest day.</div>';
-    renderCatchupNudge();
     return;
   }
 
   sessions.forEach((s, i) => {
-    const col = SUB_COL[s.sub] || 'var(--muted)';
-    const badgeCls = SUB_BADGE[s.sub] || 'badge-college';
-    const isDone = loadDone(key, i);
-
+    const isTimetable = s.sub === 'college' || s.sub === 'am';
+    const id = 'chk'+i;
+    const badgeCls = SUB_BADGE_CLASS[s.sub] || 'badge-college';
     const item = document.createElement('div');
-    item.className = 'task-item' + (isDone ? ' done-item' : '');
-    item.innerHTML = `
-      <div class="task-check"><input type="checkbox" id="chk${i}"${isDone ? ' checked' : ''}></div>
-      <div class="task-body">
-        <div class="task-top">
-          <span class="sub-badge ${badgeCls}">${s.sub || '—'}</span>
-          ${s.dur ? `<span style="font-family:var(--mono);font-size:0.62rem;color:var(--muted)">${s.dur}</span>` : ''}
+    item.className = 'task-item';
+    if (isTimetable) {
+      item.style.opacity = '0.7';
+      item.innerHTML = `
+        <div class="task-body">
+          <div class="task-top">
+            <span class="sub-badge ${badgeCls}">${s.sub === 'am' ? 'AM' : 'College'}</span>
+          </div>
+          <div class="task-name">${s.label}</div>
+          ${s.detail ? `<div class="task-detail">${s.detail}</div>` : ''}
         </div>
-        <div class="task-name${isDone ? ' done' : ''}" id="lbl${i}">${s.label}</div>
-        ${renderDetail(s.detail)}
-      </div>`;
-
-    item.querySelector('input').addEventListener('change', function() {
-      const checked = this.checked;
-      item.classList.toggle('done-item', checked);
-      document.getElementById('lbl' + i).classList.toggle('done', checked);
-      saveDone(key, i, checked);
-      // Re-render nudge in case this clears it
-      renderCatchupNudge();
-    });
-
+        ${s.dur ? `<div class="task-dur">${s.dur}</div>` : ''}`;
+    } else {
+      item.innerHTML = `
+        <div class="task-check"><input type="checkbox" id="${id}"></div>
+        <div class="task-body">
+          <div class="task-top">
+            <span class="sub-badge ${badgeCls}">${s.sub || '—'}</span>
+            ${s.hw ? '<span class="sub-badge badge-hw">HW DUE</span>' : ''}
+          </div>
+          <div class="task-name" id="lbl${i}">${s.label}</div>
+          ${s.detail ? `<div class="task-detail">${s.detail}</div>` : ''}
+        </div>
+        ${s.dur ? `<div class="task-dur">${s.dur}</div>` : ''}`;
+      item.querySelector('input').addEventListener('change', function(){
+        item.classList.toggle('done-item', this.checked);
+        document.getElementById('lbl'+i).classList.toggle('done', this.checked);
+      });
+    }
     container.appendChild(item);
   });
-
-  renderCatchupNudge();
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// RENDER TOMORROW
-// ─────────────────────────────────────────────────────────────────────────────
+// ── RENDER TOMORROW ──────────────────────────────────────────────────────────
 function renderTomorrow() {
   const t = today();
   const tmr = new Date(t.getTime()+864e5);
   const key = dateKey(tmr);
   const sessions = SESSIONS[key] || [];
-  document.getElementById('tmr-title').textContent =
-    `Tomorrow — ${DAYS_FULL[tmr.getDay()].slice(0,3)} ${tmr.getDate()} ${MONTHS_FULL[tmr.getMonth()]}`;
+  const label = `Tomorrow — ${DAYS[tmr.getDay()].slice(0,3)} ${tmr.getDate()} ${MONTHS[tmr.getMonth()]}`;
+  document.getElementById('tmr-title').textContent = label;
 
   const container = document.getElementById('tmr-tasks');
   container.innerHTML = '';
+
   if (!sessions.length) {
     container.innerHTML = '<div style="font-size:0.78rem;color:var(--muted2)">Nothing scheduled.</div>';
     return;
@@ -1196,16 +716,48 @@ function renderTomorrow() {
     row.innerHTML = `
       <div class="tmr-left-dot" style="background:${col}"></div>
       <div class="tmr-body">
-        <div class="tmr-name">${s.label}${s.dur ? ` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>` : ''}</div>
-        ${s.detail ? `<div class="tmr-detail">${s.detail.replace(/\b(MIN|STRETCH)\b\.?/gi, '<span style="font-weight:700;color:var(--amber)">$1</span>')}</div>` : ''}
+        <div class="tmr-name">${s.hw ? '<span style="color:var(--red);font-weight:700">⚠ HW · </span>' : ''}${s.label}${s.dur ? ` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>` : ''}</div>
+        ${s.detail ? `<div class="tmr-detail">${s.detail}</div>` : ''}
       </div>`;
     container.appendChild(row);
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// RENDER WEEK
-// ─────────────────────────────────────────────────────────────────────────────
+// ── RENDER OVERDUE MINI ───────────────────────────────────────────────────────
+function renderOverdueMini() {
+  // Items missed this week (Mon 23 + Tue 24 Mar)
+  const recent = [
+    { sub:'m', name:'Partial fractions',              when:'Mon 23' },
+    { sub:'e', name:'Market failure — externalities', when:'Tue 24' },
+    { sub:'c', name:'Trees/graphs + hash tables',     when:'Tue 24' },
+  ];
+  // Older backlog (pre-this-week)
+  const older = [
+    { sub:'m', name:'Inequalities' },
+    { sub:'m', name:'Graphs & transformations' },
+    { sub:'m', name:'Radians + chain rule' },
+    { sub:'m', name:'Inverse trig + small angle' },
+    { sub:'e', name:'D&S, PED, PES, tax incidence' },
+    { sub:'e', name:'Price mechanism' },
+    { sub:'c', name:'Foreign key definition' },
+    { sub:'c', name:'Push pseudocode' },
+  ];
+
+  function rowHtml(it, showWhen) {
+    const tag = it.sub==='m'?'badge-m':it.sub==='e'?'badge-e':'badge-c';
+    const lab = it.sub==='m'?'Maths':it.sub==='e'?'Econ':'CS';
+    return `<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border)">
+      <span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span>
+      <span style="font-size:0.76rem;flex:1">${it.name}</span>
+      ${showWhen && it.when ? `<span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted)">${it.when}</span>` : ''}
+    </div>`;
+  }
+
+  document.getElementById('overdue-mini').innerHTML  = recent.map(it => rowHtml(it, true)).join('');
+  document.getElementById('overdue-older').innerHTML = older.map(it => rowHtml(it, false)).join('');
+}
+
+// ── RENDER WEEK ───────────────────────────────────────────────────────────────
 function renderWeek() {
   const t = today();
   const dow = t.getDay();
@@ -1214,6 +766,7 @@ function renderWeek() {
   else if (dow===6) monday.setDate(t.getDate()+2);
   else monday.setDate(t.getDate()-(dow-1));
 
+  const fri = new Date(monday); fri.setDate(monday.getDate()+4);
   const opts = { day:'numeric', month:'short' };
   document.getElementById('week-title').textContent =
     `Week beginning ${monday.toLocaleDateString('en-GB', opts)}`;
@@ -1227,21 +780,23 @@ function renderWeek() {
     const key = dateKey(day);
     const sessions = SESSIONS[key] || [];
     const isToday = key===todayKey;
-    const isExam = sessions.some(s=>s.sub==='exam');
+    const isDeadline = key==='2026-03-27';
+    const dayNames = ['Mon','Tue','Wed','Thu','Fri'];
 
     const col = document.createElement('div');
-    col.className = 'wday'+(isExam?' exam-day':'')+(isToday?' today-col':'');
+    col.className = 'wday'+(isDeadline?' deadline':'')+(isToday?' today-col':'');
 
-    const dayNames = ['Mon','Tue','Wed','Thu','Fri'];
-    const headStr = `${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)}`;
+    const headStr = isDeadline
+      ? `${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)} — ⚠ NEA DUE`
+      : `${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)}`;
 
     const tasksHtml = sessions.length
       ? sessions.map(s => {
-          const c = SUB_COL[s.sub]||'var(--muted)';
-          const cls = s.sub==='college' ? ' college-task' : s.sub==='exam' ? ' exam-task' : '';
+          const col2 = SUB_COL[s.sub]||'var(--muted)';
+          const cls = s.sub==='college' ? ' college-task' : s.hw ? ' hw-task' : '';
           return `<div class="wday-task${cls}">
-            <div class="wday-task-dot" style="background:${c}"></div>
-            <span>${s.label}</span>
+            <div class="wday-task-dot" style="background:${col2}"></div>
+            <span>${s.hw?'⚠ ':''}${s.label}</span>
           </div>`;
         }).join('')
       : '<div style="color:var(--muted);font-size:0.7rem">—</div>';
@@ -1251,120 +806,7 @@ function renderWeek() {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// RENDER FULL SCHEDULE — patched: checkboxes in schedule rows + localStorage
-// ─────────────────────────────────────────────────────────────────────────────
-function renderSchedule() {
-  const wrap = document.getElementById('schedule-wrap');
-  wrap.innerHTML = '';
-  const todayKey = dateKey(today());
-
-  const PILL_LABELS = { m:'Maths', e:'Econ', c:'CS', x:'Exam', n:'NEA' };
-  const PILL_CLS    = { m:'sp-m',  e:'sp-e', c:'sp-c', x:'sp-x', n:'sp-n' };
-  const TAG_CLS = { maths:'tag-m', econ:'tag-e', cs:'tag-c', exam:'tag-x', nea:'tag-n', rest:'tag-r', college:'tag-r' };
-
-  SCHEDULE_PHASES.forEach(phase => {
-    const sep = document.createElement('div');
-    sep.className = 'phase-sep';
-    sep.textContent = phase.label;
-    wrap.appendChild(sep);
-
-    phase.weeks.forEach(week => {
-      const wDiv = document.createElement('div');
-      wDiv.className = 'sched-week';
-
-      const pillsHtml = week.pills.map(p =>
-        `<span class="sp ${PILL_CLS[p]}">${PILL_LABELS[p]}</span>`
-      ).join('');
-
-      wDiv.innerHTML = `
-        <div class="sched-week-head" onclick="toggleSchedWeek(this)">
-          <span class="sched-wlabel">${week.label}</span>
-          <span class="sched-wdates">${week.dates}</span>
-          <div class="sched-pills">${pillsHtml}</div>
-          <span class="sched-chev open">›</span>
-        </div>
-        <div class="sched-body open"></div>`;
-
-      const body = wDiv.querySelector('.sched-body');
-
-      week.days.forEach(dayInfo => {
-        const sessions = SESSIONS[dayInfo.date] || [];
-        if (!sessions.length) return;
-
-        const isExam = sessions.some(s => s.sub==='exam');
-        const isNea  = sessions.some(s => s.sub==='nea');
-        const isToday = dayInfo.date === todayKey;
-
-        let rowCls = 'sched-day';
-        if (isExam) rowCls += ' exam-row';
-        else if (isNea) rowCls += ' nea-row';
-        else if (isToday) rowCls += ' eve-row';
-
-        const dateObj = toDate(dayInfo.date);
-        const dateStr = dateObj.toLocaleDateString('en-GB', { day:'numeric', month:'short' });
-
-        const sessionsHtml = sessions.map((s, sIdx) => {
-          const tagCls = TAG_CLS[s.sub] || 'tag-r';
-          const label = s.sub==='college' ? 'COLLEGE' :
-                        s.sub==='exam'    ? 'EXAM' :
-                        s.sub==='nea'     ? 'NEA' :
-                        s.sub==='rest'    ? 'REST' :
-                        s.sub.toUpperCase();
-          const isAcademic = !['rest','college','exam'].includes(s.sub);
-          const isDone = isAcademic && loadDone(dayInfo.date, sIdx);
-          const doneClass = isDone ? ' sched-done' : '';
-          const checkboxId = `sched-chk-${dayInfo.date}-${sIdx}`;
-
-          return `<div class="sched-sess${doneClass}" id="srow-${dayInfo.date}-${sIdx}">
-            ${isAcademic ? `<input type="checkbox" class="sched-check" id="${checkboxId}" ${isDone ? 'checked' : ''} onchange="toggleSchedDone('${dayInfo.date}',${sIdx},this)">` : ''}
-            <span class="sched-tag ${tagCls}">${label}</span>
-            <span class="sched-txt">${s.label}${s.dur ? ` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted)">(${s.dur})</span>` : ''}</span>
-          </div>`;
-        }).join('');
-
-        body.innerHTML += `
-          <div class="${rowCls}">
-            <span class="sched-dn">${dayInfo.d}</span>
-            <span class="sched-dd">${dateStr}</span>
-            <div class="sched-sessions">${sessionsHtml}</div>
-          </div>`;
-      });
-
-      wrap.appendChild(wDiv);
-    });
-  });
-}
-
-function toggleSchedDone(dKey, idx, checkbox) {
-  const checked = checkbox.checked;
-  saveDone(dKey, idx, checked);
-  const row = document.getElementById(`srow-${dKey}-${idx}`);
-  if (row) row.classList.toggle('sched-done', checked);
-  // Also sync today tab if same date
-  if (dKey === dateKey(today())) {
-    const todayChk = document.getElementById(`chk${idx}`);
-    if (todayChk) {
-      todayChk.checked = checked;
-      const item = todayChk.closest('.task-item');
-      if (item) item.classList.toggle('done-item', checked);
-      const lbl = document.getElementById(`lbl${idx}`);
-      if (lbl) lbl.classList.toggle('done', checked);
-    }
-  }
-  renderCatchupNudge();
-}
-
-function toggleSchedWeek(head) {
-  const body = head.nextElementSibling;
-  const chev = head.querySelector('.sched-chev');
-  const open = body.classList.toggle('open');
-  chev.classList.toggle('open', open);
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// COUNTDOWNS
-// ─────────────────────────────────────────────────────────────────────────────
+// ── COUNTDOWN BARS ───────────────────────────────────────────────────────────
 function renderCountdowns() {
   const start = toDate('2026-01-01');
   const exams = [
@@ -1375,25 +817,24 @@ function renderCountdowns() {
   const totalDays = (toDate('2026-06-18')-start)/864e5;
   exams.forEach(e => {
     const d = daysUntil(e.date);
-    document.getElementById('cd-'+e.id).textContent = Math.max(0,d);
+    document.getElementById('cd-'+e.id).textContent = d;
     const pct = Math.max(0, Math.min(100, ((today()-start)/864e5/totalDays)*100));
     document.getElementById('cd-'+e.id+'-bar').style.width = pct+'%';
   });
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────────────────
 function init() {
   const t = today();
   document.getElementById('live-date').textContent =
-    `${DAYS_FULL[t.getDay()]} ${t.getDate()} ${MONTHS_FULL[t.getMonth()]} ${t.getFullYear()}`;
+    `${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]} ${t.getFullYear()}`;
   document.getElementById('live-phase').textContent = getPhase();
+
   renderCountdowns();
   renderToday();
   renderTomorrow();
+  renderOverdueMini();
   renderWeek();
-  renderSchedule();
 }
 
 init();
