@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abdul — Academic Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 :root {
   --bg:      #0c0e13;
@@ -61,17 +62,18 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   display: flex; align-items: center; gap: 20px;
 }
 .cd-item:last-child { border-right: none; }
-.cd-num { font-family: var(--mono); font-size: 3rem; font-weight: 700; line-height: 1; flex-shrink: 0; }
-.cd-item.e .cd-num { color: var(--econ); }
-.cd-item.m .cd-num { color: var(--maths); }
-.cd-item.c .cd-num { color: var(--cs); }
+.cd-num { font-family: var(--mono); font-size: 3rem; font-weight: 700; line-height: 1; flex-shrink: 0; transition: color 0.4s; }
 .cd-meta { flex: 1; }
 .cd-name { font-size: 0.88rem; font-weight: 600; margin-bottom: 3px; }
+.cd-item.e .cd-name { color: var(--econ); }
+.cd-item.m .cd-name { color: var(--maths); }
+.cd-item.c .cd-name { color: var(--cs); }
 .cd-date { font-family: var(--mono); font-size: 0.65rem; color: var(--muted2); }
 .cd-next { font-size: 0.68rem; color: var(--muted); margin-top: 6px; }
 .cd-next b { color: var(--text); }
 .cd-bar { width: 100%; height: 3px; background: var(--border); border-radius: 2px; margin-top: 8px; overflow: hidden; }
-.cd-bar-fill { height: 100%; border-radius: 2px; }
+.cd-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease, background 0.4s; }
+.cd-urgency { font-family: var(--mono); font-size: 0.52rem; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 5px; }
 
 /* ── TABS ── */
 .tabs-nav {
@@ -95,6 +97,24 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .tab-pane { display: none; padding: 28px; max-width: 1200px; margin: 0 auto; }
 .tab-pane.active { display: block; }
 
+/* ── FOCUS CARD ── */
+.focus-card {
+  background: linear-gradient(135deg, rgba(251,146,60,0.07) 0%, rgba(233,69,96,0.04) 100%);
+  border: 1px solid rgba(251,146,60,0.28);
+  border-left: 4px solid var(--amber);
+  border-radius: var(--radius);
+  padding: 16px 22px;
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 18px;
+}
+.focus-label {
+  font-family: var(--mono); font-size: 0.57rem; text-transform: uppercase;
+  letter-spacing: 0.12em; color: var(--amber); margin-bottom: 5px;
+}
+.focus-topic { font-size: 0.98rem; font-weight: 700; margin-bottom: 3px; }
+.focus-reason { font-size: 0.73rem; color: var(--muted2); }
+.focus-icon { font-size: 1.6rem; flex-shrink: 0; }
+
 /* ── CARDS ── */
 .card {
   background: var(--surface); border: 1px solid var(--border);
@@ -104,11 +124,6 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
   color: var(--muted); font-family: var(--mono); margin-bottom: 18px;
 }
-.section-label {
-  font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em;
-  color: var(--muted); font-family: var(--mono); margin-bottom: 12px; margin-top: 28px;
-}
-.section-label:first-child { margin-top: 0; }
 
 /* ── TODAY TASKS ── */
 .task-list { display: flex; flex-direction: column; gap: 8px; }
@@ -193,36 +208,62 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .tag-critical { background: rgba(233,69,96,0.2); color: var(--red); }
 .tag-protect  { background: rgba(96,165,250,0.15); color: var(--econ); }
 .tag-target   { background: rgba(251,191,36,0.15); color: var(--cs); }
-
 .bar-section { margin-bottom: 16px; }
 .bar-lbl { font-size: 0.7rem; color: var(--muted2); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
 .bar-lbl span { font-family: var(--mono); font-size: 0.65rem; }
 .bar { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-
 .subj-note { font-size: 0.74rem; color: var(--muted2); line-height: 1.5; padding-top: 14px; border-top: 1px solid var(--border); }
 
+/* ── PERFORMANCE CHART ── */
+.chart-wrap { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.chart-wrap-title {
+  font-family: var(--mono); font-size: 0.58rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--muted2); margin-bottom: 8px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.add-mock-btn {
+  font-family: var(--mono); font-size: 0.56rem; padding: 2px 8px; border-radius: 10px;
+  background: rgba(74,80,112,0.3); border: 1px solid var(--border2);
+  color: var(--muted2); cursor: pointer; transition: color 0.15s, border-color 0.15s;
+}
+.add-mock-btn:hover { color: var(--text); border-color: var(--muted2); }
+
+/* ── SMART PRIORITY GAPS ── */
 .gaps-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-top: 16px; }
 .gaps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-.gaps-col-title { font-size: 0.68rem; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
-.gap-row { display: flex; align-items: flex-start; gap: 8px; font-size: 0.78rem; margin-bottom: 9px; line-height: 1.35; }
-.gap-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.gaps-col-title { font-size: 0.68rem; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
+.gap-row {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.78rem; margin-bottom: 3px; line-height: 1.35;
+  cursor: pointer; padding: 5px 6px; border-radius: 6px;
+  transition: background 0.12s; user-select: none;
+}
+.gap-row:hover { background: var(--surface2); }
+.gap-row.gap-done { opacity: 0.28; }
+.gap-row.gap-done .gap-name { text-decoration: line-through; }
+.gap-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 .dot-hot { background: var(--red); }
 .dot-med { background: var(--amber); }
+.gap-name { flex: 1; min-width: 0; font-size: 0.76rem; }
+.gap-conf { display: flex; gap: 3px; flex-shrink: 0; }
+.conf-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--surface3); border: 1px solid var(--border2);
+  cursor: pointer; transition: background 0.15s, border-color 0.15s; flex-shrink: 0;
+}
+.conf-dot:hover { border-color: var(--muted2); }
+.gaps-hint { font-family: var(--mono); font-size: 0.58rem; color: var(--muted); margin-left: 6px; }
 
-.overdue-section { margin-top: 16px; }
-.od-list { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
-.od-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 11px 14px; background: var(--surface2);
-  border-radius: 8px; font-size: 0.78rem;
+/* ── RESCHEDULE ── */
+.reschedule-btn {
+  font-family: var(--mono); font-size: 0.57rem; padding: 3px 9px; border-radius: 12px;
+  background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.25);
+  color: var(--econ); cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: background 0.15s;
 }
-.od-badge {
-  font-size: 0.58rem; font-weight: 700; padding: 2px 8px; border-radius: 20px;
-  text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; flex-shrink: 0;
-}
-.od-name { flex: 1; }
-.od-note { font-size: 0.68rem; color: var(--muted2); }
+.reschedule-btn:hover { background: rgba(96,165,250,0.2); }
+.reschedule-btn.rescheduled { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.25); color: var(--maths); cursor: default; }
 
 /* ── NEA ── */
 .nea-hero {
@@ -234,7 +275,6 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .nea-hero-info h2 { font-size: 1.3rem; font-weight: 700; color: var(--maths); margin-bottom: 4px; }
 .nea-hero-info p { font-size: 0.82rem; color: var(--muted2); }
 .nea-deadline { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-family: var(--mono); font-size: 0.72rem; color: var(--amber); }
-
 .nea-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .nea-row {
   display: flex; justify-content: space-between; align-items: center;
@@ -244,15 +284,35 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .nea-row-score { font-family: var(--mono); font-size: 0.82rem; font-weight: 700; }
 .nea-row.weak .nea-row-score { color: var(--amber); }
 .nea-row.strong .nea-row-score { color: var(--maths); }
-
 .uni-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 16px; }
-.uni-card {
-  background: var(--surface2); border-radius: 10px; padding: 16px;
-  border: 1px solid var(--border);
-}
+.uni-card { background: var(--surface2); border-radius: 10px; padding: 16px; border: 1px solid var(--border); }
 .uni-name { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
 .uni-offer { font-family: var(--mono); font-size: 0.75rem; color: var(--econ); margin-bottom: 4px; }
 .uni-note { font-size: 0.7rem; color: var(--muted2); }
+
+/* ── TIMER FAB ── */
+.timer-fab {
+  position: fixed; bottom: 28px; right: 28px; z-index: 200;
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+}
+.timer-btn {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--surface2); border: 2px solid var(--border2);
+  color: var(--text); font-family: var(--mono); cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  transition: border-color 0.2s, background 0.2s;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+}
+.timer-btn:hover { border-color: var(--amber); }
+.timer-btn.running { border-color: var(--maths); background: rgba(74,222,128,0.08); }
+.timer-btn.urgent  { border-color: var(--red); animation: pulse-t 1.2s ease-in-out infinite; }
+@keyframes pulse-t {
+  0%,100%{ box-shadow:0 4px 24px rgba(233,69,96,0.2) }
+  50%    { box-shadow:0 4px 32px rgba(233,69,96,0.65) }
+}
+.timer-time-txt  { font-size: 0.82rem; font-weight: 700; line-height: 1; }
+.timer-sub-txt   { font-size: 0.48rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.08em; }
+.timer-sess-txt  { font-family: var(--mono); font-size: 0.58rem; color: var(--muted); text-align: center; white-space: nowrap; }
 
 /* ── FOOTER ── */
 .footer { padding: 20px 28px; text-align: center; font-family: var(--mono); font-size: 0.62rem; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 0.05em; }
@@ -277,28 +337,31 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <div class="cd-item e">
     <div class="cd-num" id="cd-econ">—</div>
     <div class="cd-meta">
-      <div class="cd-name" style="color:var(--econ)">Economics P1</div>
+      <div class="cd-name">Economics P1</div>
       <div class="cd-date">11 May 2026</div>
       <div class="cd-next">P2 <b>18 May</b> · P3 <b>4 Jun</b></div>
-      <div class="cd-bar"><div class="cd-bar-fill" id="cd-econ-bar" style="background:var(--econ)"></div></div>
+      <div class="cd-bar"><div class="cd-bar-fill" id="cd-econ-bar"></div></div>
+      <div class="cd-urgency" id="cd-econ-urg"></div>
     </div>
   </div>
   <div class="cd-item m">
     <div class="cd-num" id="cd-maths">—</div>
     <div class="cd-meta">
-      <div class="cd-name" style="color:var(--maths)">Maths Pure 1</div>
+      <div class="cd-name">Maths Pure 1</div>
       <div class="cd-date">3 June 2026</div>
       <div class="cd-next">Pure 2 <b>11 Jun</b> · S&amp;M <b>18 Jun</b></div>
-      <div class="cd-bar"><div class="cd-bar-fill" id="cd-maths-bar" style="background:var(--maths)"></div></div>
+      <div class="cd-bar"><div class="cd-bar-fill" id="cd-maths-bar"></div></div>
+      <div class="cd-urgency" id="cd-maths-urg"></div>
     </div>
   </div>
   <div class="cd-item c">
     <div class="cd-num" id="cd-cs">—</div>
     <div class="cd-meta">
-      <div class="cd-name" style="color:var(--cs)">CS Paper 1</div>
+      <div class="cd-name">CS Paper 1</div>
       <div class="cd-date">10 June 2026</div>
       <div class="cd-next">P2 <b>17 Jun</b></div>
-      <div class="cd-bar"><div class="cd-bar-fill" id="cd-cs-bar" style="background:var(--cs)"></div></div>
+      <div class="cd-bar"><div class="cd-bar-fill" id="cd-cs-bar"></div></div>
+      <div class="cd-urgency" id="cd-cs-urg"></div>
     </div>
   </div>
 </div>
@@ -321,8 +384,11 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
 <!-- ══ TAB: TODAY ══ -->
 <div class="tab-pane active" id="tab-today">
-  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;">
 
+  <!-- #1 Focus Card -->
+  <div id="focus-card" class="focus-card"></div>
+
+  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;">
     <div>
       <div class="card-title" id="today-title">Today</div>
       <div class="task-list" id="today-tasks"></div>
@@ -334,14 +400,13 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
         <div class="tmr-list" id="tmr-tasks"></div>
       </div>
 
-      <!-- Overdue: missed this week -->
       <div style="margin-top:20px">
         <div class="card-title" style="color:var(--red)">⚠ Missed this week</div>
         <div class="card" style="border-color:rgba(233,69,96,0.3);padding:18px 20px;">
           <div id="overdue-mini"></div>
         </div>
       </div>
-      <!-- Overdue: older backlog -->
+
       <div style="margin-top:14px">
         <div class="card-title" style="color:var(--muted2)">📋 Older backlog</div>
         <div class="card" style="border-color:rgba(74,80,112,0.4);padding:18px 20px;">
@@ -349,7 +414,6 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -368,15 +432,25 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
       <div class="subj-name">Maths</div>
       <div class="subj-status-tag tag-critical">CRITICAL — A needed</div>
       <div class="bar-section">
-        <div class="bar-lbl">Topics revised <span>~2 / 30+</span></div>
-        <div class="bar"><div class="bar-fill" style="width:7%;background:var(--maths)"></div></div>
+        <div class="bar-lbl">Topics revised <span id="maths-topics-lbl">~2 / 30+</span></div>
+        <div class="bar"><div class="bar-fill" id="maths-topics-bar" style="width:7%;background:var(--maths)"></div></div>
       </div>
       <div class="bar-section">
         <div class="bar-lbl">Full mock performance <span>~20% · U</span></div>
         <div class="bar"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
       </div>
       <div class="subj-note">QMUL, Sussex &amp; City all require A in Maths. Pure 1 paper first on 3 Jun — ~10 weeks of heavy revision needed. Start now.</div>
+      <div class="chart-wrap">
+        <div class="chart-wrap-title">
+          Mock trend
+          <button class="add-mock-btn" onclick="promptAddMock('maths')">+ Add score</button>
+        </div>
+        <div style="height:80px;position:relative">
+          <canvas id="chart-maths"></canvas>
+        </div>
+      </div>
     </div>
+
     <!-- ECON -->
     <div class="subj-card e">
       <div class="subj-name">Economics</div>
@@ -390,7 +464,17 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
         <div class="bar"><div class="bar-fill" style="width:72%;background:var(--econ)"></div></div>
       </div>
       <div class="subj-note">Strong foundation from class. Needs essay technique drilling — MOPS structure, K→AP→AP→AN for 4-mark, MSC/MSB diagrams. P1 on 11 May.</div>
+      <div class="chart-wrap">
+        <div class="chart-wrap-title">
+          Mock trend
+          <button class="add-mock-btn" onclick="promptAddMock('econ')">+ Add score</button>
+        </div>
+        <div style="height:80px;position:relative">
+          <canvas id="chart-econ"></canvas>
+        </div>
+      </div>
     </div>
+
     <!-- CS -->
     <div class="subj-card c">
       <div class="subj-name">Computer Science</div>
@@ -404,59 +488,25 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
         <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
       </div>
       <div class="subj-note">Large spec gaps. Boolean algebra, LMC/Assembly, networking are biggest holes. NEA 52/70 reduces pressure — focus on boosting written paper.</div>
+      <div class="chart-wrap">
+        <div class="chart-wrap-title">
+          Mock trend
+          <button class="add-mock-btn" onclick="promptAddMock('cs')">+ Add score</button>
+        </div>
+        <div style="height:80px;position:relative">
+          <canvas id="chart-cs"></canvas>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- PRIORITY GAPS -->
+  <!-- SMART PRIORITY GAPS -->
   <div class="gaps-card">
-    <div class="card-title">Priority Gaps</div>
-    <div class="gaps-grid">
-      <div>
-        <div class="gaps-col-title" style="color:var(--maths)">Maths</div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Inequalities (rational)</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Trig integration</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Integration by parts</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Partial fractions</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Inclined planes / friction</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Implicit differentiation</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Parametric equations</span></div>
-      </div>
-      <div>
-        <div class="gaps-col-title" style="color:var(--econ)">Economics</div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>MSC/MSB/MPC/MPB diagrams ⭐</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>D&amp;S shifts + PED/PES</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Price mechanism / efficiency</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Govt intervention frameworks</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Evaluation judgement technique</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Behavioural economics</span></div>
-      </div>
-      <div>
-        <div class="gaps-col-title" style="color:var(--cs)">Computer Science</div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Boolean algebra + logic gates</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>LMC / Assembly</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Foreign key (lost 4 marks)</span></div>
-        <div class="gap-row"><div class="gap-dot dot-hot"></div><span>Push/pop pseudocode</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>BFS/DFS traversal</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Compression + ISR</span></div>
-        <div class="gap-row"><div class="gap-dot dot-med"></div><span>Normalisation 1NF→3NF</span></div>
-      </div>
+    <div class="card-title" style="display:flex;align-items:center;gap:8px">
+      Priority Gaps
+      <span class="gaps-hint">· click topic = done · dots = confidence</span>
     </div>
-  </div>
-
-  <!-- OVERDUE -->
-  <div class="overdue-section">
-    <div class="card-title" style="color:var(--red)">⚠ Overdue — Week beginning 9 March</div>
-    <div class="od-list">
-      <div class="od-item"><span class="od-badge badge-m">Maths</span><span class="od-name">Inequalities</span><span class="od-note">due 9 Mar · cold test first</span></div>
-      <div class="od-item"><span class="od-badge badge-m">Maths</span><span class="od-name">Graphs &amp; transformations</span><span class="od-note">due 10 Mar</span></div>
-      <div class="od-item"><span class="od-badge badge-m">Maths</span><span class="od-name">Radians, arc length, sector area</span><span class="od-note">due 12 Mar</span></div>
-      <div class="od-item"><span class="od-badge badge-m">Maths</span><span class="od-name">Chain rule + connected rates</span><span class="od-note">due 15 Mar</span></div>
-      <div class="od-item"><span class="od-badge badge-e">Econ</span><span class="od-name">D&amp;S, PED, PES, tax incidence</span><span class="od-note">all W1 sessions missed</span></div>
-      <div class="od-item"><span class="od-badge badge-e">Econ</span><span class="od-name">Price mechanism</span><span class="od-note">due 13 Mar</span></div>
-      <div class="od-item"><span class="od-badge badge-c">CS</span><span class="od-name">Foreign key definition</span><span class="od-note">lost 4 marks twice — fix this week</span></div>
-      <div class="od-item"><span class="od-badge badge-c">CS</span><span class="od-name">Push pseudocode (stack)</span><span class="od-note">top pointer logic wrong</span></div>
-      <div class="od-item"><span class="od-badge badge-c">CS</span><span class="od-name">Floating point positive</span><span class="od-note">direction error on mock</span></div>
-    </div>
+    <div id="gaps-container"></div>
   </div>
 
 </div>
@@ -468,8 +518,8 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     <div class="nea-big">52</div>
     <div class="nea-hero-info">
       <h2>Grade B · OCR H446 NEA</h2>
-      <p>NEA_Final_v4.docx · Final human tweaks then submit</p>
-      <div class="nea-deadline">⚠ Deadline: Friday 27 March 2026</div>
+      <p>NEA_Final_v4.docx · Submitted 27 March 2026</p>
+      <div class="nea-deadline">✓ Submitted on deadline</div>
     </div>
   </div>
 
@@ -544,35 +594,46 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
 <div class="footer">A in Maths is non-negotiable · QMUL/Sussex/City all require it · every session counts</div>
 
+<!-- ── TIMER FAB ── -->
+<div class="timer-fab">
+  <div class="timer-sess-txt" id="timer-sess"></div>
+  <button class="timer-btn" id="timer-btn"
+    onclick="toggleTimer()"
+    oncontextmenu="event.preventDefault();resetTimer()"
+    title="Click to start/pause · Right-click to reset">
+    <div class="timer-time-txt" id="timer-time">1:00</div>
+    <div class="timer-sub-txt" id="timer-lbl">START</div>
+  </button>
+</div>
+
 <script>
 // ─────────────────────────────────────────────────────────────────────────────
 // SESSION DATA — keyed by YYYY-MM-DD
-// Edit entries here. Dashboard auto-renders from today's date.
 // ─────────────────────────────────────────────────────────────────────────────
 const SESSIONS = {
   '2026-03-21': [
     { sub:'nea', label:'NEA tweaks', detail:'Read through, humanise, polish wording. Deadline 27 Mar.' },
   ],
   '2026-03-22': [
-    { sub:'cs',     hw:true, label:'HW — CS: Boolean algebra + architecture', dur:'~2hrs',   detail:'Watch 3 Craig & Dave videos, answer Boolean_and_architecture_questions.pdf, mark, upload. Due Mon 9am.' },
-    { sub:'econ',   hw:true, label:'HW — Econ: Paper 3 competition topics',   dur:'~1.5hrs', detail:'Revise 2.1, 2.2.2, 2.2.3, 2.3.1, 4.1.1. Answer revision Qs + info sheet comprehension. Upload. Due Mon 9am.' },
-    { sub:'maths',  label:'Maths: Graphs & transformations',    dur:'1.5hrs', detail:'Cold test first. 4 Qs total, mark all. Translations f(x±a), stretches, reflections, modulus.' },
-    { sub:'maths',  label:'Maths: Inverse trig + small angle',  dur:'1hr',    detail:'Write arcsin/arccos/arctan domains from memory. 2 small angle past paper Qs. Mark.' },
-    { sub:'econ',   label:'Econ: D&S + price mechanism',        dur:'1.5hrs', detail:'If energy allows. Draw shifts, PED formula, 1 four-mark Q. Then price mechanism definitions + 1 Q.' },
-    { sub:'cs',     label:'CS: Foreign key + push pseudocode',  dur:'30min',  detail:'Only if HW done. Foreign key ×5 from memory. Push pseudocode from scratch (array, top pointer, overflow check).' },
+    { sub:'cs',    hw:true, label:'HW — CS: Boolean algebra + architecture',  dur:'~2hrs',   detail:'Watch 3 Craig & Dave videos, answer Boolean_and_architecture_questions.pdf, mark, upload. Due Mon 9am.' },
+    { sub:'econ',  hw:true, label:'HW — Econ: Paper 3 competition topics',    dur:'~1.5hrs', detail:'Revise 2.1, 2.2.2, 2.2.3, 2.3.1, 4.1.1. Answer revision Qs + info sheet comprehension. Upload. Due Mon 9am.' },
+    { sub:'maths', label:'Maths: Graphs & transformations',   dur:'1.5hrs', detail:'Cold test first. 4 Qs total, mark all. Translations f(x±a), stretches, reflections, modulus.' },
+    { sub:'maths', label:'Maths: Inverse trig + small angle', dur:'1hr',    detail:'Write arcsin/arccos/arctan domains from memory. 2 small angle past paper Qs. Mark.' },
+    { sub:'econ',  label:'Econ: D&S + price mechanism',       dur:'1.5hrs', detail:'If energy allows. Draw shifts, PED formula, 1 four-mark Q. Then price mechanism definitions + 1 Q.' },
+    { sub:'cs',    label:'CS: Foreign key + push pseudocode', dur:'30min',  detail:'Only if HW done. Foreign key ×5 from memory. Push pseudocode from scratch.' },
   ],
   '2026-03-23': [
     { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'' },
     { sub:'maths',   label:'Maths (eve): Partial fractions', dur:'~1hr', detail:'Decomposition for standard + repeated factors. 2 Qs MIN.' },
   ],
   '2026-03-24': [
-    { sub:'maths', label:'Maths: Parametric equations',         dur:'2hrs',  detail:'Sketching + Cartesian conversion. 2 Qs MIN.' },
-    { sub:'econ',  label:'Econ: Market failure — externalities',dur:'1hr',   detail:'Negative/positive externality diagrams (MSC>MPC, MSB>MPB). 1 four-mark Q.' },
-    { sub:'cs',    label:'CS: Trees/graphs + hash tables',      dur:'1hr',   detail:'Hash function, collision, chaining. 1 past paper Q.' },
+    { sub:'maths', label:'Maths: Parametric equations',          dur:'2hrs', detail:'Sketching + Cartesian conversion. 2 Qs MIN.' },
+    { sub:'econ',  label:'Econ: Market failure — externalities', dur:'1hr',  detail:'Negative/positive externality diagrams (MSC>MPC, MSB>MPB). 1 four-mark Q.' },
+    { sub:'cs',    label:'CS: Trees/graphs + hash tables',       dur:'1hr',  detail:'Hash function, collision, chaining. 1 past paper Q.' },
   ],
   '2026-03-25': [
     { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',      label:'CS (eve): Merge sort + SQL basics', dur:'~1hr',  detail:'Trace merge sort on 6 numbers. SELECT/WHERE/ORDER BY syntax. 1 Q each.' },
+    { sub:'cs',      label:'CS (eve): Merge sort + SQL basics', dur:'~1hr', detail:'Trace merge sort on 6 numbers. SELECT/WHERE/ORDER BY syntax. 1 Q each.' },
   ],
   '2026-03-26': [
     { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
@@ -580,19 +641,19 @@ const SESSIONS = {
   ],
   '2026-03-27': [
     { sub:'nea',   hw:true, label:'⚠ SUBMIT NEA — Deadline today', detail:'NEA_Final_v4.docx — do not miss this.' },
-    { sub:'maths', label:'Maths: Parametric practice',           dur:'1hr', detail:'2 timed past paper Qs. Mark immediately.' },
-    { sub:'econ',  label:'Econ: Public goods + info failure',    dur:'1hr', detail:'Non-excludable/non-rival, asymmetric info. 1 four-mark Q.' },
-    { sub:'cs',    label:'CS: Sort + SQL practice',              dur:'1hr', detail:'1 merge sort trace Q + 1 SQL Q timed. Mark both.' },
-    { sub:'maths', label:'Maths (eve): Implicit differentiation',dur:'1hr', detail:'2 implicit equations, chain rule on y terms. 1 past paper Q.' },
+    { sub:'maths', label:'Maths: Parametric practice',            dur:'1hr', detail:'2 timed past paper Qs. Mark immediately.' },
+    { sub:'econ',  label:'Econ: Public goods + info failure',     dur:'1hr', detail:'Non-excludable/non-rival, asymmetric info. 1 four-mark Q.' },
+    { sub:'cs',    label:'CS: Sort + SQL practice',               dur:'1hr', detail:'1 merge sort trace Q + 1 SQL Q timed. Mark both.' },
+    { sub:'maths', label:'Maths (eve): Implicit differentiation', dur:'1hr', detail:'2 implicit equations, chain rule on y terms. 1 past paper Q.' },
   ],
   '2026-03-28': [
-    { sub:'econ',  label:'Econ: Govt intervention',  dur:'2hrs', detail:'Tax, subsidy, regulation, price controls. Diagrams + welfare loss. 1 six-mark Q.' },
-    { sub:'am',    label:'AM 1hr', detail:'Continue current plan.' },
+    { sub:'econ', label:'Econ: Govt intervention', dur:'2hrs', detail:'Tax, subsidy, regulation, price controls. Diagrams + welfare loss. 1 six-mark Q.' },
+    { sub:'am',   label:'AM 1hr', detail:'Continue current plan.' },
   ],
   '2026-03-29': [
-    { sub:'maths', label:'Maths: Implicit diff + stationary points', dur:'2hrs', detail:'2 more implicit Qs + find stationary points using f\'(x)=0 and second derivative test.' },
-    { sub:'cs',    label:'CS: Normalisation — 1NF, 2NF, 3NF',       dur:'1hr',  detail:'Convert 1 unnormalised table to 3NF step by step. 1 past paper Q.' },
-    { sub:'econ',  label:'Econ: Spec sweep P1',                      dur:'2hrs', detail:'Open Edexcel B spec, check Theme 1 gaps. Behavioural econ, price discrimination, contestable markets, govt failure.' },
+    { sub:'maths', label:'Maths: Implicit diff + stationary points', dur:'2hrs', detail:'2 more implicit Qs + find stationary points.' },
+    { sub:'cs',    label:'CS: Normalisation — 1NF, 2NF, 3NF',        dur:'1hr',  detail:'Convert 1 unnormalised table to 3NF step by step. 1 past paper Q.' },
+    { sub:'econ',  label:'Econ: Spec sweep P1',                       dur:'2hrs', detail:'Open Edexcel B spec, check Theme 1 gaps.' },
   ],
 };
 
@@ -605,6 +666,48 @@ const PHASES = [
   { label:'Phase 5', start:'2026-06-03', end:'2026-06-18', desc:'Exam season' },
 ];
 
+// ── PRIORITY GAPS DATA ───────────────────────────────────────────────────────
+const PRIORITY_GAPS = [
+  { key:'m_ineq',  sub:'maths', name:'Inequalities (rational)',    hot:true,  examDate:'2026-06-03' },
+  { key:'m_trig',  sub:'maths', name:'Trig integration',           hot:true,  examDate:'2026-06-03' },
+  { key:'m_ibp',   sub:'maths', name:'Integration by parts',       hot:true,  examDate:'2026-06-03' },
+  { key:'m_pf',    sub:'maths', name:'Partial fractions',          hot:true,  examDate:'2026-06-03' },
+  { key:'m_incl',  sub:'maths', name:'Inclined planes / friction', hot:false, examDate:'2026-06-18' },
+  { key:'m_impl',  sub:'maths', name:'Implicit differentiation',   hot:false, examDate:'2026-06-03' },
+  { key:'m_para',  sub:'maths', name:'Parametric equations',       hot:false, examDate:'2026-06-03' },
+  { key:'e_msc',   sub:'econ',  name:'MSC/MSB/MPC/MPB diagrams ⭐', hot:true,  examDate:'2026-05-11' },
+  { key:'e_ds',    sub:'econ',  name:'D&S shifts + PED/PES',       hot:true,  examDate:'2026-05-11' },
+  { key:'e_pm',    sub:'econ',  name:'Price mechanism / efficiency',hot:true, examDate:'2026-05-11' },
+  { key:'e_govt',  sub:'econ',  name:'Govt intervention frameworks',hot:false,examDate:'2026-05-11' },
+  { key:'e_eval',  sub:'econ',  name:'Evaluation judgement technique',hot:false,examDate:'2026-05-11'},
+  { key:'e_behav', sub:'econ',  name:'Behavioural economics',       hot:false, examDate:'2026-05-11' },
+  { key:'c_bool',  sub:'cs',    name:'Boolean algebra + logic gates',hot:true, examDate:'2026-06-10' },
+  { key:'c_lmc',   sub:'cs',    name:'LMC / Assembly',              hot:true,  examDate:'2026-06-10' },
+  { key:'c_fk',    sub:'cs',    name:'Foreign key (lost 4 marks)',  hot:true,  examDate:'2026-06-10' },
+  { key:'c_pp',    sub:'cs',    name:'Push/pop pseudocode',         hot:true,  examDate:'2026-06-10' },
+  { key:'c_bfs',   sub:'cs',    name:'BFS/DFS traversal',          hot:false, examDate:'2026-06-10' },
+  { key:'c_comp',  sub:'cs',    name:'Compression + ISR',          hot:false, examDate:'2026-06-10' },
+  { key:'c_norm',  sub:'cs',    name:'Normalisation 1NF→3NF',      hot:false, examDate:'2026-06-10' },
+];
+
+// ── MOCK HISTORY ─────────────────────────────────────────────────────────────
+const MOCK_DEFAULTS = {
+  maths: [
+    { label:'Sep',  pct:32 },
+    { label:'Nov',  pct:26 },
+    { label:'Feb',  pct:20 },
+  ],
+  econ: [
+    { label:'Sep',  pct:60 },
+    { label:'Nov',  pct:70 },
+    { label:'Feb',  pct:76 },
+  ],
+  cs: [
+    { label:'Nov',  pct:27 },
+    { label:'Feb',  pct:22 },
+  ],
+};
+
 // ── HELPERS ──────────────────────────────────────────────────────────────────
 const SUB_COL = {
   maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)',
@@ -615,7 +718,6 @@ const SUB_BADGE_CLASS = {
 };
 const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-const SHORT  = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
 function today()    { const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
 function toDate(s)  { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
@@ -631,30 +733,207 @@ function getPhase() {
   return 'Exam prep';
 }
 
+// ── localStorage helpers ─────────────────────────────────────────────────────
+function lsGet(k, def={}) {
+  try { return JSON.parse(localStorage.getItem(k) || 'null') ?? def; }
+  catch(e) { return def; }
+}
+function lsSet(k, v) {
+  try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){}
+}
+
 // ── TAB SWITCH ───────────────────────────────────────────────────────────────
 function switchTab(id, btn) {
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
+  if (id === 'subjects') {
+    renderSmartGaps();
+    setTimeout(renderCharts, 60);
+  }
 }
 
-// ── RENDER TODAY ─────────────────────────────────────────────────────────────
+// ── COUNTDOWN ────────────────────────────────────────────────────────────────
+function renderCountdowns() {
+  const revStart = toDate('2026-03-09');
+  const exams = [
+    { id:'econ',  date:'2026-05-11', subCol:'var(--econ)' },
+    { id:'maths', date:'2026-06-03', subCol:'var(--maths)' },
+    { id:'cs',    date:'2026-06-10', subCol:'var(--cs)' },
+  ];
+  exams.forEach(e => {
+    const d = daysUntil(e.date);
+    const urgCol  = d < 60 ? 'var(--red)' : d < 90 ? 'var(--amber)' : e.subCol;
+    const urgText = d < 60 ? '🔴 URGENT' : d < 90 ? '🟠 BUILD NOW' : '🟢 ON TRACK';
+
+    document.getElementById('cd-'+e.id).textContent = d;
+    document.getElementById('cd-'+e.id).style.color = urgCol;
+
+    // Progress bar: elapsed from revision start → exam date
+    const examDate = toDate(e.date);
+    const totalSpan = Math.max(1, examDate - revStart);
+    const elapsed   = today() - revStart;
+    const pct = Math.max(0, Math.min(100, (elapsed / totalSpan) * 100));
+    const bar = document.getElementById('cd-'+e.id+'-bar');
+    bar.style.width = pct + '%';
+    bar.style.background = urgCol;
+
+    const urg = document.getElementById('cd-'+e.id+'-urg');
+    if (urg) { urg.textContent = urgText; urg.style.color = urgCol; }
+  });
+}
+
+// ── FOCUS CARD ───────────────────────────────────────────────────────────────
+function gapUrgencyScore(g, state) {
+  if (state[g.key]?.done) return -1;
+  const days = Math.max(1, daysUntil(g.examDate));
+  const conf = state[g.key]?.confidence || 1;
+  const hotW = g.hot ? 2 : 1;
+  return (hotW * 100) / (days * conf);
+}
+
+function renderFocusCard() {
+  const state = lsGet('gap_state', {});
+  let best = null, bestScore = -Infinity;
+  for (const g of PRIORITY_GAPS) {
+    const s = gapUrgencyScore(g, state);
+    if (s > bestScore) { bestScore = s; best = g; }
+  }
+  if (!best) return;
+  const days = daysUntil(best.examDate);
+  const subCols  = { maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)' };
+  const subNames = { maths:'Maths', econ:'Economics', cs:'Computer Science' };
+  const icons    = { maths:'📐', econ:'📈', cs:'💻' };
+  const daysCol  = days < 60 ? 'var(--red)' : days < 90 ? 'var(--amber)' : subCols[best.sub];
+  document.getElementById('focus-card').innerHTML = `
+    <div class="focus-icon">${icons[best.sub]}</div>
+    <div style="flex:1;min-width:0">
+      <div class="focus-label">Today's #1 Focus</div>
+      <div class="focus-topic" style="color:${subCols[best.sub]}">${best.name}</div>
+      <div class="focus-reason">${subNames[best.sub]} · exam in ${days} days${best.hot?' · high priority gap':''}</div>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-family:var(--mono);font-size:2rem;font-weight:700;color:${daysCol};line-height:1">${days}</div>
+      <div style="font-family:var(--mono);font-size:0.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">days left</div>
+    </div>`;
+}
+
+// ── SMART PRIORITY GAPS ──────────────────────────────────────────────────────
+function toggleGapDone(key) {
+  const state = lsGet('gap_state', {});
+  state[key] = { ...state[key], done: !state[key]?.done, lastRevised: Date.now() };
+  lsSet('gap_state', state);
+  renderSmartGaps();
+  renderFocusCard();
+  updateMathsTopicsBar();
+}
+
+function setGapConfidence(key, level) {
+  const state = lsGet('gap_state', {});
+  const cur = state[key]?.confidence || 0;
+  state[key] = { ...state[key], confidence: cur === level ? 0 : level, lastRevised: Date.now() };
+  lsSet('gap_state', state);
+  renderSmartGaps();
+  renderFocusCard();
+}
+
+function renderSmartGaps() {
+  const state = lsGet('gap_state', {});
+  const subs = ['maths','econ','cs'];
+  const subCols  = { maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)' };
+  const subTitles= { maths:'MATHS', econ:'ECONOMICS', cs:'COMPUTER SCIENCE' };
+  const confCols = { 1:'var(--red)', 2:'var(--amber)', 3:'var(--maths)' };
+
+  const cols = subs.map(sub => {
+    const gaps = PRIORITY_GAPS
+      .filter(g => g.sub === sub)
+      .sort((a,b) => gapUrgencyScore(b,state) - gapUrgencyScore(a,state));
+
+    const rows = gaps.map(g => {
+      const s = state[g.key] || {};
+      const conf = s.confidence || 0;
+      const done = s.done || false;
+      const dotCls = g.hot ? 'dot-hot' : 'dot-med';
+      const confColor = confCols[conf] || '';
+      const dots = [1,2,3].map(n => {
+        const filled = n <= conf;
+        const style = filled && confColor ? `background:${confColor};border-color:${confColor}` : '';
+        return `<div class="conf-dot" style="${style}"
+          onclick="event.stopPropagation();setGapConfidence('${g.key}',${n})"
+          title="${n===1?'Seen it':n===2?'Getting there':'Confident'}"></div>`;
+      }).join('');
+      return `<div class="gap-row${done?' gap-done':''}" onclick="toggleGapDone('${g.key}')">
+        <div class="gap-dot ${dotCls}"></div>
+        <span class="gap-name">${g.name}</span>
+        <div class="gap-conf">${dots}</div>
+      </div>`;
+    }).join('');
+
+    return `<div>
+      <div class="gaps-col-title" style="color:${subCols[sub]}">${subTitles[sub]}</div>
+      ${rows}
+    </div>`;
+  }).join('');
+
+  const c = document.getElementById('gaps-container');
+  if (c) c.innerHTML = `<div class="gaps-grid">${cols}</div>`;
+}
+
+function updateMathsTopicsBar() {
+  const state = lsGet('gap_state', {});
+  const mathsGaps = PRIORITY_GAPS.filter(g => g.sub === 'maths');
+  const done = mathsGaps.filter(g => state[g.key]?.done).length;
+  const pct = Math.round(done / mathsGaps.length * 100);
+  const lbl = document.getElementById('maths-topics-lbl');
+  const bar = document.getElementById('maths-topics-bar');
+  if (lbl) lbl.textContent = `${done} / ${mathsGaps.length} gaps`;
+  if (bar) bar.style.width = Math.max(7, pct) + '%';
+}
+
+// ── BACKLOG / RESCHEDULE ─────────────────────────────────────────────────────
+function findNextFreeEvening() {
+  const rescheduled = lsGet('rescheduled', []);
+  const t = today();
+  for (let i = 1; i <= 14; i++) {
+    const d = new Date(t.getTime() + i * 864e5);
+    const key = dateKey(d);
+    const base  = (SESSIONS[key] || []).filter(s => s.sub !== 'college' && s.sub !== 'am');
+    const extra = rescheduled.filter(r => r.targetKey === key);
+    if (base.length + extra.length < 2) {
+      return {
+        key,
+        label: d.toLocaleDateString('en-GB',{ weekday:'short', day:'numeric', month:'short' })
+      };
+    }
+  }
+  return null;
+}
+
+function rescheduleItem(itemKey, itemName, itemSub) {
+  const rescheduled = lsGet('rescheduled', []);
+  if (rescheduled.find(r => r.key === itemKey)) return;
+  const slot = findNextFreeEvening();
+  if (!slot) return;
+  rescheduled.push({ key: itemKey, name: itemName, sub: itemSub, targetKey: slot.key, label: slot.label });
+  lsSet('rescheduled', rescheduled);
+  renderOverdueMini(); // refresh
+}
+
+// ── RENDER TODAY ──────────────────────────────────────────────────────────────
 function renderToday() {
   const t = today();
   const key = dateKey(t);
   const sessions = SESSIONS[key] || [];
-  const label = `${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]}`;
-  document.getElementById('today-title').textContent = label;
+  document.getElementById('today-title').textContent =
+    `${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]}`;
 
   const container = document.getElementById('today-tasks');
   container.innerHTML = '';
-
   if (!sessions.length) {
     container.innerHTML = '<div style="font-size:0.82rem;color:var(--muted2);padding:14px 0">Nothing scheduled — rest day.</div>';
     return;
   }
-
   sessions.forEach((s, i) => {
     const isTimetable = s.sub === 'college' || s.sub === 'am';
     const id = 'chk'+i;
@@ -665,25 +944,23 @@ function renderToday() {
       item.style.opacity = '0.7';
       item.innerHTML = `
         <div class="task-body">
-          <div class="task-top">
-            <span class="sub-badge ${badgeCls}">${s.sub === 'am' ? 'AM' : 'College'}</span>
-          </div>
+          <div class="task-top"><span class="sub-badge ${badgeCls}">${s.sub==='am'?'AM':'College'}</span></div>
           <div class="task-name">${s.label}</div>
-          ${s.detail ? `<div class="task-detail">${s.detail}</div>` : ''}
+          ${s.detail?`<div class="task-detail">${s.detail}</div>`:''}
         </div>
-        ${s.dur ? `<div class="task-dur">${s.dur}</div>` : ''}`;
+        ${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
     } else {
       item.innerHTML = `
         <div class="task-check"><input type="checkbox" id="${id}"></div>
         <div class="task-body">
           <div class="task-top">
-            <span class="sub-badge ${badgeCls}">${s.sub || '—'}</span>
-            ${s.hw ? '<span class="sub-badge badge-hw">HW DUE</span>' : ''}
+            <span class="sub-badge ${badgeCls}">${s.sub||'—'}</span>
+            ${s.hw?'<span class="sub-badge badge-hw">HW DUE</span>':''}
           </div>
           <div class="task-name" id="lbl${i}">${s.label}</div>
-          ${s.detail ? `<div class="task-detail">${s.detail}</div>` : ''}
+          ${s.detail?`<div class="task-detail">${s.detail}</div>`:''}
         </div>
-        ${s.dur ? `<div class="task-dur">${s.dur}</div>` : ''}`;
+        ${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
       item.querySelector('input').addEventListener('change', function(){
         item.classList.toggle('done-item', this.checked);
         document.getElementById('lbl'+i).classList.toggle('done', this.checked);
@@ -693,68 +970,71 @@ function renderToday() {
   });
 }
 
-// ── RENDER TOMORROW ──────────────────────────────────────────────────────────
+// ── RENDER TOMORROW ───────────────────────────────────────────────────────────
 function renderTomorrow() {
   const t = today();
   const tmr = new Date(t.getTime()+864e5);
   const key = dateKey(tmr);
   const sessions = SESSIONS[key] || [];
-  const label = `Tomorrow — ${DAYS[tmr.getDay()].slice(0,3)} ${tmr.getDate()} ${MONTHS[tmr.getMonth()]}`;
-  document.getElementById('tmr-title').textContent = label;
-
+  document.getElementById('tmr-title').textContent =
+    `Tomorrow — ${DAYS[tmr.getDay()].slice(0,3)} ${tmr.getDate()} ${MONTHS[tmr.getMonth()]}`;
   const container = document.getElementById('tmr-tasks');
   container.innerHTML = '';
-
   if (!sessions.length) {
     container.innerHTML = '<div style="font-size:0.78rem;color:var(--muted2)">Nothing scheduled.</div>';
     return;
   }
   sessions.forEach(s => {
-    const col = SUB_COL[s.sub] || 'var(--muted)';
+    const col = SUB_COL[s.sub]||'var(--muted)';
     const row = document.createElement('div');
     row.className = 'tmr-row';
     row.innerHTML = `
       <div class="tmr-left-dot" style="background:${col}"></div>
       <div class="tmr-body">
-        <div class="tmr-name">${s.hw ? '<span style="color:var(--red);font-weight:700">⚠ HW · </span>' : ''}${s.label}${s.dur ? ` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>` : ''}</div>
-        ${s.detail ? `<div class="tmr-detail">${s.detail}</div>` : ''}
+        <div class="tmr-name">${s.hw?'<span style="color:var(--red);font-weight:700">⚠ HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>
+        ${s.detail?`<div class="tmr-detail">${s.detail}</div>`:''}
       </div>`;
     container.appendChild(row);
   });
 }
 
-// ── RENDER OVERDUE MINI ───────────────────────────────────────────────────────
+// ── RENDER OVERDUE (with Reschedule) ─────────────────────────────────────────
 function renderOverdueMini() {
-  // Items missed this week (Mon 23 + Tue 24 Mar)
+  const rescheduled = lsGet('rescheduled', []);
+
   const recent = [
-    { sub:'m', name:'Partial fractions',              when:'Mon 23' },
-    { sub:'e', name:'Market failure — externalities', when:'Tue 24' },
-    { sub:'c', name:'Trees/graphs + hash tables',     when:'Tue 24' },
+    { sub:'m', name:'Partial fractions',              when:'Mon 23', key:'od_pf' },
+    { sub:'e', name:'Market failure — externalities', when:'Tue 24', key:'od_mfe' },
+    { sub:'c', name:'Trees/graphs + hash tables',     when:'Tue 24', key:'od_tg' },
   ];
-  // Older backlog (pre-this-week)
   const older = [
-    { sub:'m', name:'Inequalities' },
-    { sub:'m', name:'Graphs & transformations' },
-    { sub:'m', name:'Radians + chain rule' },
-    { sub:'m', name:'Inverse trig + small angle' },
-    { sub:'e', name:'D&S, PED, PES, tax incidence' },
-    { sub:'e', name:'Price mechanism' },
-    { sub:'c', name:'Foreign key definition' },
-    { sub:'c', name:'Push pseudocode' },
+    { sub:'m', name:'Inequalities',               key:'od_ineq' },
+    { sub:'m', name:'Graphs & transformations',   key:'od_graphs' },
+    { sub:'m', name:'Radians + chain rule',        key:'od_rad' },
+    { sub:'m', name:'Inverse trig + small angle',  key:'od_invtrig' },
+    { sub:'e', name:'D&S, PED, PES, tax incidence',key:'od_ds' },
+    { sub:'e', name:'Price mechanism',             key:'od_pm' },
+    { sub:'c', name:'Foreign key definition',      key:'od_fk' },
+    { sub:'c', name:'Push pseudocode',             key:'od_pp' },
   ];
 
   function rowHtml(it, showWhen) {
     const tag = it.sub==='m'?'badge-m':it.sub==='e'?'badge-e':'badge-c';
     const lab = it.sub==='m'?'Maths':it.sub==='e'?'Econ':'CS';
+    const r = rescheduled.find(x => x.key === it.key);
+    const btn = r
+      ? `<span class="reschedule-btn rescheduled">✓ ${r.label}</span>`
+      : `<button class="reschedule-btn" onclick="rescheduleItem('${it.key}','${it.name}','${it.sub}')">Reschedule →</button>`;
     return `<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border)">
       <span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span>
       <span style="font-size:0.76rem;flex:1">${it.name}</span>
-      ${showWhen && it.when ? `<span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted)">${it.when}</span>` : ''}
+      ${showWhen && it.when ? `<span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted);margin-right:4px">${it.when}</span>` : ''}
+      ${btn}
     </div>`;
   }
 
-  document.getElementById('overdue-mini').innerHTML  = recent.map(it => rowHtml(it, true)).join('');
-  document.getElementById('overdue-older').innerHTML = older.map(it => rowHtml(it, false)).join('');
+  document.getElementById('overdue-mini').innerHTML  = recent.map(it=>rowHtml(it,true)).join('');
+  document.getElementById('overdue-older').innerHTML = older.map(it=>rowHtml(it,false)).join('');
 }
 
 // ── RENDER WEEK ───────────────────────────────────────────────────────────────
@@ -766,7 +1046,6 @@ function renderWeek() {
   else if (dow===6) monday.setDate(t.getDate()+2);
   else monday.setDate(t.getDate()-(dow-1));
 
-  const fri = new Date(monday); fri.setDate(monday.getDate()+4);
   const opts = { day:'numeric', month:'short' };
   document.getElementById('week-title').textContent =
     `Week beginning ${monday.toLocaleDateString('en-GB', opts)}`;
@@ -785,7 +1064,6 @@ function renderWeek() {
 
     const col = document.createElement('div');
     col.className = 'wday'+(isDeadline?' deadline':'')+(isToday?' today-col':'');
-
     const headStr = isDeadline
       ? `${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)} — ⚠ NEA DUE`
       : `${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)}`;
@@ -793,11 +1071,8 @@ function renderWeek() {
     const tasksHtml = sessions.length
       ? sessions.map(s => {
           const col2 = SUB_COL[s.sub]||'var(--muted)';
-          const cls = s.sub==='college' ? ' college-task' : s.hw ? ' hw-task' : '';
-          return `<div class="wday-task${cls}">
-            <div class="wday-task-dot" style="background:${col2}"></div>
-            <span>${s.hw?'⚠ ':''}${s.label}</span>
-          </div>`;
+          const cls = s.sub==='college'?' college-task':s.hw?' hw-task':'';
+          return `<div class="wday-task${cls}"><div class="wday-task-dot" style="background:${col2}"></div><span>${s.hw?'⚠ ':''}${s.label}</span></div>`;
         }).join('')
       : '<div style="color:var(--muted);font-size:0.7rem">—</div>';
 
@@ -806,21 +1081,159 @@ function renderWeek() {
   }
 }
 
-// ── COUNTDOWN BARS ───────────────────────────────────────────────────────────
-function renderCountdowns() {
-  const start = toDate('2026-01-01');
-  const exams = [
-    { id:'econ',  date:'2026-05-11' },
-    { id:'maths', date:'2026-06-03' },
-    { id:'cs',    date:'2026-06-10' },
+// ── PERFORMANCE CHARTS ────────────────────────────────────────────────────────
+let chartInstances = {};
+
+function loadMockHistory() {
+  const stored = lsGet('mock_history', null);
+  return stored || JSON.parse(JSON.stringify(MOCK_DEFAULTS));
+}
+
+function saveMockHistory(h) { lsSet('mock_history', h); }
+
+function promptAddMock(sub) {
+  const subName = { maths:'Maths', econ:'Economics', cs:'CS' }[sub];
+  const raw = prompt(`Add ${subName} mock score:\nEnter score/max — e.g. "45/100" or just a %  like "45":`);
+  if (!raw) return;
+  const match = raw.match(/(\d+)\s*[\/of]\s*(\d+)/);
+  let pct;
+  if (match) {
+    pct = Math.round(parseInt(match[1]) / parseInt(match[2]) * 100);
+  } else {
+    pct = parseInt(raw.replace('%','').trim());
+  }
+  if (isNaN(pct)) return;
+  pct = Math.max(0, Math.min(100, pct));
+  const h = loadMockHistory();
+  h[sub] = h[sub] || [];
+  const monthLabel = new Date().toLocaleDateString('en-GB',{month:'short'});
+  h[sub].push({ label: monthLabel, pct });
+  saveMockHistory(h);
+  renderCharts();
+}
+
+function renderCharts() {
+  const h = loadMockHistory();
+  const cfgs = [
+    { sub:'maths', id:'chart-maths', color:'#4ade80', target:80 },
+    { sub:'econ',  id:'chart-econ',  color:'#60a5fa', target:70 },
+    { sub:'cs',    id:'chart-cs',    color:'#fbbf24', target:55 },
   ];
-  const totalDays = (toDate('2026-06-18')-start)/864e5;
-  exams.forEach(e => {
-    const d = daysUntil(e.date);
-    document.getElementById('cd-'+e.id).textContent = d;
-    const pct = Math.max(0, Math.min(100, ((today()-start)/864e5/totalDays)*100));
-    document.getElementById('cd-'+e.id+'-bar').style.width = pct+'%';
+  cfgs.forEach(c => {
+    const canvas = document.getElementById(c.id);
+    if (!canvas) return;
+    if (chartInstances[c.sub]) { chartInstances[c.sub].destroy(); }
+    const data = h[c.sub] || [];
+    chartInstances[c.sub] = new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: data.map(d => d.label),
+        datasets: [
+          {
+            data: data.map(d => d.pct),
+            borderColor: c.color,
+            backgroundColor: c.color + '15',
+            borderWidth: 2,
+            pointRadius: 4,
+            pointBackgroundColor: c.color,
+            tension: 0.3,
+            fill: true,
+          },
+          {
+            data: data.map(() => c.target),
+            borderColor: 'rgba(255,255,255,0.12)',
+            borderWidth: 1,
+            borderDash: [4,4],
+            pointRadius: 0,
+            fill: false,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(19,22,31,0.95)',
+            borderColor: 'rgba(255,255,255,0.08)',
+            borderWidth: 1,
+            titleColor: '#e8eaf0',
+            bodyColor: '#6b7490',
+            callbacks: { label: ctx => ` ${ctx.parsed.y}%` }
+          }
+        },
+        scales: {
+          y: {
+            min: 0, max: 100,
+            grid: { color: 'rgba(255,255,255,0.04)' },
+            ticks: { color: '#4a5070', font: { size: 9 }, callback: v => v+'%', maxTicksLimit: 4 }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { color: '#4a5070', font: { size: 9 } }
+          }
+        }
+      }
+    });
   });
+}
+
+// ── 1-HOUR TIMER ─────────────────────────────────────────────────────────────
+const TIMER_TOTAL = 3600;
+let timerSecs     = TIMER_TOTAL;
+let timerRunning  = false;
+let timerInterval = null;
+
+function sessionsToday() {
+  return lsGet('sess_' + dateKey(today()), 0);
+}
+function incrementSessions() {
+  lsSet('sess_' + dateKey(today()), sessionsToday() + 1);
+}
+
+function updateTimerUI() {
+  const m = Math.floor(timerSecs / 60);
+  const s = timerSecs % 60;
+  const isReset = !timerRunning && timerSecs === TIMER_TOTAL;
+  const timeStr = isReset ? '1:00' : `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  const lbl     = timerRunning ? 'RUNNING' : isReset ? 'START' : 'PAUSED';
+  document.getElementById('timer-time').textContent = timeStr;
+  document.getElementById('timer-lbl').textContent  = lbl;
+  const n = sessionsToday();
+  document.getElementById('timer-sess').textContent = n > 0 ? `${n} session${n!==1?'s':''} today` : '';
+  const btn = document.getElementById('timer-btn');
+  btn.className = 'timer-btn'
+    + (timerRunning ? ' running' : '')
+    + (!timerRunning && timerSecs > 0 && timerSecs < 300 ? ' urgent' : '');
+}
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+  } else {
+    if (timerSecs <= 0) timerSecs = TIMER_TOTAL;
+    timerRunning = true;
+    timerInterval = setInterval(() => {
+      timerSecs--;
+      if (timerSecs <= 0) {
+        timerSecs = 0;
+        timerRunning = false;
+        clearInterval(timerInterval);
+        incrementSessions();
+      }
+      updateTimerUI();
+    }, 1000);
+  }
+  updateTimerUI();
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSecs = TIMER_TOTAL;
+  updateTimerUI();
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
@@ -831,10 +1244,13 @@ function init() {
   document.getElementById('live-phase').textContent = getPhase();
 
   renderCountdowns();
+  renderFocusCard();
   renderToday();
   renderTomorrow();
   renderOverdueMini();
   renderWeek();
+  renderSmartGaps();
+  updateTimerUI();
 }
 
 init();
