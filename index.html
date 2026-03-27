@@ -243,7 +243,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 .nea-big { font-family: var(--mono); font-size: 4rem; font-weight: 700; color: var(--maths); line-height: 1; }
 .nea-hero-info h2 { font-size: 1.3rem; font-weight: 700; color: var(--maths); margin-bottom: 4px; }
 .nea-hero-info p { font-size: 0.82rem; color: var(--muted2); }
-.nea-deadline { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-family: var(--mono); font-size: 0.72rem; color: var(--amber); }
+.nea-deadline { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-family: var(--mono); font-size: 0.72rem; color: var(--maths); }
 .nea-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .nea-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--surface2); border-radius: 8px; }
 .nea-row-name { font-size: 0.82rem; font-weight: 500; }
@@ -338,7 +338,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     </div>
     <div class="topbar-phase" id="live-phase"></div>
   </div>
-  <span class="nea-pill" id="nea-status-pill">NEA due Thu 26 Mar</span>
+  <span class="nea-pill" id="nea-status-pill">NEA submitted 27 Mar ✓</span>
 </div>
 
 <!-- ── COUNTDOWN STRIP ── -->
@@ -507,7 +507,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
         <div class="bar-lbl">Full mock (Feb) <span>20/90 · U</span></div>
         <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
       </div>
-      <div class="subj-note">Boolean algebra, LMC/Assembly, networking are biggest gaps. NEA 52/70 reduces pressure.</div>
+      <div class="subj-note">Boolean algebra, LMC/Assembly, networking are biggest gaps. NEA submitted (est. 60/70) — focus shifts fully to Paper 1 &amp; 2.</div>
       <div class="gb-section">
         <div class="gb-header">
           <span class="gb-section-lbl">Grade boundaries</span>
@@ -537,22 +537,22 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 <div class="tab-pane" id="tab-nea">
 
   <div class="nea-hero">
-    <div class="nea-big">52</div>
+    <div class="nea-big">60</div>
     <div class="nea-hero-info">
-      <h2>Grade B · OCR H446 NEA</h2>
-      <p>NEA_Final_v4.docx · Hard deadline: Thu 26 Mar midnight</p>
-      <div class="nea-deadline">Deadline: Thu 26 Mar midnight</div>
+      <h2>Est. Grade A · OCR H446 NEA</h2>
+      <p>Submitted 27 Mar 2026 · estimated mark only</p>
+      <div class="nea-deadline">✓ Submitted 27 March 2026</div>
     </div>
   </div>
 
   <div class="card-title">Breakdown by Section</div>
   <div class="nea-breakdown">
-    <div class="nea-row strong"><span class="nea-row-name">Analysis</span><span class="nea-row-score" style="color:var(--maths)">8 / 10</span></div>
+    <div class="nea-row strong"><span class="nea-row-name">Analysis</span><span class="nea-row-score" style="color:var(--maths)">9 / 10</span></div>
     <div class="nea-row strong"><span class="nea-row-name">Design</span><span class="nea-row-score" style="color:var(--maths)">12 / 15</span></div>
-    <div class="nea-row strong"><span class="nea-row-name">Development — iterative</span><span class="nea-row-score" style="color:var(--maths)">12 / 15</span></div>
-    <div class="nea-row strong"><span class="nea-row-name">Development — testing</span><span class="nea-row-score" style="color:var(--maths)">8 / 10</span></div>
+    <div class="nea-row strong"><span class="nea-row-name">Development — iterative</span><span class="nea-row-score" style="color:var(--maths)">13 / 15</span></div>
+    <div class="nea-row strong"><span class="nea-row-name">Development — testing</span><span class="nea-row-score" style="color:var(--maths)">9 / 10</span></div>
     <div class="nea-row strong"><span class="nea-row-name">Testing</span><span class="nea-row-score" style="color:var(--maths)">4 / 5</span></div>
-    <div class="nea-row weak" style="border:1px solid rgba(251,146,60,0.3)"><span class="nea-row-name">Evaluation <span style="font-family:var(--mono);font-size:0.65rem;color:var(--amber)">(weakest)</span></span><span class="nea-row-score" style="color:var(--amber)">8 / 15</span></div>
+    <div class="nea-row strong"><span class="nea-row-name">Evaluation</span><span class="nea-row-score" style="color:var(--maths)">13 / 15</span></div>
   </div>
 
   <div style="margin-top:28px">
@@ -640,7 +640,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
   <div class="guide-section">
     <div class="guide-h">NEA + Offers tab</div>
-    <p class="guide-p">Your OCR H446 NEA breakdown (52/70, Grade B, submitted 27 Mar 2026) and all five university offers. The key constraint: QMUL, Sussex, and City all require an A in Maths.</p>
+    <p class="guide-p">Your OCR H446 NEA breakdown (est. 60/70, submitted 27 Mar 2026) and all five university offers. The key constraint: QMUL, Sussex, and City all require an A in Maths.</p>
   </div>
 
   <div class="guide-section">
@@ -754,7 +754,6 @@ const PHASES = [
 ];
 
 // ── PRIORITY GAPS ────────────────────────────────────────────────────────────
-// defPrio: default priority ('hot'/'med'/'low') — user can override by clicking the dot
 const PRIORITY_GAPS = [
   { key:'m_ineq',  sub:'maths', name:'Inequalities (rational)',       defPrio:'hot', examDate:'2026-06-03' },
   { key:'m_trig',  sub:'maths', name:'Trig integration',              defPrio:'hot', examDate:'2026-06-03' },
@@ -776,7 +775,6 @@ const PRIORITY_GAPS = [
   { key:'c_bfs',   sub:'cs',    name:'BFS/DFS traversal',             defPrio:'med', examDate:'2026-06-10' },
   { key:'c_comp',  sub:'cs',    name:'Compression + ISR',             defPrio:'med', examDate:'2026-06-10' },
   { key:'c_norm',  sub:'cs',    name:'Normalisation 1NF→3NF',         defPrio:'med', examDate:'2026-06-10' },
-  // logOnly: appear in session log chips but not in the priority gaps panel
   { key:'m_graphs',  sub:'maths', name:'Graphs & transformations',      defPrio:'low', examDate:'2026-06-03', logOnly:true },
   { key:'m_invtrig', sub:'maths', name:'Inverse trig + small angle',    defPrio:'low', examDate:'2026-06-03', logOnly:true },
   { key:'m_radians', sub:'maths', name:'Radians + chain rule',          defPrio:'low', examDate:'2026-06-03', logOnly:true },
@@ -793,7 +791,7 @@ const PRIORITY_GAPS = [
   { key:'c_os',      sub:'cs',    name:'Operating systems / scheduling',  defPrio:'low', examDate:'2026-06-10', logOnly:true },
 ];
 
-// ── OLDER BACKLOG (auto-scheduled as bonus sessions) ─────────────────────────
+// ── OLDER BACKLOG ─────────────────────────────────────────────────────────────
 const OLDER_BACKLOG = [
   { sub:'m', name:'Inequalities',               key:'ob_ineq' },
   { sub:'m', name:'Graphs & transformations',   key:'ob_graphs' },
@@ -1036,7 +1034,6 @@ function rescheduleItem(itemKey, itemName, itemSub) {
 }
 
 function unrescheduleItem(itemKey) {
-  // Track that the user explicitly removed this so auto-reschedule skips it
   const manuallyRemoved = lsGet('manual_unrescheduled', []);
   if (!manuallyRemoved.includes(itemKey)) {
     manuallyRemoved.push(itemKey);
@@ -1049,7 +1046,6 @@ function unrescheduleItem(itemKey) {
 function markBacklogDone(itemKey) {
   const done = lsGet('done_backlog', []);
   if (!done.includes(itemKey)) { done.push(itemKey); lsSet('done_backlog', done); }
-  // Also remove from rescheduled queue so it doesn't clog up future days
   lsSet('rescheduled', lsGet('rescheduled', []).filter(r => r.key !== itemKey));
   renderOverdueMini();
 }
@@ -1060,8 +1056,6 @@ function undoneBacklog(itemKey) {
 }
 
 function autoRescheduleBacklog() {
-  // Auto-slot all OLDER_BACKLOG items into coming days on page load,
-  // unless the user has explicitly unrescheduled them
   const manuallyRemoved = lsGet('manual_unrescheduled', []);
   for (const it of OLDER_BACKLOG) {
     if (!manuallyRemoved.includes(it.key)) {
@@ -1072,7 +1066,6 @@ function autoRescheduleBacklog() {
 
 function renderOverdueMini() {
   const rescheduled = lsGet('rescheduled', []);
-
   const doneBacklog = lsGet('done_backlog', []);
 
   function rowHtml(it, showWhen, autoSlotted) {
@@ -1083,16 +1076,14 @@ function renderOverdueMini() {
 
     let actionBtns;
     if (isDone) {
-      // Show as caught up, with an undo link
       actionBtns = `<span style="font-family:var(--mono);font-size:0.6rem;color:var(--maths)">✓ caught up</span>
         <button class="unreschedule-btn" onclick="undoneBacklog('${it.key}')" title="Undo">×</button>`;
     } else if (r) {
-      // Rescheduled — show destination, undo, and a "done" tick
       actionBtns = `<span class="reschedule-btn rescheduled">✓ ${r.label}</span>
         <button class="unreschedule-btn" onclick="unrescheduleItem('${it.key}')" title="Undo slot">×</button>
         ${autoSlotted ? `<button class="reschedule-btn" style="background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.3);color:var(--maths)" onclick="markBacklogDone('${it.key}')">Done ✓</button>` : ''}`;
     } else if (autoSlotted) {
-      actionBtns = ''; // auto-reschedule runs on init; slot will appear on next render
+      actionBtns = '';
     } else {
       actionBtns = `<button class="reschedule-btn" onclick="rescheduleItem('${it.key}','${it.name}','${it.sub}')">Reschedule →</button>`;
     }
@@ -1117,7 +1108,6 @@ function getTodayBonusItem() {
   const state     = lsGet('gap_state', {});
   return OLDER_BACKLOG.find(item => {
     if (dismissed.includes(item.key + '_' + todayKey)) return false;
-    // skip if related gap is already done
     const related = PRIORITY_GAPS.find(g => g.name.toLowerCase().includes(item.name.toLowerCase().split(' ')[0]));
     if (related && state[related.key]?.done) return false;
     return true;
@@ -1150,10 +1140,6 @@ function renderBonusSection() {
 }
 
 // ── GRADE BOUNDARIES ────────────────────────────────────────────────────────
-// Boundaries are entirely user-defined — stored in localStorage 'grade_bounds'
-// { maths: { targetLabel: 'A ≥72%' }, econ: {...}, cs: {...} }
-// Latest mock is auto-pulled from mock_history
-
 function getLatestMock(sub) {
   const h = loadMockHistory();
   const entries = h[sub] || [];
@@ -1387,7 +1373,7 @@ function promptAddMock(sub) {
   h[sub].push({ label: monthLabel, pct });
   saveMockHistory(h);
   renderCharts();
-  renderGradeBounds(); // refresh gap display
+  renderGradeBounds();
 }
 
 function renderCharts() {
@@ -1447,7 +1433,6 @@ function renderStreak() {
   const t = today();
   const todayStr = dateKey(t);
 
-  // 28 cells: day[0] = 27 days ago, day[27] = today
   const cells = [];
   for (let i = 27; i >= 0; i--) {
     const d = new Date(t.getTime() - i * 864e5);
@@ -1456,7 +1441,6 @@ function renderStreak() {
 
   let streakCount = 0;
   let totalSessions = 0;
-  // count current streak (consecutive days with sessions ending today)
   for (let i = cells.length - 1; i >= 0; i--) {
     const n = lsGet('sess_' + dateKey(cells[i]), 0);
     if (n > 0) { streakCount++; totalSessions += n; }
@@ -1489,7 +1473,6 @@ function renderStreak() {
     cell.title = `${d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}: ${n} session${n!==1?'s':''}`;
     grid.appendChild(cell);
 
-    // label — show day number for every 7th cell + today
     const lbl = document.createElement('div');
     lbl.className = 'streak-day-lbl';
     const dayNum = d.getDate();
@@ -1498,7 +1481,6 @@ function renderStreak() {
     labels.appendChild(lbl);
   });
 
-  // streak stat
   const totalToday = lsGet('sess_' + todayStr, 0);
   const streakStr = streakCount > 0 ? `★ ${streakCount}-day streak` : '';
   const todayStr2 = totalToday > 0 ? `${totalToday} session${totalToday!==1?'s':''} today` : 'No sessions yet today';
@@ -1547,7 +1529,7 @@ function toggleTimer() {
       if (timerSecs <= 0) {
         timerSecs = 0; timerRunning = false; clearInterval(timerInterval);
         incrementSessions();
-        showSessionLog(true); // auto-open log on timer completion
+        showSessionLog(true);
       }
       updateTimerUI();
     }, 1000);
@@ -1572,13 +1554,11 @@ function showSessionLog(fromTimer) {
   slogTopics    = new Set();
   slogConf      = 0;
 
-  // sub text
   const subText = document.getElementById('slog-sub-text');
   if (subText) subText.textContent = fromTimer
     ? '1-hour session complete. What did you cover?'
     : 'What did you study? Select topics below.';
 
-  // session count checkbox visibility
   const sessRow = document.getElementById('slog-sess-row');
   if (sessRow) {
     sessRow.style.display = fromTimer ? 'none' : 'flex';
@@ -1643,7 +1623,6 @@ function submitSessionLog() {
     slogTopics.forEach(key => {
       state[key] = { ...state[key], lastRevised: Date.now() };
       if (slogConf > 0) state[key].confidence = slogConf;
-      // Save to today's log — update existing entry if already logged today
       const g = PRIORITY_GAPS.find(x => x.key === key);
       if (g) {
         const idx = dayLog.findIndex(x => x.key === key);
@@ -1658,7 +1637,6 @@ function submitSessionLog() {
     updateMathsTopicsBar();
     renderTodayLog();
   }
-  // if manual log and user wants to count as session
   if (!slogFromTimer) {
     const chk = document.getElementById('slog-count-sess');
     if (chk && chk.checked) incrementSessions();
@@ -1707,31 +1685,18 @@ function init() {
     `${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]} ${t.getFullYear()}`;
   document.getElementById('live-phase').textContent = getPhase();
 
-  // NEA pill — show as done after submission deadline passes
+  // NEA pill — submitted, show est. mark
   const neaPill = document.getElementById('nea-status-pill');
   if (neaPill) {
-    const pastDeadline = today() > toDate('2026-03-26');
-    if (pastDeadline) {
-      neaPill.textContent = '✓ NEA Submitted · 52/70 · B';
-      neaPill.style.background = 'rgba(74,222,128,0.12)';
-      neaPill.style.borderColor = 'rgba(74,222,128,0.3)';
-      neaPill.style.color = 'var(--maths)';
-    } else {
-      const daysToNEA = daysUntil('2026-03-26');
-      if (daysToNEA <= 0) {
-        neaPill.textContent = 'NEA — submit tonight';
-        neaPill.style.color = 'var(--red)';
-        neaPill.style.borderColor = 'rgba(233,69,96,0.4)';
-        neaPill.style.background = 'rgba(233,69,96,0.1)';
-      } else {
-        neaPill.textContent = `NEA due in ${daysToNEA}d — Thu 26 Mar`;
-      }
-    }
+    neaPill.textContent = '✓ NEA Submitted · est. 60/70';
+    neaPill.style.background = 'rgba(74,222,128,0.12)';
+    neaPill.style.borderColor = 'rgba(74,222,128,0.3)';
+    neaPill.style.color = 'var(--maths)';
   }
 
   renderCountdowns();
   renderFocusCard();
-  autoRescheduleBacklog();   // slot older missed sessions before rendering
+  autoRescheduleBacklog();
   renderToday();
   renderTomorrow();
   renderOverdueMini();
