@@ -435,16 +435,20 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <div class="subjects-grid">
     <div class="subj-card m">
       <div class="subj-name">Maths</div>
-      <div class="subj-status-tag tag-critical">CRITICAL — A needed</div>
+      <div class="subj-status-tag tag-critical">CRITICAL — A needed for QMUL/Sussex/City</div>
       <div class="bar-section">
-        <div class="bar-lbl">Topics revised <span id="maths-topics-lbl">0 / 7 gaps</span></div>
-        <div class="bar"><div class="bar-fill" id="maths-topics-bar" style="width:7%;background:var(--maths)"></div></div>
+        <div class="bar-lbl">Easter Maths sessions done <span id="maths-topics-lbl">0 / 12</span></div>
+        <div class="bar"><div class="bar-fill" id="maths-topics-bar" style="width:3%;background:var(--maths)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Full mock performance <span>~20% · U</span></div>
+        <div class="bar-lbl">Diagnosis 30 Mar — 17/76 <span style="color:var(--red)">22% · U</span></div>
+        <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
+      </div>
+      <div class="bar-section">
+        <div class="bar-lbl">Feb mock <span style="color:var(--red)">~20% · U</span></div>
         <div class="bar"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
       </div>
-      <div class="subj-note">QMUL, Sussex &amp; City all require A in Maths. Pure 1 on 3 Jun — heavy revision needed.</div>
+      <div class="subj-note">Pure 1: 3 Jun · Pure 2: 11 Jun · S&amp;M: 18 Jun. Integration scored 0/18 on diagnosis — zero marks across IBP, substitution, trig integration, partial fractions, DEs. 12-session Easter plan front-loads integration then trig, algebra, logs, sequences. Stats/Mechanics pushed post-Easter.</div>
       <div class="gb-section">
         <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('maths')">✏ edit</button></div>
         <div class="gb-grid" id="gb-maths"></div>
@@ -456,16 +460,16 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     </div>
     <div class="subj-card e">
       <div class="subj-name">Economics</div>
-      <div class="subj-status-tag tag-protect">Protect A</div>
+      <div class="subj-status-tag tag-protect">BEST SUBJECT — Protect B, target A</div>
       <div class="bar-section">
-        <div class="bar-lbl">Topics self-revised <span>~0 confirmed</span></div>
-        <div class="bar"><div class="bar-fill" style="width:5%;background:var(--econ)"></div></div>
+        <div class="bar-lbl">Diagnosis 30 Mar — 35/70 <span style="color:var(--amber)">50% · B boundary</span></div>
+        <div class="bar"><div class="bar-fill" style="width:50%;background:var(--econ)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Class foundation <span>Strong · pred. A</span></div>
-        <div class="bar"><div class="bar-fill" style="width:72%;background:var(--econ)"></div></div>
+        <div class="bar-lbl">Feb mock <span style="color:var(--econ)">~B</span></div>
+        <div class="bar"><div class="bar-fill" style="width:68%;background:var(--econ)"></div></div>
       </div>
-      <div class="subj-note">Strong foundation. Needs essay technique drilling — MOPS structure, MSC/MSB diagrams. P1 on 11 May.</div>
+      <div class="subj-note">P1 (Theme 1+4): 11 May · P2 (Theme 3+2): 18 May · P3 (Competition): 4 Jun. Biggest gaps: diagrams across the board, productive vs allocative efficiency (definitions swapped), kinked demand mechanism, game theory/Nash equilibrium, multiplier calculation, supply-side vs demand management. Understanding is there — needs precision and diagram drilling.</div>
       <div class="gb-section">
         <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('econ')">✏ edit</button></div>
         <div class="gb-grid" id="gb-econ"></div>
@@ -477,16 +481,16 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     </div>
     <div class="subj-card c">
       <div class="subj-name">Computer Science</div>
-      <div class="subj-status-tag tag-target">B target</div>
+      <div class="subj-status-tag tag-target">MIDDLE — U mock, B target</div>
       <div class="bar-section">
-        <div class="bar-lbl">Spec coverage <span>~30%</span></div>
-        <div class="bar"><div class="bar-fill" style="width:30%;background:var(--cs)"></div></div>
+        <div class="bar-lbl">Diagnosis 30 Mar — 36/70 <span style="color:var(--amber)">51%</span></div>
+        <div class="bar"><div class="bar-fill" style="width:51%;background:var(--cs)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Full mock (Feb) <span>20/90 · U</span></div>
+        <div class="bar-lbl">Feb mock <span style="color:var(--red)">U</span></div>
         <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
       </div>
-      <div class="subj-note">Boolean algebra, LMC/Assembly, networking are biggest gaps. NEA submitted (est. 60/70) — focus shifts fully to Paper 1 &amp; 2.</div>
+      <div class="subj-note">P1 (Computer Systems): 10 Jun · P2 (Algorithms): 17 Jun. Strong: FDE cycle, pipelining, Big O, merge sort, Dijkstra's, tree traversal. Weak: scheduling (DK), Boolean algebra (DK), normalisation to 3NF (DK), stack pseudocode (DK), TCP/IP layers detail, floating point arithmetic, SQL syntax. NEA submitted — est. 60/70.</div>
       <div class="gb-section">
         <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('cs')">✏ edit</button></div>
         <div class="gb-grid" id="gb-cs"></div>
@@ -626,9 +630,9 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
 <script>
 // ── SESSION DATA ─────────────────────────────────────────────────────────────
-// Easter: Mon 30 Mar – Fri 10 Apr = library 4hrs/day, 2 subjects × 2hrs
-// Maths gets 6 slots across 2 weeks (non-negotiable A), Econ 5, CS 5
-// Weekends left as lighter/rest unless sessions added manually
+// Easter: Mon 30 Mar – Sun 12 Apr = 14 days, library daily
+// Maths every day 2hrs. CS/Econ alternate as second subject 2hrs.
+// Sun 5 Apr: Econ light (1.5hrs). Sun 12 Apr: CS light (1.5hrs).
 const SESSIONS = {
   '2026-03-21': [
     { sub:'nea', label:'NEA tweaks', detail:'Read through, humanise, polish wording.' },
@@ -775,65 +779,75 @@ const EXAM_DAYS = {
 };
 
 const PHASES = [
-  { label:'Phase 1', start:'2026-03-09', end:'2026-04-08', desc:'Foundation' },
-  { label:'Phase 2', start:'2026-04-09', end:'2026-04-29', desc:'Easter ramp-up' },
-  { label:'Phase 3', start:'2026-04-30', end:'2026-05-10', desc:'Pre-Econ' },
+  { label:'Phase 1', start:'2026-03-09', end:'2026-03-29', desc:'Pre-Easter' },
+  { label:'Phase 2', start:'2026-03-30', end:'2026-04-12', desc:'Easter — library daily' },
+  { label:'Phase 3', start:'2026-04-13', end:'2026-05-10', desc:'Back at college' },
   { label:'Phase 4', start:'2026-05-11', end:'2026-06-02', desc:'Econ exams' },
-  { label:'Phase 5', start:'2026-06-03', end:'2026-06-18', desc:'Exam season' },
+  { label:'Phase 5', start:'2026-06-03', end:'2026-06-18', desc:'Maths + CS exams' },
 ];
 
 const PRIORITY_GAPS = [
-  { key:'m_ineq',  sub:'maths', name:'Inequalities (rational)',       defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_trig',  sub:'maths', name:'Trig integration',              defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_ibp',   sub:'maths', name:'Integration by parts',          defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_pf',    sub:'maths', name:'Partial fractions',             defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_para',  sub:'maths', name:'Parametric equations',          defPrio:'med', examDate:'2026-06-03' },
-  { key:'m_incl',  sub:'maths', name:'Inclined planes / friction',    defPrio:'med', examDate:'2026-06-18' },
-  { key:'m_impl',  sub:'maths', name:'Implicit differentiation',      defPrio:'med', examDate:'2026-06-03' },
-  { key:'e_msc',   sub:'econ',  name:'MSC/MSB/MPC/MPB diagrams',      defPrio:'hot', examDate:'2026-05-11' },
-  { key:'e_ds',    sub:'econ',  name:'D&S shifts + PED/PES',          defPrio:'hot', examDate:'2026-05-11' },
-  { key:'e_pm',    sub:'econ',  name:'Price mechanism / efficiency',  defPrio:'hot', examDate:'2026-05-11' },
-  { key:'e_govt',  sub:'econ',  name:'Govt intervention frameworks',  defPrio:'med', examDate:'2026-05-11' },
-  { key:'e_eval',  sub:'econ',  name:'Evaluation judgement technique',defPrio:'med', examDate:'2026-05-11' },
-  { key:'e_behav', sub:'econ',  name:'Behavioural economics',         defPrio:'low', examDate:'2026-05-11' },
-  { key:'c_bool',  sub:'cs',    name:'Boolean algebra + logic gates', defPrio:'hot', examDate:'2026-06-10' },
-  { key:'c_lmc',   sub:'cs',    name:'LMC / Assembly',                defPrio:'hot', examDate:'2026-06-10' },
-  { key:'c_fk',    sub:'cs',    name:'Foreign key (lost 4 marks)',    defPrio:'hot', examDate:'2026-06-10' },
-  { key:'c_pp',    sub:'cs',    name:'Push/pop pseudocode',           defPrio:'hot', examDate:'2026-06-10' },
-  { key:'c_bfs',   sub:'cs',    name:'BFS/DFS traversal',             defPrio:'med', examDate:'2026-06-10' },
-  { key:'c_comp',  sub:'cs',    name:'Compression + ISR',             defPrio:'med', examDate:'2026-06-10' },
-  { key:'c_norm',  sub:'cs',    name:'Normalisation 1NF→3NF',         defPrio:'med', examDate:'2026-06-10' },
-  { key:'m_graphs',  sub:'maths', name:'Graphs & transformations',     defPrio:'low', examDate:'2026-06-03', logOnly:true },
-  { key:'m_invtrig', sub:'maths', name:'Inverse trig + small angle',   defPrio:'low', examDate:'2026-06-03', logOnly:true },
-  { key:'m_radians', sub:'maths', name:'Radians + chain rule',         defPrio:'low', examDate:'2026-06-03', logOnly:true },
-  { key:'m_diff',    sub:'maths', name:'Differentiation (general)',     defPrio:'low', examDate:'2026-06-03', logOnly:true },
-  { key:'m_proofint',sub:'maths', name:'Proof by contradiction',        defPrio:'low', examDate:'2026-06-03', logOnly:true },
-  { key:'e_extrnl',  sub:'econ',  name:'Externalities diagrams',        defPrio:'low', examDate:'2026-05-11', logOnly:true },
-  { key:'e_publgood',sub:'econ',  name:'Public goods + info failure',   defPrio:'low', examDate:'2026-05-11', logOnly:true },
-  { key:'e_taxsub',  sub:'econ',  name:'Tax, subsidy & price controls', defPrio:'low', examDate:'2026-05-11', logOnly:true },
-  { key:'e_labour',  sub:'econ',  name:'Labour markets',                defPrio:'low', examDate:'2026-05-18', logOnly:true },
-  { key:'c_sql',     sub:'cs',    name:'SQL (SELECT / JOIN / WHERE)',    defPrio:'low', examDate:'2026-06-10', logOnly:true },
-  { key:'c_sort',    sub:'cs',    name:'Merge sort / bubble sort',       defPrio:'low', examDate:'2026-06-10', logOnly:true },
-  { key:'c_trees',   sub:'cs',    name:'Trees + hash tables',            defPrio:'low', examDate:'2026-06-10', logOnly:true },
-  { key:'c_net',     sub:'cs',    name:'Networking / protocols',         defPrio:'low', examDate:'2026-06-10', logOnly:true },
-  { key:'c_os',      sub:'cs',    name:'Operating systems / scheduling', defPrio:'low', examDate:'2026-06-10', logOnly:true },
+  // MATHS — ordered by diagnosis score × exam mark weight
+  { key:'m_trig_int', sub:'maths', name:'Trig integration (sin²x, cos²x)',   defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_ibp',      sub:'maths', name:'Integration by parts',               defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_pf',       sub:'maths', name:'Partial fractions — setup method',   defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_pf_int',   sub:'maths', name:'Integration by partial fractions',   defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_sub',      sub:'maths', name:'Integration by substitution',        defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_de',       sub:'maths', name:'Differential equations',             defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_ineq',     sub:'maths', name:'Rational inequalities',              defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_binom',    sub:'maths', name:'Binomial expansion (neg/frac powers)',defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_rform',    sub:'maths', name:'R form — acosx + bsinx',             defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_trig_sol', sub:'maths', name:'Trig solving — all solutions in range',defPrio:'hot',examDate:'2026-06-03' },
+  { key:'m_logs',     sub:'maths', name:'Exponentials + logarithms',          defPrio:'hot', examDate:'2026-06-03' },
+  { key:'m_seq',      sub:'maths', name:'Sequences + series (arith/geom/sigma)',defPrio:'med',examDate:'2026-06-03' },
+  { key:'m_impl',     sub:'maths', name:'Implicit diff — product rule inside', defPrio:'med', examDate:'2026-06-03' },
+  { key:'m_para_sp',  sub:'maths', name:'Parametric stationary points',        defPrio:'med', examDate:'2026-06-03' },
+  { key:'m_num',      sub:'maths', name:'Numerical methods (iteration, Newton-Raphson, trapezium)',defPrio:'med',examDate:'2026-06-03' },
+  { key:'m_vec',      sub:'maths', name:'Vectors — unit vectors, magnitude',   defPrio:'low', examDate:'2026-06-03' },
+  { key:'m_proof',    sub:'maths', name:'Proof by contradiction',              defPrio:'low', examDate:'2026-06-03' },
+  // ECON — ordered by diagnosis + exam proximity
+  { key:'e_diag',     sub:'econ',  name:'All core diagrams from memory',       defPrio:'hot', examDate:'2026-05-11' },
+  { key:'e_eff',      sub:'econ',  name:'Productive vs allocative efficiency', defPrio:'hot', examDate:'2026-05-11' },
+  { key:'e_pc',       sub:'econ',  name:'Perfect competition → normal profit', defPrio:'hot', examDate:'2026-05-11' },
+  { key:'e_kink',     sub:'econ',  name:'Kinked demand curve mechanism',       defPrio:'hot', examDate:'2026-05-11' },
+  { key:'e_game',     sub:'econ',  name:'Game theory + Nash equilibrium',      defPrio:'hot', examDate:'2026-05-11' },
+  { key:'e_mult',     sub:'econ',  name:'Multiplier calculation (1/1-MPC)',    defPrio:'hot', examDate:'2026-05-18' },
+  { key:'e_macro',    sub:'econ',  name:'AD/AS + fiscal/monetary/exchange rate',defPrio:'hot',examDate:'2026-05-18' },
+  { key:'e_ss',       sub:'econ',  name:'Supply-side vs demand management',    defPrio:'med', examDate:'2026-05-18' },
+  { key:'e_mops',     sub:'econ',  name:'MOPS essay technique',                defPrio:'med', examDate:'2026-05-11' },
+  { key:'e_comp',     sub:'econ',  name:'P3 competition theme',                defPrio:'med', examDate:'2026-06-04' },
+  { key:'e_govt',     sub:'econ',  name:'Govt intervention frameworks',        defPrio:'low', examDate:'2026-05-11' },
+  // CS — ordered by diagnosis gaps
+  { key:'c_sched',    sub:'cs',    name:'Scheduling (RR, SJF, FCFS, MLFQ)',   defPrio:'hot', examDate:'2026-06-10' },
+  { key:'c_lmc',      sub:'cs',    name:'LMC / Assembly language',             defPrio:'hot', examDate:'2026-06-10' },
+  { key:'c_bool',     sub:'cs',    name:'Boolean algebra + simplification',    defPrio:'hot', examDate:'2026-06-10' },
+  { key:'c_norm',     sub:'cs',    name:'Normalisation 1NF→3NF',               defPrio:'hot', examDate:'2026-06-10' },
+  { key:'c_pp',       sub:'cs',    name:'Stack/queue pseudocode',              defPrio:'hot', examDate:'2026-06-10' },
+  { key:'c_recur',    sub:'cs',    name:'Recursion pseudocode',                defPrio:'hot', examDate:'2026-06-17' },
+  { key:'c_isr',      sub:'cs',    name:'ISR full sequence (save/restore)',    defPrio:'med', examDate:'2026-06-10' },
+  { key:'c_fp',       sub:'cs',    name:'Floating point arithmetic',           defPrio:'med', examDate:'2026-06-10' },
+  { key:'c_tcp',      sub:'cs',    name:'TCP/IP layers + encapsulation',       defPrio:'med', examDate:'2026-06-10' },
+  { key:'c_sql',      sub:'cs',    name:'SQL (SELECT, JOIN, ORDER BY)',        defPrio:'med', examDate:'2026-06-10' },
+  { key:'c_comp',     sub:'cs',    name:'Compression (RLE, Huffman, lossy)',   defPrio:'med', examDate:'2026-06-10' },
+  { key:'c_bfs',      sub:'cs',    name:'BFS/DFS traversal',                  defPrio:'low', examDate:'2026-06-17' },
+  { key:'c_kmap',     sub:'cs',    name:'Karnaugh maps',                      defPrio:'low', examDate:'2026-06-10' },
 ];
 
 const OLDER_BACKLOG = [
-  { sub:'m', name:'Inequalities',               key:'ob_ineq' },
-  { sub:'m', name:'Graphs & transformations',   key:'ob_graphs' },
-  { sub:'m', name:'Radians + chain rule',       key:'ob_rad' },
-  { sub:'m', name:'Inverse trig + small angle', key:'ob_invtrig' },
-  { sub:'e', name:'D&S, PED, PES, tax incidence', key:'ob_ds' },
-  { sub:'e', name:'Price mechanism',            key:'ob_pm' },
-  { sub:'c', name:'Foreign key definition',     key:'ob_fk' },
-  { sub:'c', name:'Push pseudocode',            key:'ob_pp' },
+  { sub:'m', name:'Trig integration',           key:'ob_trigint' },
+  { sub:'m', name:'Partial fractions',          key:'ob_pf' },
+  { sub:'m', name:'Rational inequalities',      key:'ob_ineq' },
+  { sub:'m', name:'Binomial (neg/frac powers)', key:'ob_binom' },
+  { sub:'e', name:'Core diagrams',              key:'ob_diag' },
+  { sub:'e', name:'Multiplier calculation',     key:'ob_mult' },
+  { sub:'c', name:'Scheduling algorithms',      key:'ob_sched' },
+  { sub:'c', name:'Stack pseudocode',           key:'ob_pp' },
 ];
 
 const MOCK_DEFAULTS = {
-  maths: [{ label:'Sep', pct:32 },{ label:'Nov', pct:26 },{ label:'Feb', pct:20 }],
-  econ:  [{ label:'Sep', pct:60 },{ label:'Nov', pct:70 },{ label:'Feb', pct:76 }],
-  cs:    [{ label:'Nov', pct:27 },{ label:'Feb', pct:22 }],
+  maths: [{ label:'Feb mock', pct:20 },{ label:'Diagnosis', pct:22 }],
+  econ:  [{ label:'Feb mock', pct:68 },{ label:'Diagnosis', pct:50 }],
+  cs:    [{ label:'Feb mock', pct:22 },{ label:'Diagnosis', pct:51 }],
 };
 
 const SUB_COL = { maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)', nea:'var(--purple)', am:'var(--amber)', college:'var(--muted2)', '':'var(--muted)' };
@@ -841,9 +855,20 @@ const SUB_BADGE_CLASS = { maths:'badge-m', econ:'badge-e', cs:'badge-c', nea:'ba
 const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-function today()    { const n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
-function toDate(s)  { const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
-function dateKey(d) { return d.toISOString().slice(0,10); }
+function today() {
+  const n = new Date();
+  return new Date(n.getFullYear(), n.getMonth(), n.getDate());
+}
+function toDate(s) {
+  const [y,m,d] = s.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+function dateKey(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
 function daysUntil(s){ return Math.ceil((toDate(s)-today())/864e5); }
 function getPhase() {
   const t=today();
@@ -993,21 +1018,30 @@ function renderSmartGaps() {
 }
 
 function updateMathsTopicsBar() {
-  const state=lsGet('gap_state',{});
-  const mathsGaps=PRIORITY_GAPS.filter(g=>g.sub==='maths');
-  const done=mathsGaps.filter(g=>state[g.key]?.done).length;
-  const pct=Math.round(done/mathsGaps.length*100);
-  const lbl=document.getElementById('maths-topics-lbl');
-  const bar=document.getElementById('maths-topics-bar');
-  if(lbl) lbl.textContent=`${done} / ${mathsGaps.length} gaps`;
-  if(bar) bar.style.width=Math.max(7,pct)+'%';
+  const easterMathsDates = [
+    '2026-03-30','2026-03-31','2026-04-01','2026-04-02','2026-04-03',
+    '2026-04-04','2026-04-05','2026-04-06','2026-04-07','2026-04-08',
+    '2026-04-09','2026-04-10','2026-04-11'
+  ];
+  let done = 0;
+  easterMathsDates.forEach(dk => {
+    const checked = lsGet('tasks_done_'+dk, []);
+    const sessions = SESSIONS[dk] || [];
+    sessions.forEach((s, i) => {
+      if (s.sub === 'maths' && checked.includes(i)) done++;
+    });
+  });
+  const total = 12;
+  const pct = Math.round(done / total * 100);
+  const lbl = document.getElementById('maths-topics-lbl');
+  const bar = document.getElementById('maths-topics-bar');
+  if (lbl) lbl.textContent = `${done} / ${total}`;
+  if (bar) bar.style.width = Math.max(3, pct) + '%';
 }
 
 // ── BACKLOG ──────────────────────────────────────────────────────────────────
 const RECENT_OVERDUE = [
-  { sub:'m', name:'Partial fractions',              when:'Mon 23', key:'od_pf' },
-  { sub:'e', name:'Market failure — externalities', when:'Tue 24', key:'od_mfe' },
-  { sub:'c', name:'Trees/graphs + hash tables',     when:'Tue 24', key:'od_tg' },
+  // Cleared — Easter plan started 30 Mar, backlog from pre-Easter college sessions no longer relevant
 ];
 
 function findNextFreeEvening() {
@@ -1137,27 +1171,61 @@ function setTaskChecked(dk,idx,checked){
 
 // Map session labels to gap keys for inline confidence logging
 const SESSION_GAP_MAP = {
-  'implicit diff': 'm_impl',
-  'implicit differentiation': 'm_impl',
-  'trig integration': 'm_trig',
+  'trig integration': 'm_trig_int',
   'integration by parts': 'm_ibp',
   'partial fractions': 'm_pf',
-  'parametric': 'm_para',
-  'inequalities': 'm_ineq',
-  'boolean algebra': 'c_bool',
+  'integration by partial': 'm_pf_int',
+  'substitution': 'm_sub',
+  'differential equation': 'm_de',
+  'rational inequalit': 'm_ineq',
+  'binomial expansion': 'm_binom',
+  'r form': 'm_rform',
+  'trig solving': 'm_trig_sol',
+  'trig identit': 'm_rform',
+  'exponential': 'm_logs',
+  'logarithm': 'm_logs',
+  'sequences': 'm_seq',
+  'series': 'm_seq',
+  'numerical method': 'm_num',
+  'implicit diff': 'm_impl',
+  'parametric stationary': 'm_para_sp',
+  'vectors': 'm_vec',
+  'proof': 'm_proof',
+  'scheduling': 'c_sched',
   'lmc': 'c_lmc',
   'assembly': 'c_lmc',
+  'boolean algebra': 'c_bool',
   'normalisation': 'c_norm',
-  'push': 'c_pp',
-  'foreign key': 'c_fk',
+  'stack': 'c_pp',
+  'queue': 'c_pp',
+  'pseudocode': 'c_pp',
+  'recursion': 'c_recur',
+  'isr': 'c_isr',
+  'interrupt': 'c_isr',
+  'floating point': 'c_fp',
+  'tcp': 'c_tcp',
+  'networking': 'c_tcp',
+  'compression': 'c_comp',
+  'sql': 'c_sql',
   'bfs': 'c_bfs',
   'dfs': 'c_bfs',
-  'msc': 'e_msc',
-  'msb': 'e_msc',
-  'externality': 'e_msc',
+  'karnaugh': 'c_kmap',
+  'diagrams': 'e_diag',
+  'diagram': 'e_diag',
+  'efficiency': 'e_eff',
+  'perfect competition': 'e_pc',
+  'kinked demand': 'e_kink',
+  'game theory': 'e_game',
+  'nash': 'e_game',
+  'multiplier': 'e_mult',
+  'macro': 'e_macro',
+  'ad/as': 'e_macro',
+  'fiscal': 'e_macro',
+  'monetary': 'e_macro',
+  'supply-side': 'e_ss',
+  'mops': 'e_mops',
+  'competition theme': 'e_comp',
   'govt intervention': 'e_govt',
-  'price mechanism': 'e_pm',
-  'd&s': 'e_ds',
 };
 
 function getGapKeyForSession(label) {
