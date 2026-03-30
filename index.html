@@ -626,9 +626,9 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 
 <script>
 // ── SESSION DATA ─────────────────────────────────────────────────────────────
-// NOTE: Sun 29 Mar and Mon 30 Mar were duplicates. Fixed:
-// - Sun 29 Mar: implicit diff is DONE today (Sat 28), so replaced with trig integration + econ consolidation
-// - Mon 30 Mar: parametric integration (not yet done), CS normalisation, Econ spec sweep
+// Easter: Mon 30 Mar – Fri 10 Apr = library 4hrs/day, 2 subjects × 2hrs
+// Maths gets 6 slots across 2 weeks (non-negotiable A), Econ 5, CS 5
+// Weekends left as lighter/rest unless sessions added manually
 const SESSIONS = {
   '2026-03-21': [
     { sub:'nea', label:'NEA tweaks', detail:'Read through, humanise, polish wording.' },
@@ -669,31 +669,97 @@ const SESSIONS = {
     { sub:'econ', label:'Econ: Govt intervention', dur:'2hrs', detail:'Tax, subsidy, regulation, price controls. Diagrams + welfare loss. 1 six-mark Q.' },
     { sub:'am',   label:'AM 1hr', detail:'Continue current plan.' },
   ],
-  // Sun 29 — implicit diff DONE, replaced with trig integration (next hot gap) + econ consolidation
   '2026-03-29': [
     { sub:'maths', label:'Maths: Trig integration', dur:'2hrs', detail:'sin²x, cos²x using double angle identities. ∫sin(ax)cos(bx) type. 2 past paper Qs MIN. Mark.' },
-    { sub:'econ',  label:'Econ: Externality diagrams consolidation', dur:'1hr', detail:'Draw MSC/MPC/MSB/MPB from memory, 3 times each. Then 1 six-mark Q cold.' },
-    { sub:'cs',    label:'CS: Normalisation 1NF→3NF', dur:'1hr', detail:'Convert 1 unnormalised table to 3NF step by step. 1 past paper Q.' },
+    { sub:'econ',  label:'Econ: Externality diagrams consolidation', dur:'1hr', detail:'Draw MSC/MPC/MSB/MPB from memory 3 times each. Then 1 six-mark Q cold.' },
+    { sub:'cs',    label:'CS: Normalisation 1NF→3NF cold test', dur:'1hr', detail:'Convert 1 unnormalised table to 3NF from scratch. 1 past paper Q.' },
   ],
-  // Mon 30 — parametric integration (not yet done), rest of plan continues
+
+  // ── EASTER: Mon 30 Mar – Sun 12 Apr ──────────────────────────────────────
+  // Library daily. Maths every day 2hrs. CS/Econ alternate as second subject 2hrs.
+  // Sun 5 Apr: Econ light (1.5hrs). Sun 12 Apr: CS light (1.5hrs).
+
+  // Mon 30 — M1: Trig integration | CS P1.1: Scheduling + LMC
   '2026-03-30': [
-    { sub:'college', label:'College day', detail:'Check timetable.' },
-    { sub:'maths',   label:'Maths (eve): Parametric integration', dur:'1hr', detail:'∫y(dx/dt)dt substitution method. 2 Qs MIN — this is the integration side of parametric, different from the diff you did on Sat.' },
+    { sub:'maths', label:'M1 — Trig integration', dur:'2hrs', detail:'sin²x and cos²x via double angle identity: cos2x = 1−2sin²x. ∫sin(ax)cos(bx) types. Cold test first — attempt 2 Qs before any notes. Mark, then learn what broke. 3 Qs minimum total.' },
+    { sub:'cs',    label:'CS P1.1 — Scheduling + LMC/Assembly', dur:'2hrs', detail:'Scheduling: round robin (time slices, fair, prevents starvation), SJF (minimises wait, starvation risk), FCFS, MLFQ — define each, give one advantage and disadvantage. LMC instruction set from memory: LDA, STA, ADD, SUB, BRP, BRZ, BRA, INP, OUT, HLT. Trace 1 given program. Write 1 simple program (e.g. add two inputs). 1 past paper Q each.' },
   ],
+
+  // Tue 31 — M2: Integration by parts | Econ E1: Diagrams
   '2026-03-31': [
-    { sub:'maths', label:'Maths: Integration by parts', dur:'2hrs', detail:'∫u(dv/dx)dx formula. ln x, xe^x, x²sinx types. 3 Qs MIN.' },
-    { sub:'econ',  label:'Econ: Spec sweep P1', dur:'2hrs', detail:'Open Edexcel B spec, work through Theme 1 gaps systematically.' },
-    { sub:'cs',    label:'CS: Boolean algebra', dur:'1hr', detail:'De Morgan\'s laws, simplification, truth tables. 2 past paper Qs.' },
+    { sub:'maths', label:'M2 — Integration by parts', dur:'2hrs', detail:'Formula: ∫u(dv/dx)dx = uv − ∫v(du/dx)dx. Types to cover: ∫x lnx dx (u=lnx), ∫xe^x dx, ∫x²sinx dx (IBP twice), definite integral with IBP. 4 Qs minimum — last one timed, no notes.' },
+    { sub:'econ',  label:'Econ E1 — Core diagrams from memory', dur:'2hrs', detail:'Draw each diagram 3 times from scratch, check against notes, redraw: (1) Negative production externality — MSC above MPC, Q_private vs Q_optimal, welfare loss triangle. (2) Positive consumption externality — MSB above MPB. (3) Monopoly — MR=MC, P>MC, deadweight loss triangle. (4) AD/AS — shift right, show effect on P and Y. (5) Price ceiling below equilibrium — shortage (Qd>Qs). (6) Kinked demand curve — elastic above, inelastic below, MR discontinuity. No moving on until each one is clean from memory.' },
   ],
+
+  // Wed 1 Apr — M3: Partial fractions | CS P2.1: Stack/queue pseudocode
   '2026-04-01': [
-    { sub:'maths', label:'Maths: Rational inequalities', dur:'2hrs', detail:'Multiply through carefully — unknown sign. Critical values method. 3 Qs.' },
-    { sub:'econ',  label:'Econ: MSC/MSB essay technique', dur:'1hr', detail:'Write a full 15-mark essay using MOPS structure with diagram.' },
-    { sub:'cs',    label:'CS: LMC/Assembly', dur:'1hr', detail:'LMC instruction set from memory. 1 past paper Q assembly trace.' },
+    { sub:'maths', label:'M3 — Partial fractions', dur:'2hrs', detail:'Method from scratch — never cancel top and bottom. Type 1: A/(ax+b) + B/(cx+d), substitute roots to find A and B. Type 2: repeated factor A/x + B/(x+1) + C/(x+1)². Type 3: improper fraction — divide first. 4 Qs, at least 1 of each type. Mark after each.' },
+    { sub:'cs',    label:'CS P2.1 — Stack/queue pseudocode', dur:'2hrs', detail:'Write from scratch without notes: PUSH(item) — check overflow (top=MAX), increment top, store item. POP() — check underflow (top=0), retrieve item, decrement top, return. ENQUEUE(item) — add to rear. DEQUEUE() — remove from front, shift or use front pointer. Then write both again without looking. 2 past paper Qs on stacks/queues.' },
   ],
+
+  // Thu 2 Apr — M4: Integration by partial fractions | Econ E2: Efficiency + perfect comp
   '2026-04-02': [
-    { sub:'maths', label:'Maths: Trig integration practice', dur:'2hrs', detail:'Mixed trig integration past paper Q set. Timed. Mark all.' },
-    { sub:'econ',  label:'Econ: Spec sweep P2', dur:'2hrs', detail:'Theme 2 gaps — labour markets, firms, monopoly/oligopoly.' },
-    { sub:'cs',    label:'CS: BFS/DFS traversal', dur:'1hr', detail:'Trace BFS and DFS on given graphs. 1 Q each from memory.' },
+    { sub:'maths', label:'M4 — Integration by partial fractions', dur:'2hrs', detail:'Decompose first (use M3 method), then integrate each term as ln|ax+b|/a. Cover: ∫1/(x(x+1)) dx, ∫(5x−1)/((2x+1)(x−2)) dx, one with repeated factor. 3 Qs minimum, last one timed. Watch for missing the 1/a when integrating ln.' },
+    { sub:'econ',  label:'Econ E2 — Productive/allocative efficiency + perfect competition', dur:'2hrs', detail:'Productive efficiency: P = min AC (producing at lowest possible cost). Allocative efficiency: P = MC (resources match consumer preferences). Write both definitions 5 times from memory. Where each is achieved: perfect competition long run = both. Monopoly = neither. Perfect competition: homogeneous product, perfect information, free entry/exit, many small price-taking firms. Long run normal profit mechanism: supernormal profit → new firms enter → supply rises → price falls → normal profit. Draw the diagram. 1 timed Q at the end.' },
+  ],
+
+  // Fri 3 Apr — M5: Substitution + DEs | CS P1.2: Boolean algebra
+  '2026-04-03': [
+    { sub:'maths', label:'M5 — Integration by substitution + DEs', dur:'2hrs', detail:'Substitution: given u, find du/dx, rearrange to get dx in terms of du, substitute fully, integrate in u, back-substitute. Key: x dx = du/2 type. 2 substitution Qs. DEs: separation of variables — dy/y = f(x) dx, integrate both sides, apply initial condition for particular solution. 2 DE Qs including one requiring explicit y. 4 Qs total, mark all.' },
+    { sub:'cs',    label:'CS P1.2 — Boolean algebra + logic gates', dur:'2hrs', detail:'De Morgan\'s laws: NOT(A AND B) = NOT A OR NOT B, and vice versa. Simplification steps — show each step. Truth tables for AND, OR, NOT, NAND, NOR, XOR. Draw logic gate diagrams for given expressions. Karnaugh maps: fill in from truth table, group 1s in powers of 2, read off simplified expression. 2 past paper Qs.' },
+  ],
+
+  // Sat 4 Apr — M6: Rational inequalities | Econ E3: Kinked demand + game theory
+  '2026-04-04': [
+    { sub:'maths', label:'M6 — Rational inequalities', dur:'2hrs', detail:'Critical values method: rearrange to f(x)/g(x) > 0, find critical values (roots of top and bottom), draw sign diagram, identify solution regions. NEVER multiply through by denominator (unknown sign). 4 Qs — include at least one that gives two separate solution regions (x < a or x > b). Mark immediately after each.' },
+    { sub:'econ',  label:'Econ E3 — Kinked demand curve + game theory', dur:'2hrs', detail:'Kinked demand: above current price demand is elastic (rivals don\'t follow price rises), below current price demand is inelastic (rivals match cuts). This creates a kink. MR has a discontinuity at current price — so price is stable even if costs change within that gap. Game theory: strategic interaction between rational agents. Prisoner\'s dilemma: dominant strategy is to defect even when mutual cooperation is better. Nash equilibrium: no player benefits from changing strategy unilaterally. Draw a payoff matrix. 1 timed Q at end.' },
+  ],
+
+  // Sun 5 Apr — M7: Binomial expansion | Econ E4: Multiplier + MOPS (LIGHT DAY)
+  '2026-04-05': [
+    { sub:'maths', label:'M7 — Binomial expansion', dur:'2hrs', detail:'General formula: (1+x)^n = 1 + nx + n(n−1)/2! x² + ... for any n. Key: only valid for |x| < 1 (state this every time). Steps: write out first 3 terms, state validity. Extension: (a+bx)^n — factor out a^n first. 3 Qs including one where you must find a specific coefficient and one validity question.' },
+    { sub:'econ',  label:'Econ E4 — Multiplier + MOPS (1.5hrs)', dur:'1.5hrs', detail:'Multiplier = 1/(1−MPC). If MPC = 0.75, multiplier = 4. Practice calculating from different MPC values. Significance: initial injection multiplied through successive rounds of spending. MOPS structure: Make point (clear economic claim) → develop with chain of argument (because... therefore... this means...) → evaluate opposite view (however, on the other hand...) → synthesise with conditional judgement (overall, it depends on...). Write 1 short MOPS paragraph timed (8 mins).' },
+  ],
+
+  // Mon 6 Apr — M8: Trig identities + R form | CS P2.2: Recursion + ISR
+  '2026-04-06': [
+    { sub:'maths', label:'M8 — Trig identities + R form', dur:'2hrs', detail:'Double angle: sin2θ = 2sinθcosθ. cos2θ = cos²θ−sin²θ = 2cos²θ−1 = 1−2sin²θ (know all three). Compound angle: sin(A±B), cos(A±B) from formula sheet — practice using them. R form: a cosθ + b sinθ = R cos(θ−α) where R = √(a²+b²), tanα = b/a. Work through 3 Qs from cold — identity proof, compound angle application, full R form question finding max/min.' },
+    { sub:'cs',    label:'CS P2.2 — Recursion + ISR full sequence', dur:'2hrs', detail:'Recursion: function calls itself with modified input. Must have base case (stops recursion) and recursive case. Write factorial(n), fibonacci(n), and binary search recursively in pseudocode. ISR full sequence — write from memory: (1) current instruction completes, (2) program state (registers, PC) saved to stack, (3) PC loaded with ISR start address, (4) ISR executes, (5) state restored from stack, (6) program resumes. 1 past paper Q on each.' },
+  ],
+
+  // Tue 7 Apr — M9: Trig solving equations | Econ E5: Macro
+  '2026-04-07': [
+    { sub:'maths', label:'M9 — Trig solving equations in a range', dur:'2hrs', detail:'Finding ALL solutions: use CAST diagram or sketch. Principal value from calculator, then find all others in range. Types: sin x = k → x = arcsin(k) and 180°−arcsin(k). cos x = k → x and 360°−x. tan x = k → x and 180°+x. Multi-angle: solve cos2x = k → find 2x in extended range, then halve. Quadratic in trig: substitute u = cosx, solve quadratic, back-substitute. 4 Qs, last one is multi-angle quadratic timed.' },
+    { sub:'econ',  label:'Econ E5 — Macro: AD/AS, fiscal/monetary, exchange rates', dur:'2hrs', detail:'AD components: C + I + G + (X−M). Shifts in AD vs movement along. SRAS vs LRAS — what shifts each. Fiscal policy: expansionary (↑G or ↓tax) shifts AD right. Contractionary reverses. Multiplier effect amplifies. Monetary policy: ↑interest rates → ↓C, ↓I, ↑exchange rate, ↓NX → AD shifts left. Exchange rate: hot money flows (↑r → currency appreciates → exports more expensive → NX falls). Inflation types: demand-pull (AD excess) vs cost-push (SRAS shifts left). Unemployment types: cyclical (lack of AD), structural (skills mismatch), frictional (between jobs). 1 timed Q at end.' },
+  ],
+
+  // Wed 8 Apr — M10: Exponentials + logs | CS P1.3: Normalisation + SQL
+  '2026-04-08': [
+    { sub:'maths', label:'M10 — Exponentials + logarithms', dur:'2hrs', detail:'Laws of logs: log(ab) = loga + logb, log(a/b) = loga − logb, log(a^k) = k·loga. Solving a^x = b: take log both sides → x = log b / log a. Solving equations with e^x and ln x. Log-linear graphs: y = ax^n → log y = log a + n log x (straight line, gradient = n, intercept = log a). y = kb^x → log y = log k + x log b. Derivative of e^{kx} = ke^{kx}. ∫e^{kx} dx = e^{kx}/k + c. 4 Qs — one log equation, one a^x = b, one log-linear graph, one calculus with e^x.' },
+    { sub:'cs',    label:'CS P1.3 — Normalisation to 3NF + SQL', dur:'2hrs', detail:'1NF: all values atomic, no repeating groups, each row unique. 2NF: no partial dependencies (every non-key attribute depends on the WHOLE primary key — only relevant for composite keys). 3NF: no transitive dependencies (non-key attributes must depend only on the primary key, not on other non-key attributes). Work through 2 full problems from unnormalised to 3NF showing each stage. SQL: SELECT col1, col2 FROM table WHERE condition ORDER BY col DESC. GROUP BY + COUNT. INNER JOIN table2 ON table1.id = table2.id. Write 3 queries from scratch.' },
+  ],
+
+  // Thu 9 Apr — M11: Sequences + series | Econ E6: Supply-side + competition theme
+  '2026-04-09': [
+    { sub:'maths', label:'M11 — Sequences + series', dur:'2hrs', detail:'Arithmetic: nth term = a + (n−1)d. Sum = n/2(2a + (n−1)d) or n/2(a+l). Geometric: nth term = ar^{n−1}. Sum to n terms = a(1−r^n)/(1−r). Sum to infinity = a/(1−r), valid only when |r| < 1. Sigma notation: unpack and apply formula. Binomial expansion with positive integer n: (a+b)^n using nCr. 4 Qs — one arithmetic, one geometric (sum to infinity), one sigma, one binomial.' },
+    { sub:'econ',  label:'Econ E6 — Supply-side policy + P3 competition theme', dur:'2hrs', detail:'Supply-side policies: education and training (reduces structural unemployment), deregulation (reduces barriers to entry), privatisation (improves efficiency incentives), tax cuts (increases incentive to work/invest). Compare with demand management: demand management is faster but risks inflation; supply-side is slower but non-inflationary and shifts LRAS. P3 competition theme: monopoly vs competitive markets — productive/allocative/dynamic efficiency comparison. Government regulation: CMA, price caps, breaking up monopolies. Contestable markets: threat of entry disciplines monopoly behaviour. 1 timed Q on competition policy at the end.' },
+  ],
+
+  // Fri 10 Apr — M12: Numerical methods + vectors | CS P2.3: Floating point + BFS/DFS
+  '2026-04-10': [
+    { sub:'maths', label:'M12 — Numerical methods + vectors', dur:'2hrs', detail:'Sign change: show f(a) and f(b) have opposite signs → root in [a,b]. Iteration: x_{n+1} = g(x_n), apply repeatedly until convergence to required dp. Trapezium rule: h/2 × [y_0 + 2(y_1+...+y_{n−1}) + y_n] where h = (b−a)/n. State whether over or under estimate from shape of curve. Vectors: magnitude |v| = √(x²+y²+z²). Unit vector = v/|v|. Position vectors, distance between two points. 3 Qs — one iteration, one trapezium rule, one vectors.' },
+    { sub:'cs',    label:'CS P2.3 — Floating point arithmetic + BFS/DFS', dur:'2hrs', detail:'Floating point: value = mantissa × 2^exponent. To read: shift mantissa left by exponent number of places. Normalised form: positive starts 0.1..., negative starts 1.0... Overflow: result too large for bits. Underflow: result too small. BFS (breadth-first): uses a queue, visit all neighbours before going deeper — finds shortest path. DFS (depth-first): uses a stack or recursion, go as deep as possible first — used for post-order traversal. Trace both on a given graph with 6 nodes. 2 past paper Qs.' },
+  ],
+
+  // Sat 11 Apr — Maths catch-up | Econ E7: Timed essays
+  '2026-04-11': [
+    { sub:'maths', label:'Maths catch-up — weakest M1–M12 topic', dur:'2hrs', detail:'Use this session to revisit whichever of M1–M12 felt weakest. If multiple topics shaky, prioritise by exam mark weight: integration types first, then trig, then algebra.' },
+    { sub:'econ',  label:'Econ E7 — Timed essay practice', dur:'2hrs', detail:'2 full essays, 20 mins each, strict MOPS. Essay 1: P1 topic — pick from market failure, government intervention, or market structures. Essay 2: P2 topic — pick from macro policy (fiscal vs monetary) or unemployment. After each: mark against MOPS checklist — did you make a clear point, develop the chain, evaluate the opposite, and give a conditional synthesis?' },
+  ],
+
+  // Sun 12 Apr — Rest | CS P1.4: TCP/IP + networking + compression (LIGHT DAY)
+  '2026-04-12': [
+    { sub:'cs',    label:'CS P1.4 — TCP/IP + networking + compression (1.5hrs)', dur:'1.5hrs', detail:'TCP/IP four layers: Application (HTTP/FTP — data formatted), Transport (TCP — segments, port numbers, reliable delivery), Internet (IP addresses, routing), Network access (physical transmission, frames). Encapsulation: each layer adds a header. Decapsulation: each layer strips it. DNS: domain name → IP address lookup. Packet switching: packets routed independently, reassembled at destination. Compression: lossy (removes data permanently, e.g. JPEG) vs lossless (RLE, Huffman — original recoverable). RLE: run of identical values stored as (value, count). Huffman: frequent characters get shorter codes. Encryption: symmetric (same key both ends), asymmetric (public key encrypts, private key decrypts).' },
   ],
 };
 
