@@ -8,315 +8,257 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
 :root {
-  --bg:      #0c0e13;
-  --surface: #13161f;
-  --surface2:#1a1d29;
-  --surface3:#21253a;
-  --border:  #252a3a;
-  --border2: #2e3450;
-  --text:    #e8eaf0;
-  --muted:   #4a5070;
-  --muted2:  #6b7490;
-  --maths:   #4ade80;
-  --econ:    #60a5fa;
-  --cs:      #fbbf24;
-  --red:     #e94560;
-  --amber:   #fb923c;
-  --purple:  #c084fc;
-  --mono: 'Space Mono', monospace;
-  --sans: 'DM Sans', sans-serif;
-  --radius: 14px;
+  --bg:#0c0e13;--surface:#13161f;--surface2:#1a1d29;--surface3:#21253a;
+  --border:#252a3a;--border2:#2e3450;--text:#e8eaf0;--muted:#4a5070;--muted2:#6b7490;
+  --maths:#4ade80;--econ:#60a5fa;--cs:#fbbf24;--red:#e94560;--amber:#fb923c;--purple:#c084fc;
+  --mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;--radius:14px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; }
-
-.topbar {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(12,14,19,0.92); backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 28px;
-  display: flex; align-items: center; justify-content: space-between;
-  height: 58px;
-}
-.topbar-left { display: flex; align-items: center; gap: 16px; }
-.topbar-title { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.06em; color: var(--muted2); text-transform: uppercase; }
-.topbar-date  { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); }
-.topbar-phase { font-family: var(--mono); font-size: 0.65rem; color: var(--amber); }
-.nea-pill {
-  background: rgba(74,222,128,0.12); border: 1px solid rgba(74,222,128,0.3);
-  border-radius: 20px; padding: 4px 12px;
-  font-family: var(--mono); font-size: 0.65rem; font-weight: 700; color: var(--maths);
-  letter-spacing: 0.06em; white-space: nowrap;
-}
-.cd-strip { display: grid; grid-template-columns: repeat(3,1fr); border-bottom: 1px solid var(--border); }
-.cd-item { padding: 20px 28px; border-right: 1px solid var(--border); display: flex; align-items: center; gap: 20px; }
-.cd-item:last-child { border-right: none; }
-.cd-num { font-family: var(--mono); font-size: 3rem; font-weight: 700; line-height: 1; flex-shrink: 0; transition: color 0.4s; }
-.cd-meta { flex: 1; }
-.cd-name { font-size: 0.88rem; font-weight: 600; margin-bottom: 3px; }
-.cd-item.e .cd-name { color: var(--econ); }
-.cd-item.m .cd-name { color: var(--maths); }
-.cd-item.c .cd-name { color: var(--cs); }
-.cd-date { font-family: var(--mono); font-size: 0.65rem; color: var(--muted2); }
-.cd-next { font-size: 0.68rem; color: var(--muted); margin-top: 6px; }
-.cd-next b { color: var(--text); }
-.cd-bar { width: 100%; height: 3px; background: var(--border); border-radius: 2px; margin-top: 8px; overflow: hidden; }
-.cd-bar-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease, background 0.4s; }
-.cd-urgency { font-family: var(--mono); font-size: 0.52rem; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 5px; }
-.tabs-nav { display: flex; border-bottom: 1px solid var(--border); padding: 0 28px; background: var(--bg); overflow-x: auto; }
-.tab-btn {
-  padding: 14px 18px; font-size: 0.82rem; font-weight: 500; font-family: var(--sans);
-  color: var(--muted2); background: none; border: none; cursor: pointer;
-  border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap;
-  transition: color 0.15s, border-color 0.15s;
-  display: flex; align-items: center; gap: 7px;
-}
-.tab-btn:hover { color: var(--text); }
-.tab-btn.active { color: var(--text); border-bottom-color: var(--amber); }
-.tab-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.tab-pane { display: none; padding: 28px; max-width: 1200px; margin: 0 auto; }
-.tab-pane.active { display: block; }
-.focus-card {
-  background: linear-gradient(135deg, rgba(251,146,60,0.07) 0%, rgba(233,69,96,0.04) 100%);
-  border: 1px solid rgba(251,146,60,0.28); border-left: 4px solid var(--amber);
-  border-radius: var(--radius); padding: 16px 22px; margin-bottom: 20px;
-  display: flex; align-items: center; gap: 18px;
-}
-.focus-label { font-family: var(--mono); font-size: 0.57rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--amber); margin-bottom: 5px; }
-.focus-topic { font-size: 0.98rem; font-weight: 700; margin-bottom: 3px; }
-.focus-reason { font-size: 0.73rem; color: var(--muted2); }
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; }
-.card-title { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); font-family: var(--mono); margin-bottom: 18px; }
-.task-list { display: flex; flex-direction: column; gap: 8px; }
-.task-item {
-  display: flex; align-items: flex-start; gap: 14px;
-  padding: 14px 16px; background: var(--surface2); border-radius: 10px;
-  border: 1px solid transparent;
-  transition: background 0.12s, border-color 0.12s;
-}
-.task-item.clickable { cursor: pointer; }
-.task-item.clickable:hover { background: var(--surface3); border-color: var(--border2); }
-.task-item.done-item { opacity: 0.45; }
-.task-check { margin-top: 2px; flex-shrink: 0; }
-.task-check input { width: 17px; height: 17px; accent-color: var(--maths); cursor: pointer; }
-.task-body { flex: 1; min-width: 0; }
-.task-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 5px; }
-.task-name { font-size: 0.85rem; font-weight: 600; line-height: 1.3; }
-.task-name.done { text-decoration: line-through; color: var(--muted2); }
-.task-detail { font-size: 0.76rem; color: var(--muted2); line-height: 1.5; }
-.task-dur { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); flex-shrink: 0; margin-top: 3px; }
-/* confidence inline widget — 1-5 scale */
-.task-conf-row { display: flex; align-items: center; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
-.task-conf-lbl { font-family: var(--mono); font-size: 0.5rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
-.task-conf-btn { font-family: var(--mono); font-size: 0.58rem; padding: 3px 8px; border-radius: 8px; border: 1px solid var(--border2); background: var(--surface3); color: var(--muted2); cursor: pointer; transition: all 0.12s; }
-.task-conf-btn:hover { border-color: var(--muted2); color: var(--text); }
-.task-conf-btn.act-1 { border-color: var(--muted); color: var(--muted); background: rgba(74,80,112,0.15); }
-.task-conf-btn.act-2 { border-color: var(--red); color: var(--red); background: rgba(233,69,96,0.1); }
-.task-conf-btn.act-3 { border-color: var(--amber); color: var(--amber); background: rgba(251,146,60,0.1); }
-.task-conf-btn.act-4 { border-color: var(--maths); color: var(--maths); background: rgba(74,222,128,0.1); }
-.task-conf-btn.act-5 { border-color: #22d3ee; color: #22d3ee; background: rgba(34,211,238,0.1); }
-.sub-badge { font-size: 0.6rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; flex-shrink: 0; }
-.badge-m { background: rgba(74,222,128,0.15); color: var(--maths); }
-.badge-e { background: rgba(96,165,250,0.15); color: var(--econ); }
-.badge-c { background: rgba(251,191,36,0.15); color: var(--cs); }
-.badge-nea { background: rgba(192,132,252,0.15); color: var(--purple); }
-.badge-hw { background: rgba(233,69,96,0.2); color: var(--red); }
-.badge-college { background: rgba(74,80,112,0.3); color: var(--muted2); }
-.bonus-section {
-  margin-top: 8px; padding: 12px 14px;
-  background: rgba(74,80,112,0.1); border: 1px dashed var(--border2); border-radius: 10px;
-}
-.bonus-lbl { font-family: var(--mono); font-size: 0.5rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 7px; }
-.bonus-row { display: flex; align-items: center; gap: 8px; }
-.bonus-dismiss-btn { font-family: var(--mono); font-size: 0.54rem; padding: 2px 9px; border-radius: 8px; background: transparent; border: 1px solid var(--border2); color: var(--muted); cursor: pointer; flex-shrink: 0; transition: all 0.15s; }
-.bonus-dismiss-btn:hover { border-color: var(--muted2); color: var(--text); }
-.tmr-list { display: flex; flex-direction: column; }
-.tmr-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-top: 1px solid var(--border); }
-.tmr-row:first-child { border-top: none; }
-.tmr-left-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-.tmr-body { flex: 1; }
-.tmr-name { font-size: 0.8rem; font-weight: 500; line-height: 1.35; }
-.tmr-detail { font-size: 0.71rem; color: var(--muted2); margin-top: 3px; }
-
-/* ── WEEK VIEW (Mon-Sun) ── */
-.week-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 10px; }
-.wday { background: var(--surface2); border-radius: 10px; padding: 14px; border: 1px solid var(--border); min-height: 100px; transition: border-color 0.12s; }
-.wday.today-col { border-color: var(--amber); background: rgba(251,146,60,0.04); }
-.wday.deadline  { border-color: var(--red);   background: rgba(233,69,96,0.05); }
-.wday.weekend-col { border-color: var(--border); background: rgba(74,80,112,0.08); }
-.wday-head { font-family: var(--mono); font-size: 0.6rem; margin-bottom: 8px; font-weight: 700; }
-.wday.today-col .wday-head { color: var(--amber); }
-.wday.deadline  .wday-head { color: var(--red); }
-.wday.weekend-col .wday-head { color: var(--muted); }
-.wday-task { display: flex; align-items: flex-start; gap: 5px; font-size: 0.68rem; line-height: 1.3; margin-bottom: 5px; }
-.wday-task:last-child { margin-bottom: 0; }
-.wday-task-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
-.wday-task.college-task { color: var(--muted); }
-.wday-task.hw-task { color: var(--red); }
-.wday-task.done-task { opacity: 0.4; text-decoration: line-through; }
-
-/* ── ALL SESSIONS TAB ── */
-.all-sessions-day { margin-bottom: 24px; }
-.all-sessions-date-hdr {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
-  padding-bottom: 8px; border-bottom: 1px solid var(--border);
-}
-.all-sessions-date-lbl { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--text); }
-.all-sessions-date-rel { font-family: var(--mono); font-size: 0.58rem; color: var(--muted2); }
-.all-sessions-date-exam { font-family: var(--mono); font-size: 0.58rem; color: var(--red); font-weight: 700; }
-.all-sess-row {
-  display: flex; align-items: flex-start; gap: 12px; padding: 10px 14px;
-  background: var(--surface2); border-radius: 8px; margin-bottom: 6px;
-  border: 1px solid transparent;
-}
-.all-sess-row.is-today { border-color: rgba(251,146,60,0.3); background: rgba(251,146,60,0.04); }
-.all-sess-row.is-done { opacity: 0.4; }
-.all-sess-body { flex: 1; }
-.all-sess-name { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
-.all-sess-name.done-name { text-decoration: line-through; color: var(--muted2); }
-.all-sess-detail { font-size: 0.72rem; color: var(--muted2); }
-
-/* ── SUBJECTS ── */
-.subjects-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
-.subj-card { background: var(--surface); border-radius: var(--radius); padding: 22px 24px; border: 1px solid var(--border); border-top: 3px solid; }
-.subj-card.m { border-top-color: var(--maths); }
-.subj-card.e { border-top-color: var(--econ); }
-.subj-card.c { border-top-color: var(--cs); }
-.subj-name { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
-.subj-card.m .subj-name { color: var(--maths); }
-.subj-card.e .subj-name { color: var(--econ); }
-.subj-card.c .subj-name { color: var(--cs); }
-.subj-status-tag { display: inline-block; font-family: var(--mono); font-size: 0.62rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-bottom: 18px; letter-spacing: 0.06em; }
-.tag-critical { background: rgba(233,69,96,0.2); color: var(--red); }
-.tag-protect  { background: rgba(96,165,250,0.15); color: var(--econ); }
-.tag-target   { background: rgba(251,191,36,0.15); color: var(--cs); }
-.bar-section { margin-bottom: 16px; }
-.bar-lbl { font-size: 0.7rem; color: var(--muted2); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
-.bar-lbl span { font-family: var(--mono); font-size: 0.65rem; }
-.bar { height: 7px; background: var(--border); border-radius: 4px; overflow: hidden; }
-.bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
-.subj-note { font-size: 0.74rem; color: var(--muted2); line-height: 1.5; padding-top: 14px; border-top: 1px solid var(--border); }
-.gb-section { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
-.gb-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.gb-section-lbl { font-family: var(--mono); font-size: 0.52rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
-.gb-edit-btn { font-family: var(--mono); font-size: 0.52rem; padding: 2px 8px; border-radius: 8px; background: rgba(74,80,112,0.3); border: 1px solid var(--border2); color: var(--muted); cursor: pointer; transition: all 0.15s; }
-.gb-edit-btn:hover { color: var(--text); border-color: var(--muted2); }
-.gb-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; }
-.gb-cell { background: var(--surface2); border-radius: 8px; padding: 9px 10px; text-align: center; }
-.gb-lbl { font-family: var(--mono); font-size: 0.48rem; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
-.gb-val { font-family: var(--mono); font-size: 0.82rem; font-weight: 700; }
-.chart-wrap { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
-.chart-wrap-title { font-family: var(--mono); font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted2); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-.add-mock-btn { font-family: var(--mono); font-size: 0.56rem; padding: 2px 8px; border-radius: 10px; background: rgba(74,80,112,0.3); border: 1px solid var(--border2); color: var(--muted2); cursor: pointer; transition: color 0.15s, border-color 0.15s; }
-.add-mock-btn:hover { color: var(--text); border-color: var(--muted2); }
-.gaps-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; margin-top: 16px; }
-.gaps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
-.gaps-col-title { font-size: 0.68rem; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
-.gap-row { display: flex; align-items: center; gap: 7px; font-size: 0.78rem; margin-bottom: 3px; line-height: 1.35; cursor: pointer; padding: 5px 6px; border-radius: 6px; transition: background 0.12s; user-select: none; }
-.gap-row:hover { background: var(--surface2); }
-.gap-row.gap-done { opacity: 0.28; }
-.gap-row.gap-done .gap-name { text-decoration: line-through; }
-.gap-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; cursor: pointer; transition: transform 0.12s; }
-.gap-dot:hover { transform: scale(1.5); }
-.dot-hot { background: var(--red); }
-.dot-med { background: var(--amber); }
-.dot-low { background: var(--muted); }
-.gap-name { flex: 1; min-width: 0; font-size: 0.76rem; }
-.gap-conf { display: flex; gap: 2px; flex-shrink: 0; }
-.conf-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--surface3); border: 1px solid var(--border2); cursor: pointer; transition: background 0.15s, border-color 0.15s; flex-shrink: 0; }
-.conf-dot:hover { border-color: var(--muted2); }
-.gaps-hint { font-family: var(--mono); font-size: 0.56rem; color: var(--muted); margin-left: 6px; }
-.reschedule-btn { font-family: var(--mono); font-size: 0.57rem; padding: 3px 9px; border-radius: 12px; background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.25); color: var(--econ); cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: background 0.15s; }
-.reschedule-btn:hover { background: rgba(96,165,250,0.2); }
-.reschedule-btn.rescheduled { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.25); color: var(--maths); cursor: default; }
-.unreschedule-btn { font-family: var(--mono); font-size: 0.57rem; padding: 3px 7px; border-radius: 12px; background: rgba(233,69,96,0.08); border: 1px solid rgba(233,69,96,0.2); color: var(--red); cursor: pointer; flex-shrink: 0; margin-left: 4px; transition: background 0.15s; }
-.unreschedule-btn:hover { background: rgba(233,69,96,0.18); }
-.streak-section { margin-top: 28px; }
-.streak-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.streak-title { font-family: var(--mono); font-size: 0.58rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
-.streak-stat { font-family: var(--mono); font-size: 0.62rem; }
-.streak-grid { display: grid; grid-template-columns: repeat(28,1fr); gap: 3px; }
-.streak-cell { aspect-ratio: 1; border-radius: 3px; cursor: default; transition: transform 0.1s; border: 1px solid var(--border); position: relative; }
-.streak-cell:hover { transform: scale(1.35); z-index: 2; }
-.streak-cell.today-cell { border-color: var(--amber) !important; }
-.streak-labels { display: grid; grid-template-columns: repeat(28,1fr); gap: 3px; margin-top: 3px; }
-.streak-day-lbl { font-family: var(--mono); font-size: 0.38rem; color: var(--muted); text-align: center; }
-.nea-hero { display: flex; align-items: center; gap: 24px; border-radius: 12px; padding: 24px 28px; margin-bottom: 24px; }
-.nea-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.nea-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--surface2); border-radius: 8px; }
-.nea-row-name { font-size: 0.82rem; font-weight: 500; }
-.nea-row-score { font-family: var(--mono); font-size: 0.82rem; font-weight: 700; }
-.uni-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 16px; }
-.uni-card { background: var(--surface2); border-radius: 10px; padding: 16px; border: 1px solid var(--border); }
-.uni-name { font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
-.uni-offer { font-family: var(--mono); font-size: 0.75rem; color: var(--econ); margin-bottom: 4px; }
-.uni-note { font-size: 0.7rem; color: var(--muted2); }
-.timer-fab { position: fixed; bottom: 28px; right: 28px; z-index: 200; display: flex; flex-direction: column; align-items: center; gap: 7px; }
-.timer-btn { width: 72px; height: 72px; border-radius: 50%; background: var(--surface2); border: 2px solid var(--border2); color: var(--text); font-family: var(--mono); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; transition: border-color 0.2s, background 0.2s; box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
-.timer-btn:hover { border-color: var(--amber); }
-.timer-btn.running { border-color: var(--maths); background: rgba(74,222,128,0.08); }
-.timer-btn.urgent  { border-color: var(--red); animation: pulse-t 1.2s ease-in-out infinite; }
-@keyframes pulse-t { 0%,100%{ box-shadow:0 4px 24px rgba(233,69,96,0.2) } 50%{ box-shadow:0 4px 32px rgba(233,69,96,0.65) } }
-.timer-time-txt { font-size: 0.82rem; font-weight: 700; line-height: 1; }
-.timer-sub-txt  { font-size: 0.48rem; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.08em; }
-.timer-sess-txt { font-family: var(--mono); font-size: 0.58rem; color: var(--muted); text-align: center; white-space: nowrap; }
-.log-fab-btn { font-family: var(--mono); font-size: 0.55rem; padding: 5px 12px; border-radius: 10px; background: rgba(74,80,112,0.35); border: 1px solid var(--border2); color: var(--muted2); cursor: pointer; white-space: nowrap; transition: all 0.15s; text-align: center; }
-.log-fab-btn:hover { color: var(--text); border-color: var(--amber); background: rgba(251,146,60,0.1); }
-.slog-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.78); backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.18s; }
-.slog-overlay.open { opacity: 1; pointer-events: auto; }
-.slog-modal { background: var(--surface); border: 1px solid var(--border2); border-radius: 20px; padding: 28px 30px; width: min(540px, 92vw); max-height: 85vh; overflow-y: auto; }
-.slog-title { font-size: 1.08rem; font-weight: 700; margin-bottom: 3px; }
-.slog-sub { font-size: 0.76rem; color: var(--muted2); margin-bottom: 20px; }
-.slog-sec-lbl { font-family: var(--mono); font-size: 0.54rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin-bottom: 7px; margin-top: 16px; }
-.slog-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 4px; }
-.slog-sub-lbl { font-family: var(--mono); font-size: 0.52rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 5px; margin-top: 10px; }
-.slog-chip { display: inline-flex; align-items: center; gap: 5px; padding: 5px 11px; border-radius: 16px; background: var(--surface2); border: 1px solid var(--border2); font-size: 0.73rem; cursor: pointer; transition: all 0.12s; user-select: none; }
-.slog-chip:hover { border-color: var(--muted2); }
-.slog-chip.sel { background: rgba(251,146,60,0.1); border-color: var(--amber); }
-.slog-conf-row { display: flex; gap: 6px; flex-wrap: wrap; }
-.slog-conf-btn { flex: 1; min-width: 80px; padding: 9px 0; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border2); font-family: var(--mono); font-size: 0.6rem; color: var(--muted2); cursor: pointer; text-align: center; transition: all 0.12s; }
-.slog-conf-btn:hover { border-color: var(--muted2); color: var(--text); }
-.slog-conf-btn.act-1 { border-color: var(--muted); color: var(--muted); background: rgba(74,80,112,0.12); }
-.slog-conf-btn.act-2 { border-color: var(--red);   color: var(--red);   background: rgba(233,69,96,0.08); }
-.slog-conf-btn.act-3 { border-color: var(--amber); color: var(--amber); background: rgba(251,146,60,0.08); }
-.slog-conf-btn.act-4 { border-color: var(--maths); color: var(--maths); background: rgba(74,222,128,0.08); }
-.slog-conf-btn.act-5 { border-color: #22d3ee; color: #22d3ee; background: rgba(34,211,238,0.08); }
-.slog-sess-row { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 10px 14px; background: var(--surface2); border-radius: 10px; }
-.slog-sess-row input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--maths); cursor: pointer; }
-.slog-sess-label { font-size: 0.76rem; color: var(--muted2); cursor: pointer; user-select: none; }
-.slog-actions { display: flex; gap: 10px; margin-top: 18px; }
-.slog-submit { flex: 1; padding: 11px; border-radius: 10px; background: rgba(251,146,60,0.15); border: 1px solid rgba(251,146,60,0.4); color: var(--amber); font-family: var(--mono); font-size: 0.74rem; font-weight: 700; cursor: pointer; transition: all 0.12s; }
-.slog-submit:hover { background: rgba(251,146,60,0.25); }
-.slog-cancel { padding: 11px 18px; border-radius: 10px; background: transparent; border: 1px solid var(--border2); color: var(--muted2); font-family: var(--mono); font-size: 0.72rem; cursor: pointer; transition: all 0.12s; }
-.slog-cancel:hover { color: var(--text); border-color: var(--muted2); }
-.tlog-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; }
-.tlog-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.tlog-title { font-family: var(--mono); font-size: 0.54rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); }
-.tlog-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-top: 1px solid var(--border); }
-.tlog-row:first-child { border-top: none; }
-.tlog-name { font-size: 0.76rem; flex: 1; }
-.tlog-conf { font-family: var(--mono); font-size: 0.58rem; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
-.tlog-time { font-family: var(--mono); font-size: 0.55rem; color: var(--muted); white-space: nowrap; }
-.guide-wrap { max-width: 780px; }
-.guide-section { margin-bottom: 30px; padding-bottom: 26px; border-bottom: 1px solid var(--border); }
-.guide-section:last-child { border-bottom: none; }
-.guide-h { font-size: 0.9rem; font-weight: 700; color: var(--amber); margin-bottom: 10px; }
-.guide-p { font-size: 0.8rem; color: var(--muted2); line-height: 1.75; margin-bottom: 8px; }
-.guide-p b { color: var(--text); font-weight: 600; }
-.guide-p em { color: var(--text); font-style: normal; border-bottom: 1px dashed var(--border2); }
-.guide-p code { font-family: var(--mono); font-size: 0.72rem; background: var(--surface2); padding: 1px 7px; border-radius: 4px; color: var(--cs); }
-.guide-list { margin: 8px 0 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
-.guide-list li { font-size: 0.78rem; color: var(--muted2); line-height: 1.6; padding-left: 16px; position: relative; }
-.guide-list li::before { content: '—'; position: absolute; left: 0; color: var(--border2); }
-.guide-list li b { color: var(--text); font-weight: 600; }
-.guide-kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin-top: 10px; }
-.guide-key { font-family: var(--mono); font-size: 0.68rem; color: var(--amber); white-space: nowrap; }
-.guide-val { font-size: 0.76rem; color: var(--muted2); line-height: 1.6; }
-.footer { padding: 20px 28px; text-align: center; font-family: var(--mono); font-size: 0.62rem; color: var(--muted); border-top: 1px solid var(--border); letter-spacing: 0.05em; }
-/* missed session row */
-.missed-row { display: flex; align-items: center; gap: 8px; padding: 8px 0; border-top: 1px solid var(--border); }
-.missed-row:first-child { border-top: none; }
-.missed-when { font-family: var(--mono); font-size: 0.6rem; color: var(--muted); flex-shrink: 0; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;}
+.topbar{position:sticky;top:0;z-index:100;background:rgba(12,14,19,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:58px;}
+.topbar-left{display:flex;align-items:center;gap:16px;}
+.topbar-title{font-family:var(--mono);font-size:0.8rem;letter-spacing:0.06em;color:var(--muted2);text-transform:uppercase;}
+.topbar-date{font-family:var(--mono);font-size:0.7rem;color:var(--muted);}
+.topbar-phase{font-family:var(--mono);font-size:0.65rem;color:var(--amber);}
+.nea-pill{background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);border-radius:20px;padding:4px 12px;font-family:var(--mono);font-size:0.65rem;font-weight:700;color:var(--maths);letter-spacing:0.06em;white-space:nowrap;}
+.cd-strip{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border);}
+.cd-item{padding:20px 28px;border-right:1px solid var(--border);display:flex;align-items:center;gap:20px;}
+.cd-item:last-child{border-right:none;}
+.cd-num{font-family:var(--mono);font-size:3rem;font-weight:700;line-height:1;flex-shrink:0;transition:color 0.4s;}
+.cd-meta{flex:1;}
+.cd-name{font-size:0.88rem;font-weight:600;margin-bottom:3px;}
+.cd-item.e .cd-name{color:var(--econ);}
+.cd-item.m .cd-name{color:var(--maths);}
+.cd-item.c .cd-name{color:var(--cs);}
+.cd-date{font-family:var(--mono);font-size:0.65rem;color:var(--muted2);}
+.cd-next{font-size:0.68rem;color:var(--muted);margin-top:6px;}
+.cd-next b{color:var(--text);}
+.cd-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden;}
+.cd-bar-fill{height:100%;border-radius:2px;transition:width 0.6s ease,background 0.4s;}
+.cd-urgency{font-family:var(--mono);font-size:0.52rem;text-transform:uppercase;letter-spacing:0.08em;margin-top:5px;}
+.tabs-nav{display:flex;border-bottom:1px solid var(--border);padding:0 28px;background:var(--bg);overflow-x:auto;}
+.tab-btn{padding:14px 18px;font-size:0.82rem;font-weight:500;font-family:var(--sans);color:var(--muted2);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color 0.15s,border-color 0.15s;display:flex;align-items:center;gap:7px;}
+.tab-btn:hover{color:var(--text);}
+.tab-btn.active{color:var(--text);border-bottom-color:var(--amber);}
+.tab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.tab-pane{display:none;padding:28px;max-width:1200px;margin:0 auto;}
+.tab-pane.active{display:block;}
+.focus-card{background:linear-gradient(135deg,rgba(251,146,60,0.07) 0%,rgba(233,69,96,0.04) 100%);border:1px solid rgba(251,146,60,0.28);border-left:4px solid var(--amber);border-radius:var(--radius);padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;}
+.focus-label{font-family:var(--mono);font-size:0.57rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--amber);margin-bottom:5px;}
+.focus-topic{font-size:0.98rem;font-weight:700;margin-bottom:3px;}
+.focus-reason{font-size:0.73rem;color:var(--muted2);}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;}
+.card-title{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);font-family:var(--mono);margin-bottom:18px;}
+.task-list{display:flex;flex-direction:column;gap:8px;}
+.task-item{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:var(--surface2);border-radius:10px;border:1px solid transparent;transition:background 0.12s,border-color 0.12s;}
+.task-item.clickable{cursor:pointer;}
+.task-item.clickable:hover{background:var(--surface3);border-color:var(--border2);}
+.task-item.done-item{opacity:0.45;}
+.task-check{margin-top:2px;flex-shrink:0;}
+.task-check input{width:17px;height:17px;accent-color:var(--maths);cursor:pointer;}
+.task-body{flex:1;min-width:0;}
+.task-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px;}
+.task-name{font-size:0.85rem;font-weight:600;line-height:1.3;}
+.task-name.done{text-decoration:line-through;color:var(--muted2);}
+.task-detail{font-size:0.76rem;color:var(--muted2);line-height:1.5;}
+.task-dur{font-family:var(--mono);font-size:0.65rem;color:var(--muted);flex-shrink:0;margin-top:3px;}
+.task-conf-row{display:flex;align-items:center;gap:5px;margin-top:8px;flex-wrap:wrap;}
+.task-conf-lbl{font-family:var(--mono);font-size:0.5rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
+.task-conf-btn{font-family:var(--mono);font-size:0.58rem;padding:3px 8px;border-radius:8px;border:1px solid var(--border2);background:var(--surface3);color:var(--muted2);cursor:pointer;transition:all 0.12s;}
+.task-conf-btn:hover{border-color:var(--muted2);color:var(--text);}
+.task-conf-btn.act-1{border-color:var(--muted);color:var(--muted);background:rgba(74,80,112,0.15);}
+.task-conf-btn.act-2{border-color:var(--red);color:var(--red);background:rgba(233,69,96,0.1);}
+.task-conf-btn.act-3{border-color:var(--amber);color:var(--amber);background:rgba(251,146,60,0.1);}
+.task-conf-btn.act-4{border-color:var(--maths);color:var(--maths);background:rgba(74,222,128,0.1);}
+.task-conf-btn.act-5{border-color:#22d3ee;color:#22d3ee;background:rgba(34,211,238,0.1);}
+.sub-badge{font-size:0.6rem;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap;flex-shrink:0;}
+.badge-m{background:rgba(74,222,128,0.15);color:var(--maths);}
+.badge-e{background:rgba(96,165,250,0.15);color:var(--econ);}
+.badge-c{background:rgba(251,191,36,0.15);color:var(--cs);}
+.badge-nea{background:rgba(192,132,252,0.15);color:var(--purple);}
+.badge-hw{background:rgba(233,69,96,0.2);color:var(--red);}
+.badge-college{background:rgba(74,80,112,0.3);color:var(--muted2);}
+.bonus-section{margin-top:8px;padding:12px 14px;background:rgba(74,80,112,0.1);border:1px dashed var(--border2);border-radius:10px;}
+.bonus-lbl{font-family:var(--mono);font-size:0.5rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:7px;}
+.bonus-row{display:flex;align-items:center;gap:8px;}
+.bonus-dismiss-btn{font-family:var(--mono);font-size:0.54rem;padding:2px 9px;border-radius:8px;background:transparent;border:1px solid var(--border2);color:var(--muted);cursor:pointer;flex-shrink:0;transition:all 0.15s;}
+.bonus-dismiss-btn:hover{border-color:var(--muted2);color:var(--text);}
+.tmr-list{display:flex;flex-direction:column;}
+.tmr-row{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-top:1px solid var(--border);}
+.tmr-row:first-child{border-top:none;}
+.tmr-left-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+.tmr-body{flex:1;}
+.tmr-name{font-size:0.8rem;font-weight:500;line-height:1.35;}
+.tmr-detail{font-size:0.71rem;color:var(--muted2);margin-top:3px;}
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;}
+.wday{background:var(--surface2);border-radius:10px;padding:14px;border:1px solid var(--border);min-height:100px;transition:border-color 0.12s;}
+.wday.today-col{border-color:var(--amber);background:rgba(251,146,60,0.04);}
+.wday.deadline{border-color:var(--red);background:rgba(233,69,96,0.05);}
+.wday.weekend-col{border-color:var(--border);background:rgba(74,80,112,0.08);}
+.wday-head{font-family:var(--mono);font-size:0.6rem;margin-bottom:8px;font-weight:700;}
+.wday.today-col .wday-head{color:var(--amber);}
+.wday.deadline .wday-head{color:var(--red);}
+.wday.weekend-col .wday-head{color:var(--muted);}
+.wday-task{display:flex;align-items:flex-start;gap:5px;font-size:0.68rem;line-height:1.3;margin-bottom:5px;}
+.wday-task:last-child{margin-bottom:0;}
+.wday-task-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:3px;}
+.wday-task.college-task{color:var(--muted);}
+.wday-task.hw-task{color:var(--red);}
+.wday-task.done-task{opacity:0.4;text-decoration:line-through;}
+.all-sessions-day{margin-bottom:24px;}
+.all-sessions-date-hdr{display:flex;align-items:center;gap:12px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.all-sessions-date-lbl{font-family:var(--mono);font-size:0.75rem;font-weight:700;color:var(--text);}
+.all-sessions-date-rel{font-family:var(--mono);font-size:0.58rem;color:var(--muted2);}
+.all-sessions-date-exam{font-family:var(--mono);font-size:0.58rem;color:var(--red);font-weight:700;}
+.all-sess-row{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;background:var(--surface2);border-radius:8px;margin-bottom:6px;border:1px solid transparent;}
+.all-sess-row.is-today{border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.04);}
+.all-sess-row.is-done{opacity:0.4;}
+.all-sess-body{flex:1;}
+.all-sess-name{font-size:0.82rem;font-weight:600;margin-bottom:2px;}
+.all-sess-name.done-name{text-decoration:line-through;color:var(--muted2);}
+.all-sess-detail{font-size:0.72rem;color:var(--muted2);}
+.subjects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.subj-card{background:var(--surface);border-radius:var(--radius);padding:22px 24px;border:1px solid var(--border);border-top:3px solid;}
+.subj-card.m{border-top-color:var(--maths);}
+.subj-card.e{border-top-color:var(--econ);}
+.subj-card.c{border-top-color:var(--cs);}
+.subj-name{font-size:1.05rem;font-weight:700;margin-bottom:4px;}
+.subj-card.m .subj-name{color:var(--maths);}
+.subj-card.e .subj-name{color:var(--econ);}
+.subj-card.c .subj-name{color:var(--cs);}
+.subj-status-tag{display:inline-block;font-family:var(--mono);font-size:0.62rem;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:18px;letter-spacing:0.06em;}
+.tag-critical{background:rgba(233,69,96,0.2);color:var(--red);}
+.tag-protect{background:rgba(96,165,250,0.15);color:var(--econ);}
+.tag-target{background:rgba(251,191,36,0.15);color:var(--cs);}
+.bar-section{margin-bottom:16px;}
+.bar-lbl{font-size:0.7rem;color:var(--muted2);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;}
+.bar-lbl span{font-family:var(--mono);font-size:0.65rem;}
+.bar{height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;transition:width 0.6s ease;}
+.subj-note{font-size:0.74rem;color:var(--muted2);line-height:1.5;padding-top:14px;border-top:1px solid var(--border);}
+.gb-section{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+.gb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.gb-section-lbl{font-family:var(--mono);font-size:0.52rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
+.gb-edit-btn{font-family:var(--mono);font-size:0.52rem;padding:2px 8px;border-radius:8px;background:rgba(74,80,112,0.3);border:1px solid var(--border2);color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.gb-edit-btn:hover{color:var(--text);border-color:var(--muted2);}
+.gb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.gb-cell{background:var(--surface2);border-radius:8px;padding:9px 10px;text-align:center;}
+.gb-lbl{font-family:var(--mono);font-size:0.48rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.gb-val{font-family:var(--mono);font-size:0.82rem;font-weight:700;}
+.chart-wrap{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
+.chart-wrap-title{font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted2);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+.add-mock-btn{font-family:var(--mono);font-size:0.56rem;padding:2px 8px;border-radius:10px;background:rgba(74,80,112,0.3);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;transition:color 0.15s,border-color 0.15s;}
+.add-mock-btn:hover{color:var(--text);border-color:var(--muted2);}
+.gaps-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-top:16px;}
+.gaps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.gaps-col-title{font-size:0.68rem;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;}
+.gap-row{display:flex;align-items:center;gap:7px;font-size:0.78rem;margin-bottom:3px;line-height:1.35;cursor:pointer;padding:5px 6px;border-radius:6px;transition:background 0.12s;user-select:none;}
+.gap-row:hover{background:var(--surface2);}
+.gap-row.gap-done{opacity:0.28;}
+.gap-row.gap-done .gap-name{text-decoration:line-through;}
+.gap-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;cursor:pointer;transition:transform 0.12s;}
+.gap-dot:hover{transform:scale(1.5);}
+.dot-hot{background:var(--red);}
+.dot-med{background:var(--amber);}
+.dot-low{background:var(--muted);}
+.gap-name{flex:1;min-width:0;font-size:0.76rem;}
+.gap-conf{display:flex;gap:2px;flex-shrink:0;}
+.conf-dot{width:6px;height:6px;border-radius:50%;background:var(--surface3);border:1px solid var(--border2);cursor:pointer;transition:background 0.15s,border-color 0.15s;flex-shrink:0;}
+.conf-dot:hover{border-color:var(--muted2);}
+.gaps-hint{font-family:var(--mono);font-size:0.56rem;color:var(--muted);margin-left:6px;}
+.reschedule-btn{font-family:var(--mono);font-size:0.57rem;padding:3px 9px;border-radius:12px;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.25);color:var(--econ);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background 0.15s;}
+.reschedule-btn:hover{background:rgba(96,165,250,0.2);}
+.reschedule-btn.rescheduled{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.25);color:var(--maths);cursor:default;}
+.unreschedule-btn{font-family:var(--mono);font-size:0.57rem;padding:3px 7px;border-radius:12px;background:rgba(233,69,96,0.08);border:1px solid rgba(233,69,96,0.2);color:var(--red);cursor:pointer;flex-shrink:0;margin-left:4px;transition:background 0.15s;}
+.unreschedule-btn:hover{background:rgba(233,69,96,0.18);}
+.streak-section{margin-top:28px;}
+.streak-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.streak-title{font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
+.streak-stat{font-family:var(--mono);font-size:0.62rem;}
+.streak-grid{display:grid;grid-template-columns:repeat(28,1fr);gap:3px;}
+.streak-cell{aspect-ratio:1;border-radius:3px;cursor:default;transition:transform 0.1s;border:1px solid var(--border);position:relative;}
+.streak-cell:hover{transform:scale(1.35);z-index:2;}
+.streak-cell.today-cell{border-color:var(--amber)!important;}
+.streak-labels{display:grid;grid-template-columns:repeat(28,1fr);gap:3px;margin-top:3px;}
+.streak-day-lbl{font-family:var(--mono);font-size:0.38rem;color:var(--muted);text-align:center;}
+.nea-hero{display:flex;align-items:center;gap:24px;border-radius:12px;padding:24px 28px;margin-bottom:24px;}
+.nea-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.nea-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--surface2);border-radius:8px;}
+.nea-row-name{font-size:0.82rem;font-weight:500;}
+.nea-row-score{font-family:var(--mono);font-size:0.82rem;font-weight:700;}
+.uni-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px;}
+.uni-card{background:var(--surface2);border-radius:10px;padding:16px;border:1px solid var(--border);}
+.uni-name{font-size:0.85rem;font-weight:600;margin-bottom:6px;}
+.uni-offer{font-family:var(--mono);font-size:0.75rem;color:var(--econ);margin-bottom:4px;}
+.uni-note{font-size:0.7rem;color:var(--muted2);}
+.timer-fab{position:fixed;bottom:28px;right:28px;z-index:200;display:flex;flex-direction:column;align-items:center;gap:7px;}
+.timer-btn{width:72px;height:72px;border-radius:50%;background:var(--surface2);border:2px solid var(--border2);color:var(--text);font-family:var(--mono);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:border-color 0.2s,background 0.2s;box-shadow:0 4px 24px rgba(0,0,0,0.5);}
+.timer-btn:hover{border-color:var(--amber);}
+.timer-btn.running{border-color:var(--maths);background:rgba(74,222,128,0.08);}
+.timer-btn.urgent{border-color:var(--red);animation:pulse-t 1.2s ease-in-out infinite;}
+@keyframes pulse-t{0%,100%{box-shadow:0 4px 24px rgba(233,69,96,0.2)}50%{box-shadow:0 4px 32px rgba(233,69,96,0.65)}}
+.timer-time-txt{font-size:0.82rem;font-weight:700;line-height:1;}
+.timer-sub-txt{font-size:0.48rem;color:var(--muted2);text-transform:uppercase;letter-spacing:0.08em;}
+.timer-sess-txt{font-family:var(--mono);font-size:0.58rem;color:var(--muted);text-align:center;white-space:nowrap;}
+.log-fab-btn{font-family:var(--mono);font-size:0.55rem;padding:5px 12px;border-radius:10px;background:rgba(74,80,112,0.35);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;white-space:nowrap;transition:all 0.15s;text-align:center;}
+.log-fab-btn:hover{color:var(--text);border-color:var(--amber);background:rgba(251,146,60,0.1);}
+.slog-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.78);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
+.slog-overlay.open{opacity:1;pointer-events:auto;}
+.slog-modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:28px 30px;width:min(540px,92vw);max-height:85vh;overflow-y:auto;}
+.slog-title{font-size:1.08rem;font-weight:700;margin-bottom:3px;}
+.slog-sub{font-size:0.76rem;color:var(--muted2);margin-bottom:20px;}
+.slog-sec-lbl{font-family:var(--mono);font-size:0.54rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:7px;margin-top:16px;}
+.slog-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px;}
+.slog-sub-lbl{font-family:var(--mono);font-size:0.52rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;margin-top:10px;}
+.slog-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:16px;background:var(--surface2);border:1px solid var(--border2);font-size:0.73rem;cursor:pointer;transition:all 0.12s;user-select:none;}
+.slog-chip:hover{border-color:var(--muted2);}
+.slog-chip.sel{background:rgba(251,146,60,0.1);border-color:var(--amber);}
+.slog-conf-row{display:flex;gap:6px;flex-wrap:wrap;}
+.slog-conf-btn{flex:1;min-width:80px;padding:9px 0;border-radius:10px;background:var(--surface2);border:1px solid var(--border2);font-family:var(--mono);font-size:0.6rem;color:var(--muted2);cursor:pointer;text-align:center;transition:all 0.12s;}
+.slog-conf-btn:hover{border-color:var(--muted2);color:var(--text);}
+.slog-conf-btn.act-1{border-color:var(--muted);color:var(--muted);background:rgba(74,80,112,0.12);}
+.slog-conf-btn.act-2{border-color:var(--red);color:var(--red);background:rgba(233,69,96,0.08);}
+.slog-conf-btn.act-3{border-color:var(--amber);color:var(--amber);background:rgba(251,146,60,0.08);}
+.slog-conf-btn.act-4{border-color:var(--maths);color:var(--maths);background:rgba(74,222,128,0.08);}
+.slog-conf-btn.act-5{border-color:#22d3ee;color:#22d3ee;background:rgba(34,211,238,0.08);}
+.slog-sess-row{display:flex;align-items:center;gap:10px;margin-top:16px;padding:10px 14px;background:var(--surface2);border-radius:10px;}
+.slog-sess-row input[type=checkbox]{width:15px;height:15px;accent-color:var(--maths);cursor:pointer;}
+.slog-sess-label{font-size:0.76rem;color:var(--muted2);cursor:pointer;user-select:none;}
+.slog-actions{display:flex;gap:10px;margin-top:18px;}
+.slog-submit{flex:1;padding:11px;border-radius:10px;background:rgba(251,146,60,0.15);border:1px solid rgba(251,146,60,0.4);color:var(--amber);font-family:var(--mono);font-size:0.74rem;font-weight:700;cursor:pointer;transition:all 0.12s;}
+.slog-submit:hover{background:rgba(251,146,60,0.25);}
+.slog-cancel{padding:11px 18px;border-radius:10px;background:transparent;border:1px solid var(--border2);color:var(--muted2);font-family:var(--mono);font-size:0.72rem;cursor:pointer;transition:all 0.12s;}
+.slog-cancel:hover{color:var(--text);border-color:var(--muted2);}
+.tlog-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;}
+.tlog-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.tlog-title{font-family:var(--mono);font-size:0.54rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
+.tlog-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-top:1px solid var(--border);}
+.tlog-row:first-child{border-top:none;}
+.tlog-name{font-size:0.76rem;flex:1;}
+.tlog-conf{font-family:var(--mono);font-size:0.58rem;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+.tlog-time{font-family:var(--mono);font-size:0.55rem;color:var(--muted);white-space:nowrap;}
+.guide-wrap{max-width:780px;}
+.guide-section{margin-bottom:30px;padding-bottom:26px;border-bottom:1px solid var(--border);}
+.guide-section:last-child{border-bottom:none;}
+.guide-h{font-size:0.9rem;font-weight:700;color:var(--amber);margin-bottom:10px;}
+.guide-p{font-size:0.8rem;color:var(--muted2);line-height:1.75;margin-bottom:8px;}
+.guide-p b{color:var(--text);font-weight:600;}
+.guide-p em{color:var(--text);font-style:normal;border-bottom:1px dashed var(--border2);}
+.guide-p code{font-family:var(--mono);font-size:0.72rem;background:var(--surface2);padding:1px 7px;border-radius:4px;color:var(--cs);}
+.guide-kv{display:grid;grid-template-columns:max-content 1fr;gap:6px 16px;margin-top:10px;}
+.guide-key{font-family:var(--mono);font-size:0.68rem;color:var(--amber);white-space:nowrap;}
+.guide-val{font-size:0.76rem;color:var(--muted2);line-height:1.6;}
+.footer{padding:20px 28px;text-align:center;font-family:var(--mono);font-size:0.62rem;color:var(--muted);border-top:1px solid var(--border);letter-spacing:0.05em;}
+.missed-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border);}
+.missed-row:first-child{border-top:none;}
+.missed-when{font-family:var(--mono);font-size:0.6rem;color:var(--muted);flex-shrink:0;}
+/* Session Packs tab */
+.packs-hero{background:linear-gradient(135deg,rgba(192,132,252,0.07) 0%,rgba(96,165,250,0.04) 100%);border:1px solid rgba(192,132,252,0.25);border-left:4px solid var(--purple);border-radius:var(--radius);padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;}
+.pack-list{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
+.pack-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--surface2);border-radius:7px;}
+.pack-id{font-family:var(--mono);font-size:0.65rem;font-weight:700;flex-shrink:0;min-width:54px;}
+.pack-name{font-size:0.78rem;color:var(--muted2);flex:1;}
+.tier-pill{font-family:var(--mono);font-size:0.48rem;padding:2px 6px;border-radius:6px;background:rgba(74,80,112,0.3);color:var(--muted);flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -364,16 +306,19 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     </div>
   </div>
 </div>
+
 <div style="padding:8px 28px;border-bottom:1px solid var(--border);background:rgba(251,146,60,0.03);">
   <a href="why.html" style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);text-decoration:none;letter-spacing:0.06em;" onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='var(--muted)'">
     Need to remember why this matters? <span style="color:var(--amber)">→ Read your WHY first</span>
   </a>
 </div>
+
 <div class="tabs-nav">
   <button class="tab-btn active" onclick="switchTab('today',this)"><span class="tab-dot" style="background:var(--amber)"></span> Today</button>
   <button class="tab-btn" onclick="switchTab('week',this)"><span class="tab-dot" style="background:var(--econ)"></span> This Week</button>
   <button class="tab-btn" onclick="switchTab('all',this)"><span class="tab-dot" style="background:var(--purple)"></span> All Sessions</button>
   <button class="tab-btn" onclick="switchTab('subjects',this)"><span class="tab-dot" style="background:var(--maths)"></span> Subjects</button>
+  <button class="tab-btn" onclick="switchTab('packs',this)"><span class="tab-dot" style="background:var(--purple)"></span> Session Packs</button>
   <button class="tab-btn" onclick="switchTab('nea',this)"><span class="tab-dot" style="background:var(--purple)"></span> NEA + Offers</button>
   <button class="tab-btn" onclick="switchTab('guide',this)"><span class="tab-dot" style="background:var(--muted2)"></span> Guide</button>
 </div>
@@ -389,14 +334,10 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     </div>
     <div>
       <div class="card-title" id="tmr-title">Tomorrow</div>
-      <div class="card" style="padding:18px 20px;">
-        <div class="tmr-list" id="tmr-tasks"></div>
-      </div>
+      <div class="card" style="padding:18px 20px;"><div class="tmr-list" id="tmr-tasks"></div></div>
       <div style="margin-top:20px">
         <div class="card-title" style="color:var(--red)">△ Missed this week</div>
-        <div class="card" style="border-color:rgba(233,69,96,0.3);padding:18px 20px;">
-          <div id="overdue-mini"></div>
-        </div>
+        <div class="card" style="border-color:rgba(233,69,96,0.3);padding:18px 20px;"><div id="overdue-mini"></div></div>
       </div>
     </div>
   </div>
@@ -411,7 +352,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <div id="today-log-section" style="margin-top:18px"></div>
 </div>
 
-<!-- THIS WEEK (Mon–Sun) -->
+<!-- THIS WEEK -->
 <div class="tab-pane" id="tab-week">
   <div class="card-title" id="week-title">Week</div>
   <div class="week-grid" id="week-grid"></div>
@@ -422,7 +363,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
     <div>
       <div style="font-size:1rem;font-weight:700;margin-bottom:4px">All Scheduled Sessions</div>
-      <div style="font-size:0.76rem;color:var(--muted2)">Everything from today onwards, in order.</div>
+      <div style="font-size:0.76rem;color:var(--muted2)">Everything from this week onwards.</div>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
       <span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted)">Filter:</span>
@@ -442,18 +383,18 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
       <div class="subj-name">Maths</div>
       <div class="subj-status-tag tag-critical">CRITICAL — A needed for QMUL/Sussex/City</div>
       <div class="bar-section">
-        <div class="bar-lbl">Easter Maths sessions done <span id="maths-topics-lbl">0 / 12</span></div>
+        <div class="bar-lbl">Sessions done (out of 27 total) <span id="maths-topics-lbl">0 / 27</span></div>
         <div class="bar"><div class="bar-fill" id="maths-topics-bar" style="width:3%;background:var(--maths)"></div></div>
+      </div>
+      <div class="bar-section">
+        <div class="bar-lbl">Easter check-in 9 Apr — 14/25 <span style="color:var(--amber)">56% · improving</span></div>
+        <div class="bar"><div class="bar-fill" style="width:56%;background:var(--amber)"></div></div>
       </div>
       <div class="bar-section">
         <div class="bar-lbl">Diagnosis 30 Mar — 17/76 <span style="color:var(--red)">22% · U</span></div>
         <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
       </div>
-      <div class="bar-section">
-        <div class="bar-lbl">Feb mock <span style="color:var(--red)">~20% · U</span></div>
-        <div class="bar"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div>
-      </div>
-      <div class="subj-note">Pure 1: 3 Jun · Pure 2: 11 Jun · S&amp;M: 18 Jun. Integration scored 0/18 on diagnosis — zero marks across IBP, substitution, trig integration, partial fractions, DEs. 12-session Easter plan front-loads integration then trig, algebra, logs, sequences. Stats/Mechanics pushed post-Easter.</div>
+      <div class="subj-note">Pure 1: 3 Jun · Pure 2: 11 Jun · S&amp;M: 18 Jun. Easter Pure plan (M1–M12) complete. Post-Easter: Stats &amp; Mechanics (S1–S9) + timed papers + Pure revisits. Recurring losses: product rule inside implicit diff (3xy → 3y + 3x·dy/dx), bracket omission in parametric fractions.</div>
       <div class="gb-section">
         <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('maths')">✏ edit</button></div>
         <div class="gb-grid" id="gb-maths"></div>
@@ -467,14 +408,14 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
       <div class="subj-name">Economics</div>
       <div class="subj-status-tag tag-protect">BEST SUBJECT — Protect B, target A</div>
       <div class="bar-section">
-        <div class="bar-lbl">Diagnosis 30 Mar — 35/70 <span style="color:var(--amber)">50% · B boundary</span></div>
-        <div class="bar"><div class="bar-fill" style="width:50%;background:var(--econ)"></div></div>
+        <div class="bar-lbl">Easter check-in 9 Apr — 9/22 <span style="color:var(--amber)">41% · diagram avoided</span></div>
+        <div class="bar"><div class="bar-fill" style="width:41%;background:var(--econ)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Feb mock <span style="color:var(--econ)">~B</span></div>
-        <div class="bar"><div class="bar-fill" style="width:68%;background:var(--econ)"></div></div>
+        <div class="bar-lbl">Diagnosis 30 Mar — 35/70 <span style="color:var(--econ)">50%</span></div>
+        <div class="bar"><div class="bar-fill" style="width:50%;background:var(--econ)"></div></div>
       </div>
-      <div class="subj-note">P1 (Theme 1+4): 11 May · P2 (Theme 3+2): 18 May · P3 (Competition): 4 Jun. Biggest gaps: diagrams across the board, productive vs allocative efficiency (definitions swapped), kinked demand mechanism, game theory/Nash equilibrium, multiplier calculation, supply-side vs demand management. Understanding is there — needs precision and diagram drilling.</div>
+      <div class="subj-note">P1 (Theme 1+4): 11 May · P2 (Theme 3+2): 18 May · P3 (Competition): 4 Jun. ⚠ P1 is nearest — diagrams and essay structure are the priority. April check-in: essay 7/8 but dropped 6 marks skipping diagram question. Conceptual understanding is there — failures are elastic/inelastic terminology, not using extract data, and diagram avoidance.</div>
       <div class="gb-section">
         <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('econ')">✏ edit</button></div>
         <div class="gb-grid" id="gb-econ"></div>
@@ -486,16 +427,16 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     </div>
     <div class="subj-card c">
       <div class="subj-name">Computer Science</div>
-      <div class="subj-status-tag tag-target">MIDDLE — U mock, B target</div>
+      <div class="subj-status-tag tag-target">MIDDLE — B target</div>
+      <div class="bar-section">
+        <div class="bar-lbl">Easter check-in 9 Apr — 10/20 <span style="color:var(--amber)">50%</span></div>
+        <div class="bar"><div class="bar-fill" style="width:50%;background:var(--cs)"></div></div>
+      </div>
       <div class="bar-section">
         <div class="bar-lbl">Diagnosis 30 Mar — 36/70 <span style="color:var(--amber)">51%</span></div>
         <div class="bar"><div class="bar-fill" style="width:51%;background:var(--cs)"></div></div>
       </div>
-      <div class="bar-section">
-        <div class="bar-lbl">Feb mock <span style="color:var(--red)">U</span></div>
-        <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
-      </div>
-      <div class="subj-note">P1 (Computer Systems): 10 Jun · P2 (Algorithms): 17 Jun. Strong: FDE cycle, pipelining, Big O, merge sort, Dijkstra's, tree traversal. Weak: scheduling (DK), Boolean algebra (DK), normalisation to 3NF (DK), stack pseudocode (DK), TCP/IP layers detail, floating point arithmetic, SQL syntax. NEA 60/70 (Grade A) submitted — focus shifts fully to Paper 1 &amp; 2.</div>
+      <div class="subj-note">P1 (Computer Systems): 10 Jun · P2 (Algorithms): 17 Jun. NEA submitted 27 Mar — est. 52/70, Grade B target met, closed. Clean split: strong on algorithms/architecture, weak on systems knowledge. Priority gaps: Boolean algebra (0/4 Easter), scheduling, normalisation, TCP/IP. Recurring errors: -1 as empty sentinel, pre-order traversal ordering, missing free storage list step on deletion.</div>
       <div class="gb-section">
         <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('cs')">✏ edit</button></div>
         <div class="gb-grid" id="gb-cs"></div>
@@ -515,45 +456,167 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
   </div>
 </div>
 
+<!-- SESSION PACKS -->
+<div class="tab-pane" id="tab-packs">
+  <div class="packs-hero">
+    <div style="font-family:var(--mono);font-size:2.2rem;color:var(--purple);line-height:1;flex-shrink:0">📦</div>
+    <div style="flex:1">
+      <div style="font-size:0.98rem;font-weight:700;color:var(--purple);margin-bottom:4px">60 Session Packs — real past paper questions, 4 tiers each</div>
+      <div style="font-size:0.73rem;color:var(--muted2)">Each pack runs ~2 hours: foundation cold test → exam standard → hard multi-step → timed simulation. Built from OCR H446, Edexcel 9MA0, Edexcel 9EB0 papers (2022–2024). Model answers at the bottom — never visible until you've submitted.</div>
+    </div>
+    <div style="text-align:right;flex-shrink:0">
+      <div style="font-family:var(--mono);font-size:2.5rem;font-weight:700;color:var(--purple);line-height:1">60</div>
+      <div style="font-family:var(--mono);font-size:0.5rem;color:var(--muted);text-transform:uppercase">packs</div>
+    </div>
+  </div>
+
+  <div style="padding:14px 18px;background:rgba(74,80,112,0.1);border:1px solid var(--border2);border-radius:10px;margin-bottom:24px;">
+    <div style="font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);margin-bottom:8px">How to use a pack</div>
+    <div style="font-size:0.77rem;color:var(--muted2);line-height:1.8">
+      1. Open the <code style="font-family:var(--mono);font-size:0.7rem;background:var(--surface2);padding:1px 6px;border-radius:4px;color:var(--cs)">session_packs.md</code> file. Find today's pack by ID (e.g. <b style="color:var(--text)">M4</b>, <b style="color:var(--text)">E3</b>, <b style="color:var(--text)">CS-P1.2</b>).<br>
+      2. Copy everything from the <b style="color:var(--text)">AI INSTRUCTION BLOCK</b> down to the <b style="color:var(--text)">SESSION REPORT</b> template at the bottom.<br>
+      3. Paste into Gemini (or any AI). The instruction block turns it into a strict examiner — no hints, cold recall only.<br>
+      4. Work through Tier 1 → 4. If you score 0 on Tier 1, the remediation block activates. No going back on Tier 4.<br>
+      5. Fill in the session report. Log your confidence here via the <b style="color:var(--text)">Log Session</b> button.
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+    <!-- MATHS -->
+    <div>
+      <div class="card-title" style="color:var(--maths)">Maths Pure — 12 packs</div>
+      <div class="pack-list">
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M1</span><span class="pack-name">Trig integration (sin²x, cos²x, odd powers)</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M2</span><span class="pack-name">Integration by parts (DI table)</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M3</span><span class="pack-name">Partial fractions — all types</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M4</span><span class="pack-name">Substitution + differential equations</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M5</span><span class="pack-name">Inequalities + functions + modulus</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M6</span><span class="pack-name">Binomial expansion (neg/frac n)</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M7</span><span class="pack-name">Trig identities + R form</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M8</span><span class="pack-name">Logs + exponentials + modelling</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M9</span><span class="pack-name">Implicit + parametric differentiation</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M10</span><span class="pack-name">Sequences + series (arith/geom/sigma)</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M11</span><span class="pack-name">Numerical methods + vectors</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M12</span><span class="pack-name">Coordinate geometry + circles + proof</span></div>
+      </div>
+      <div class="card-title" style="color:#22d3ee;margin-top:16px">Stats &amp; Mechanics — 9 packs</div>
+      <div class="pack-list">
+        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S1</span><span class="pack-name">Statistical sampling</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S2</span><span class="pack-name">Data presentation + probability</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S3</span><span class="pack-name">Binomial distribution</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S4</span><span class="pack-name">Normal distribution</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S5</span><span class="pack-name">Hypothesis testing</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S6</span><span class="pack-name">Kinematics (suvat + calculus)</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S7</span><span class="pack-name">Forces + Newton's laws + friction</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S8</span><span class="pack-name">Moments + inclined planes</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S9</span><span class="pack-name">S&amp;M timed past paper simulation</span></div>
+      </div>
+    </div>
+
+    <!-- ECON + CS P1 -->
+    <div>
+      <div class="card-title" style="color:var(--econ)">Economics — 8 packs</div>
+      <div class="pack-list">
+        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E1</span><span class="pack-name">Core diagrams from memory (all 6)</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E2</span><span class="pack-name">Efficiency + market structures</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E3</span><span class="pack-name">Oligopoly + kinked demand + game theory</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E4</span><span class="pack-name">Macro: AD/AS + economic cycle</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E5</span><span class="pack-name">Macro policy: fiscal + monetary + supply-side</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E6</span><span class="pack-name">Globalisation + labour markets</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E7</span><span class="pack-name">P3 competition synoptic: CMA + contestability</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E8</span><span class="pack-name">Timed 20-mark essay practice (5 essays)</span></div>
+      </div>
+      <div class="card-title" style="color:var(--cs);margin-top:16px">CS Paper 1 — 7 packs</div>
+      <div class="pack-list">
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.1</span><span class="pack-name">Scheduling + LMC / assembly</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.2</span><span class="pack-name">Boolean algebra + Karnaugh maps</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.3</span><span class="pack-name">Normalisation 1NF→3NF + SQL</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.4</span><span class="pack-name">TCP/IP + networking + compression</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.5</span><span class="pack-name">CPU architecture + CISC/RISC</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.6</span><span class="pack-name">OS + memory management + compilation</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.7</span><span class="pack-name">Web tech + legal/ethical + data types</span></div>
+      </div>
+    </div>
+
+    <!-- CS P2 + HOW IT WORKS -->
+    <div>
+      <div class="card-title" style="color:var(--cs)">CS Paper 2 + Timed — 6 packs</div>
+      <div class="pack-list">
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P2.1</span><span class="pack-name">Stack/queue pseudocode</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P2.2</span><span class="pack-name">Recursion + ISR sequence</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P2.3</span><span class="pack-name">Floating point + BFS/DFS</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P2.4</span><span class="pack-name">Algorithms: Dijkstra + sorting</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1-T</span><span class="pack-name">CS P1 timed past paper (2023 full)</span></div>
+        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P2-T</span><span class="pack-name">CS P2 timed past paper (2022 full)</span></div>
+      </div>
+
+      <div style="margin-top:20px;padding:16px 18px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);">
+        <div class="card-title">Pack structure (every pack)</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--muted2);flex-shrink:0;min-width:52px">TIER 1</span>
+            <span style="font-size:0.73rem;color:var(--muted2)">Foundation — 2 cold Qs, core method only. ~20 min. Score 0 → remediation activates (pre-written worked example + retry Q, no hints).</span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--amber);flex-shrink:0;min-width:52px">TIER 2</span>
+            <span style="font-size:0.73rem;color:var(--muted2)">Exam standard — 3 real past paper Qs, correct mark tariffs. ~40 min. Checkpoint Q if you drop below half.</span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--red);flex-shrink:0;min-width:52px">TIER 3</span>
+            <span style="font-size:0.73rem;color:var(--muted2)">Hard — 2 multi-step, combined-topic or unfamiliar-setup Qs. ~40 min.</span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--maths);flex-shrink:0;min-width:52px">TIER 4</span>
+            <span style="font-size:0.73rem;color:var(--muted2)">Timed — 1 Q, timer set, no going back. ~20 min. Submit whatever you have.</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:0.72rem;color:var(--muted2);line-height:1.65">
+          <b style="color:var(--text)">Gemini instruction block</b> turns the AI into a strict examiner: no hints, no encouragement, mark strictly, report exact marks lost per question. If Gemini goes soft, re-paste the instruction block from the top of the pack.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- NEA + OFFERS -->
 <div class="tab-pane" id="tab-nea">
   <div class="nea-hero" style="background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.25);">
     <div style="text-align:center;flex-shrink:0;">
-      <div style="font-family:var(--mono);font-size:3.5rem;font-weight:700;color:var(--amber);line-height:1;">60</div>
-      <div style="font-family:var(--mono);font-size:0.6rem;color:var(--muted2);margin-top:4px;">/ 70</div>
+      <div style="font-family:var(--mono);font-size:3.5rem;font-weight:700;color:var(--amber);line-height:1;">52</div>
+      <div style="font-family:var(--mono);font-size:0.6rem;color:var(--muted2);margin-top:4px;">/ 70 (est.)</div>
     </div>
-    <div class="nea-hero-info">
-      <h2 style="font-size:1.3rem;font-weight:700;color:var(--amber);margin-bottom:4px;">OCR H446 NEA — Awaiting official mark</h2>
-      <p style="font-size:0.82rem;color:var(--muted2);">Submitted 27 Mar 2026 · <strong style="color:var(--amber)">60/70 is an estimate only</strong></p>
+    <div>
+      <h2 style="font-size:1.3rem;font-weight:700;color:var(--amber);margin-bottom:4px;">OCR H446 NEA — Investment Simulator</h2>
+      <p style="font-size:0.82rem;color:var(--muted2);">Submitted 27 Mar 2026 · Unity/C# · <strong style="color:var(--amber)">52/70 is an estimate only</strong></p>
       <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;">
-        <span style="font-family:var(--mono);font-size:0.65rem;padding:3px 10px;border-radius:20px;background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.3);color:var(--amber);font-weight:700;">PENDING</span>
-        <span style="font-family:var(--mono);font-size:0.68rem;color:var(--muted2);">Official mark expected by 10–17 April 2026</span>
+        <span style="font-family:var(--mono);font-size:0.65rem;padding:3px 10px;border-radius:20px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:var(--maths);font-weight:700;">GRADE B (est.) · TARGET MET</span>
+        <span style="font-family:var(--mono);font-size:0.68rem;color:var(--muted2);">NEA is closed — focus fully on written papers.</span>
       </div>
     </div>
   </div>
   <div class="card-title">Estimated breakdown by section</div>
   <div class="nea-breakdown">
-    <div class="nea-row"><span class="nea-row-name">Analysis <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--amber)">9 / 10</span></div>
-    <div class="nea-row"><span class="nea-row-name">Design <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--amber)">12 / 15</span></div>
-    <div class="nea-row"><span class="nea-row-name">Development — iterative <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--amber)">13 / 15</span></div>
-    <div class="nea-row"><span class="nea-row-name">Development — testing <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--amber)">9 / 10</span></div>
-    <div class="nea-row"><span class="nea-row-name">Testing <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--amber)">4 / 5</span></div>
-    <div class="nea-row"><span class="nea-row-name">Evaluation <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--amber)">13 / 15</span></div>
+    <div class="nea-row"><span class="nea-row-name">Analysis <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--maths)">9 / 10</span></div>
+    <div class="nea-row"><span class="nea-row-name">Design <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--amber)">11 / 15</span></div>
+    <div class="nea-row"><span class="nea-row-name">Development — iterative <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--maths)">13 / 15</span></div>
+    <div class="nea-row"><span class="nea-row-name">Development — testing <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--maths)">9 / 10</span></div>
+    <div class="nea-row"><span class="nea-row-name">Testing <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--maths)">4 / 5</span></div>
+    <div class="nea-row"><span class="nea-row-name">Evaluation <span style="font-size:0.65rem;color:var(--muted)">(est.) · weakest</span></span><span class="nea-row-score" style="color:var(--red)">8 / 15</span></div>
   </div>
   <div style="margin-top:12px;padding:12px 16px;background:rgba(74,80,112,0.1);border:1px dashed var(--border2);border-radius:10px;">
-    <div style="font-size:0.74rem;color:var(--muted2);line-height:1.6;">These scores are self-assessed estimates. The official mark will be released by your centre — expected around <strong style="color:var(--text)">10–17 April 2026</strong>. This section will be updated once the real mark is known.</div>
+    <div style="font-size:0.74rem;color:var(--muted2);line-height:1.6;">Self-assessed estimates. Evaluation (8/15) is the weakest section — not worth revisiting, target is met at B. Official mark released when centre moderates.</div>
   </div>
   <div style="margin-top:28px">
     <div class="card-title">University Offers</div>
     <div class="uni-grid">
-      <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">QMUL</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">Non-negotiable A requirement</div></div>
+      <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">QMUL</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">First choice · A is non-negotiable</div></div>
       <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">Sussex</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">Non-negotiable A requirement</div></div>
       <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">City</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">Non-negotiable A requirement</div></div>
       <div class="uni-card" style="border-top:3px solid var(--econ)"><div class="uni-name">Exeter</div><div class="uni-offer">BBB</div><div class="uni-note">No specific subject requirement</div></div>
-      <div class="uni-card" style="border-top:3px solid var(--econ)"><div class="uni-name">Reading</div><div class="uni-offer">BCC</div><div class="uni-note">Insurance — achievable</div></div>
+      <div class="uni-card" style="border-top:3px solid var(--econ)"><div class="uni-name">Reading</div><div class="uni-offer">BCC + B in Maths</div><div class="uni-note">Insurance — achievable</div></div>
       <div class="uni-card" style="border-top:3px solid var(--border2);background:rgba(74,80,112,0.12)">
         <div class="uni-name" style="color:var(--muted2)">Outcome paths</div>
-        <div style="font-size:0.72rem;color:var(--muted2);margin-top:6px;line-height:1.6">A in Maths → QMUL/Sussex/City<br>Maths B → Exeter<br>Maths C → Reading</div>
+        <div style="font-size:0.72rem;color:var(--muted2);margin-top:6px;line-height:1.6">Maths A → QMUL/Sussex/City<br>Maths B → Exeter or Reading<br>Maths C → Reading (BCC)</div>
       </div>
     </div>
   </div>
@@ -564,50 +627,37 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
 <div class="guide-wrap">
   <div style="margin-bottom:28px">
     <div style="font-size:1.15rem;font-weight:700;margin-bottom:5px">Dashboard Guide</div>
-    <div style="font-size:0.8rem;color:var(--muted2)">How everything works, start to finish.</div>
+    <div style="font-size:0.8rem;color:var(--muted2)">How everything works.</div>
   </div>
   <div class="guide-section">
-    <div class="guide-h">Countdown strip</div>
-    <p class="guide-p">The three panels at the top count down days to each subject's first exam. The progress bar fills as revision time passes since 9 March.</p>
+    <div class="guide-h">Session structure (post-Easter)</div>
+    <p class="guide-p"><b>Free days (Tue/Fri):</b> 2 heavy sessions — Maths 11am–1pm hard cap (2hrs), CS or Econ 11am–12:30pm (1.5hrs).</p>
+    <p class="guide-p"><b>College days (Mon/Wed/Thu):</b> 1 light evening session only (~45min–1hr). Never stack two full sessions on a college day.</p>
+    <p class="guide-p"><b>Weekends (Sat/Sun):</b> 2 sessions per day, same structure as free days.</p>
+    <p class="guide-p"><b>Hard cap:</b> If Maths runs over 2hrs, the CS/Econ session is cancelled — not rescheduled to the same day. Burnout is the structural risk.</p>
+    <p class="guide-p"><b>Missed sessions:</b> Roll high-priority topics to next free slot. Drop low-priority topics if time runs short before an exam.</p>
   </div>
   <div class="guide-section">
     <div class="guide-h">Today tab — ticking off sessions</div>
-    <p class="guide-p">Tick a session checkbox to mark it done. This immediately shows <b>confidence buttons</b> inline — click one of the 5 levels to log how well it went. This updates the Priority Gaps urgency score, the Focus card, and marks it as done across all tabs.</p>
-    <p class="guide-p"><b>28-day heatmap</b> — each cell darkens as you log sessions. Hover for date and count. Amber border = today.</p>
+    <p class="guide-p">Tick a session checkbox to mark it done. <b>Confidence buttons</b> appear inline — log 1–5 to update the Priority Gaps urgency score and Focus card. The 28-day heatmap darkens as sessions accumulate. Amber border = today.</p>
   </div>
   <div class="guide-section">
     <div class="guide-h">Confidence scale (1–5)</div>
     <div class="guide-kv">
-      <span class="guide-key">1 · Not started</span><span class="guide-val">Haven't touched it yet.</span>
-      <span class="guide-key">2 · Seen it</span><span class="guide-val">Looked at it but can't do questions yet.</span>
-      <span class="guide-key">3 · Shaky</span><span class="guide-val">Can attempt questions but still making errors.</span>
+      <span class="guide-key">1 · Not started</span><span class="guide-val">Haven't touched it.</span>
+      <span class="guide-key">2 · Seen it</span><span class="guide-val">Looked at it but can't do questions cold.</span>
+      <span class="guide-key">3 · Shaky</span><span class="guide-val">Can attempt but still making errors.</span>
       <span class="guide-key">4 · Solid</span><span class="guide-val">Can do exam questions with minor slips.</span>
       <span class="guide-key">5 · Locked in</span><span class="guide-val">Reliable under timed exam conditions.</span>
     </div>
   </div>
   <div class="guide-section">
-    <div class="guide-h">Missed this week</div>
-    <p class="guide-p">Automatically detects sessions from earlier this week that you haven't ticked off. Use the reschedule button to slot them into a free evening later this week or next.</p>
-  </div>
-  <div class="guide-section">
-    <div class="guide-h">This Week tab</div>
-    <p class="guide-p">Mon–Sun grid for the current week. Today is highlighted amber, exam deadlines in red, weekends slightly dimmed. Completed sessions show as struck through.</p>
-  </div>
-  <div class="guide-section">
-    <div class="guide-h">All Sessions tab</div>
-    <p class="guide-p">Every session from today onwards, listed in date order. Use the filter buttons to narrow by subject. Completed sessions are dimmed. Exam days are highlighted in red.</p>
-  </div>
-  <div class="guide-section">
-    <div class="guide-h">Session Log (timer button)</div>
-    <p class="guide-p">Click <em>Log session</em> at any time to log topics without the timer. Use the <b>30m / 60m</b> buttons to switch timer duration. The timer auto-opens the session log when it completes.</p>
-  </div>
-  <div class="guide-section">
-    <div class="guide-h">NEA + Offers tab</div>
-    <p class="guide-p">OCR H446 NEA breakdown (est. 60/70, submitted 27 Mar 2026) and all five university offers. The scores shown are <b>estimates only</b> — official mark expected by 10–17 April 2026. The key constraint: QMUL, Sussex, and City all require an A in Maths.</p>
+    <div class="guide-h">Session packs</div>
+    <p class="guide-p">60 packs in <code>session_packs.md</code>. Find today's pack by ID, copy from AI INSTRUCTION BLOCK to SESSION REPORT, paste into Gemini. Fill the report at the end, log confidence here.</p>
   </div>
   <div class="guide-section">
     <div class="guide-h">Data &amp; storage</div>
-    <p class="guide-p">All persistent data lives in your browser's <code>localStorage</code>. It survives reloads on the same device and browser. The session schedule is hardcoded — edit the source file and re-deploy to GitHub Pages to update it.</p>
+    <p class="guide-p">All persistent data is in your browser's <code>localStorage</code>. Survives reloads on the same device and browser. Schedule is hardcoded — edit source and push to GitHub Pages to update it.</p>
   </div>
 </div>
 </div>
@@ -621,10 +671,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     <button class="log-fab-btn" id="timer-30" onclick="setTimerDuration(30)" style="font-size:0.5rem;padding:3px 8px;">30m</button>
     <button class="log-fab-btn" id="timer-60" onclick="setTimerDuration(60)" style="font-size:0.5rem;padding:3px 8px;">60m</button>
   </div>
-  <button class="timer-btn" id="timer-btn"
-    onclick="toggleTimer()"
-    oncontextmenu="event.preventDefault();resetTimer()"
-    title="Click: start/pause · Right-click: reset">
+  <button class="timer-btn" id="timer-btn" onclick="toggleTimer()" oncontextmenu="event.preventDefault();resetTimer()" title="Click: start/pause · Right-click: reset">
     <div class="timer-time-txt" id="timer-time">60:00</div>
     <div class="timer-sub-txt" id="timer-lbl">START</div>
   </button>
@@ -648,7 +695,7 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     </div>
     <div class="slog-sess-row" id="slog-sess-row">
       <input type="checkbox" id="slog-count-sess">
-      <label class="slog-sess-label" for="slog-count-sess">Count this as a new 1-hour session (for heatmap)</label>
+      <label class="slog-sess-label" for="slog-count-sess">Count this as a new session (for heatmap)</label>
     </div>
     <div class="slog-actions">
       <button class="slog-submit" onclick="submitSessionLog()">Save log</button>
@@ -656,372 +703,270 @@ body { font-family: var(--sans); background: var(--bg); color: var(--text); min-
     </div>
   </div>
 </div>
-
 <script>
-// ── CONFIDENCE LABELS (1-5 scale) ─────────────────────────────────────────────
-const CONF_LABELS = {0:'—', 1:'Not started', 2:'Seen it', 3:'Shaky', 4:'Solid', 5:'Locked in'};
-const CONF_COLORS = {1:'var(--muted)', 2:'var(--red)', 3:'var(--amber)', 4:'var(--maths)', 5:'#22d3ee'};
-const CONF_BG = {1:'rgba(74,80,112,0.12)', 2:'rgba(233,69,96,0.12)', 3:'rgba(251,146,60,0.12)', 4:'rgba(74,222,128,0.12)', 5:'rgba(34,211,238,0.12)'};
+const CONF_LABELS={0:'—',1:'Not started',2:'Seen it',3:'Shaky',4:'Solid',5:'Locked in'};
+const CONF_COLORS={1:'var(--muted)',2:'var(--red)',3:'var(--amber)',4:'var(--maths)',5:'#22d3ee'};
+const CONF_BG={1:'rgba(74,80,112,0.12)',2:'rgba(233,69,96,0.12)',3:'rgba(251,146,60,0.12)',4:'rgba(74,222,128,0.12)',5:'rgba(34,211,238,0.12)'};
 
-// ── SESSION DATA ─────────────────────────────────────────────────────────────
-const SESSIONS = {
-  '2026-03-21': [
-    { sub:'nea', label:'NEA tweaks', detail:'Read through, humanise, polish wording.' },
-  ],
-  '2026-03-22': [
-    { sub:'cs',    hw:true, label:'HW — CS: Boolean algebra + architecture',  dur:'~2hrs',   detail:'Watch 3 Craig & Dave videos, answer questions, mark, upload. Due Mon 9am.' },
-    { sub:'econ',  hw:true, label:'HW — Econ: Paper 3 competition topics',    dur:'~1.5hrs', detail:'Revise 2.1, 2.2.2, 2.2.3, 2.3.1, 4.1.1. Answer Qs + comprehension. Upload. Due Mon 9am.' },
-    { sub:'maths', label:'Maths: Graphs & transformations',   dur:'1.5hrs', detail:'Cold test first. 4 Qs total, mark all. Translations f(x±a), stretches, reflections, modulus.' },
-    { sub:'maths', label:'Maths: Inverse trig + small angle', dur:'1hr',    detail:'Write arcsin/arccos/arctan domains from memory. 2 small angle past paper Qs. Mark.' },
-    { sub:'econ',  label:'Econ: D&S + price mechanism',       dur:'1.5hrs', detail:'Draw shifts, PED formula, 1 four-mark Q. Then price mechanism definitions + 1 Q.' },
-    { sub:'cs',    label:'CS: Foreign key + push pseudocode', dur:'30min',  detail:'Only if HW done. Foreign key ×5 from memory. Push pseudocode from scratch.' },
-  ],
-  '2026-03-23': [
-    { sub:'college', label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30', detail:'' },
-    { sub:'maths',   label:'Maths (eve): Partial fractions', dur:'~1hr', detail:'Decomposition for standard + repeated factors. 2 Qs MIN.' },
-  ],
-  '2026-03-24': [
-    { sub:'maths', label:'Maths: Parametric equations',          dur:'2hrs', detail:'Sketching + Cartesian conversion. 2 Qs MIN.' },
-    { sub:'econ',  label:'Econ: Market failure — externalities', dur:'1hr',  detail:'Negative/positive externality diagrams (MSC>MPC, MSB>MPB). 1 four-mark Q.' },
-    { sub:'cs',    label:'CS: Trees/graphs + hash tables',       dur:'1hr',  detail:'Hash function, collision, chaining. 1 past paper Q.' },
-  ],
-  '2026-03-25': [
-    { sub:'college', label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30', detail:'' },
-    { sub:'cs',      label:'CS (eve): Merge sort + SQL basics', dur:'~1hr', detail:'Trace merge sort on 6 numbers. SELECT/WHERE/ORDER BY syntax. 1 Q each.' },
-  ],
-  '2026-03-26': [
-    { sub:'college', label:'College: Econ 11:25–13:35', detail:'' },
-    { sub:'nea',   hw:true, label:'NEA submitted ✓', detail:'NEA_Final_v10.docx submitted 27 Mar 2026.' },
-    { sub:'maths',   label:'Maths (eve): Parametric diff', dur:'~1hr', detail:'dy/dx = (dy/dt)/(dx/dt). 2 Qs MIN.' },
-  ],
-  '2026-03-27': [
-    { sub:'maths', label:'Maths: Parametric practice',            dur:'1hr', detail:'2 timed past paper Qs. Mark immediately.' },
-    { sub:'econ',  label:'Econ: Public goods + info failure',     dur:'1hr', detail:'Non-excludable/non-rival, asymmetric info. 1 four-mark Q.' },
-    { sub:'cs',    label:'CS: Sort + SQL practice',               dur:'1hr', detail:'1 merge sort trace Q + 1 SQL Q timed. Mark both.' },
-    { sub:'maths', label:'Maths (eve): Implicit diff + stationary points ✓', dur:'1hr', detail:'Done today. Implicit diff, chain rule on y terms, stationary points.' },
-  ],
-  '2026-03-28': [
-    { sub:'econ', label:'Econ: Govt intervention', dur:'2hrs', detail:'Tax, subsidy, regulation, price controls. Diagrams + welfare loss. 1 six-mark Q.' },
-    { sub:'am',   label:'AM 1hr', detail:'Continue current plan.' },
-  ],
-  '2026-03-29': [
-    { sub:'maths', label:'Maths: Trig integration', dur:'2hrs', detail:'sin²x, cos²x using double angle identities. ∫sin(ax)cos(bx) type. 2 past paper Qs MIN. Mark.' },
-    { sub:'econ',  label:'Econ: Externality diagrams consolidation', dur:'1hr', detail:'Draw MSC/MPC/MSB/MPB from memory 3 times each. Then 1 six-mark Q cold.' },
-    { sub:'cs',    label:'CS: Normalisation 1NF→3NF cold test', dur:'1hr', detail:'Convert 1 unnormalised table to 3NF from scratch. 1 past paper Q.' },
-  ],
-
-  // ── EASTER: Mon 30 Mar – Sun 12 Apr ──────────────────────────────────────
-  '2026-03-30': [
-    { sub:'maths', label:'M1 — Trig integration', dur:'2hrs', detail:'sin²x and cos²x via double angle identity. Cold test first. 3 Qs minimum total.' },
-    { sub:'cs',    label:'CS P1.1 — Scheduling + LMC/Assembly', dur:'2hrs', detail:'Scheduling algorithms + LMC instruction set. Trace and write programs.' },
-  ],
-  '2026-03-31': [
-    { sub:'maths', label:'M2 — Integration by parts', dur:'2hrs', detail:'Formula: ∫u(dv/dx)dx = uv − ∫v(du/dx)dx. 4 Qs minimum.' },
-    { sub:'econ',  label:'Econ E1 — Core diagrams from memory', dur:'2hrs', detail:'Draw each diagram 3 times from scratch: neg prod externality, pos cons externality, monopoly, AD/AS, price ceiling, kinked demand.' },
-  ],
-  '2026-04-01': [
-    { sub:'maths', label:'M3 — Partial fractions', dur:'2hrs', detail:'Standard, repeated, improper. 4 Qs, at least 1 of each type.' },
-    { sub:'cs',    label:'CS P2.1 — Stack/queue pseudocode', dur:'2hrs', detail:'Write PUSH/POP/ENQUEUE/DEQUEUE from scratch. 2 past paper Qs.' },
-  ],
-  '2026-04-02': [
-    { sub:'maths', label:'M4 — Integration by partial fractions', dur:'2hrs', detail:'Decompose then integrate as ln|ax+b|/a. 3 Qs minimum.' },
-    { sub:'econ',  label:'Econ E2 — Productive/allocative efficiency + perfect competition', dur:'2hrs', detail:'Definitions ×5 from memory. Perfect competition long run normal profit.' },
-  ],
-  '2026-04-03': [
-    { sub:'maths', label:'M5 — Integration by substitution + DEs', dur:'2hrs', detail:'Substitution method + separation of variables DEs. 4 Qs total.' },
-    { sub:'cs',    label:'CS P1.2 — Boolean algebra + logic gates', dur:'2hrs', detail:'De Morgan\'s laws, truth tables, Karnaugh maps. 2 past paper Qs.' },
-  ],
-  '2026-04-04': [
-    { sub:'maths', label:'M6 — Rational inequalities', dur:'2hrs', detail:'Critical values method, sign diagram. 4 Qs including two-region solutions.' },
-    { sub:'econ',  label:'Econ E3 — Kinked demand curve + game theory', dur:'2hrs', detail:'Kinked demand mechanism, game theory, prisoner\'s dilemma, Nash equilibrium.' },
-  ],
-  '2026-04-05': [
-    { sub:'maths', label:'M7 — Binomial expansion', dur:'2hrs', detail:'General formula (1+x)^n for any n. Validity |x|<1. 3 Qs.' },
-    { sub:'econ',  label:'Econ E4 — Multiplier + MOPS (1.5hrs)', dur:'1.5hrs', detail:'Multiplier = 1/(1−MPC). MOPS essay structure. 1 timed paragraph.' },
-  ],
-  '2026-04-06': [
-    { sub:'maths', label:'M8 — Trig identities + R form', dur:'2hrs', detail:'Double angle, compound angle, R form. 3 Qs from cold.' },
-    { sub:'cs',    label:'CS P2.2 — Recursion + ISR full sequence', dur:'2hrs', detail:'Factorial, fibonacci, binary search recursive. ISR sequence from memory.' },
-  ],
-  '2026-04-07': [
-    { sub:'maths', label:'M9 — Trig solving equations in a range', dur:'2hrs', detail:'CAST diagram, multi-angle, quadratic in trig. 4 Qs.' },
-    { sub:'econ',  label:'Econ E5 — Macro: AD/AS, fiscal/monetary, exchange rates', dur:'2hrs', detail:'AD components, SRAS vs LRAS, policy effects, inflation/unemployment types.' },
-  ],
-  '2026-04-08': [
-    { sub:'maths', label:'M10 — Exponentials + logarithms', dur:'2hrs', detail:'Log laws, solving, log-linear graphs, calculus with e^x. 4 Qs.' },
-    { sub:'cs',    label:'CS P1.3 — Normalisation to 3NF + SQL', dur:'2hrs', detail:'1NF→2NF→3NF worked problems. SQL queries from scratch.' },
-  ],
-  '2026-04-09': [
-    { sub:'maths', label:'M11 — Sequences + series', dur:'2hrs', detail:'Arithmetic, geometric, sum to infinity, sigma notation, binomial. 4 Qs.' },
-    { sub:'econ',  label:'Econ E6 — Supply-side policy + P3 competition theme', dur:'2hrs', detail:'Supply-side vs demand management. Competition policy. 1 timed Q.' },
-  ],
-  '2026-04-10': [
-    { sub:'maths', label:'M12 — Numerical methods + vectors', dur:'2hrs', detail:'Sign change, iteration, trapezium rule, vectors. 3 Qs.' },
-    { sub:'cs',    label:'CS P2.3 — Floating point arithmetic + BFS/DFS', dur:'2hrs', detail:'Floating point normalised form. BFS/DFS trace on graph. 2 Qs.' },
-  ],
-  '2026-04-11': [
-    { sub:'maths', label:'Maths catch-up — weakest M1–M12 topic', dur:'2hrs', detail:'Revisit weakest topic. Prioritise by exam mark weight.' },
-    { sub:'econ',  label:'Econ E7 — Timed essay practice', dur:'2hrs', detail:'2 full essays, 20 mins each, strict MOPS.' },
-  ],
-  '2026-04-12': [
-    { sub:'cs',    label:'CS P1.4 — TCP/IP + networking + compression (1.5hrs)', dur:'1.5hrs', detail:'TCP/IP four layers, encapsulation, DNS, packet switching, compression, encryption.' },
-  ],
+// ── SESSION DATA ──────────────────────────────────────────────────────────────
+const SESSIONS={
+  // Pre-Easter archive (kept for streak history)
+  '2026-03-30':[{sub:'maths',label:'M1 — Trig integration',dur:'2hrs',detail:'sin²x/cos²x via double angle. Cold test first.'},{sub:'cs',label:'CS-P1.1 — Scheduling + LMC/Assembly',dur:'2hrs',detail:'Scheduling algorithms + LMC instruction set.'}],
+  '2026-03-31':[{sub:'maths',label:'M2 — Integration by parts',dur:'2hrs',detail:'DI table method. 4 Qs minimum.'},{sub:'econ',label:'E1 — Core diagrams from memory',dur:'2hrs',detail:'Draw all 6 diagrams 3× each from scratch.'}],
+  '2026-04-01':[{sub:'maths',label:'M3 — Partial fractions',dur:'2hrs',detail:'Standard, repeated, improper. 4 Qs.'},{sub:'cs',label:'CS-P2.1 — Stack/queue pseudocode',dur:'2hrs',detail:'Write PUSH/POP/ENQUEUE/DEQUEUE from scratch.'}],
+  '2026-04-02':[{sub:'maths',label:'M4 — Integration by partial fractions',dur:'2hrs',detail:'Decompose then integrate. 3 Qs.'},{sub:'econ',label:'E2 — Efficiency + market structures',dur:'2hrs',detail:'Productive vs allocative ×5 from memory.'}],
+  '2026-04-03':[{sub:'maths',label:'M5 — Substitution + DEs',dur:'2hrs',detail:'Substitution + separation of variables. 4 Qs.'},{sub:'cs',label:'CS-P1.2 — Boolean algebra + logic gates',dur:'2hrs',detail:"De Morgan's laws, truth tables, K-maps."}],
+  '2026-04-04':[{sub:'maths',label:'M6 — Rational inequalities',dur:'2hrs',detail:'Critical values method, sign diagram. 4 Qs.'},{sub:'econ',label:'E3 — Kinked demand + game theory',dur:'2hrs',detail:'Kinked demand mechanism, Nash equilibrium.'}],
+  '2026-04-05':[{sub:'maths',label:'M7 — Binomial expansion',dur:'2hrs',detail:'General formula (1+x)^n. 3 Qs.'},{sub:'econ',label:'E4 — Multiplier + MOPS',dur:'1.5hrs',detail:'Multiplier = 1/(1−MPC). MOPS structure.'}],
+  '2026-04-06':[{sub:'maths',label:'M8 — Trig identities + R form',dur:'2hrs',detail:'Double angle, compound angle, R form. 3 Qs.'},{sub:'cs',label:'CS-P2.2 — Recursion + ISR',dur:'2hrs',detail:'Factorial, fibonacci, binary search. ISR from memory.'}],
+  '2026-04-07':[{sub:'maths',label:'M9 — Trig equations in range',dur:'2hrs',detail:'CAST, multi-angle, quadratic in trig. 4 Qs.'},{sub:'econ',label:'E5 — Macro: AD/AS + fiscal/monetary',dur:'2hrs',detail:'AD components, SRAS/LRAS, policy effects.'}],
+  '2026-04-08':[{sub:'maths',label:'M10 — Exponentials + logarithms',dur:'2hrs',detail:'Log laws, solving, calculus with e^x. 4 Qs.'},{sub:'cs',label:'CS-P1.3 — Normalisation + SQL',dur:'2hrs',detail:'1NF→2NF→3NF worked problems. SQL from scratch.'}],
+  '2026-04-09':[{sub:'maths',label:'M11 — Sequences + series',dur:'2hrs',detail:'Arith, geom, sum to infinity, sigma. 4 Qs.'},{sub:'econ',label:'E6 — Supply-side + P3 competition',dur:'2hrs',detail:'Supply-side vs demand management. Competition policy.'}],
+  '2026-04-10':[{sub:'maths',label:'M12 — Numerical methods + vectors',dur:'2hrs',detail:'Sign change, iteration, trapezium, vectors. 3 Qs.'},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS',dur:'2hrs',detail:'Floating point normalised form. BFS/DFS trace.'}],
+  '2026-04-11':[{sub:'maths',label:'Maths catch-up — weakest M1–M12 topic',dur:'2hrs',detail:'Revisit weakest topic.'},{sub:'econ',label:'E7 — Timed essay practice',dur:'2hrs',detail:'2 full essays, 20 min each, strict MOPS.'}],
+  '2026-04-12':[{sub:'cs',label:'CS-P1.4 — TCP/IP + networking + compression',dur:'1.5hrs',detail:'TCP/IP layers, encapsulation, DNS, compression.'}],
+  // POST-EASTER
+  '2026-04-13':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E3 — Oligopoly + kinked demand (eve, light)',dur:'45min',detail:'Session pack E3. Recall mechanism + game theory from memory.'}],
+  '2026-04-14':[{sub:'maths',label:'M4 — Substitution + DEs (revisit)',dur:'2hrs',detail:'Session pack M4. 11am–1pm hard cap.'},{sub:'econ',label:'E4 — Macro: AD/AS + economic cycle',dur:'1.5hrs',detail:'Session pack E4. Diagrams from memory: AD/AS, SRAS/LRAS.'}],
+  '2026-04-15':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P1.5 — CPU architecture (eve)',dur:'45min',detail:'Session pack CS-P1.5. FDE cycle + CISC/RISC from memory.'}],
+  '2026-04-16':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M5 — Rational inequalities (eve)',dur:'1hr',detail:'Session pack M5. Critical values method.'}],
+  '2026-04-17':[{sub:'maths',label:'M6 — Binomial expansion (neg/frac n)',dur:'2hrs',detail:'Session pack M6. 11am–1pm hard cap.'},{sub:'cs',label:'CS-P1.6 — OS + memory management + compilation',dur:'1.5hrs',detail:'Session pack CS-P1.6.'}],
+  '2026-04-18':[{sub:'maths',label:'M7 — Trig identities + R form',dur:'2hrs',detail:'Session pack M7. Cold test first.'},{sub:'econ',label:'E5 — Macro policy: fiscal + monetary + supply-side',dur:'1.5hrs',detail:'Session pack E5.'}],
+  '2026-04-19':[{sub:'maths',label:'M8 — Logs + exponentials + modelling',dur:'2hrs',detail:'Session pack M8.'},{sub:'cs',label:'CS-P1.7 — Web tech + legal/ethical + data types',dur:'1.5hrs',detail:'Session pack CS-P1.7.'}],
+  '2026-04-20':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E2 — Efficiency + market structures (eve)',dur:'45min',detail:'Productive vs allocative from memory ×5.'}],
+  '2026-04-21':[{sub:'maths',label:'M10 — Sequences + series',dur:'2hrs',detail:'Session pack M10.'},{sub:'econ',label:'E6 — Globalisation + labour markets',dur:'1.5hrs',detail:'Session pack E6.'}],
+  '2026-04-22':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS (eve)',dur:'45min',detail:'Session pack CS-P2.3. Floating point conversion.'}],
+  '2026-04-23':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M9 — Implicit + parametric diff (eve)',dur:'1hr',detail:'Session pack M9. Product rule inside implicit diff.'}],
+  '2026-04-24':[{sub:'maths',label:'M11 — Numerical methods + vectors',dur:'2hrs',detail:'Session pack M11.'},{sub:'cs',label:"CS-P2.4 — Algorithms: Dijkstra's + sorting",dur:'1.5hrs',detail:'Session pack CS-P2.4.'}],
+  '2026-04-25':[{sub:'maths',label:'M12 — Coordinate geometry + circles + proof',dur:'2hrs',detail:'Session pack M12.'},{sub:'econ',label:'E7 — P3 competition synoptic: CMA + contestability',dur:'1.5hrs',detail:'Session pack E7.'}],
+  '2026-04-26':[{sub:'maths',label:'Maths Pure — timed past paper (2022)',dur:'2hrs',detail:'P1 2022. Full exam conditions. Mark immediately.'},{sub:'econ',label:'E8 — Timed essay practice (20-mark)',dur:'1.5hrs',detail:'Session pack E8. 25 min strict. Mark against level descriptors.'}],
+  '2026-04-27':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E1 — Core diagrams revisit (eve)',dur:'45min',detail:'All 6 diagrams from memory. No notes.'}],
+  '2026-04-28':[{sub:'maths',label:'Maths Pure — timed past paper (2023)',dur:'2hrs',detail:'P1 2023. Full exam conditions.'},{sub:'econ',label:'E3 — Oligopoly + game theory (deep)',dur:'1.5hrs',detail:'Session pack E3 full. All 4 tiers.'}],
+  '2026-04-29':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'econ',label:'E4 — AD/AS + fiscal policy essay (eve)',dur:'45min',detail:'One MOPS chain on fiscal policy from memory.'}],
+  '2026-04-30':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M3 — Partial fractions revisit (eve)',dur:'1hr',detail:'Session pack M3. Cold test two Qs.'}],
+  '2026-05-01':[{sub:'maths',label:'M2 — IBP revisit (double IBP focus)',dur:'2hrs',detail:'Session pack M2 Tier 3 only.'},{sub:'econ',label:'E8 — Timed essay: monetary policy',dur:'1.5hrs',detail:'Session pack E8 Essay 1. 25 min strict.'}],
+  '2026-05-02':[{sub:'econ',label:'Econ P1 — timed past paper (2022)',dur:'2hrs',detail:'Full paper, exam conditions.'},{sub:'maths',label:'M1 — Trig integration revisit',dur:'1.5hrs',detail:'Session pack M1 Tier 3.'}],
+  '2026-05-03':[{sub:'econ',label:'Econ P1 — timed past paper (2023)',dur:'2hrs',detail:'P1 2023 full paper.'},{sub:'cs',label:'CS-TIMED-P1 — CS P1 timed paper (2023)',dur:'2.5hrs',detail:'Session pack CS-TIMED-P1. Only if Econ done by 1pm.'}],
+  '2026-05-04':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E5 — Transmission mechanism (eve)',dur:'45min',detail:'Write full monetary transmission from memory. Check every link.'}],
+  '2026-05-05':[{sub:'econ',label:'Econ P1 — timed past paper (2024)',dur:'2hrs',detail:'P1 2024 full paper.'},{sub:'maths',label:'M9 — Implicit diff (product rule focus)',dur:'2hrs',detail:'Session pack M9. Every Q must use product rule on xy terms.'}],
+  '2026-05-06':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'econ',label:'E1 — Core diagrams from memory (eve)',dur:'45min',detail:'6 diagrams, no notes, cold.'}],
+  '2026-05-07':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'econ',label:"E8 — Timed essay: workers' rights (eve)",dur:'45min',detail:'Session pack E8 Essay 2. 25 min strict.'}],
+  '2026-05-08':[{sub:'econ',label:'Econ P1 — timed paper (weakest of 2022–24)',dur:'2hrs',detail:'Whichever scored lowest. Full exam conditions.'},{sub:'maths',label:'M4 — Substitution + DEs Tier 3 only',dur:'1.5hrs',detail:'Session pack M4 Tier 3.'}],
+  '2026-05-09':[{sub:'econ',label:'Econ P1 cram — all diagrams + one essay',dur:'2hrs',detail:'All diagrams from memory. One timed 20-mark essay.'},{sub:'maths',label:'Maths Pure — timed paper (2024)',dur:'2hrs',detail:'P2 2024. Full exam conditions.'}],
+  '2026-05-10':[{sub:'econ',label:'DAY BEFORE ECON P1 — Econ only',dur:'2hrs',detail:'Diagrams ×3 each. Read all extracts 2022–24. Two MOPS paragraphs. No maths today.'}],
+  '2026-05-11':[{sub:'econ',label:'⚡ ECON P1 EXAM — 9:30am',detail:'9EB0/01 · Theme 1 + Theme 4 · 2 hours.'}],
+  '2026-05-12':[{sub:'maths',label:'S1 — Statistical sampling',dur:'2hrs',detail:'Session pack S1. First Stats session.'},{sub:'econ',label:'Econ P2 prep — macro topics',dur:'1.5hrs',detail:'Session packs E4/E5 review.'}],
+  '2026-05-13':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P1.1 — Scheduling + LMC revisit (eve)',dur:'45min',detail:'All scheduling algorithms + one LMC trace. Cold.'}],
+  '2026-05-14':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'S2 — Data presentation + probability (eve)',dur:'1hr',detail:'Session pack S2 Tier 1+2 only.'}],
+  '2026-05-15':[{sub:'maths',label:'S3 — Binomial distribution',dur:'2hrs',detail:'Session pack S3.'},{sub:'econ',label:'Econ P2 — timed past paper (2022)',dur:'2hrs',detail:'P2 2022 full paper.'}],
+  '2026-05-16':[{sub:'maths',label:'S4 — Normal distribution',dur:'2hrs',detail:'Session pack S4.'},{sub:'econ',label:'Econ P2 — timed past paper (2023)',dur:'2hrs',detail:'P2 2023 full paper.'}],
+  '2026-05-17':[{sub:'econ',label:'DAY BEFORE ECON P2 — Econ only',dur:'2hrs',detail:'Macro diagrams. One essay on globalisation. No maths.'}],
+  '2026-05-18':[{sub:'econ',label:'⚡ ECON P2 EXAM — 13:30pm',detail:'9EB0/02 · Theme 3 + Theme 2 · 2 hours.'}],
+  '2026-05-19':[{sub:'maths',label:'S5 — Hypothesis testing',dur:'2hrs',detail:'Session pack S5.'},{sub:'cs',label:'CS-P1.2 — Boolean algebra + logic gates',dur:'1.5hrs',detail:'Session pack CS-P1.2.'}],
+  '2026-05-20':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'maths',label:'S6 — Kinematics (eve)',dur:'1hr',detail:'Session pack S6 Tier 1+2.'}],
+  '2026-05-21':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'cs',label:'CS-P1.3 — Normalisation + SQL (eve)',dur:'1hr',detail:'Session pack CS-P1.3.'}],
+  '2026-05-22':[{sub:'maths',label:"S7 — Forces + Newton's laws + friction",dur:'2hrs',detail:'Session pack S7.'},{sub:'econ',label:'Econ P3 prep — competition theme',dur:'1.5hrs',detail:'Session pack E7.'}],
+  '2026-05-23':[{sub:'maths',label:'S8 — Moments + inclined planes',dur:'2hrs',detail:'Session pack S8.'},{sub:'cs',label:'CS-P1.5 — CPU architecture + CISC/RISC',dur:'1.5hrs',detail:'Session pack CS-P1.5.'}],
+  '2026-05-24':[{sub:'maths',label:'S9 — S&M timed past paper simulation',dur:'2hrs',detail:'Session pack S9. Full timed paper.'},{sub:'econ',label:'Econ P3 — timed past paper (2022)',dur:'2hrs',detail:'P3 2022 full paper.'}],
+  '2026-05-25':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'maths',label:'Pure revisit — trig proofs (eve)',dur:'45min',detail:'Two trig proof Qs from M7 pack. Cold.'}],
+  '2026-05-26':[{sub:'maths',label:'Maths Pure 2 — timed paper (2022 P2)',dur:'2hrs',detail:'P2 2022.'},{sub:'econ',label:'Econ P3 — timed past paper (2023)',dur:'2hrs',detail:'P3 2023 full paper.'}],
+  '2026-05-27':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P1.6 — OS + methodologies (eve)',dur:'45min',detail:'Session pack CS-P1.6 Tier 1 cold test.'}],
+  '2026-05-28':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'Pure — PF + IBP mixed (eve)',dur:'1hr',detail:'One PF integral, one IBP. Cold test.'}],
+  '2026-05-29':[{sub:'maths',label:'Maths Pure — weakest pure topic revisit',dur:'2hrs',detail:'Identify from timed papers. Session pack for that topic.'},{sub:'econ',label:'Econ P3 — timed past paper (2024)',dur:'2hrs',detail:'P3 2024. Final econ paper practice.'}],
+  '2026-05-30':[{sub:'maths',label:'Maths Pure 1 — final full paper (2024 P1)',dur:'2hrs',detail:'P1 2024. Strict exam conditions.'},{sub:'econ',label:'Econ cram — all diagrams + one essay',dur:'1.5hrs',detail:'Every diagram once. One 20-mark essay.'}],
+  '2026-05-31':[{sub:'maths',label:'Maths Pure 2 — final full paper (2023 P2)',dur:'2hrs',detail:'P2 2023.'},{sub:'cs',label:'CS-P2.1 — Stack/queue pseudocode revisit',dur:'1.5hrs',detail:'Session pack CS-P2.1. Push/pop from scratch.'}],
+  '2026-06-01':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'maths',label:'Maths — integration rapid review (eve)',dur:'45min',detail:'One IBP, one trig int, one substitution. All cold.'}],
+  '2026-06-02':[{sub:'maths',label:'DAY BEFORE PURE 1 — Maths only',dur:'2hrs',detail:'Read all Pure topics. 3 short Qs on weakest areas. No new content. Rest by 3pm.'}],
+  '2026-06-03':[{sub:'maths',label:'⚡ MATHS PURE 1 EXAM — 13:30pm',detail:'9MA0/01 · 2 hours.'}],
+  '2026-06-04':[{sub:'econ',label:'⚡ ECON P3 EXAM — 9:30am',detail:'9EB0/03 · Synoptic · 2 hours.'},{sub:'maths',label:'Review Pure 1 + start Pure 2 prep (afternoon)',dur:'1hr',detail:'Only after P3 exam. Identify 2 topics to strengthen for Pure 2.'}],
+  '2026-06-05':[{sub:'maths',label:'Maths Pure 2 — timed paper (2024 P2)',dur:'2hrs',detail:'P2 2024.'},{sub:'cs',label:'CS-TIMED-P1 — full CS P1 timed (2022)',dur:'2.5hrs',detail:'Session pack CS-TIMED-P1. Full 140-mark paper.'}],
+  '2026-06-06':[{sub:'maths',label:'S&M — kinematics + forces Tier 3',dur:'2hrs',detail:'Session packs S6+S7 Tier 3 questions.'},{sub:'cs',label:'CS-P1.2 — Boolean + K-maps (heavy)',dur:'1.5hrs',detail:'Session pack CS-P1.2 all 4 tiers.'}],
+  '2026-06-07':[{sub:'maths',label:'S8 — Moments harder questions',dur:'2hrs',detail:'Session pack S8 Tier 3+4.'},{sub:'cs',label:'CS-P2.2 — Recursion + ISR',dur:'1.5hrs',detail:'Session pack CS-P2.2.'}],
+  '2026-06-08':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS — Boolean algebra rapid recall (eve)',dur:'45min',detail:'Session pack CS-P1.2 Tier 1 again. Cold.'}],
+  '2026-06-09':[{sub:'cs',label:'DAY BEFORE CS P1 — CS only',dur:'2hrs',detail:'All CS P1 topics rapid review. No maths. CS-P1.1 through CS-P1.7 recall.'}],
+  '2026-06-10':[{sub:'cs',label:'⚡ CS PAPER 1 EXAM — 13:30pm',detail:'H446/01 · Computer Systems · 2h30m.'}],
+  '2026-06-11':[{sub:'maths',label:'⚡ MATHS PURE 2 EXAM — 13:30pm',detail:'9MA0/02 · 2 hours.'}],
+  '2026-06-12':[{sub:'maths',label:'S&M — full timed paper review',dur:'2hrs',detail:'Session pack S9 or actual past paper.'},{sub:'cs',label:"CS-P2.4 — Algorithms: Dijkstra's + sorting Tier 3",dur:'1.5hrs',detail:'Session pack CS-P2.4 Tier 3.'}],
+  '2026-06-13':[{sub:'maths',label:'S&M — mixed paper (forces + stats)',dur:'2hrs',detail:'Combined S7/S5 questions.'},{sub:'cs',label:'CS-TIMED-P2 — full CS P2 timed paper',dur:'2.5hrs',detail:'Session pack CS-TIMED-P2. Full 140-mark paper.'}],
+  '2026-06-14':[{sub:'maths',label:'S&M — moments + kinematics combined',dur:'2hrs',detail:'One harder moments Q + one kinematics Q. Cold.'},{sub:'cs',label:'CS P2 prep — recursion + algorithms',dur:'1.5hrs',detail:'Session packs CS-P2.2 + CS-P2.4 key questions.'}],
+  '2026-06-15':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS — stack pseudocode rapid recall (eve)',dur:'45min',detail:'Write push() and pop() from scratch. No notes.'}],
+  '2026-06-16':[{sub:'cs',label:'DAY BEFORE CS P2 — CS only',dur:'2hrs',detail:'CS P2 topics: recursion, sorting, Dijkstra, BFS/DFS. No maths.'}],
+  '2026-06-17':[{sub:'cs',label:'⚡ CS PAPER 2 EXAM — 9:30am',detail:'H446/02 · Algorithms & Programming · 2h30m.'}],
+  '2026-06-18':[{sub:'maths',label:'⚡ MATHS S&M EXAM — 13:30pm',detail:'9MA0/03 · Statistics & Mechanics · 2h30m. FINAL EXAM.'}],
 };
 
-const EXAM_DAYS = {
-  '2026-05-11': 'Econ P1',
-  '2026-05-18': 'Econ P2',
-  '2026-06-03': 'Maths Pure 1',
-  '2026-06-04': 'Econ P3',
-  '2026-06-10': 'CS Paper 1',
-  '2026-06-11': 'Maths Pure 2',
-  '2026-06-17': 'CS Paper 2',
-  '2026-06-18': 'Maths S&M',
+const EXAM_DAYS={
+  '2026-05-11':'Econ P1','2026-05-18':'Econ P2',
+  '2026-06-03':'Maths Pure 1','2026-06-04':'Econ P3',
+  '2026-06-10':'CS Paper 1','2026-06-11':'Maths Pure 2',
+  '2026-06-17':'CS Paper 2','2026-06-18':'Maths S&M',
 };
 
-const PHASES = [
-  { label:'Phase 1', start:'2026-03-09', end:'2026-03-29', desc:'Pre-Easter' },
-  { label:'Phase 2', start:'2026-03-30', end:'2026-04-12', desc:'Easter — library daily' },
-  { label:'Phase 3', start:'2026-04-13', end:'2026-05-10', desc:'Back at college' },
-  { label:'Phase 4', start:'2026-05-11', end:'2026-06-02', desc:'Econ exams' },
-  { label:'Phase 5', start:'2026-06-03', end:'2026-06-18', desc:'Maths + CS exams' },
+const PHASES=[
+  {label:'Phase 1',start:'2026-03-09',end:'2026-03-29',desc:'Pre-Easter'},
+  {label:'Phase 2',start:'2026-03-30',end:'2026-04-12',desc:'Easter — library daily'},
+  {label:'Phase 3',start:'2026-04-13',end:'2026-05-10',desc:'Back at college'},
+  {label:'Phase 4',start:'2026-05-11',end:'2026-06-02',desc:'Econ exams'},
+  {label:'Phase 5',start:'2026-06-03',end:'2026-06-18',desc:'Maths + CS exams'},
 ];
 
-const PRIORITY_GAPS = [
-  { key:'m_trig_int', sub:'maths', name:'Trig integration (sin²x, cos²x)',   defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_ibp',      sub:'maths', name:'Integration by parts',               defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_pf',       sub:'maths', name:'Partial fractions — setup method',   defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_pf_int',   sub:'maths', name:'Integration by partial fractions',   defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_sub',      sub:'maths', name:'Integration by substitution',        defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_de',       sub:'maths', name:'Differential equations',             defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_ineq',     sub:'maths', name:'Rational inequalities',              defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_binom',    sub:'maths', name:'Binomial expansion (neg/frac powers)',defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_rform',    sub:'maths', name:'R form — acosx + bsinx',             defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_trig_sol', sub:'maths', name:'Trig solving — all solutions in range',defPrio:'hot',examDate:'2026-06-03' },
-  { key:'m_logs',     sub:'maths', name:'Exponentials + logarithms',          defPrio:'hot', examDate:'2026-06-03' },
-  { key:'m_seq',      sub:'maths', name:'Sequences + series (arith/geom/sigma)',defPrio:'med',examDate:'2026-06-03' },
-  { key:'m_impl',     sub:'maths', name:'Implicit diff — product rule inside', defPrio:'med', examDate:'2026-06-03' },
-  { key:'m_para_sp',  sub:'maths', name:'Parametric stationary points',        defPrio:'med', examDate:'2026-06-03' },
-  { key:'m_num',      sub:'maths', name:'Numerical methods (iteration, Newton-Raphson, trapezium)',defPrio:'med',examDate:'2026-06-03' },
-  { key:'m_vec',      sub:'maths', name:'Vectors — unit vectors, magnitude',   defPrio:'low', examDate:'2026-06-03' },
-  { key:'m_proof',    sub:'maths', name:'Proof by contradiction',              defPrio:'low', examDate:'2026-06-03' },
-  { key:'e_diag',     sub:'econ',  name:'All core diagrams from memory',       defPrio:'hot', examDate:'2026-05-11' },
-  { key:'e_eff',      sub:'econ',  name:'Productive vs allocative efficiency', defPrio:'hot', examDate:'2026-05-11' },
-  { key:'e_pc',       sub:'econ',  name:'Perfect competition → normal profit', defPrio:'hot', examDate:'2026-05-11' },
-  { key:'e_kink',     sub:'econ',  name:'Kinked demand curve mechanism',       defPrio:'hot', examDate:'2026-05-11' },
-  { key:'e_game',     sub:'econ',  name:'Game theory + Nash equilibrium',      defPrio:'hot', examDate:'2026-05-11' },
-  { key:'e_mult',     sub:'econ',  name:'Multiplier calculation (1/1-MPC)',    defPrio:'hot', examDate:'2026-05-18' },
-  { key:'e_macro',    sub:'econ',  name:'AD/AS + fiscal/monetary/exchange rate',defPrio:'hot',examDate:'2026-05-18' },
-  { key:'e_ss',       sub:'econ',  name:'Supply-side vs demand management',    defPrio:'med', examDate:'2026-05-18' },
-  { key:'e_mops',     sub:'econ',  name:'MOPS essay technique',                defPrio:'med', examDate:'2026-05-11' },
-  { key:'e_comp',     sub:'econ',  name:'P3 competition theme',                defPrio:'med', examDate:'2026-06-04' },
-  { key:'e_govt',     sub:'econ',  name:'Govt intervention frameworks',        defPrio:'low', examDate:'2026-05-11' },
-  { key:'c_sched',    sub:'cs',    name:'Scheduling (RR, SJF, FCFS, MLFQ)',   defPrio:'hot', examDate:'2026-06-10' },
-  { key:'c_lmc',      sub:'cs',    name:'LMC / Assembly language',             defPrio:'hot', examDate:'2026-06-10' },
-  { key:'c_bool',     sub:'cs',    name:'Boolean algebra + simplification',    defPrio:'hot', examDate:'2026-06-10' },
-  { key:'c_norm',     sub:'cs',    name:'Normalisation 1NF→3NF',               defPrio:'hot', examDate:'2026-06-10' },
-  { key:'c_pp',       sub:'cs',    name:'Stack/queue pseudocode',              defPrio:'hot', examDate:'2026-06-10' },
-  { key:'c_recur',    sub:'cs',    name:'Recursion pseudocode',                defPrio:'hot', examDate:'2026-06-17' },
-  { key:'c_isr',      sub:'cs',    name:'ISR full sequence (save/restore)',    defPrio:'med', examDate:'2026-06-10' },
-  { key:'c_fp',       sub:'cs',    name:'Floating point arithmetic',           defPrio:'med', examDate:'2026-06-10' },
-  { key:'c_tcp',      sub:'cs',    name:'TCP/IP layers + encapsulation',       defPrio:'med', examDate:'2026-06-10' },
-  { key:'c_sql',      sub:'cs',    name:'SQL (SELECT, JOIN, ORDER BY)',        defPrio:'med', examDate:'2026-06-10' },
-  { key:'c_comp',     sub:'cs',    name:'Compression (RLE, Huffman, lossy)',   defPrio:'med', examDate:'2026-06-10' },
-  { key:'c_bfs',      sub:'cs',    name:'BFS/DFS traversal',                  defPrio:'low', examDate:'2026-06-17' },
-  { key:'c_kmap',     sub:'cs',    name:'Karnaugh maps',                      defPrio:'low', examDate:'2026-06-10' },
+const PRIORITY_GAPS=[
+  {key:'m_trig_int',sub:'maths',name:'Trig integration (sin²x, cos²x)',defPrio:'hot',examDate:'2026-06-03'},
+  {key:'m_ibp',sub:'maths',name:'Integration by parts',defPrio:'hot',examDate:'2026-06-03'},
+  {key:'m_pf',sub:'maths',name:'Partial fractions — setup method',defPrio:'hot',examDate:'2026-06-03'},
+  {key:'m_pf_int',sub:'maths',name:'Integration by partial fractions',defPrio:'hot',examDate:'2026-06-03'},
+  {key:'m_sub',sub:'maths',name:'Integration by substitution',defPrio:'hot',examDate:'2026-06-03'},
+  {key:'m_de',sub:'maths',name:'Differential equations',defPrio:'hot',examDate:'2026-06-03'},
+  {key:'m_ineq',sub:'maths',name:'Rational inequalities',defPrio:'hot',examDate:'2026-06-03'},
+  {key:'m_binom',sub:'maths',name:'Binomial expansion (neg/frac powers)',defPrio:'hot',examDate:'2026-06-03'},
+  {key:'m_rform',sub:'maths',name:'R form — acosx + bsinx',defPrio:'hot',examDate:'2026-06-03'},
+  {key:'m_trig_sol',sub:'maths',name:'Trig solving — all solutions in range',defPrio:'hot',examDate:'2026-06-03'},
+  {key:'m_logs',sub:'maths',name:'Exponentials + logarithms',defPrio:'hot',examDate:'2026-06-03'},
+  {key:'m_seq',sub:'maths',name:'Sequences + series (arith/geom/sigma)',defPrio:'med',examDate:'2026-06-03'},
+  {key:'m_impl',sub:'maths',name:'Implicit diff — product rule inside',defPrio:'med',examDate:'2026-06-03'},
+  {key:'m_para_sp',sub:'maths',name:'Parametric stationary points',defPrio:'med',examDate:'2026-06-03'},
+  {key:'m_num',sub:'maths',name:'Numerical methods (iteration, Newton-Raphson, trapezium)',defPrio:'med',examDate:'2026-06-03'},
+  {key:'m_vec',sub:'maths',name:'Vectors — unit vectors, magnitude',defPrio:'low',examDate:'2026-06-03'},
+  {key:'m_proof',sub:'maths',name:'Proof by contradiction',defPrio:'low',examDate:'2026-06-03'},
+  {key:'e_diag',sub:'econ',name:'All core diagrams from memory',defPrio:'hot',examDate:'2026-05-11'},
+  {key:'e_eff',sub:'econ',name:'Productive vs allocative efficiency',defPrio:'hot',examDate:'2026-05-11'},
+  {key:'e_pc',sub:'econ',name:'Perfect competition → normal profit',defPrio:'hot',examDate:'2026-05-11'},
+  {key:'e_kink',sub:'econ',name:'Kinked demand curve mechanism',defPrio:'hot',examDate:'2026-05-11'},
+  {key:'e_game',sub:'econ',name:'Game theory + Nash equilibrium',defPrio:'hot',examDate:'2026-05-11'},
+  {key:'e_mult',sub:'econ',name:'Multiplier calculation (1/1-MPC)',defPrio:'hot',examDate:'2026-05-18'},
+  {key:'e_macro',sub:'econ',name:'AD/AS + fiscal/monetary/exchange rate',defPrio:'hot',examDate:'2026-05-18'},
+  {key:'e_ss',sub:'econ',name:'Supply-side vs demand management',defPrio:'med',examDate:'2026-05-18'},
+  {key:'e_mops',sub:'econ',name:'MOPS essay technique',defPrio:'med',examDate:'2026-05-11'},
+  {key:'e_comp',sub:'econ',name:'P3 competition theme',defPrio:'med',examDate:'2026-06-04'},
+  {key:'e_govt',sub:'econ',name:'Govt intervention frameworks',defPrio:'low',examDate:'2026-05-11'},
+  {key:'c_sched',sub:'cs',name:'Scheduling (RR, SJF, FCFS, MLFQ)',defPrio:'hot',examDate:'2026-06-10'},
+  {key:'c_lmc',sub:'cs',name:'LMC / Assembly language',defPrio:'hot',examDate:'2026-06-10'},
+  {key:'c_bool',sub:'cs',name:'Boolean algebra + simplification',defPrio:'hot',examDate:'2026-06-10'},
+  {key:'c_norm',sub:'cs',name:'Normalisation 1NF→3NF',defPrio:'hot',examDate:'2026-06-10'},
+  {key:'c_pp',sub:'cs',name:'Stack/queue pseudocode',defPrio:'hot',examDate:'2026-06-10'},
+  {key:'c_recur',sub:'cs',name:'Recursion pseudocode',defPrio:'hot',examDate:'2026-06-17'},
+  {key:'c_isr',sub:'cs',name:'ISR full sequence (save/restore)',defPrio:'med',examDate:'2026-06-10'},
+  {key:'c_fp',sub:'cs',name:'Floating point arithmetic',defPrio:'med',examDate:'2026-06-10'},
+  {key:'c_tcp',sub:'cs',name:'TCP/IP layers + encapsulation',defPrio:'med',examDate:'2026-06-10'},
+  {key:'c_sql',sub:'cs',name:'SQL (SELECT, JOIN, ORDER BY)',defPrio:'med',examDate:'2026-06-10'},
+  {key:'c_comp',sub:'cs',name:'Compression (RLE, Huffman, lossy)',defPrio:'med',examDate:'2026-06-10'},
+  {key:'c_bfs',sub:'cs',name:'BFS/DFS traversal',defPrio:'low',examDate:'2026-06-17'},
+  {key:'c_kmap',sub:'cs',name:'Karnaugh maps',defPrio:'low',examDate:'2026-06-10'},
 ];
 
-// ── HARDCODED INITIAL COMPLETION STATE ────────────────────────────────────────
-// Sessions Abdul confirmed as completed (Easter week 30 Mar – 5 Apr)
-// This seeds localStorage on first load so dashboard shows correct state
-const INITIAL_TASKS_DONE = {
-  '2026-03-30': [0, 1],  // M1, CS P1.1
-  '2026-03-31': [0, 1],  // M2, E1
-  '2026-04-01': [0, 1],  // M3, CS P2.1
-  '2026-04-02': [0],     // M4 (E2 missed)
-  '2026-04-04': [0],     // M6 (E3 missed)
-  // 2026-04-03: M5 missed, CS P1.2 missed
-  // 2026-04-05: M7 not done yet, E4 not done yet
+const INITIAL_TASKS_DONE={
+  '2026-03-30':[0,1],'2026-03-31':[0,1],'2026-04-01':[0,1],
+  '2026-04-02':[0],'2026-04-04':[0],
+};
+const INITIAL_GAP_STATE={
+  'm_trig_int':{confidence:4,lastRevised:Date.parse('2026-03-30T18:00:00')},
+  'm_ibp':{confidence:4,lastRevised:Date.parse('2026-03-31T18:00:00')},
+  'm_pf':{confidence:4,lastRevised:Date.parse('2026-04-01T18:00:00')},
+  'm_pf_int':{confidence:4,lastRevised:Date.parse('2026-04-02T18:00:00')},
+  'm_ineq':{confidence:4,lastRevised:Date.parse('2026-04-04T18:00:00')},
+  'c_sched':{confidence:3,lastRevised:Date.parse('2026-03-30T18:00:00')},
+  'c_lmc':{confidence:3,lastRevised:Date.parse('2026-03-30T18:00:00')},
+  'c_pp':{confidence:3,lastRevised:Date.parse('2026-04-01T18:00:00')},
+  'e_diag':{confidence:3,lastRevised:Date.parse('2026-03-31T18:00:00')},
+};
+const INITIAL_STREAK={'2026-03-30':2,'2026-03-31':2,'2026-04-01':2,'2026-04-02':1,'2026-04-04':1};
+
+function seedInitialState(){
+  for(const[dk,idxs]of Object.entries(INITIAL_TASKS_DONE)){const e=lsGet('tasks_done_'+dk,null);if(e===null)lsSet('tasks_done_'+dk,idxs);}
+  const eg=lsGet('gap_state',null);
+  if(eg===null){lsSet('gap_state',INITIAL_GAP_STATE);}
+  else{let ch=false;for(const[k,v]of Object.entries(INITIAL_GAP_STATE)){if(!eg[k]){eg[k]=v;ch=true;}}if(ch)lsSet('gap_state',eg);}
+  for(const[dk,n]of Object.entries(INITIAL_STREAK)){const e=lsGet('sess_'+dk,0);if(e===0)lsSet('sess_'+dk,n);}
+}
+
+const MOCK_DEFAULTS={
+  maths:[{label:'Feb mock',pct:20},{label:'30 Mar diag',pct:22},{label:'9 Apr check',pct:56}],
+  econ:[{label:'Feb mock',pct:68},{label:'30 Mar diag',pct:50},{label:'9 Apr check',pct:41}],
+  cs:[{label:'Feb mock',pct:22},{label:'30 Mar diag',pct:51},{label:'9 Apr check',pct:50}],
 };
 
-const INITIAL_GAP_STATE = {
-  'm_trig_int': { confidence: 4, lastRevised: Date.parse('2026-03-30T18:00:00') },
-  'm_ibp':      { confidence: 4, lastRevised: Date.parse('2026-03-31T18:00:00') },
-  'm_pf':       { confidence: 4, lastRevised: Date.parse('2026-04-01T18:00:00') },
-  'm_pf_int':   { confidence: 4, lastRevised: Date.parse('2026-04-02T18:00:00') },
-  'm_ineq':     { confidence: 4, lastRevised: Date.parse('2026-04-04T18:00:00') },
-  'c_sched':    { confidence: 3, lastRevised: Date.parse('2026-03-30T18:00:00') },
-  'c_lmc':      { confidence: 3, lastRevised: Date.parse('2026-03-30T18:00:00') },
-  'c_pp':       { confidence: 3, lastRevised: Date.parse('2026-04-01T18:00:00') },
-  'e_diag':     { confidence: 3, lastRevised: Date.parse('2026-03-31T18:00:00') },
-};
+const SUB_COL={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)',nea:'var(--purple)',am:'var(--amber)',college:'var(--muted2)','':'var(--muted)'};
+const SUB_BADGE_CLASS={maths:'badge-m',econ:'badge-e',cs:'badge-c',nea:'badge-nea',college:'badge-college'};
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-const INITIAL_STREAK = {
-  '2026-03-30': 2,
-  '2026-03-31': 2,
-  '2026-04-01': 2,
-  '2026-04-02': 1,
-  '2026-04-04': 1,
-};
+function today(){const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate());}
+function toDate(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
+function dateKey(d){const y=d.getFullYear();const m=String(d.getMonth()+1).padStart(2,'0');const day=String(d.getDate()).padStart(2,'0');return`${y}-${m}-${day}`;}
+function daysUntil(s){return Math.ceil((toDate(s)-today())/864e5);}
+function getPhase(){const t=today();for(const p of PHASES){const ps=toDate(p.start),pe=toDate(p.end);if(t>=ps&&t<=pe){const w=Math.floor((t-ps)/6048e5)+1;return`${p.label} · Week ${w} · ${p.desc}`;}}return'Exam prep';}
+function lsGet(k,def){try{return JSON.parse(localStorage.getItem(k)||'null')??def;}catch(e){return def;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 
-function seedInitialState() {
-  // Seed tasks_done — only if not already set (don't overwrite user's existing data)
-  for (const [dk, idxs] of Object.entries(INITIAL_TASKS_DONE)) {
-    const existing = lsGet('tasks_done_'+dk, null);
-    if (existing === null) lsSet('tasks_done_'+dk, idxs);
-  }
-  // Seed gap_state — merge, don't overwrite
-  const existing = lsGet('gap_state', null);
-  if (existing === null) {
-    lsSet('gap_state', INITIAL_GAP_STATE);
-  } else {
-    // Merge: only set keys that don't exist yet
-    let changed = false;
-    for (const [k, v] of Object.entries(INITIAL_GAP_STATE)) {
-      if (!existing[k]) { existing[k] = v; changed = true; }
-    }
-    if (changed) lsSet('gap_state', existing);
-  }
-  // Seed streak
-  for (const [dk, n] of Object.entries(INITIAL_STREAK)) {
-    const existing = lsGet('sess_'+dk, 0);
-    if (existing === 0) lsSet('sess_'+dk, n);
-  }
-}
-
-const MOCK_DEFAULTS = {
-  maths: [{ label:'Feb mock', pct:20 },{ label:'Diagnosis', pct:22 }],
-  econ:  [{ label:'Feb mock', pct:68 },{ label:'Diagnosis', pct:50 }],
-  cs:    [{ label:'Feb mock', pct:22 },{ label:'Diagnosis', pct:51 }],
-};
-
-const SUB_COL = { maths:'var(--maths)', econ:'var(--econ)', cs:'var(--cs)', nea:'var(--purple)', am:'var(--amber)', college:'var(--muted2)', '':'var(--muted)' };
-const SUB_BADGE_CLASS = { maths:'badge-m', econ:'badge-e', cs:'badge-c', nea:'badge-nea', college:'badge-college' };
-const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-function today() {
-  const n = new Date();
-  return new Date(n.getFullYear(), n.getMonth(), n.getDate());
-}
-function toDate(s) {
-  const [y,m,d] = s.split('-').map(Number);
-  return new Date(y, m-1, d);
-}
-function dateKey(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth()+1).padStart(2,'0');
-  const day = String(d.getDate()).padStart(2,'0');
-  return `${y}-${m}-${day}`;
-}
-function daysUntil(s){ return Math.ceil((toDate(s)-today())/864e5); }
-function getPhase() {
-  const t=today();
-  for(const p of PHASES){
-    const ps=toDate(p.start), pe=toDate(p.end);
-    if(t>=ps && t<=pe){ const w=Math.floor((t-ps)/6048e5)+1; return `${p.label} · Week ${w} · ${p.desc}`; }
-  }
-  return 'Exam prep';
-}
-function lsGet(k, def) { try { return JSON.parse(localStorage.getItem(k)||'null')??def; } catch(e){return def;} }
-function lsSet(k, v) { try { localStorage.setItem(k,JSON.stringify(v)); } catch(e){} }
-
-// ── HELPER: Check if a session is done ────────────────────────────────────────
-function isSessionDone(dateKey, sessionIdx) {
-  const done = lsGet('tasks_done_'+dateKey, []);
-  return done.includes(sessionIdx);
-}
-
-let currentFilter = 'all';
-function setFilter(f) {
-  currentFilter = f;
-  ['all','maths','econ','cs'].forEach(x => {
-    const btn = document.getElementById('filter-'+x);
-    if (!btn) return;
-    if (x === f) {
-      btn.style.borderColor = 'var(--amber)'; btn.style.color = 'var(--amber)'; btn.style.background = 'rgba(251,146,60,0.1)';
-    } else {
-      btn.style.borderColor = ''; btn.style.color = ''; btn.style.background = '';
-    }
+let currentFilter='all';
+function setFilter(f){
+  currentFilter=f;
+  ['all','maths','econ','cs'].forEach(x=>{
+    const btn=document.getElementById('filter-'+x);if(!btn)return;
+    if(x===f){btn.style.borderColor='var(--amber)';btn.style.color='var(--amber)';btn.style.background='rgba(251,146,60,0.1)';}
+    else{btn.style.borderColor='';btn.style.color='';btn.style.background='';}
   });
   renderAllSessions();
 }
 
-function switchTab(id, btn) {
+function switchTab(id,btn){
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
-  if (id==='subjects') { renderSmartGaps(); renderGradeBounds(); setTimeout(renderCharts,60); }
-  if (id==='all') renderAllSessions();
-  if (id==='week') renderWeek();
+  if(id==='subjects'){renderSmartGaps();renderGradeBounds();setTimeout(renderCharts,60);}
+  if(id==='all')renderAllSessions();
+  if(id==='week')renderWeek();
 }
 
-function renderCountdowns() {
-  const revStart = toDate('2026-03-09');
-  const exams = [
-    { id:'econ',  date:'2026-05-11', subCol:'var(--econ)' },
-    { id:'maths', date:'2026-06-03', subCol:'var(--maths)' },
-    { id:'cs',    date:'2026-06-10', subCol:'var(--cs)' },
-  ];
-  exams.forEach(e => {
-    const d = daysUntil(e.date);
-    const urgCol  = d < 60 ? 'var(--red)' : d < 90 ? 'var(--amber)' : e.subCol;
-    const urgText = d < 60 ? 'URGENT' : d < 90 ? 'BUILD NOW' : 'ON TRACK';
-    document.getElementById('cd-'+e.id).textContent = d;
-    document.getElementById('cd-'+e.id).style.color = urgCol;
-    const examDate = toDate(e.date);
-    const totalSpan = Math.max(1, examDate - revStart);
-    const elapsed = today() - revStart;
-    const pct = Math.max(0, Math.min(100, (elapsed/totalSpan)*100));
-    const bar = document.getElementById('cd-'+e.id+'-bar');
-    bar.style.width = pct+'%'; bar.style.background = urgCol;
-    const urg = document.getElementById('cd-'+e.id+'-urg');
-    if (urg) { urg.textContent = urgText; urg.style.color = urgCol; }
+function renderCountdowns(){
+  const revStart=toDate('2026-03-09');
+  [{id:'econ',date:'2026-05-11',subCol:'var(--econ)'},{id:'maths',date:'2026-06-03',subCol:'var(--maths)'},{id:'cs',date:'2026-06-10',subCol:'var(--cs)'}].forEach(e=>{
+    const d=daysUntil(e.date);
+    const urgCol=d<60?'var(--red)':d<90?'var(--amber)':e.subCol;
+    const urgText=d<60?'URGENT':d<90?'BUILD NOW':'ON TRACK';
+    document.getElementById('cd-'+e.id).textContent=d;
+    document.getElementById('cd-'+e.id).style.color=urgCol;
+    const examDate=toDate(e.date);const totalSpan=Math.max(1,examDate-revStart);const elapsed=today()-revStart;
+    const pct=Math.max(0,Math.min(100,(elapsed/totalSpan)*100));
+    const bar=document.getElementById('cd-'+e.id+'-bar');
+    bar.style.width=pct+'%';bar.style.background=urgCol;
+    const urg=document.getElementById('cd-'+e.id+'-urg');
+    if(urg){urg.textContent=urgText;urg.style.color=urgCol;}
   });
 }
 
-function getGapPriority(g) {
-  const user = lsGet('user_priority',{});
-  return user[g.key]??g.defPrio;
-}
-function cyclePriority(key, event) {
+function getGapPriority(g){const user=lsGet('user_priority',{});return user[g.key]??g.defPrio;}
+function cyclePriority(key,event){
   event.stopPropagation();
-  const g = PRIORITY_GAPS.find(x=>x.key===key);
-  const cur = getGapPriority(g);
-  const next = cur==='hot'?'med':cur==='med'?'low':'hot';
-  const user = lsGet('user_priority',{});
-  user[key] = next; lsSet('user_priority',user);
-  renderSmartGaps(); renderFocusCard();
+  const g=PRIORITY_GAPS.find(x=>x.key===key);
+  const cur=getGapPriority(g);const next=cur==='hot'?'med':cur==='med'?'low':'hot';
+  const user=lsGet('user_priority',{});user[key]=next;lsSet('user_priority',user);
+  renderSmartGaps();renderFocusCard();
 }
-function gapUrgencyScore(g, state) {
-  if (state[g.key]?.done) return -1;
-  const prio = getGapPriority(g);
-  const days = Math.max(1, daysUntil(g.examDate));
-  const conf = state[g.key]?.confidence||1;
-  const w = prio==='hot'?2:prio==='med'?1:0.3;
-  return (w*100)/(days*conf);
+function gapUrgencyScore(g,state){
+  if(state[g.key]?.done)return-1;
+  const prio=getGapPriority(g);const days=Math.max(1,daysUntil(g.examDate));const conf=state[g.key]?.confidence||1;
+  const w=prio==='hot'?2:prio==='med'?1:0.3;return(w*100)/(days*conf);
 }
 
-function renderFocusCard() {
-  const state = lsGet('gap_state',{});
-  let best=null, bestScore=-Infinity;
-  for(const g of PRIORITY_GAPS){ const s=gapUrgencyScore(g,state); if(s>bestScore){bestScore=s;best=g;} }
-  if(!best) return;
+function renderFocusCard(){
+  const state=lsGet('gap_state',{});let best=null,bestScore=-Infinity;
+  for(const g of PRIORITY_GAPS){const s=gapUrgencyScore(g,state);if(s>bestScore){bestScore=s;best=g;}}
+  if(!best)return;
   const days=daysUntil(best.examDate);
   const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};
   const subNames={maths:'Maths',econ:'Economics',cs:'Computer Science'};
   const icons={maths:'∫',econ:'↗',cs:'λ'};
   const daysCol=days<60?'var(--red)':days<90?'var(--amber)':subCols[best.sub];
-  const prioLabel=getGapPriority(best)==='hot'?' · high priority':'';
-  const conf = state[best.key]?.confidence||0;
-  const confLabel = conf>0 ? ` · ${CONF_LABELS[conf]}` : '';
+  const conf=state[best.key]?.confidence||0;
+  const confLabel=conf>0?` · ${CONF_LABELS[conf]}`:'';
   document.getElementById('focus-card').innerHTML=`
     <div style="font-family:var(--mono);font-size:1.8rem;color:${subCols[best.sub]};flex-shrink:0;line-height:1">${icons[best.sub]}</div>
     <div style="flex:1;min-width:0">
       <div class="focus-label">Today's #1 Focus</div>
       <div class="focus-topic" style="color:${subCols[best.sub]}">${best.name}</div>
-      <div class="focus-reason">${subNames[best.sub]} · exam in ${days} days${prioLabel}${confLabel}</div>
+      <div class="focus-reason">${subNames[best.sub]} · exam in ${days} days · ${getGapPriority(best)} priority${confLabel}</div>
     </div>
     <div style="text-align:right;flex-shrink:0">
       <div style="font-family:var(--mono);font-size:2rem;font-weight:700;color:${daysCol};line-height:1">${days}</div>
@@ -1029,200 +974,124 @@ function renderFocusCard() {
     </div>`;
 }
 
-function toggleGapDone(key) {
-  const state=lsGet('gap_state',{});
-  state[key]={...state[key],done:!state[key]?.done,lastRevised:Date.now()};
-  lsSet('gap_state',state); renderSmartGaps(); renderFocusCard(); updateMathsTopicsBar();
+function toggleGapDone(key){
+  const state=lsGet('gap_state',{});state[key]={...state[key],done:!state[key]?.done,lastRevised:Date.now()};
+  lsSet('gap_state',state);renderSmartGaps();renderFocusCard();updateMathsTopicsBar();
 }
-function setGapConfidence(key, level) {
-  const state=lsGet('gap_state',{});
-  const cur=state[key]?.confidence||0;
+function setGapConfidence(key,level){
+  const state=lsGet('gap_state',{});const cur=state[key]?.confidence||0;
   state[key]={...state[key],confidence:cur===level?0:level,lastRevised:Date.now()};
-  lsSet('gap_state',state); renderSmartGaps(); renderFocusCard();
+  lsSet('gap_state',state);renderSmartGaps();renderFocusCard();
 }
 
-function renderSmartGaps() {
+function renderSmartGaps(){
   const state=lsGet('gap_state',{});
   const subs=['maths','econ','cs'];
   const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};
   const subTitles={maths:'MATHS',econ:'ECONOMICS',cs:'COMPUTER SCIENCE'};
   const cols=subs.map(sub=>{
-    const gaps=PRIORITY_GAPS.filter(g=>g.sub===sub&&!g.logOnly).sort((a,b)=>gapUrgencyScore(b,state)-gapUrgencyScore(a,state));
+    const gaps=PRIORITY_GAPS.filter(g=>g.sub===sub).sort((a,b)=>gapUrgencyScore(b,state)-gapUrgencyScore(a,state));
     const rows=gaps.map(g=>{
-      const s=state[g.key]||{};
-      const conf=s.confidence||0; const done=s.done||false;
-      const prio=getGapPriority(g);
-      const dotCls=prio==='hot'?'dot-hot':prio==='med'?'dot-med':'dot-low';
-      // 5 confidence dots
+      const s=state[g.key]||{};const conf=s.confidence||0;const done=s.done||false;
+      const prio=getGapPriority(g);const dotCls=prio==='hot'?'dot-hot':prio==='med'?'dot-med':'dot-low';
       const dots=[1,2,3,4,5].map(n=>{
-        const active = n<=conf;
-        const col = active ? CONF_COLORS[conf] : '';
-        const style=active?`background:${col};border-color:${col}`:'';
-        return `<div class="conf-dot" style="${style}" onclick="event.stopPropagation();setGapConfidence('${g.key}',${n})" title="${CONF_LABELS[n]}"></div>`;
+        const active=n<=conf;const col=active?CONF_COLORS[conf]:'';const style=active?`background:${col};border-color:${col}`:'';
+        return`<div class="conf-dot" style="${style}" onclick="event.stopPropagation();setGapConfidence('${g.key}',${n})" title="${CONF_LABELS[n]}"></div>`;
       }).join('');
-      return `<div class="gap-row${done?' gap-done':''}" onclick="toggleGapDone('${g.key}')">
-        <div class="gap-dot ${dotCls}" onclick="cyclePriority('${g.key}',event)"></div>
-        <span class="gap-name">${g.name}</span>
-        <div class="gap-conf">${dots}</div>
-      </div>`;
+      return`<div class="gap-row${done?' gap-done':''}" onclick="toggleGapDone('${g.key}')"><div class="gap-dot ${dotCls}" onclick="cyclePriority('${g.key}',event)"></div><span class="gap-name">${g.name}</span><div class="gap-conf">${dots}</div></div>`;
     }).join('');
-    return `<div><div class="gaps-col-title" style="color:${subCols[sub]}">${subTitles[sub]}</div>${rows}</div>`;
+    return`<div><div class="gaps-col-title" style="color:${subCols[sub]}">${subTitles[sub]}</div>${rows}</div>`;
   }).join('');
   const c=document.getElementById('gaps-container');
-  if(c) c.innerHTML=`<div class="gaps-grid">${cols}</div>`;
+  if(c)c.innerHTML=`<div class="gaps-grid">${cols}</div>`;
 }
 
-function updateMathsTopicsBar() {
-  const easterMathsDates = [
-    '2026-03-30','2026-03-31','2026-04-01','2026-04-02','2026-04-03',
-    '2026-04-04','2026-04-05','2026-04-06','2026-04-07','2026-04-08',
-    '2026-04-09','2026-04-10','2026-04-11'
-  ];
-  let done = 0;
-  easterMathsDates.forEach(dk => {
-    const checked = lsGet('tasks_done_'+dk, []);
-    const sessions = SESSIONS[dk] || [];
-    sessions.forEach((s, i) => {
-      if (s.sub === 'maths' && checked.includes(i)) done++;
+function updateMathsTopicsBar(){
+  const allDates=Object.keys(SESSIONS);let done=0,total=0;
+  allDates.forEach(dk=>{
+    const checked=lsGet('tasks_done_'+dk,[]);
+    (SESSIONS[dk]||[]).forEach((s,i)=>{
+      if(s.sub==='maths'&&!s.label.includes('EXAM')){total++;if(checked.includes(i))done++;}
     });
   });
-  const total = 12;
-  const pct = Math.round(done / total * 100);
-  const lbl = document.getElementById('maths-topics-lbl');
-  const bar = document.getElementById('maths-topics-bar');
-  if (lbl) lbl.textContent = `${done} / ${total}`;
-  if (bar) bar.style.width = Math.max(3, pct) + '%';
+  total=27;// hardcoded total
+  const pct=Math.round(done/total*100);
+  const lbl=document.getElementById('maths-topics-lbl');const bar=document.getElementById('maths-topics-bar');
+  if(lbl)lbl.textContent=`${done} / ${total}`;if(bar)bar.style.width=Math.max(3,pct)+'%';
 }
 
-// ── DYNAMIC MISSED THIS WEEK ──────────────────────────────────────────────────
-function getMissedThisWeek() {
-  const t = today();
-  const dow = t.getDay(); // 0=Sun
-  // Find Monday of current week
-  let monday = new Date(t);
-  if (dow === 0) monday.setDate(t.getDate() - 6);
-  else monday.setDate(t.getDate() - (dow - 1));
-
-  const missed = [];
-  // Scan from Monday up to (but not including) today
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(monday);
-    d.setDate(monday.getDate() + i);
-    const dk = dateKey(d);
-    if (dk >= dateKey(t)) break; // stop at today (today's sessions aren't "missed" yet)
-    const sessions = SESSIONS[dk] || [];
-    const checked = lsGet('tasks_done_' + dk, []);
-    sessions.forEach((s, idx) => {
-      if (s.sub === 'college' || s.sub === 'am' || s.sub === 'nea') return;
-      if (!checked.includes(idx)) {
-        missed.push({
-          dateKey: dk,
-          idx: idx,
-          sub: s.sub,
-          label: s.label,
-          dur: s.dur,
-          dayLabel: d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })
-        });
-      }
+function getMissedThisWeek(){
+  const t=today();const dow=t.getDay();let monday=new Date(t);
+  if(dow===0)monday.setDate(t.getDate()-6);else monday.setDate(t.getDate()-(dow-1));
+  const missed=[];
+  for(let i=0;i<7;i++){
+    const d=new Date(monday);d.setDate(monday.getDate()+i);const dk=dateKey(d);
+    if(dk>=dateKey(t))break;
+    const sessions=SESSIONS[dk]||[];const checked=lsGet('tasks_done_'+dk,[]);
+    sessions.forEach((s,idx)=>{
+      if(s.sub==='college'||s.sub==='am'||s.sub==='nea')return;
+      if(!checked.includes(idx))missed.push({dateKey:dk,idx,sub:s.sub,label:s.label,dur:s.dur,dayLabel:d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})});
     });
   }
   return missed;
 }
 
-function renderMissedThisWeek() {
-  const el = document.getElementById('overdue-mini');
-  if (!el) return;
-  const missed = getMissedThisWeek();
-  const rescheduled = lsGet('rescheduled', []);
-
-  if (!missed.length) {
-    el.innerHTML = '<div style="font-size:0.76rem;color:var(--muted2)">Nothing missed this week — nice work.</div>';
-    return;
-  }
-
-  el.innerHTML = missed.map(m => {
-    const tag = m.sub === 'maths' ? 'badge-m' : m.sub === 'econ' ? 'badge-e' : 'badge-c';
-    const lab = m.sub === 'maths' ? 'Maths' : m.sub === 'econ' ? 'Econ' : 'CS';
-    const rKey = `missed_${m.dateKey}_${m.idx}`;
-    const r = rescheduled.find(x => x.key === rKey);
-    let actionBtns;
-    if (r) {
-      actionBtns = `<span class="reschedule-btn rescheduled">→ ${r.label}</span><button class="unreschedule-btn" onclick="unrescheduleItem('${rKey}')">×</button>`;
-    } else {
-      actionBtns = `<button class="reschedule-btn" onclick="rescheduleMissed('${m.dateKey}',${m.idx},'${m.label.replace(/'/g,"\\'")}','${m.sub}')">Reschedule →</button>`;
-    }
-    return `<div class="missed-row">
-      <span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span>
-      <span style="font-size:0.76rem;flex:1">${m.label}</span>
-      <span class="missed-when">${m.dayLabel}</span>
-      ${actionBtns}
-    </div>`;
+function renderMissedThisWeek(){
+  const el=document.getElementById('overdue-mini');if(!el)return;
+  const missed=getMissedThisWeek();const rescheduled=lsGet('rescheduled',[]);
+  if(!missed.length){el.innerHTML='<div style="font-size:0.76rem;color:var(--muted2)">Nothing missed this week — nice work.</div>';return;}
+  el.innerHTML=missed.map(m=>{
+    const tag=m.sub==='maths'?'badge-m':m.sub==='econ'?'badge-e':'badge-c';
+    const lab=m.sub==='maths'?'Maths':m.sub==='econ'?'Econ':'CS';
+    const rKey=`missed_${m.dateKey}_${m.idx}`;const r=rescheduled.find(x=>x.key===rKey);
+    const actionBtns=r?`<span class="reschedule-btn rescheduled">→ ${r.label}</span><button class="unreschedule-btn" onclick="unrescheduleItem('${rKey}')">×</button>`:`<button class="reschedule-btn" onclick="rescheduleMissed('${m.dateKey}',${m.idx},'${m.label.replace(/'/g,"\\'")}','${m.sub}')">Reschedule →</button>`;
+    return`<div class="missed-row"><span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span><span style="font-size:0.76rem;flex:1">${m.label}</span><span class="missed-when">${m.dayLabel}</span>${actionBtns}</div>`;
   }).join('');
 }
 
-function rescheduleMissed(dk, idx, label, sub) {
-  const rescheduled = lsGet('rescheduled', []);
-  const rKey = `missed_${dk}_${idx}`;
-  if (rescheduled.find(r => r.key === rKey)) return;
-  const slot = findNextFreeEvening();
-  if (!slot) return;
-  rescheduled.push({ key: rKey, name: label, sub: sub, targetKey: slot.key, label: slot.label });
-  lsSet('rescheduled', rescheduled);
-  renderMissedThisWeek();
+function rescheduleMissed(dk,idx,label,sub){
+  const rescheduled=lsGet('rescheduled',[]);const rKey=`missed_${dk}_${idx}`;
+  if(rescheduled.find(r=>r.key===rKey))return;const slot=findNextFreeEvening();if(!slot)return;
+  rescheduled.push({key:rKey,name:label,sub,targetKey:slot.key,label:slot.label});lsSet('rescheduled',rescheduled);renderMissedThisWeek();
 }
-
-function findNextFreeEvening() {
-  const rescheduled=lsGet('rescheduled',[]);
-  const t=today();
+function findNextFreeEvening(){
+  const rescheduled=lsGet('rescheduled',[]);const t=today();
   for(let i=0;i<=28;i++){
-    const d=new Date(t.getTime()+i*864e5);
-    const key=dateKey(d);
+    const d=new Date(t.getTime()+i*864e5);const key=dateKey(d);
     const base=(SESSIONS[key]||[]).filter(s=>s.sub!=='college'&&s.sub!=='am');
     const extra=rescheduled.filter(r=>r.targetKey===key);
-    if(base.length+extra.length<2){ return{key,label:d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}; }
+    if(base.length+extra.length<2)return{key,label:d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})};
   }
   return null;
 }
-function unrescheduleItem(itemKey) {
-  lsSet('rescheduled',lsGet('rescheduled',[]).filter(r=>r.key!==itemKey));
-  renderMissedThisWeek();
-}
+function unrescheduleItem(itemKey){lsSet('rescheduled',lsGet('rescheduled',[]).filter(r=>r.key!==itemKey));renderMissedThisWeek();}
 
-// ── BONUS ─────────────────────────────────────────────────────────────────────
-function getTodayBonusItem() {
-  const dismissed=lsGet('dismissed_bonuses',[]); const todayKey=dateKey(today()); const state=lsGet('gap_state',{});
-  // Suggest the highest-urgency gap that hasn't been done
-  const sorted = PRIORITY_GAPS.filter(g => {
-    if (dismissed.includes(g.key+'_'+todayKey)) return false;
-    if (state[g.key]?.done) return false;
-    if ((state[g.key]?.confidence||0) >= 4) return false;
+function getTodayBonusItem(){
+  const dismissed=lsGet('dismissed_bonuses',[]);const todayKey=dateKey(today());const state=lsGet('gap_state',{});
+  const sorted=PRIORITY_GAPS.filter(g=>{
+    if(dismissed.includes(g.key+'_'+todayKey))return false;
+    if(state[g.key]?.done)return false;
+    if((state[g.key]?.confidence||0)>=4)return false;
     return true;
-  }).sort((a,b) => gapUrgencyScore(b,state) - gapUrgencyScore(a,state));
-  return sorted[0] || null;
+  }).sort((a,b)=>gapUrgencyScore(b,lsGet('gap_state',{}))-gapUrgencyScore(a,lsGet('gap_state',{})));
+  return sorted[0]||null;
 }
-function dismissBonus(key){
-  const dismissed=lsGet('dismissed_bonuses',[]); dismissed.push(key+'_'+dateKey(today())); lsSet('dismissed_bonuses',dismissed); renderBonusSection();
-}
+function dismissBonus(key){const dismissed=lsGet('dismissed_bonuses',[]);dismissed.push(key+'_'+dateKey(today()));lsSet('dismissed_bonuses',dismissed);renderBonusSection();}
 function renderBonusSection(){
-  const el=document.getElementById('bonus-section'); if(!el) return;
-  const item=getTodayBonusItem(); if(!item){el.innerHTML='';return;}
+  const el=document.getElementById('bonus-section');if(!el)return;
+  const item=getTodayBonusItem();if(!item){el.innerHTML='';return;}
   const tag=item.sub==='maths'?'badge-m':item.sub==='econ'?'badge-e':'badge-c';
   const lab=item.sub==='maths'?'Maths':item.sub==='econ'?'Econ':'CS';
   el.innerHTML=`<div class="bonus-section"><div class="bonus-lbl">Bonus — only if main tasks done</div><div class="bonus-row"><span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span><span style="font-size:0.78rem;flex:1;color:var(--muted2)">${item.name}</span><button class="bonus-dismiss-btn" onclick="dismissBonus('${item.key}')">Skip today</button></div></div>`;
 }
 
-// ── GRADE BOUNDARIES ─────────────────────────────────────────────────────────
-function getLatestMock(sub){
-  const h=loadMockHistory(); const entries=h[sub]||[]; if(!entries.length) return null;
-  return entries[entries.length-1].pct;
-}
+function getLatestMock(sub){const h=loadMockHistory();const entries=h[sub]||[];if(!entries.length)return null;return entries[entries.length-1].pct;}
 function renderGradeBounds(){
-  const subs=['maths','econ','cs']; const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};
-  const bounds=lsGet('grade_bounds',{});
+  const subs=['maths','econ','cs'];const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};const bounds=lsGet('grade_bounds',{});
   subs.forEach(sub=>{
-    const el=document.getElementById('gb-'+sub); if(!el) return;
-    const b=bounds[sub]||{}; const latestMock=getLatestMock(sub);
-    const targetPct=b.targetPct??null; const targetLabel=b.targetLabel||(sub==='cs'?'B':'A');
+    const el=document.getElementById('gb-'+sub);if(!el)return;
+    const b=bounds[sub]||{};const latestMock=getLatestMock(sub);
+    const targetPct=b.targetPct??null;const targetLabel=b.targetLabel||(sub==='cs'?'B':'A');
     const targetHTML=targetPct!==null?`<div class="gb-val" style="color:${subCols[sub]}">${targetLabel} · ${targetPct}%</div>`:`<div class="gb-val" style="color:var(--muted)">—</div>`;
     const mockHTML=latestMock!==null?`<div class="gb-val" style="color:${latestMock>=(targetPct||999)?'var(--maths)':latestMock>=(targetPct||999)*0.75?'var(--amber)':'var(--red)'}">${latestMock}%</div>`:`<div class="gb-val" style="color:var(--muted)">—</div>`;
     let gapHTML=`<div class="gb-val" style="color:var(--muted)">—</div>`;
@@ -1231,167 +1100,81 @@ function renderGradeBounds(){
   });
 }
 function editGradeBounds(sub){
-  const bounds=lsGet('grade_bounds',{}); const b=bounds[sub]||{};
-  const subName={maths:'Maths',econ:'Economics',cs:'CS'}[sub];
-  const gradeDefault=sub==='cs'?'B':'A';
-  const gradeLabel=prompt(`${subName} — target grade (e.g. A, B):`,b.targetLabel||gradeDefault); if(gradeLabel===null) return;
-  const pctRaw=prompt(`${subName} — approx boundary % for ${gradeLabel}:`,b.targetPct??''); if(pctRaw===null) return;
-  if(!bounds[sub]) bounds[sub]={};
-  bounds[sub].targetLabel=gradeLabel.trim().toUpperCase();
-  const pct=parseInt(pctRaw); bounds[sub].targetPct=isNaN(pct)?null:Math.max(0,Math.min(100,pct));
-  lsSet('grade_bounds',bounds); renderGradeBounds();
+  const bounds=lsGet('grade_bounds',{});const b=bounds[sub]||{};const subName={maths:'Maths',econ:'Economics',cs:'CS'}[sub];
+  const gradeDefault=sub==='cs'?'B':'A';const gradeLabel=prompt(`${subName} — target grade:`,b.targetLabel||gradeDefault);if(gradeLabel===null)return;
+  const pctRaw=prompt(`${subName} — approx boundary % for ${gradeLabel}:`,b.targetPct??'');if(pctRaw===null)return;
+  if(!bounds[sub])bounds[sub]={};bounds[sub].targetLabel=gradeLabel.trim().toUpperCase();
+  const pct=parseInt(pctRaw);bounds[sub].targetPct=isNaN(pct)?null:Math.max(0,Math.min(100,pct));
+  lsSet('grade_bounds',bounds);renderGradeBounds();
 }
 
-// ── SESSION → GAP KEY MAPPING ────────────────────────────────────────────────
-const SESSION_GAP_MAP = {
-  'trig integration': 'm_trig_int',
-  'integration by parts': 'm_ibp',
-  'partial fractions': 'm_pf',
-  'integration by partial': 'm_pf_int',
-  'substitution': 'm_sub',
-  'differential equation': 'm_de',
-  'rational inequalit': 'm_ineq',
-  'binomial expansion': 'm_binom',
-  'r form': 'm_rform',
-  'trig solving': 'm_trig_sol',
-  'trig identit': 'm_rform',
-  'exponential': 'm_logs',
-  'logarithm': 'm_logs',
-  'sequences': 'm_seq',
-  'series': 'm_seq',
-  'numerical method': 'm_num',
-  'implicit diff': 'm_impl',
-  'parametric stationary': 'm_para_sp',
-  'vectors': 'm_vec',
-  'proof': 'm_proof',
-  'scheduling': 'c_sched',
-  'lmc': 'c_lmc',
-  'assembly': 'c_lmc',
-  'boolean algebra': 'c_bool',
-  'normalisation': 'c_norm',
-  'stack': 'c_pp',
-  'queue': 'c_pp',
-  'pseudocode': 'c_pp',
-  'recursion': 'c_recur',
-  'isr': 'c_isr',
-  'interrupt': 'c_isr',
-  'floating point': 'c_fp',
-  'tcp': 'c_tcp',
-  'networking': 'c_tcp',
-  'compression': 'c_comp',
-  'sql': 'c_sql',
-  'bfs': 'c_bfs',
-  'dfs': 'c_bfs',
-  'karnaugh': 'c_kmap',
-  'diagrams': 'e_diag',
-  'diagram': 'e_diag',
-  'efficiency': 'e_eff',
-  'perfect competition': 'e_pc',
-  'kinked demand': 'e_kink',
-  'game theory': 'e_game',
-  'nash': 'e_game',
-  'multiplier': 'e_mult',
-  'macro': 'e_macro',
-  'ad/as': 'e_macro',
-  'fiscal': 'e_macro',
-  'monetary': 'e_macro',
-  'supply-side': 'e_ss',
-  'mops': 'e_mops',
-  'competition theme': 'e_comp',
-  'govt intervention': 'e_govt',
+const SESSION_GAP_MAP={
+  'trig integration':'m_trig_int','integration by parts':'m_ibp','partial fractions':'m_pf',
+  'integration by partial':'m_pf_int','substitution':'m_sub','differential equation':'m_de',
+  'rational inequalit':'m_ineq','binomial expansion':'m_binom','r form':'m_rform',
+  'trig solving':'m_trig_sol','trig identit':'m_rform','trig equations':'m_trig_sol',
+  'exponential':'m_logs','logarithm':'m_logs','sequences':'m_seq','series':'m_seq',
+  'numerical method':'m_num','implicit diff':'m_impl','parametric stationary':'m_para_sp',
+  'vectors':'m_vec','proof':'m_proof','kinematics':'m_num','forces':'m_vec',
+  'scheduling':'c_sched','lmc':'c_lmc','assembly':'c_lmc','boolean algebra':'c_bool',
+  'normalisation':'c_norm','stack':'c_pp','queue':'c_pp','pseudocode':'c_pp',
+  'recursion':'c_recur','isr':'c_isr','interrupt':'c_isr','floating point':'c_fp',
+  'tcp':'c_tcp','networking':'c_tcp','compression':'c_comp','sql':'c_sql',
+  'bfs':'c_bfs','dfs':'c_bfs','karnaugh':'c_kmap',
+  'diagrams':'e_diag','diagram':'e_diag','efficiency':'e_eff','perfect competition':'e_pc',
+  'kinked demand':'e_kink','game theory':'e_game','nash':'e_game','multiplier':'e_mult',
+  'macro':'e_macro','ad/as':'e_macro','fiscal':'e_macro','monetary':'e_macro',
+  'supply-side':'e_ss','mops':'e_mops','competition theme':'e_comp','govt intervention':'e_govt',
 };
-
-function getGapKeyForSession(label) {
-  const l = label.toLowerCase();
-  for (const [kw, gapKey] of Object.entries(SESSION_GAP_MAP)) {
-    if (l.includes(kw)) return gapKey;
-  }
+function getGapKeyForSession(label){
+  const l=label.toLowerCase();
+  for(const[kw,gapKey]of Object.entries(SESSION_GAP_MAP)){if(l.includes(kw))return gapKey;}
   return null;
 }
 
-// ── TODAY RENDER ─────────────────────────────────────────────────────────────
-function getTodayChecked(dk){ return lsGet('tasks_done_'+dk,[]); }
+function getTodayChecked(dk){return lsGet('tasks_done_'+dk,[]);}
 function setTaskChecked(dk,idx,checked){
   const done=getTodayChecked(dk);
-  if(checked&&!done.includes(idx)) done.push(idx);
+  if(checked&&!done.includes(idx))done.push(idx);
   if(!checked){const p=done.indexOf(idx);if(p!==-1)done.splice(p,1);}
   lsSet('tasks_done_'+dk,done);
 }
 
-function logConfidenceForTask(gapKey, level, taskIdx, dk) {
-  if (!gapKey) return;
-  const state = lsGet('gap_state', {});
-  state[gapKey] = { ...state[gapKey], confidence: level, lastRevised: Date.now() };
-  lsSet('gap_state', state);
-  const dayLog = lsGet('daily_log_'+dk, []);
-  const g = PRIORITY_GAPS.find(x => x.key === gapKey);
-  if (g) {
-    const entry = { key: gapKey, name: g.name, sub: g.sub, conf: level, time: Date.now() };
-    const idx = dayLog.findIndex(x => x.key === gapKey);
-    if (idx >= 0) dayLog[idx] = entry; else dayLog.push(entry);
-    lsSet('daily_log_'+dk, dayLog);
-  }
-  renderSmartGaps(); renderFocusCard(); updateMathsTopicsBar(); renderTodayLog();
-  const confRow = document.getElementById('conf-row-'+taskIdx);
-  if (confRow) {
-    confRow.querySelectorAll('.task-conf-btn').forEach((btn, i) => {
-      btn.className = 'task-conf-btn';
-      if (i+1 === level) btn.classList.add('act-'+(i+1));
-    });
-  }
+function logConfidenceForTask(gapKey,level,taskIdx,dk){
+  if(!gapKey)return;
+  const state=lsGet('gap_state',{});state[gapKey]={...state[gapKey],confidence:level,lastRevised:Date.now()};lsSet('gap_state',state);
+  const dayLog=lsGet('daily_log_'+dk,[]);const g=PRIORITY_GAPS.find(x=>x.key===gapKey);
+  if(g){const entry={key:gapKey,name:g.name,sub:g.sub,conf:level,time:Date.now()};const idx=dayLog.findIndex(x=>x.key===gapKey);if(idx>=0)dayLog[idx]=entry;else dayLog.push(entry);lsSet('daily_log_'+dk,dayLog);}
+  renderSmartGaps();renderFocusCard();updateMathsTopicsBar();renderTodayLog();
+  const confRow=document.getElementById('conf-row-'+taskIdx);
+  if(confRow)confRow.querySelectorAll('.task-conf-btn').forEach((btn,i)=>{btn.className='task-conf-btn';if(i+1===level)btn.classList.add('act-'+(i+1));});
 }
 
-function renderToday() {
-  const t=today(); const key=dateKey(t); const sessions=SESSIONS[key]||[];
+function renderToday(){
+  const t=today();const key=dateKey(t);const sessions=SESSIONS[key]||[];
   document.getElementById('today-title').textContent=`${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]}`;
-  const container=document.getElementById('today-tasks'); container.innerHTML='';
-  if(!sessions.length){
-    container.innerHTML='<div style="font-size:0.82rem;color:var(--muted2);padding:14px 0">Nothing scheduled — rest day.</div>';
-    renderBonusSection(); return;
-  }
+  const container=document.getElementById('today-tasks');container.innerHTML='';
+  if(!sessions.length){container.innerHTML='<div style="font-size:0.82rem;color:var(--muted2);padding:14px 0">Nothing scheduled — rest day.</div>';renderBonusSection();return;}
   const checkedIdxs=getTodayChecked(key);
   sessions.forEach((s,i)=>{
     const isTimetable=s.sub==='college'||s.sub==='am';
     const badgeCls=SUB_BADGE_CLASS[s.sub]||'badge-college';
-    const item=document.createElement('div');
-    item.className='task-item';
+    const item=document.createElement('div');item.className='task-item';
     if(isTimetable){
       item.style.opacity='0.7';
       item.innerHTML=`<div class="task-body"><div class="task-top"><span class="sub-badge ${badgeCls}">${s.sub==='am'?'AM':'College'}</span></div><div class="task-name">${s.label}</div>${s.detail?`<div class="task-detail">${s.detail}</div>`:''}</div>${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
-    } else {
-      item.classList.add('clickable');
-      const isChecked=checkedIdxs.includes(i);
-      const gapKey = getGapKeyForSession(s.label);
-      const state = lsGet('gap_state', {});
-      const currentConf = gapKey ? (state[gapKey]?.confidence || 0) : 0;
-      const confBtns = gapKey ? `
-        <div class="task-conf-row" id="conf-row-${i}">
-          <span class="task-conf-lbl">Confidence</span>
-          ${[1,2,3,4,5].map(n => `<button class="task-conf-btn${currentConf===n?' act-'+n:''}" onclick="event.stopPropagation();logConfidenceForTask('${gapKey}',${n},${i},'${key}')" title="${CONF_LABELS[n]}">${n}</button>`).join('')}
-          <span style="font-family:var(--mono);font-size:0.5rem;color:${currentConf>0?CONF_COLORS[currentConf]:'var(--muted)'};margin-left:4px">${currentConf>0?CONF_LABELS[currentConf]:''}</span>
-        </div>` : '';
-      item.innerHTML=`
-        <div class="task-check"><input type="checkbox" id="chk${i}"${isChecked?' checked':''}></div>
-        <div class="task-body">
-          <div class="task-top">
-            <span class="sub-badge ${badgeCls}">${s.sub||'—'}</span>
-            ${s.hw?'<span class="sub-badge badge-hw">HW DUE</span>':''}
-          </div>
-          <div class="task-name" id="lbl${i}"${isChecked?' class="done"':''}>${s.label}</div>
-          ${s.detail?`<div class="task-detail">${s.detail}</div>`:''}
-          ${confBtns}
-        </div>
-        ${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
-      if(isChecked) item.classList.add('done-item');
+    }else{
+      item.classList.add('clickable');const isChecked=checkedIdxs.includes(i);
+      const gapKey=getGapKeyForSession(s.label);const state=lsGet('gap_state',{});const currentConf=gapKey?(state[gapKey]?.confidence||0):0;
+      const confBtns=gapKey?`<div class="task-conf-row" id="conf-row-${i}"><span class="task-conf-lbl">Confidence</span>${[1,2,3,4,5].map(n=>`<button class="task-conf-btn${currentConf===n?' act-'+n:''}" onclick="event.stopPropagation();logConfidenceForTask('${gapKey}',${n},${i},'${key}')" title="${CONF_LABELS[n]}">${n}</button>`).join('')}<span style="font-family:var(--mono);font-size:0.5rem;color:${currentConf>0?CONF_COLORS[currentConf]:'var(--muted)'};margin-left:4px">${currentConf>0?CONF_LABELS[currentConf]:''}</span></div>`:'';
+      item.innerHTML=`<div class="task-check"><input type="checkbox" id="chk${i}"${isChecked?' checked':''}></div><div class="task-body"><div class="task-top"><span class="sub-badge ${badgeCls}">${s.sub||'—'}</span>${s.hw?'<span class="sub-badge badge-hw">HW DUE</span>':''}</div><div class="task-name" id="lbl${i}"${isChecked?' class="done"':''}>${s.label}</div>${s.detail?`<div class="task-detail">${s.detail}</div>`:''}${confBtns}</div>${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
+      if(isChecked)item.classList.add('done-item');
       item.querySelector('input').addEventListener('change',function(){
         item.classList.toggle('done-item',this.checked);
         document.getElementById('lbl'+i).classList.toggle('done',this.checked);
         setTaskChecked(key,i,this.checked);
-        const nowDone = getTodayChecked(key);
-        if (this.checked && nowDone.length === 1) incrementSessions();
-        // Update linked views
-        renderMissedThisWeek();
-        updateMathsTopicsBar();
+        const nowDone=getTodayChecked(key);if(this.checked&&nowDone.length===1)incrementSessions();
+        renderMissedThisWeek();updateMathsTopicsBar();
       });
     }
     container.appendChild(item);
@@ -1399,178 +1182,111 @@ function renderToday() {
   renderBonusSection();
 }
 
-function renderTomorrow() {
-  const t=today(); const tmr=new Date(t.getTime()+864e5); const key=dateKey(tmr);
-  const sessions=SESSIONS[key]||[];
+function renderTomorrow(){
+  const t=today();const tmr=new Date(t.getTime()+864e5);const key=dateKey(tmr);const sessions=SESSIONS[key]||[];
   document.getElementById('tmr-title').textContent=`Tomorrow — ${DAYS[tmr.getDay()].slice(0,3)} ${tmr.getDate()} ${MONTHS[tmr.getMonth()]}`;
-  const container=document.getElementById('tmr-tasks'); container.innerHTML='';
+  const container=document.getElementById('tmr-tasks');container.innerHTML='';
   if(!sessions.length){container.innerHTML='<div style="font-size:0.78rem;color:var(--muted2)">Nothing scheduled.</div>';return;}
   sessions.forEach(s=>{
-    const col=SUB_COL[s.sub]||'var(--muted)';
-    const row=document.createElement('div'); row.className='tmr-row';
+    const col=SUB_COL[s.sub]||'var(--muted)';const row=document.createElement('div');row.className='tmr-row';
     row.innerHTML=`<div class="tmr-left-dot" style="background:${col}"></div><div class="tmr-body"><div class="tmr-name">${s.hw?'<span style="color:var(--red);font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>${s.detail?`<div class="tmr-detail">${s.detail}</div>`:''}</div>`;
     container.appendChild(row);
   });
 }
 
-// ── WEEK VIEW (Mon–Sun) ───────────────────────────────────────────────────────
-function renderWeek() {
-  const t=today();
-  const dow=t.getDay();
-  let monday=new Date(t);
-  if(dow===0) monday.setDate(t.getDate()-6);
-  else monday.setDate(t.getDate()-(dow-1));
-
+function renderWeek(){
+  const t=today();const dow=t.getDay();let monday=new Date(t);
+  if(dow===0)monday.setDate(t.getDate()-6);else monday.setDate(t.getDate()-(dow-1));
   const opts={day:'numeric',month:'short'};
   document.getElementById('week-title').textContent=`Week beginning ${monday.toLocaleDateString('en-GB',opts)}`;
-
-  const grid=document.getElementById('week-grid'); grid.innerHTML='';
-  const todayKey=dateKey(t);
-  const dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-
+  const grid=document.getElementById('week-grid');grid.innerHTML='';
+  const todayKey=dateKey(t);const dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   for(let i=0;i<7;i++){
-    const day=new Date(monday); day.setDate(monday.getDate()+i);
-    const key=dateKey(day);
-    const sessions=SESSIONS[key]||[];
-    const isToday=key===todayKey;
-    const isWeekend=(i===5||i===6);
-    const examLabel=EXAM_DAYS[key];
-    const checked = lsGet('tasks_done_'+key, []);
-
+    const day=new Date(monday);day.setDate(monday.getDate()+i);const key=dateKey(day);
+    const sessions=SESSIONS[key]||[];const isToday=key===todayKey;const isWeekend=(i===5||i===6);const examLabel=EXAM_DAYS[key];
+    const checked=lsGet('tasks_done_'+key,[]);
     const col=document.createElement('div');
     col.className='wday'+(isToday?' today-col':'')+(isWeekend&&!isToday?' weekend-col':'')+(examLabel?' deadline':'');
     const headStr=examLabel?`${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)} — ${examLabel}`:`${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)}`;
-
-    const tasksHtml=sessions.length
-      ?sessions.map((s, idx)=>{
-          const c2=SUB_COL[s.sub]||'var(--muted)';
-          const cls=s.sub==='college'?' college-task':s.hw?' hw-task':'';
-          const isDone = checked.includes(idx);
-          const doneCls = isDone ? ' done-task' : '';
-          return `<div class="wday-task${cls}${doneCls}"><div class="wday-task-dot" style="background:${c2}"></div><span>${s.hw?'<b style="color:var(--red)">HW</b> · ':''}${isDone?'✓ ':''}${s.label}</span></div>`;
-        }).join('')
-      :examLabel?'<div style="color:var(--red);font-size:0.7rem;font-weight:700">EXAM DAY</div>':'<div style="color:var(--muted);font-size:0.7rem">—</div>';
-
-    col.innerHTML=`<div class="wday-head">${headStr}</div>${tasksHtml}`;
-    grid.appendChild(col);
+    const tasksHtml=sessions.length?sessions.map((s,idx)=>{
+      const c2=SUB_COL[s.sub]||'var(--muted)';const cls=s.sub==='college'?' college-task':s.hw?' hw-task':'';const isDone=checked.includes(idx);
+      return`<div class="wday-task${cls}${isDone?' done-task':''}"><div class="wday-task-dot" style="background:${c2}"></div><span>${s.hw?'<b style="color:var(--red)">HW</b> · ':''}${isDone?'✓ ':''}${s.label}</span></div>`;
+    }).join(''):examLabel?'<div style="color:var(--red);font-size:0.7rem;font-weight:700">EXAM DAY</div>':'<div style="color:var(--muted);font-size:0.7rem">—</div>';
+    col.innerHTML=`<div class="wday-head">${headStr}</div>${tasksHtml}`;grid.appendChild(col);
   }
 }
 
-// ── ALL SESSIONS TAB ──────────────────────────────────────────────────────────
-function renderAllSessions() {
-  const container = document.getElementById('all-sessions-container');
-  if (!container) return;
-  const t = today();
-  const todayKey = dateKey(t);
-
-  // Show past sessions from this week too so completion state is visible
-  const dow = t.getDay();
-  let monday = new Date(t);
-  if (dow === 0) monday.setDate(t.getDate() - 6);
-  else monday.setDate(t.getDate() - (dow - 1));
-  const weekStartKey = dateKey(monday);
-
-  const allDates = new Set([
-    ...Object.keys(SESSIONS).filter(k => k >= weekStartKey),
-    ...Object.keys(EXAM_DAYS).filter(k => k >= weekStartKey),
-  ]);
-  const sortedDates = Array.from(allDates).sort();
-
-  let html = '';
-  for (const dk of sortedDates) {
-    const sessions = (SESSIONS[dk] || []).filter(s => {
-      if (currentFilter === 'all') return true;
-      return s.sub === currentFilter;
-    });
-    const examLabel = EXAM_DAYS[dk];
-    if (!sessions.length && !examLabel) continue;
-
-    const d = toDate(dk);
-    const isToday = dk === todayKey;
-    const daysFromNow = Math.ceil((toDate(dk) - t) / 864e5);
-    const relLabel = isToday ? 'today' : daysFromNow === 1 ? 'tomorrow' : daysFromNow === -1 ? 'yesterday' : daysFromNow < 0 ? `${Math.abs(daysFromNow)} days ago` : `in ${daysFromNow} days`;
-    const dateFormatted = d.toLocaleDateString('en-GB', { weekday:'long', day:'numeric', month:'long' });
-    const checked = lsGet('tasks_done_'+dk, []);
-
-    html += `<div class="all-sessions-day">
-      <div class="all-sessions-date-hdr">
-        <span class="all-sessions-date-lbl">${dateFormatted}</span>
-        <span class="all-sessions-date-rel">${relLabel}</span>
-        ${examLabel ? `<span class="all-sessions-date-exam">📝 ${examLabel}</span>` : ''}
-      </div>`;
-
-    if (examLabel && !sessions.length) {
-      html += `<div class="all-sess-row${isToday?' is-today':''}"><div class="all-sess-body"><div class="all-sess-name" style="color:var(--red)">EXAM DAY — ${examLabel}</div><div class="all-sess-detail">No other sessions scheduled.</div></div></div>`;
+function renderAllSessions(){
+  const container=document.getElementById('all-sessions-container');if(!container)return;
+  const t=today();const todayKey=dateKey(t);const dow=t.getDay();let monday=new Date(t);
+  if(dow===0)monday.setDate(t.getDate()-6);else monday.setDate(t.getDate()-(dow-1));
+  const weekStartKey=dateKey(monday);
+  const allDates=new Set([...Object.keys(SESSIONS).filter(k=>k>=weekStartKey),...Object.keys(EXAM_DAYS).filter(k=>k>=weekStartKey)]);
+  const sortedDates=Array.from(allDates).sort();
+  let html='';
+  for(const dk of sortedDates){
+    const sessions=(SESSIONS[dk]||[]).filter(s=>currentFilter==='all'||s.sub===currentFilter);
+    const examLabel=EXAM_DAYS[dk];if(!sessions.length&&!examLabel)continue;
+    const d=toDate(dk);const isToday=dk===todayKey;
+    const daysFromNow=Math.ceil((toDate(dk)-t)/864e5);
+    const relLabel=isToday?'today':daysFromNow===1?'tomorrow':daysFromNow===-1?'yesterday':daysFromNow<0?`${Math.abs(daysFromNow)} days ago`:`in ${daysFromNow} days`;
+    const dateFormatted=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+    const checked=lsGet('tasks_done_'+dk,[]);
+    html+=`<div class="all-sessions-day"><div class="all-sessions-date-hdr"><span class="all-sessions-date-lbl">${dateFormatted}</span><span class="all-sessions-date-rel">${relLabel}</span>${examLabel?`<span class="all-sessions-date-exam">📝 ${examLabel}</span>`:''}</div>`;
+    if(examLabel&&!sessions.length)html+=`<div class="all-sess-row${isToday?' is-today':''}"><div class="all-sess-body"><div class="all-sess-name" style="color:var(--red)">EXAM DAY — ${examLabel}</div></div></div>`;
+    for(let si=0;si<sessions.length;si++){
+      const s=sessions[si];const origIdx=(SESSIONS[dk]||[]).indexOf(s);const isDone=checked.includes(origIdx);
+      const badgeCls=SUB_BADGE_CLASS[s.sub]||'badge-college';
+      html+=`<div class="all-sess-row${isToday?' is-today':''}${isDone?' is-done':''}"><span class="sub-badge ${badgeCls}" style="flex-shrink:0;margin-top:2px">${s.sub||'—'}</span><div class="all-sess-body"><div class="all-sess-name${isDone?' done-name':''}">${isDone?'✓ ':''}${s.hw?'<span style="color:var(--red);font-size:0.72rem;font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>${s.detail?`<div class="all-sess-detail">${s.detail}</div>`:''}</div></div>`;
     }
-
-    for (let si = 0; si < sessions.length; si++) {
-      const s = sessions[si];
-      // Find original index in full sessions array (before filter)
-      const origIdx = (SESSIONS[dk]||[]).indexOf(s);
-      const isDone = checked.includes(origIdx);
-      const badgeCls = SUB_BADGE_CLASS[s.sub] || 'badge-college';
-      html += `<div class="all-sess-row${isToday?' is-today':''}${isDone?' is-done':''}">
-        <span class="sub-badge ${badgeCls}" style="flex-shrink:0;margin-top:2px">${s.sub||'—'}</span>
-        <div class="all-sess-body">
-          <div class="all-sess-name${isDone?' done-name':''}">${isDone?'✓ ':''}${s.hw?'<span style="color:var(--red);font-size:0.72rem;font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>
-          ${s.detail?`<div class="all-sess-detail">${s.detail}</div>`:''}
-        </div>
-      </div>`;
-    }
-
-    html += `</div>`;
+    html+=`</div>`;
   }
-
-  if (!html) html = '<div style="font-size:0.82rem;color:var(--muted2)">No sessions found for this filter.</div>';
-  container.innerHTML = html;
+  if(!html)html='<div style="font-size:0.82rem;color:var(--muted2)">No sessions found.</div>';
+  container.innerHTML=html;
 }
 
-// ── CHARTS ────────────────────────────────────────────────────────────────────
 let chartInstances={};
-function loadMockHistory(){ const stored=lsGet('mock_history',null); return stored||JSON.parse(JSON.stringify(MOCK_DEFAULTS)); }
-function saveMockHistory(h){ lsSet('mock_history',h); }
+function loadMockHistory(){const stored=lsGet('mock_history',null);return stored||JSON.parse(JSON.stringify(MOCK_DEFAULTS));}
+function saveMockHistory(h){lsSet('mock_history',h);}
 function promptAddMock(sub){
   const subName={maths:'Maths',econ:'Economics',cs:'CS'}[sub];
-  const raw=prompt(`Add ${subName} mock score:\nEnter score/max e.g. "45/100" or just "45" for %:`); if(!raw) return;
+  const raw=prompt(`Add ${subName} mock score (e.g. "45/100" or "45%"):`);if(!raw)return;
   const match=raw.match(/(\d+)\s*[\/of]\s*(\d+)/);
-  let pct; if(match){pct=Math.round(parseInt(match[1])/parseInt(match[2])*100);}else{pct=parseInt(raw.replace('%','').trim());}
-  if(isNaN(pct)) return; pct=Math.max(0,Math.min(100,pct));
-  const h=loadMockHistory(); h[sub]=h[sub]||[];
+  let pct;if(match){pct=Math.round(parseInt(match[1])/parseInt(match[2])*100);}else{pct=parseInt(raw.replace('%','').trim());}
+  if(isNaN(pct))return;pct=Math.max(0,Math.min(100,pct));
+  const h=loadMockHistory();h[sub]=h[sub]||[];
   const monthLabel=new Date().toLocaleDateString('en-GB',{month:'short'});
-  h[sub].push({label:monthLabel,pct}); saveMockHistory(h); renderCharts(); renderGradeBounds();
+  h[sub].push({label:monthLabel,pct});saveMockHistory(h);renderCharts();renderGradeBounds();
 }
 function renderCharts(){
-  const h=loadMockHistory(); const bounds=lsGet('grade_bounds',{});
-  const cfgs=[{sub:'maths',id:'chart-maths',color:'#4ade80'},{sub:'econ',id:'chart-econ',color:'#60a5fa'},{sub:'cs',id:'chart-cs',color:'#fbbf24'}];
-  cfgs.forEach(c=>{
-    const canvas=document.getElementById(c.id); if(!canvas) return;
-    if(chartInstances[c.sub]) chartInstances[c.sub].destroy();
-    const data=h[c.sub]||[]; const target=(bounds[c.sub]?.targetPct)||null;
+  const h=loadMockHistory();const bounds=lsGet('grade_bounds',{});
+  [{sub:'maths',id:'chart-maths',color:'#4ade80'},{sub:'econ',id:'chart-econ',color:'#60a5fa'},{sub:'cs',id:'chart-cs',color:'#fbbf24'}].forEach(c=>{
+    const canvas=document.getElementById(c.id);if(!canvas)return;
+    if(chartInstances[c.sub])chartInstances[c.sub].destroy();
+    const data=h[c.sub]||[];const target=(bounds[c.sub]?.targetPct)||null;
     const datasets=[{data:data.map(d=>d.pct),borderColor:c.color,backgroundColor:c.color+'18',borderWidth:2,pointRadius:4,pointBackgroundColor:c.color,tension:0.3,fill:true}];
-    if(target!==null) datasets.push({data:data.map(()=>target),borderColor:'rgba(255,255,255,0.15)',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false});
+    if(target!==null)datasets.push({data:data.map(()=>target),borderColor:'rgba(255,255,255,0.15)',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false});
     chartInstances[c.sub]=new Chart(canvas,{type:'line',data:{labels:data.map(d=>d.label),datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(19,22,31,0.95)',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#e8eaf0',bodyColor:'#6b7490',callbacks:{label:ctx=>` ${ctx.parsed.y}%`}}},scales:{y:{min:0,max:100,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#4a5070',font:{size:9},callback:v=>v+'%',maxTicksLimit:4}},x:{grid:{display:false},ticks:{color:'#4a5070',font:{size:9}}}}}});
   });
 }
 
-// ── STREAK ────────────────────────────────────────────────────────────────────
 function renderStreak(){
-  const grid=document.getElementById('streak-grid'); const labels=document.getElementById('streak-labels'); const stat=document.getElementById('streak-stat');
-  if(!grid) return;
-  const t=today(); const todayStr=dateKey(t);
-  const cells=[]; for(let i=27;i>=0;i--){const d=new Date(t.getTime()-i*864e5);cells.push(d);}
+  const grid=document.getElementById('streak-grid');const labels=document.getElementById('streak-labels');const stat=document.getElementById('streak-stat');
+  if(!grid)return;
+  const t=today();const todayStr=dateKey(t);const cells=[];for(let i=27;i>=0;i--){const d=new Date(t.getTime()-i*864e5);cells.push(d);}
   let streakCount=0;
   for(let i=cells.length-1;i>=0;i--){const n=lsGet('sess_'+dateKey(cells[i]),0);if(n>0)streakCount++;else if(dateKey(cells[i])!==todayStr)break;else break;}
-  grid.innerHTML=''; labels.innerHTML='';
+  grid.innerHTML='';labels.innerHTML='';
   cells.forEach((d,idx)=>{
-    const key=dateKey(d); const n=lsGet('sess_'+key,0); const isToday=key===todayStr;
-    const cell=document.createElement('div'); cell.className='streak-cell'+(isToday?' today-cell':'');
-    if(n===0) cell.style.background=isToday?'rgba(251,146,60,0.08)':'var(--surface2)';
+    const key=dateKey(d);const n=lsGet('sess_'+key,0);const isToday=key===todayStr;
+    const cell=document.createElement('div');cell.className='streak-cell'+(isToday?' today-cell':'');
+    if(n===0)cell.style.background=isToday?'rgba(251,146,60,0.08)':'var(--surface2)';
     else if(n===1){cell.style.background='rgba(74,222,128,0.25)';cell.style.borderColor='rgba(74,222,128,0.4)';}
     else if(n===2){cell.style.background='rgba(74,222,128,0.5)';cell.style.borderColor='rgba(74,222,128,0.65)';}
     else{cell.style.background='rgba(74,222,128,0.82)';cell.style.borderColor='rgba(74,222,128,0.9)';}
     cell.title=`${d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}: ${n} session${n!==1?'s':''}`;
     grid.appendChild(cell);
-    const lbl=document.createElement('div'); lbl.className='streak-day-lbl'; const dayNum=d.getDate();
+    const lbl=document.createElement('div');lbl.className='streak-day-lbl';const dayNum=d.getDate();
     if(isToday){lbl.textContent='today';lbl.style.color='var(--amber)';}
     else if(dayNum%7===0||idx===0){lbl.textContent=d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
     labels.appendChild(lbl);
@@ -1582,35 +1298,20 @@ function renderStreak(){
   stat.style.color=streakCount>=7?'var(--maths)':streakCount>=3?'var(--amber)':'var(--muted2)';
 }
 
-// ── TIMER ─────────────────────────────────────────────────────────────────────
-let TIMER_TOTAL=3600; let timerSecs=TIMER_TOTAL; let timerRunning=false; let timerInterval=null;
+let TIMER_TOTAL=3600;let timerSecs=TIMER_TOTAL;let timerRunning=false;let timerInterval=null;
 function sessionsToday(){return lsGet('sess_'+dateKey(today()),0);}
 function incrementSessions(){lsSet('sess_'+dateKey(today()),sessionsToday()+1);renderStreak();updateTimerUI();}
-function setTimerDuration(mins) {
-  if (timerRunning) return; // don't change while running
-  TIMER_TOTAL = mins * 60;
-  timerSecs = TIMER_TOTAL;
-  updateTimerUI();
-  updateTimerDurationBtns();
-}
-function updateTimerDurationBtns() {
-  const btn30 = document.getElementById('timer-30');
-  const btn60 = document.getElementById('timer-60');
-  if (btn30) {
-    if (TIMER_TOTAL === 1800) { btn30.style.borderColor='var(--amber)'; btn30.style.color='var(--amber)'; btn30.style.background='rgba(251,146,60,0.1)'; }
-    else { btn30.style.borderColor=''; btn30.style.color=''; btn30.style.background=''; }
-  }
-  if (btn60) {
-    if (TIMER_TOTAL === 3600) { btn60.style.borderColor='var(--amber)'; btn60.style.color='var(--amber)'; btn60.style.background='rgba(251,146,60,0.1)'; }
-    else { btn60.style.borderColor=''; btn60.style.color=''; btn60.style.background=''; }
-  }
+function setTimerDuration(mins){if(timerRunning)return;TIMER_TOTAL=mins*60;timerSecs=TIMER_TOTAL;updateTimerUI();updateTimerDurationBtns();}
+function updateTimerDurationBtns(){
+  const btn30=document.getElementById('timer-30');const btn60=document.getElementById('timer-60');
+  if(btn30){if(TIMER_TOTAL===1800){btn30.style.borderColor='var(--amber)';btn30.style.color='var(--amber)';btn30.style.background='rgba(251,146,60,0.1)';}else{btn30.style.borderColor='';btn30.style.color='';btn30.style.background='';}}
+  if(btn60){if(TIMER_TOTAL===3600){btn60.style.borderColor='var(--amber)';btn60.style.color='var(--amber)';btn60.style.background='rgba(251,146,60,0.1)';}else{btn60.style.borderColor='';btn60.style.color='';btn60.style.background='';}}
 }
 function updateTimerUI(){
-  const m=Math.floor(timerSecs/60); const s=timerSecs%60;
-  const isReset=!timerRunning&&timerSecs===TIMER_TOTAL;
+  const m=Math.floor(timerSecs/60);const s=timerSecs%60;const isReset=!timerRunning&&timerSecs===TIMER_TOTAL;
   document.getElementById('timer-time').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
   document.getElementById('timer-lbl').textContent=timerRunning?'RUNNING':isReset?'START':'PAUSED';
-  const n=sessionsToday(); document.getElementById('timer-sess').textContent=n>0?`${n} session${n!==1?'s':''} today`:'';
+  const n=sessionsToday();document.getElementById('timer-sess').textContent=n>0?`${n} session${n!==1?'s':''} today`:'';
   const btn=document.getElementById('timer-btn');
   btn.className='timer-btn'+(timerRunning?' running':'')+((!timerRunning&&timerSecs>0&&timerSecs<300)?' urgent':'');
   updateTimerDurationBtns();
@@ -1622,72 +1323,66 @@ function toggleTimer(){
 }
 function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerSecs=TIMER_TOTAL;updateTimerUI();}
 
-// ── SESSION LOG MODAL (1-5 scale) ─────────────────────────────────────────────
-let slogTopics=new Set(); let slogConf=0; let slogFromTimer=false;
+let slogTopics=new Set();let slogConf=0;let slogFromTimer=false;
 function showSessionLog(fromTimer){
-  slogFromTimer=!!fromTimer; slogTopics=new Set(); slogConf=0;
+  slogFromTimer=!!fromTimer;slogTopics=new Set();slogConf=0;
   const subText=document.getElementById('slog-sub-text');
-  if(subText) subText.textContent=fromTimer?'1-hour session complete. What did you cover?':'What did you study? Select topics below.';
+  if(subText)subText.textContent=fromTimer?'Session complete. What did you cover?':'What did you study?';
   const sessRow=document.getElementById('slog-sess-row');
   if(sessRow){sessRow.style.display=fromTimer?'none':'flex';const chk=document.getElementById('slog-count-sess');if(chk)chk.checked=false;}
-  renderSlogChips(); renderSlogConf();
-  document.getElementById('slog-overlay').classList.add('open');
+  renderSlogChips();renderSlogConf();document.getElementById('slog-overlay').classList.add('open');
 }
 function closeSessionLog(){document.getElementById('slog-overlay').classList.remove('open');}
 function toggleSlogTopic(key){if(slogTopics.has(key))slogTopics.delete(key);else slogTopics.add(key);renderSlogChips();}
 function renderSlogChips(){
-  const wrap=document.getElementById('slog-chips-wrap'); if(!wrap) return;
-  const subOrder=['maths','econ','cs'];
-  const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};
-  const subLabel={maths:'Maths',econ:'Econ',cs:'CS'};
+  const wrap=document.getElementById('slog-chips-wrap');if(!wrap)return;
+  const subOrder=['maths','econ','cs'];const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};const subLabel={maths:'Maths',econ:'Econ',cs:'CS'};
   wrap.innerHTML=subOrder.map(sub=>{
     const gaps=PRIORITY_GAPS.filter(g=>g.sub===sub);
-    const chips=gaps.map(g=>{const sel=slogTopics.has(g.key);return `<span class="slog-chip${sel?' sel':''}" onclick="toggleSlogTopic('${g.key}')">${g.name}</span>`;}).join('');
-    return `<div style="margin-bottom:6px"><div class="slog-sub-lbl" style="color:${subCols[sub]}">${subLabel[sub]}</div><div class="slog-chips">${chips}</div></div>`;
+    const chips=gaps.map(g=>{const sel=slogTopics.has(g.key);return`<span class="slog-chip${sel?' sel':''}" onclick="toggleSlogTopic('${g.key}')">${g.name}</span>`;}).join('');
+    return`<div style="margin-bottom:6px"><div class="slog-sub-lbl" style="color:${subCols[sub]}">${subLabel[sub]}</div><div class="slog-chips">${chips}</div></div>`;
   }).join('');
 }
 function setSlogConf(n){slogConf=(slogConf===n)?0:n;renderSlogConf();}
 function renderSlogConf(){[1,2,3,4,5].forEach(n=>{const btn=document.getElementById('slog-c'+n);if(!btn)return;btn.className='slog-conf-btn'+(slogConf===n?' act-'+n:'');});}
 function submitSessionLog(){
   if(slogTopics.size>0){
-    const state=lsGet('gap_state',{}); const todayKey=dateKey(today()); const dayLog=lsGet('daily_log_'+todayKey,[]);
+    const state=lsGet('gap_state',{});const todayKey=dateKey(today());const dayLog=lsGet('daily_log_'+todayKey,[]);
     slogTopics.forEach(key=>{
-      state[key]={...state[key],lastRevised:Date.now()};
-      if(slogConf>0) state[key].confidence=slogConf;
+      state[key]={...state[key],lastRevised:Date.now()};if(slogConf>0)state[key].confidence=slogConf;
       const g=PRIORITY_GAPS.find(x=>x.key===key);
       if(g){const idx=dayLog.findIndex(x=>x.key===key);const entry={key,name:g.name,sub:g.sub,conf:slogConf,time:Date.now()};if(idx>=0)dayLog[idx]=entry;else dayLog.push(entry);}
     });
-    lsSet('gap_state',state); lsSet('daily_log_'+todayKey,dayLog);
-    renderSmartGaps(); renderFocusCard(); updateMathsTopicsBar(); renderTodayLog();
+    lsSet('gap_state',state);lsSet('daily_log_'+todayKey,dayLog);
+    renderSmartGaps();renderFocusCard();updateMathsTopicsBar();renderTodayLog();
   }
   if(!slogFromTimer){const chk=document.getElementById('slog-count-sess');if(chk&&chk.checked)incrementSessions();}
   closeSessionLog();
 }
 function renderTodayLog(){
-  const el=document.getElementById('today-log-section'); if(!el) return;
-  const todayKey=dateKey(today()); const dayLog=lsGet('daily_log_'+todayKey,[]);
+  const el=document.getElementById('today-log-section');if(!el)return;
+  const todayKey=dateKey(today());const dayLog=lsGet('daily_log_'+todayKey,[]);
   if(!dayLog.length){el.innerHTML='';return;}
   const subBadge={maths:'badge-m',econ:'badge-e',cs:'badge-c'};
   const rows=dayLog.map(e=>{
     const timeStr=new Date(e.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
     const confHtml=e.conf>0?`<span class="tlog-conf" style="background:${CONF_BG[e.conf]};color:${CONF_COLORS[e.conf]}">${CONF_LABELS[e.conf]}</span>`:'';
-    return `<div class="tlog-row"><span class="sub-badge ${subBadge[e.sub]||'badge-college'}" style="font-size:0.52rem">${e.sub==='maths'?'M':e.sub==='econ'?'E':'CS'}</span><span class="tlog-name">${e.name}</span>${confHtml}<span class="tlog-time">${timeStr}</span></div>`;
+    return`<div class="tlog-row"><span class="sub-badge ${subBadge[e.sub]||'badge-college'}" style="font-size:0.52rem">${e.sub==='maths'?'M':e.sub==='econ'?'E':'CS'}</span><span class="tlog-name">${e.name}</span>${confHtml}<span class="tlog-time">${timeStr}</span></div>`;
   }).join('');
   el.innerHTML=`<div class="tlog-wrap"><div class="tlog-header"><span class="tlog-title">Logged today</span><span style="font-family:var(--mono);font-size:0.58rem;color:var(--muted2)">${dayLog.length} topic${dayLog.length!==1?'s':''}</span></div>${rows}</div>`;
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
 function init(){
   seedInitialState();
   const t=today();
   document.getElementById('live-date').textContent=`${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]} ${t.getFullYear()}`;
   document.getElementById('live-phase').textContent=getPhase();
   const neaPill=document.getElementById('nea-status-pill');
-  if(neaPill){neaPill.textContent='NEA submitted · est. 60/70 · awaiting mark';neaPill.style.background='rgba(251,146,60,0.12)';neaPill.style.borderColor='rgba(251,146,60,0.3)';neaPill.style.color='var(--amber)';}
-  renderCountdowns(); renderFocusCard();
-  renderToday(); renderTomorrow(); renderMissedThisWeek();
-  renderWeek(); renderSmartGaps(); updateMathsTopicsBar();
-  renderStreak(); renderTodayLog(); updateTimerUI();
+  if(neaPill){neaPill.textContent='NEA submitted · est. 52/70 · Grade B';neaPill.style.background='rgba(251,146,60,0.12)';neaPill.style.borderColor='rgba(251,146,60,0.3)';neaPill.style.color='var(--amber)';}
+  renderCountdowns();renderFocusCard();
+  renderToday();renderTomorrow();renderMissedThisWeek();
+  renderWeek();renderSmartGaps();updateMathsTopicsBar();
+  renderStreak();renderTodayLog();updateTimerUI();
 }
 init();
 </script>
