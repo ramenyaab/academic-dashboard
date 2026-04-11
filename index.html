@@ -3,65 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abdul — Academic Dashboard</title>
+<title>Abdul &mdash; Academic Dashboard</title>
 <script>
-(function(){
-  var p=localStorage.getItem('theme_pref');
-  if(p==='light'||p==='dark')document.documentElement.setAttribute('data-theme',p);
-})();
+(function(){var p=localStorage.getItem('theme_pref');if(p==='light'||p==='dark')document.documentElement.dataset.theme=p;})();
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
-/* ── BASE TOKENS (never change between themes) ─────────────────────────────── */
 :root{
   --maths:#22c55e;--econ:#3b82f6;--cs:#d97706;
   --red:#dc2626;--amber:#ea580c;--purple:#9333ea;--cyan:#22d3ee;
-  --mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;--radius:14px;
+  --mono:"Space Mono",monospace;--sans:"DM Sans",sans-serif;--radius:14px;
 }
-/* ── DARK THEME (default) ───────────────────────────────────────────────────── */
+/* DARK (default) */
 :root{
   --bg:#0d0f17;--surface:#131720;--surface2:#191e2e;--surface3:#1f2438;
   --border:#232840;--border2:#2c3354;
   --text:#e2e4ed;--muted:#464d6a;--muted2:#636d90;
   --topbar-bg:rgba(13,15,23,0.92);
-  --shadow:0 4px 24px rgba(0,0,0,0.5);
+  --shadow:0 2px 12px rgba(0,0,0,0.45);--shadow-lg:0 4px 28px rgba(0,0,0,0.6);
+  --chart-grid:rgba(255,255,255,0.04);--chart-tick:#464d6a;
+  --chart-tooltip-bg:rgba(19,23,32,0.96);--chart-tooltip-border:rgba(255,255,255,0.07);
 }
-/* ── LIGHT THEME (auto) ─────────────────────────────────────────────────────── */
+/* LIGHT (OS preference) */
 @media(prefers-color-scheme:light){
   :root{
     --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0efe9;--surface3:#e8e6de;
     --border:#dddbd2;--border2:#c8c5bb;
     --text:#1a1c24;--muted:#8a8778;--muted2:#6b6859;
     --topbar-bg:rgba(245,244,240,0.94);
-    --shadow:0 4px 20px rgba(0,0,0,0.08);
+    --shadow:0 2px 10px rgba(0,0,0,0.08);--shadow-lg:0 4px 24px rgba(0,0,0,0.12);
+    --chart-grid:rgba(0,0,0,0.05);--chart-tick:#8a8778;
+    --chart-tooltip-bg:rgba(255,255,255,0.98);--chart-tooltip-border:rgba(0,0,0,0.08);
   }
 }
-/* ── MANUAL OVERRIDE: FORCE DARK ────────────────────────────────────────────── */
+/* FORCE DARK */
 :root[data-theme="dark"]{
   --bg:#0d0f17;--surface:#131720;--surface2:#191e2e;--surface3:#1f2438;
   --border:#232840;--border2:#2c3354;
   --text:#e2e4ed;--muted:#464d6a;--muted2:#636d90;
   --topbar-bg:rgba(13,15,23,0.92);
-  --shadow:0 4px 24px rgba(0,0,0,0.5);
+  --shadow:0 2px 12px rgba(0,0,0,0.45);--shadow-lg:0 4px 28px rgba(0,0,0,0.6);
+  --chart-grid:rgba(255,255,255,0.04);--chart-tick:#464d6a;
+  --chart-tooltip-bg:rgba(19,23,32,0.96);--chart-tooltip-border:rgba(255,255,255,0.07);
 }
-/* ── MANUAL OVERRIDE: FORCE LIGHT ───────────────────────────────────────────── */
+/* FORCE LIGHT */
 :root[data-theme="light"]{
   --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0efe9;--surface3:#e8e6de;
   --border:#dddbd2;--border2:#c8c5bb;
   --text:#1a1c24;--muted:#8a8778;--muted2:#6b6859;
   --topbar-bg:rgba(245,244,240,0.94);
-  --shadow:0 4px 20px rgba(0,0,0,0.08);
+  --shadow:0 2px 10px rgba(0,0,0,0.08);--shadow-lg:0 4px 24px rgba(0,0,0,0.12);
+  --chart-grid:rgba(0,0,0,0.05);--chart-tick:#8a8778;
+  --chart-tooltip-bg:rgba(255,255,255,0.98);--chart-tooltip-border:rgba(0,0,0,0.08);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;}
-.topbar{position:sticky;top:0;z-index:100;background:var(--topbar-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:58px;}
-.topbar-left{display:flex;align-items:center;gap:16px;}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.2s,color 0.2s;}
+.topbar{position:sticky;top:0;z-index:100;background:var(--topbar-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:58px;gap:12px;}
+.topbar-left{display:flex;align-items:center;gap:16px;min-width:0;}
 .topbar-title{font-family:var(--mono);font-size:0.8rem;letter-spacing:0.06em;color:var(--muted2);text-transform:uppercase;}
 .topbar-date{font-family:var(--mono);font-size:0.7rem;color:var(--muted);}
 .topbar-phase{font-family:var(--mono);font-size:0.65rem;color:var(--amber);}
+.topbar-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .nea-pill{background:color-mix(in srgb,var(--amber) 12%,transparent);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent);border-radius:20px;padding:4px 12px;font-family:var(--mono);font-size:0.65rem;font-weight:700;color:var(--amber);letter-spacing:0.06em;white-space:nowrap;cursor:pointer;transition:background 0.15s;}
 .nea-pill:hover{background:color-mix(in srgb,var(--amber) 20%,transparent);}
+.theme-toggle{display:flex;align-items:center;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;overflow:hidden;flex-shrink:0;}
+.theme-btn{font-family:var(--mono);font-size:0.52rem;padding:4px 9px;background:none;border:none;color:var(--muted2);cursor:pointer;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.12s,background 0.12s;white-space:nowrap;}
+.theme-btn:hover{color:var(--text);}
+.theme-btn.active{background:color-mix(in srgb,var(--amber) 15%,transparent);color:var(--amber);font-weight:700;}
 .cd-strip{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border);}
 .cd-item{padding:20px 28px;border-right:1px solid var(--border);display:flex;align-items:center;gap:20px;}
 .cd-item:last-child{border-right:none;}
@@ -84,7 +93,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .tab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .tab-pane{display:none;padding:28px;max-width:1200px;margin:0 auto;}
 .tab-pane.active{display:block;}
-.focus-card{background:linear-gradient(135deg,color-mix(in srgb,var(--amber) 7%,transparent) 0%,color-mix(in srgb,var(--red) 4%,transparent) 100%);border:1px solid color-mix(in srgb,var(--amber) 28%,transparent);border-left:4px solid var(--amber);border-radius:var(--radius);padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;}
+.focus-card{background:color-mix(in srgb,var(--amber) 7%,var(--surface));border:1px solid color-mix(in srgb,var(--amber) 28%,transparent);border-left:4px solid var(--amber);border-radius:var(--radius);padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;}
 .focus-label{font-family:var(--mono);font-size:0.57rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--amber);margin-bottom:5px;}
 .focus-topic{font-size:0.98rem;font-weight:700;margin-bottom:3px;}
 .focus-reason{font-size:0.73rem;color:var(--muted2);}
@@ -109,7 +118,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .task-conf-lbl{font-family:var(--mono);font-size:0.5rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
 .task-conf-btn{font-family:var(--mono);font-size:0.58rem;padding:3px 8px;border-radius:8px;border:1px solid var(--border2);background:var(--surface3);color:var(--muted2);cursor:pointer;transition:all 0.12s;}
 .task-conf-btn:hover{border-color:var(--muted2);color:var(--text);}
-.task-conf-btn.act-1{border-color:var(--muted);color:var(--muted);background:color-mix(in srgb,var(--muted) 15%,transparent);}
+.task-conf-btn.act-1{border-color:var(--muted);color:var(--muted);background:color-mix(in srgb,var(--muted) 10%,transparent);}
 .task-conf-btn.act-2{border-color:var(--red);color:var(--red);background:color-mix(in srgb,var(--red) 10%,transparent);}
 .task-conf-btn.act-3{border-color:var(--amber);color:var(--amber);background:color-mix(in srgb,var(--amber) 10%,transparent);}
 .task-conf-btn.act-4{border-color:var(--maths);color:var(--maths);background:color-mix(in srgb,var(--maths) 10%,transparent);}
@@ -121,9 +130,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .badge-e{background:color-mix(in srgb,var(--econ) 15%,transparent);color:var(--econ);}
 .badge-c{background:color-mix(in srgb,var(--cs) 15%,transparent);color:var(--cs);}
 .badge-nea{background:color-mix(in srgb,var(--purple) 15%,transparent);color:var(--purple);}
-.badge-hw{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red);}
-.badge-college{background:color-mix(in srgb,var(--muted) 30%,transparent);color:var(--muted2);}
-.bonus-section{margin-top:8px;padding:12px 14px;background:color-mix(in srgb,var(--muted) 10%,transparent);border:1px dashed var(--border2);border-radius:10px;}
+.badge-hw{background:color-mix(in srgb,var(--red) 18%,transparent);color:var(--red);}
+.bonus-section{margin-top:8px;padding:12px 14px;background:color-mix(in srgb,var(--muted) 8%,transparent);border:1px dashed var(--border2);border-radius:10px;}
 .bonus-lbl{font-family:var(--mono);font-size:0.5rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:7px;}
 .bonus-row{display:flex;align-items:center;gap:8px;}
 .bonus-dismiss-btn{font-family:var(--mono);font-size:0.54rem;padding:2px 9px;border-radius:8px;background:transparent;border:1px solid var(--border2);color:var(--muted);cursor:pointer;flex-shrink:0;transition:all 0.15s;}
@@ -137,9 +145,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .tmr-detail{font-size:0.71rem;color:var(--muted2);margin-top:3px;}
 .week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;}
 .wday{background:var(--surface2);border-radius:10px;padding:14px;border:1px solid var(--border);min-height:100px;transition:border-color 0.12s;}
-.wday.today-col{border-color:var(--amber);background:color-mix(in srgb,var(--amber) 4%,transparent);}
-.wday.deadline{border-color:var(--red);background:color-mix(in srgb,var(--red) 5%,transparent);}
-.wday.weekend-col{border-color:var(--border);background:color-mix(in srgb,var(--muted) 8%,transparent);}
+.wday.today-col{border-color:var(--amber);background:color-mix(in srgb,var(--amber) 4%,var(--surface2));}
+.wday.deadline{border-color:var(--red);background:color-mix(in srgb,var(--red) 4%,var(--surface2));}
+.wday.weekend-col{background:color-mix(in srgb,var(--muted) 6%,var(--surface2));}
 .wday-head{font-family:var(--mono);font-size:0.6rem;margin-bottom:8px;font-weight:700;}
 .wday.today-col .wday-head{color:var(--amber);}
 .wday.deadline .wday-head{color:var(--red);}
@@ -147,7 +155,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .wday-task{display:flex;align-items:flex-start;gap:5px;font-size:0.68rem;line-height:1.3;margin-bottom:5px;}
 .wday-task:last-child{margin-bottom:0;}
 .wday-task-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:3px;}
-.wday-task.college-task{color:var(--muted);}
 .wday-task.hw-task{color:var(--red);}
 .wday-task.done-task{opacity:0.4;text-decoration:line-through;}
 .all-sessions-day{margin-bottom:24px;}
@@ -156,7 +163,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .all-sessions-date-rel{font-family:var(--mono);font-size:0.58rem;color:var(--muted2);}
 .all-sessions-date-exam{font-family:var(--mono);font-size:0.58rem;color:var(--red);font-weight:700;}
 .all-sess-row{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;background:var(--surface2);border-radius:8px;margin-bottom:6px;border:1px solid transparent;}
-.all-sess-row.is-today{border-color:color-mix(in srgb,var(--amber) 30%,transparent);background:color-mix(in srgb,var(--amber) 4%,transparent);}
+.all-sess-row.is-today{border-color:color-mix(in srgb,var(--amber) 30%,transparent);background:color-mix(in srgb,var(--amber) 4%,var(--surface2));}
 .all-sess-row.is-done{opacity:0.4;}
 .all-sess-body{flex:1;}
 .all-sess-name{font-size:0.82rem;font-weight:600;margin-bottom:2px;}
@@ -172,7 +179,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .subj-card.e .subj-name{color:var(--econ);}
 .subj-card.c .subj-name{color:var(--cs);}
 .subj-status-tag{display:inline-block;font-family:var(--mono);font-size:0.62rem;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:18px;letter-spacing:0.06em;}
-.tag-critical{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red);}
+.tag-critical{background:color-mix(in srgb,var(--red) 18%,transparent);color:var(--red);}
 .tag-protect{background:color-mix(in srgb,var(--econ) 15%,transparent);color:var(--econ);}
 .tag-target{background:color-mix(in srgb,var(--cs) 15%,transparent);color:var(--cs);}
 .bar-section{margin-bottom:16px;}
@@ -184,7 +191,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .gb-section{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
 .gb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
 .gb-section-lbl{font-family:var(--mono);font-size:0.52rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
-.gb-edit-btn{font-family:var(--mono);font-size:0.52rem;padding:2px 8px;border-radius:8px;background:color-mix(in srgb,var(--muted) 30%,transparent);border:1px solid var(--border2);color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.gb-edit-btn{font-family:var(--mono);font-size:0.52rem;padding:2px 8px;border-radius:8px;background:color-mix(in srgb,var(--muted) 20%,transparent);border:1px solid var(--border2);color:var(--muted);cursor:pointer;transition:all 0.15s;}
 .gb-edit-btn:hover{color:var(--text);border-color:var(--muted2);}
 .gb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
 .gb-cell{background:var(--surface2);border-radius:8px;padding:9px 10px;text-align:center;}
@@ -192,7 +199,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .gb-val{font-family:var(--mono);font-size:0.82rem;font-weight:700;}
 .chart-wrap{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
 .chart-wrap-title{font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted2);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
-.add-mock-btn{font-family:var(--mono);font-size:0.56rem;padding:2px 8px;border-radius:10px;background:color-mix(in srgb,var(--muted) 30%,transparent);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;transition:color 0.15s,border-color 0.15s;}
+.add-mock-btn{font-family:var(--mono);font-size:0.56rem;padding:2px 8px;border-radius:10px;background:color-mix(in srgb,var(--muted) 20%,transparent);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;transition:color 0.15s,border-color 0.15s;}
 .add-mock-btn:hover{color:var(--text);border-color:var(--muted2);}
 .gaps-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-top:16px;}
 .gaps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
@@ -221,11 +228,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .streak-title{font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
 .streak-stat{font-family:var(--mono);font-size:0.62rem;}
 .streak-grid{display:grid;grid-template-columns:repeat(28,1fr);gap:3px;}
-.streak-cell{aspect-ratio:1;border-radius:3px;cursor:default;transition:transform 0.1s;border:1px solid var(--border);position:relative;}
+.streak-cell{aspect-ratio:1;border-radius:3px;cursor:default;transition:transform 0.1s;border:1px solid var(--border);}
 .streak-cell:hover{transform:scale(1.35);z-index:2;}
 .streak-cell.today-cell{border-color:var(--amber)!important;}
 .streak-labels{display:grid;grid-template-columns:repeat(28,1fr);gap:3px;margin-top:3px;}
-.streak-day-lbl{font-family:var(--mono);font-size:0.38rem;color:var(--muted);text-align:center;}
+.streak-day-lbl{font-family:var(--mono);font-size:0.42rem;color:var(--muted);text-align:center;}
 .nea-hero{display:flex;align-items:center;gap:24px;border-radius:12px;padding:24px 28px;margin-bottom:24px;}
 .nea-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .nea-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--surface2);border-radius:8px;}
@@ -236,10 +243,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .uni-name{font-size:0.85rem;font-weight:600;margin-bottom:6px;}
 .uni-offer{font-family:var(--mono);font-size:0.75rem;color:var(--econ);margin-bottom:4px;}
 .uni-note{font-size:0.7rem;color:var(--muted2);}
-/* Pack modal */
-.pack-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
+.pack-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
 .pack-overlay.open{opacity:1;pointer-events:auto;}
-.pack-modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;width:min(720px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;}
+.pack-modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;width:min(720px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-lg);}
 .pack-modal-header{padding:20px 24px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px;flex-shrink:0;}
 .pack-modal-id{font-family:var(--mono);font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:8px;flex-shrink:0;margin-top:2px;}
 .pack-modal-title{font-size:1rem;font-weight:700;flex:1;line-height:1.3;}
@@ -251,33 +257,27 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .pack-copy-btn:hover{background:color-mix(in srgb,var(--purple) 22%,transparent);}
 .pack-copy-btn.copied{background:color-mix(in srgb,var(--maths) 12%,transparent);border-color:color-mix(in srgb,var(--maths) 35%,transparent);color:var(--maths);}
 .pack-modal-body{flex:1;overflow-y:auto;padding:20px 24px;}
-.pack-modal-body pre{font-family:var(--mono);font-size:0.68rem;line-height:1.65;color:var(--muted2);white-space:pre-wrap;word-break:break-word;}
-.pack-modal-body pre b{color:var(--text);}
-.pack-modal-body pre .tier-head{color:var(--amber);font-weight:700;}
-.pack-modal-body pre .instruction-head{color:var(--purple);}
-/* Session Packs tab */
+.pack-modal-body pre{font-family:var(--mono);font-size:0.7rem;line-height:1.65;color:var(--muted2);white-space:pre-wrap;word-break:break-word;}
 .pack-list{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
 .pack-row{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--surface2);border-radius:8px;cursor:pointer;border:1px solid transparent;transition:all 0.12s;}
 .pack-row:hover{background:var(--surface3);border-color:var(--border2);}
 .pack-row-id{font-family:var(--mono);font-size:0.68rem;font-weight:700;flex-shrink:0;min-width:60px;}
 .pack-row-name{font-size:0.79rem;color:var(--muted2);flex:1;}
 .pack-row-arrow{font-family:var(--mono);font-size:0.6rem;color:var(--muted);flex-shrink:0;}
-/* Timer */
 .timer-fab{position:fixed;bottom:28px;right:28px;z-index:200;display:flex;flex-direction:column;align-items:center;gap:7px;}
-.timer-btn{width:72px;height:72px;border-radius:50%;background:var(--surface2);border:2px solid var(--border2);color:var(--text);font-family:var(--mono);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:border-color 0.2s,background 0.2s;box-shadow:var(--shadow);}
+.timer-btn{width:72px;height:72px;border-radius:50%;background:var(--surface2);border:2px solid var(--border2);color:var(--text);font-family:var(--mono);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:border-color 0.2s,background 0.2s;box-shadow:var(--shadow-lg);}
 .timer-btn:hover{border-color:var(--amber);}
 .timer-btn.running{border-color:var(--maths);background:color-mix(in srgb,var(--maths) 8%,transparent);}
 .timer-btn.urgent{border-color:var(--red);animation:pulse-t 1.2s ease-in-out infinite;}
-@keyframes pulse-t{0%,100%{box-shadow:0 4px 24px color-mix(in srgb,var(--red) 20%,transparent)}50%{box-shadow:0 4px 32px color-mix(in srgb,var(--red) 65%,transparent)}}
+@keyframes pulse-t{0%,100%{box-shadow:0 4px 24px color-mix(in srgb,var(--red) 20%,transparent)}50%{box-shadow:0 4px 32px color-mix(in srgb,var(--red) 60%,transparent)}}
 .timer-time-txt{font-size:0.82rem;font-weight:700;line-height:1;}
 .timer-sub-txt{font-size:0.48rem;color:var(--muted2);text-transform:uppercase;letter-spacing:0.08em;}
 .timer-sess-txt{font-family:var(--mono);font-size:0.58rem;color:var(--muted);text-align:center;white-space:nowrap;}
-.log-fab-btn{font-family:var(--mono);font-size:0.55rem;padding:5px 12px;border-radius:10px;background:color-mix(in srgb,var(--muted) 35%,transparent);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;white-space:nowrap;transition:all 0.15s;text-align:center;}
+.log-fab-btn{font-family:var(--mono);font-size:0.55rem;padding:5px 12px;border-radius:10px;background:color-mix(in srgb,var(--muted) 25%,transparent);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;white-space:nowrap;transition:all 0.15s;text-align:center;}
 .log-fab-btn:hover{color:var(--text);border-color:var(--amber);background:color-mix(in srgb,var(--amber) 10%,transparent);}
-/* Session log modal */
-.slog-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.78);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
+.slog-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.72);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
 .slog-overlay.open{opacity:1;pointer-events:auto;}
-.slog-modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:28px 30px;width:min(540px,92vw);max-height:85vh;overflow-y:auto;}
+.slog-modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:28px 30px;width:min(540px,92vw);max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-lg);}
 .slog-title{font-size:1.08rem;font-weight:700;margin-bottom:3px;}
 .slog-sub{font-size:0.76rem;color:var(--muted2);margin-bottom:20px;}
 .slog-sec-lbl{font-family:var(--mono);font-size:0.54rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:7px;margin-top:16px;}
@@ -289,7 +289,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .slog-conf-row{display:flex;gap:6px;flex-wrap:wrap;}
 .slog-conf-btn{flex:1;min-width:80px;padding:9px 0;border-radius:10px;background:var(--surface2);border:1px solid var(--border2);font-family:var(--mono);font-size:0.6rem;color:var(--muted2);cursor:pointer;text-align:center;transition:all 0.12s;}
 .slog-conf-btn:hover{border-color:var(--muted2);color:var(--text);}
-.slog-conf-btn.act-1{border-color:var(--muted);color:var(--muted);background:color-mix(in srgb,var(--muted) 12%,transparent);}
+.slog-conf-btn.act-1{border-color:var(--muted);color:var(--muted);background:color-mix(in srgb,var(--muted) 10%,transparent);}
 .slog-conf-btn.act-2{border-color:var(--red);color:var(--red);background:color-mix(in srgb,var(--red) 8%,transparent);}
 .slog-conf-btn.act-3{border-color:var(--amber);color:var(--amber);background:color-mix(in srgb,var(--amber) 8%,transparent);}
 .slog-conf-btn.act-4{border-color:var(--maths);color:var(--maths);background:color-mix(in srgb,var(--maths) 8%,transparent);}
@@ -325,57 +325,49 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .missed-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border);}
 .missed-row:first-child{border-top:none;}
 .missed-when{font-family:var(--mono);font-size:0.6rem;color:var(--muted);flex-shrink:0;}
-
-/* ── THEME TOGGLE ──────────────────────────────────────────────────────────── */
-.theme-toggle{display:flex;border:1px solid var(--border2);border-radius:8px;overflow:hidden;flex-shrink:0;}
-.theme-btn{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.06em;text-transform:uppercase;padding:4px 9px;background:transparent;border:none;color:var(--muted);cursor:pointer;transition:background 0.12s,color 0.12s;white-space:nowrap;}
-.theme-btn:hover{color:var(--text);}
-.theme-btn.active{background:color-mix(in srgb,var(--amber) 15%,transparent);color:var(--amber);}
 </style>
 </head>
 <body>
-
 <div class="topbar">
   <div class="topbar-left">
     <div>
-      <div class="topbar-title">Abdul — Academic OS</div>
+      <div class="topbar-title">Abdul &mdash; Academic OS</div>
       <div class="topbar-date" id="live-date"></div>
     </div>
     <div class="topbar-phase" id="live-phase"></div>
   </div>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <div class="theme-toggle" id="theme-toggle">
-      <button class="theme-btn" id="tbtn-auto" onclick="setTheme('auto')" title="Follow system">Auto</button>
-      <button class="theme-btn" id="tbtn-light" onclick="setTheme('light')" title="Force light">Light</button>
-      <button class="theme-btn" id="tbtn-dark" onclick="setTheme('dark')" title="Force dark">Dark</button>
+  <div class="topbar-right">
+    <div class="theme-toggle">
+      <button class="theme-btn" id="theme-auto" onclick="setTheme('auto')">Auto</button>
+      <button class="theme-btn" id="theme-light" onclick="setTheme('light')">Light</button>
+      <button class="theme-btn" id="theme-dark" onclick="setTheme('dark')">Dark</button>
     </div>
-    <span class="nea-pill" onclick="switchTab('nea',document.querySelector('[onclick*=\"nea\"]'))" title="Click to view NEA details">NEA est. 60/70 · mark pending</span>
+    <span class="nea-pill" onclick="switchTab('nea',document.querySelector('[data-tab=nea]'))" title="NEA details">NEA est. 60/70 &middot; mark pending</span>
   </div>
 </div>
-
 <div class="cd-strip">
   <div class="cd-item e">
-    <div class="cd-num" id="cd-econ">—</div>
+    <div class="cd-num" id="cd-econ">--</div>
     <div class="cd-meta">
       <div class="cd-name">Economics P1</div>
       <div class="cd-date">11 May 2026</div>
-      <div class="cd-next">P2 <b>18 May</b> · P3 <b>4 Jun</b></div>
+      <div class="cd-next">P2 <b>18 May</b> &middot; P3 <b>4 Jun</b></div>
       <div class="cd-bar"><div class="cd-bar-fill" id="cd-econ-bar"></div></div>
       <div class="cd-urgency" id="cd-econ-urg"></div>
     </div>
   </div>
   <div class="cd-item m">
-    <div class="cd-num" id="cd-maths">—</div>
+    <div class="cd-num" id="cd-maths">--</div>
     <div class="cd-meta">
       <div class="cd-name">Maths Pure 1</div>
       <div class="cd-date">3 June 2026</div>
-      <div class="cd-next">Pure 2 <b>11 Jun</b> · S&amp;M <b>18 Jun</b></div>
+      <div class="cd-next">Pure 2 <b>11 Jun</b> &middot; S&amp;M <b>18 Jun</b></div>
       <div class="cd-bar"><div class="cd-bar-fill" id="cd-maths-bar"></div></div>
       <div class="cd-urgency" id="cd-maths-urg"></div>
     </div>
   </div>
   <div class="cd-item c">
-    <div class="cd-num" id="cd-cs">—</div>
+    <div class="cd-num" id="cd-cs">--</div>
     <div class="cd-meta">
       <div class="cd-name">CS Paper 1</div>
       <div class="cd-date">10 June 2026</div>
@@ -385,23 +377,18 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 </div>
-
-<div style="padding:8px 28px;border-bottom:1px solid var(--border);background:rgba(251,146,60,0.03);">
-  <a href="why.html" style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);text-decoration:none;letter-spacing:0.06em;" onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='var(--muted)'">
-    Need to remember why this matters? <span style="color:var(--amber)">→ Read your WHY first</span>
-  </a>
+<div style="padding:8px 28px;border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--amber) 3%,var(--bg));">
+  <a href="why.html" style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);text-decoration:none;letter-spacing:0.06em;" onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='var(--muted)'">Need to remember why this matters? <span style="color:var(--amber)">&rarr; Read your WHY first</span></a>
 </div>
-
 <div class="tabs-nav">
-  <button class="tab-btn active" onclick="switchTab('today',this)"><span class="tab-dot" style="background:var(--amber)"></span> Today</button>
-  <button class="tab-btn" onclick="switchTab('week',this)"><span class="tab-dot" style="background:var(--econ)"></span> This Week</button>
-  <button class="tab-btn" onclick="switchTab('all',this)"><span class="tab-dot" style="background:var(--purple)"></span> All Sessions</button>
-  <button class="tab-btn" onclick="switchTab('packs',this)"><span class="tab-dot" style="background:var(--purple)"></span> Session Packs</button>
-  <button class="tab-btn" onclick="switchTab('subjects',this)"><span class="tab-dot" style="background:var(--maths)"></span> Subjects</button>
-  <button class="tab-btn" onclick="switchTab('nea',this)"><span class="tab-dot" style="background:var(--purple)"></span> NEA + Offers</button>
-  <button class="tab-btn" onclick="switchTab('guide',this)"><span class="tab-dot" style="background:var(--muted2)"></span> Guide</button>
+  <button class="tab-btn active" data-tab="today" onclick="switchTab('today',this)"><span class="tab-dot" style="background:var(--amber)"></span>Today</button>
+  <button class="tab-btn" data-tab="week" onclick="switchTab('week',this)"><span class="tab-dot" style="background:var(--econ)"></span>This Week</button>
+  <button class="tab-btn" data-tab="all" onclick="switchTab('all',this)"><span class="tab-dot" style="background:var(--purple)"></span>All Sessions</button>
+  <button class="tab-btn" data-tab="packs" onclick="switchTab('packs',this)"><span class="tab-dot" style="background:var(--purple)"></span>Session Packs</button>
+  <button class="tab-btn" data-tab="subjects" onclick="switchTab('subjects',this)"><span class="tab-dot" style="background:var(--maths)"></span>Subjects</button>
+  <button class="tab-btn" data-tab="nea" onclick="switchTab('nea',this)"><span class="tab-dot" style="background:var(--purple)"></span>NEA + Offers</button>
+  <button class="tab-btn" data-tab="guide" onclick="switchTab('guide',this)"><span class="tab-dot" style="background:var(--muted2)"></span>Guide</button>
 </div>
-
 <!-- TODAY -->
 <div class="tab-pane active" id="tab-today">
   <div id="focus-card" class="focus-card"></div>
@@ -415,28 +402,23 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <div class="card-title" id="tmr-title">Tomorrow</div>
       <div class="card" style="padding:18px 20px;"><div class="tmr-list" id="tmr-tasks"></div></div>
       <div style="margin-top:20px">
-        <div class="card-title" style="color:var(--red)">△ Missed this week</div>
-        <div class="card" style="border-color:rgba(233,69,96,0.3);padding:18px 20px;"><div id="overdue-mini"></div></div>
+        <div class="card-title" style="color:var(--red)">Missed this week</div>
+        <div class="card" style="border-color:color-mix(in srgb,var(--red) 30%,transparent);padding:18px 20px;"><div id="overdue-mini"></div></div>
       </div>
     </div>
   </div>
   <div class="streak-section">
-    <div class="streak-header">
-      <span class="streak-title">28-Day Revision Streak</span>
-      <span class="streak-stat" id="streak-stat"></span>
-    </div>
+    <div class="streak-header"><span class="streak-title">28-Day Revision Streak</span><span class="streak-stat" id="streak-stat"></span></div>
     <div class="streak-grid" id="streak-grid"></div>
     <div class="streak-labels" id="streak-labels"></div>
   </div>
   <div id="today-log-section" style="margin-top:18px"></div>
 </div>
-
 <!-- THIS WEEK -->
 <div class="tab-pane" id="tab-week">
   <div class="card-title" id="week-title">Week</div>
   <div class="week-grid" id="week-grid"></div>
 </div>
-
 <!-- ALL SESSIONS -->
 <div class="tab-pane" id="tab-all">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
@@ -447,7 +429,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
       <button class="log-fab-btn" id="toggle-past-btn" onclick="togglePastSessions()" style="font-size:0.6rem;padding:4px 10px">Show earlier this week</button>
       <span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted)">Filter:</span>
-      <button class="task-conf-btn" id="filter-all" onclick="setFilter('all')" style="border-color:var(--amber);color:var(--amber);background:rgba(251,146,60,0.1)">All</button>
+      <button class="task-conf-btn" id="filter-all" onclick="setFilter('all')" style="border-color:var(--amber);color:var(--amber);background:color-mix(in srgb,var(--amber) 10%,transparent)">All</button>
       <button class="task-conf-btn" id="filter-maths" onclick="setFilter('maths')">Maths</button>
       <button class="task-conf-btn" id="filter-econ" onclick="setFilter('econ')">Econ</button>
       <button class="task-conf-btn" id="filter-cs" onclick="setFilter('cs')">CS</button>
@@ -455,241 +437,147 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   </div>
   <div id="all-sessions-container"></div>
 </div>
-
+<!-- SESSION PACKS -->
+<div class="tab-pane" id="tab-packs">
+  <div style="background:color-mix(in srgb,var(--purple) 7%,var(--surface));border:1px solid color-mix(in srgb,var(--purple) 25%,transparent);border-left:4px solid var(--purple);border-radius:var(--radius);padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;">
+    <div style="font-family:var(--mono);font-size:1.6rem;color:var(--purple);line-height:1;flex-shrink:0;letter-spacing:-0.02em">SP</div>
+    <div style="flex:1">
+      <div style="font-size:0.98rem;font-weight:700;color:var(--purple);margin-bottom:4px">60 Session Packs &mdash; real past paper questions, 4 tiers each</div>
+      <div style="font-size:0.73rem;color:var(--muted2)">Click any pack to copy the full AI prompt to clipboard &mdash; paste straight into Gemini. Today tasks with a pack show a launch button too.</div>
+    </div>
+    <div style="text-align:right;flex-shrink:0"><div style="font-family:var(--mono);font-size:2.5rem;font-weight:700;color:var(--purple);line-height:1">60</div><div style="font-family:var(--mono);font-size:0.5rem;color:var(--muted);text-transform:uppercase">packs</div></div>
+  </div>
+  <div style="padding:14px 18px;background:color-mix(in srgb,var(--muted) 8%,transparent);border:1px solid var(--border2);border-radius:10px;margin-bottom:24px;">
+    <div style="font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);margin-bottom:8px">How to use</div>
+    <div style="font-size:0.77rem;color:var(--muted2);line-height:1.8">1. Click a pack below (or the <span style="font-family:var(--mono);font-size:0.68rem;padding:1px 6px;border-radius:5px;border:1px solid color-mix(in srgb,var(--purple) 40%,transparent);color:var(--purple);background:color-mix(in srgb,var(--purple) 8%,transparent)">&blacktriangleright; pack</span> button in Today).<br>2. Hit <b style="color:var(--text)">Copy prompt</b>. Full 4-tier block goes to clipboard.<br>3. Paste into Gemini. Cold recall only &mdash; no hints.<br>4. Work Tier 1 &rarr; 4. Log confidence when done.</div>
+  </div>
+  <div id="packs-loading" style="font-family:var(--mono);font-size:0.72rem;color:var(--muted);padding:20px 0">Loading pack data&hellip;</div>
+  <div id="packs-content" style="display:none;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+    <div>
+      <div class="card-title" style="color:var(--maths)">Maths Pure &mdash; 12 packs</div>
+      <div class="pack-list" id="pack-list-pure"></div>
+      <div class="card-title" style="color:var(--cyan);margin-top:16px">Stats &amp; Mechanics &mdash; 9 packs</div>
+      <div class="pack-list" id="pack-list-sm"></div>
+    </div>
+    <div>
+      <div class="card-title" style="color:var(--econ)">Economics &mdash; 8 packs</div>
+      <div class="pack-list" id="pack-list-econ"></div>
+      <div class="card-title" style="color:var(--cs);margin-top:16px">CS Paper 1 &mdash; 7 packs</div>
+      <div class="pack-list" id="pack-list-csp1"></div>
+    </div>
+    <div>
+      <div class="card-title" style="color:var(--cs)">CS Paper 2 + Timed &mdash; 6 packs</div>
+      <div class="pack-list" id="pack-list-csp2"></div>
+    </div>
+  </div>
+</div>
 <!-- SUBJECTS -->
 <div class="tab-pane" id="tab-subjects">
   <div class="subjects-grid">
     <div class="subj-card m">
       <div class="subj-name">Maths</div>
-      <div class="subj-status-tag tag-critical">CRITICAL — A needed for QMUL/Sussex/City</div>
+      <div class="subj-status-tag tag-critical">CRITICAL &mdash; A needed for QMUL/Sussex/City</div>
       <div class="bar-section">
-        <div class="bar-lbl">Sessions done (out of 27 total) <span id="maths-topics-lbl">0 / 27</span></div>
+        <div class="bar-lbl">Sessions done (of 27 total) <span id="maths-topics-lbl">0 / 27</span></div>
         <div class="bar"><div class="bar-fill" id="maths-topics-bar" style="width:3%;background:var(--maths)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Easter check-in 9 Apr — 14/25 <span style="color:var(--amber)">56% · improving</span></div>
+        <div class="bar-lbl">Easter check-in 9 Apr &mdash; 14/25 <span style="color:var(--amber)">56% &middot; improving</span></div>
         <div class="bar"><div class="bar-fill" style="width:56%;background:var(--amber)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Diagnosis 30 Mar — 17/76 <span style="color:var(--red)">22% · U</span></div>
+        <div class="bar-lbl">Diagnosis 30 Mar &mdash; 17/76 <span style="color:var(--red)">22% &middot; U</span></div>
         <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
       </div>
-      <div class="subj-note">Pure 1: 3 Jun · Pure 2: 11 Jun · S&amp;M: 18 Jun. Easter Pure plan (M1–M12) complete. Post-Easter: Stats &amp; Mechanics (S1–S9) + timed papers + Pure revisits. Recurring losses: product rule inside implicit diff, bracket omission in parametric fractions.</div>
-      <div class="gb-section">
-        <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('maths')">✏ edit</button></div>
-        <div class="gb-grid" id="gb-maths"></div>
-      </div>
-      <div class="chart-wrap">
-        <div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('maths')">+ Add score</button></div>
-        <div style="height:80px;position:relative"><canvas id="chart-maths"></canvas></div>
-      </div>
+      <div class="subj-note">Pure 1: 3 Jun &middot; Pure 2: 11 Jun &middot; S&amp;M: 18 Jun. Recurring losses: product rule inside implicit diff, bracket omission in parametric fractions.</div>
+      <div class="gb-section"><div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('maths')">edit</button></div><div class="gb-grid" id="gb-maths"></div></div>
+      <div class="chart-wrap"><div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('maths')">+ Add score</button></div><div style="height:80px;position:relative"><canvas id="chart-maths"></canvas></div></div>
     </div>
     <div class="subj-card e">
       <div class="subj-name">Economics</div>
-      <div class="subj-status-tag tag-protect">BEST SUBJECT — Protect B, target A</div>
+      <div class="subj-status-tag tag-protect">BEST SUBJECT &mdash; Protect B, target A</div>
       <div class="bar-section">
-        <div class="bar-lbl">Sessions done (out of 28 total) <span id="econ-topics-lbl">0 / 28</span></div>
+        <div class="bar-lbl">Sessions done (of 28 total) <span id="econ-topics-lbl">0 / 28</span></div>
         <div class="bar"><div class="bar-fill" id="econ-topics-bar" style="width:3%;background:var(--econ)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Easter check-in 9 Apr — 9/22 <span style="color:var(--amber)">41% · diagram avoided</span></div>
+        <div class="bar-lbl">Easter check-in 9 Apr &mdash; 9/22 <span style="color:var(--amber)">41% &middot; diagram avoided</span></div>
         <div class="bar"><div class="bar-fill" style="width:41%;background:var(--econ)"></div></div>
       </div>
-      <div class="bar-section">
-        <div class="bar-lbl">Diagnosis 30 Mar — 35/70 <span style="color:var(--econ)">50%</span></div>
-        <div class="bar"><div class="bar-fill" style="width:50%;background:var(--econ)"></div></div>
-      </div>
-      <div class="subj-note">P1 (Theme 1+4): 11 May · P2 (Theme 3+2): 18 May · P3 (Competition): 4 Jun. ⚠ P1 is nearest — diagrams and essay structure are priority. April check-in: essay 7/8 but dropped 6 marks skipping diagram. Failures are elastic/inelastic terminology, not using extract data, and diagram avoidance.</div>
-      <div class="gb-section">
-        <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('econ')">✏ edit</button></div>
-        <div class="gb-grid" id="gb-econ"></div>
-      </div>
-      <div class="chart-wrap">
-        <div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('econ')">+ Add score</button></div>
-        <div style="height:80px;position:relative"><canvas id="chart-econ"></canvas></div>
-      </div>
+      <div class="subj-note">P1 (Theme 1+4): 11 May &middot; P2 (Theme 3+2): 18 May &middot; P3 (Competition): 4 Jun. Failures: elastic/inelastic terminology, diagram avoidance, not using extract data.</div>
+      <div class="gb-section"><div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('econ')">edit</button></div><div class="gb-grid" id="gb-econ"></div></div>
+      <div class="chart-wrap"><div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('econ')">+ Add score</button></div><div style="height:80px;position:relative"><canvas id="chart-econ"></canvas></div></div>
     </div>
     <div class="subj-card c">
       <div class="subj-name">Computer Science</div>
-      <div class="subj-status-tag tag-target">MIDDLE — B target</div>
+      <div class="subj-status-tag tag-target">MIDDLE &mdash; B target</div>
       <div class="bar-section">
-        <div class="bar-lbl">Sessions done (out of 21 total) <span id="cs-topics-lbl">0 / 21</span></div>
+        <div class="bar-lbl">Sessions done (of 21 total) <span id="cs-topics-lbl">0 / 21</span></div>
         <div class="bar"><div class="bar-fill" id="cs-topics-bar" style="width:3%;background:var(--cs)"></div></div>
       </div>
       <div class="bar-section">
-        <div class="bar-lbl">Easter check-in 9 Apr — 10/20 <span style="color:var(--amber)">50%</span></div>
+        <div class="bar-lbl">Easter check-in 9 Apr &mdash; 10/20 <span style="color:var(--amber)">50%</span></div>
         <div class="bar"><div class="bar-fill" style="width:50%;background:var(--cs)"></div></div>
       </div>
-      <div class="bar-section">
-        <div class="bar-lbl">Diagnosis 30 Mar — 36/70 <span style="color:var(--amber)">51%</span></div>
-        <div class="bar"><div class="bar-fill" style="width:51%;background:var(--cs)"></div></div>
-      </div>
-      <div class="subj-note">P1 (Computer Systems): 10 Jun · P2 (Algorithms): 17 Jun. NEA est. 60/70 (Grade A est.) submitted — focus shifts fully to Paper 1 &amp; 2. Clean split: strong on algorithms/architecture, weak on systems knowledge. Priority gaps: Boolean algebra (0/4 Easter), scheduling, normalisation, TCP/IP.</div>
-      <div class="gb-section">
-        <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('cs')">✏ edit</button></div>
-        <div class="gb-grid" id="gb-cs"></div>
-      </div>
-      <div class="chart-wrap">
-        <div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('cs')">+ Add score</button></div>
-        <div style="height:80px;position:relative"><canvas id="chart-cs"></canvas></div>
-      </div>
+      <div class="subj-note">P1 (Computer Systems): 10 Jun &middot; P2 (Algorithms): 17 Jun. NEA est. 60/70 submitted. Priority gaps: Boolean algebra, scheduling, normalisation, TCP/IP.</div>
+      <div class="gb-section"><div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('cs')">edit</button></div><div class="gb-grid" id="gb-cs"></div></div>
+      <div class="chart-wrap"><div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('cs')">+ Add score</button></div><div style="height:80px;position:relative"><canvas id="chart-cs"></canvas></div></div>
     </div>
   </div>
   <div class="gaps-card">
-    <div class="card-title" style="display:flex;align-items:center;gap:8px">
-      Priority Gaps
-      <span class="gaps-hint">· click row = done · click dot = change priority · conf dots = confidence (1–5)</span>
-    </div>
+    <div class="card-title" style="display:flex;align-items:center;gap:8px">Priority Gaps <span class="gaps-hint">&middot; click row = done &middot; click dot = change priority &middot; conf dots = confidence (1&ndash;5)</span></div>
     <div id="gaps-container"></div>
   </div>
 </div>
-
-<!-- SESSION PACKS -->
-<div class="tab-pane" id="tab-packs">
-  <div style="background:linear-gradient(135deg,rgba(192,132,252,0.07) 0%,rgba(96,165,250,0.04) 100%);border:1px solid rgba(192,132,252,0.25);border-left:4px solid var(--purple);border-radius:var(--radius);padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;">
-    <div style="font-family:var(--mono);font-size:1.6rem;color:var(--purple);line-height:1;flex-shrink:0;letter-spacing:-0.02em">SP</div>
-    <div style="flex:1">
-      <div style="font-size:0.98rem;font-weight:700;color:var(--purple);margin-bottom:4px">60 Session Packs — real past paper questions, 4 tiers each</div>
-      <div style="font-size:0.73rem;color:var(--muted2)">Click any pack to copy the full AI prompt to clipboard — then paste straight into Gemini. No hunting through files. Today's tasks also have a launch button if the task maps to a pack.</div>
-    </div>
-    <div style="text-align:right;flex-shrink:0">
-      <div style="font-family:var(--mono);font-size:2.5rem;font-weight:700;color:var(--purple);line-height:1">60</div>
-      <div style="font-family:var(--mono);font-size:0.5rem;color:var(--muted);text-transform:uppercase">packs</div>
-    </div>
-  </div>
-
-  <div style="padding:14px 18px;background:rgba(74,80,112,0.1);border:1px solid var(--border2);border-radius:10px;margin-bottom:24px;">
-    <div style="font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);margin-bottom:8px">How to use</div>
-    <div style="font-size:0.77rem;color:var(--muted2);line-height:1.8">
-      1. Click a pack below (or click a task in Today that has a <span style="font-family:var(--mono);font-size:0.68rem;padding:1px 6px;border-radius:5px;border:1px solid rgba(192,132,252,0.4);color:var(--purple);background:rgba(192,132,252,0.08)">▶ pack</span> button).<br>
-      2. Hit <b style="color:var(--text)">Copy prompt</b> in the modal. The full AI instruction block + all 4 tiers is now in your clipboard.<br>
-      3. Open Gemini (or any AI) and paste. The instruction block makes it a strict examiner — no hints, cold recall only.<br>
-      4. Work Tier 1 → 4. Score 0 on Tier 1 → remediation block activates automatically. No going back on Tier 4.<br>
-      5. Fill in the session report at the end. Log your confidence here via the Log Session button.
-    </div>
-  </div>
-
-  <div id="packs-loading" style="font-family:var(--mono);font-size:0.72rem;color:var(--muted);padding:20px 0">Loading pack data…</div>
-  <div id="packs-content" style="display:none;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
-    <div>
-      <div class="card-title" style="color:var(--maths)">Maths Pure — 12 packs</div>
-      <div class="pack-list" id="pack-list-pure"></div>
-      <div class="card-title" style="color:#22d3ee;margin-top:16px">Stats &amp; Mechanics — 9 packs</div>
-      <div class="pack-list" id="pack-list-sm"></div>
-    </div>
-    <div>
-      <div class="card-title" style="color:var(--econ)">Economics — 8 packs</div>
-      <div class="pack-list" id="pack-list-econ"></div>
-      <div class="card-title" style="color:var(--cs);margin-top:16px">CS Paper 1 — 7 packs</div>
-      <div class="pack-list" id="pack-list-csp1"></div>
-    </div>
-    <div>
-      <div class="card-title" style="color:var(--cs)">CS Paper 2 + Timed — 6 packs</div>
-      <div class="pack-list" id="pack-list-csp2"></div>
-      <div style="margin-top:20px;padding:16px 18px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);">
-        <div class="card-title">Pack structure</div>
-        <div style="display:flex;flex-direction:column;gap:9px">
-          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--muted2);flex-shrink:0;min-width:52px">TIER 1</span><span style="font-size:0.73rem;color:var(--muted2)">Foundation — 2 cold Qs. Score 0 → remediation activates (pre-written worked example + retry, no hints).</span></div>
-          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--amber);flex-shrink:0;min-width:52px">TIER 2</span><span style="font-size:0.73rem;color:var(--muted2)">Exam standard — 3 real past paper Qs. Checkpoint if you drop below half.</span></div>
-          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--red);flex-shrink:0;min-width:52px">TIER 3</span><span style="font-size:0.73rem;color:var(--muted2)">Hard — 2 multi-step or combined-topic Qs.</span></div>
-          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--maths);flex-shrink:0;min-width:52px">TIER 4</span><span style="font-size:0.73rem;color:var(--muted2)">Timed — 1 Q, timer set, no going back.</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- NEA + OFFERS -->
 <div class="tab-pane" id="tab-nea">
-  <div class="nea-hero" style="background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.25);">
+  <div class="nea-hero" style="background:color-mix(in srgb,var(--amber) 6%,var(--surface));border:1px solid color-mix(in srgb,var(--amber) 25%,transparent);">
     <div style="text-align:center;flex-shrink:0;">
       <div style="font-family:var(--mono);font-size:3.5rem;font-weight:700;color:var(--amber);line-height:1;">60</div>
       <div style="font-family:var(--mono);font-size:0.6rem;color:var(--muted2);margin-top:4px;">/ 70 <span style="color:var(--amber)">ESTIMATED</span></div>
     </div>
     <div>
-      <h2 style="font-size:1.3rem;font-weight:700;color:var(--amber);margin-bottom:4px;">OCR H446 NEA — Investment Simulator</h2>
-      <p style="font-size:0.82rem;color:var(--muted2);">Submitted 27 Mar 2026 · Unity/C# · <strong style="color:var(--amber)">Self-assessed estimate only</strong></p>
+      <h2 style="font-size:1.3rem;font-weight:700;color:var(--amber);margin-bottom:4px;">OCR H446 NEA &mdash; Investment Simulator</h2>
+      <p style="font-size:0.82rem;color:var(--muted2);">Submitted 27 Mar 2026 &middot; Unity/C# &middot; <strong style="color:var(--amber)">Self-assessed estimate only</strong></p>
       <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;">
-        <span style="font-family:var(--mono);font-size:0.65rem;padding:3px 10px;border-radius:20px;background:color-mix(in srgb,var(--amber) 12%,transparent);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent);color:var(--amber);font-weight:700;">GRADE A (est.) · PENDING MODERATION</span>
+        <span style="font-family:var(--mono);font-size:0.65rem;padding:3px 10px;border-radius:20px;background:color-mix(in srgb,var(--amber) 12%,transparent);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent);color:var(--amber);font-weight:700;">GRADE A (est.) &middot; PENDING MODERATION</span>
       </div>
-      <p style="font-size:0.76rem;color:var(--muted2);margin-top:10px;line-height:1.6;">Official mark expected before the end of the week starting <b style="color:var(--text)">19 April 2026</b>. This will be updated once confirmed by centre. Do not plan on this grade until it's official.</p>
+      <p style="font-size:0.76rem;color:var(--muted2);margin-top:10px;line-height:1.6;">Official mark expected before end of week starting <b style="color:var(--text)">19 April 2026</b>. Do not count on this grade until confirmed.</p>
     </div>
   </div>
-  <div class="card-title">Estimated breakdown by section <span style="font-size:0.58rem;color:var(--amber);letter-spacing:0;text-transform:none;font-family:var(--sans)">(self-assessed — treat as approximate)</span></div>
+  <div class="card-title">Estimated breakdown <span style="font-size:0.58rem;color:var(--amber);letter-spacing:0;text-transform:none;font-family:var(--sans)">(self-assessed &mdash; treat as approximate)</span></div>
   <div class="nea-breakdown">
     <div class="nea-row"><span class="nea-row-name">Analysis</span><span class="nea-row-score" style="color:var(--maths)">9 / 10</span></div>
     <div class="nea-row"><span class="nea-row-name">Design</span><span class="nea-row-score" style="color:var(--amber)">12 / 15</span></div>
-    <div class="nea-row"><span class="nea-row-name">Development — iterative</span><span class="nea-row-score" style="color:var(--maths)">13 / 15</span></div>
-    <div class="nea-row"><span class="nea-row-name">Development — testing</span><span class="nea-row-score" style="color:var(--maths)">9 / 10</span></div>
+    <div class="nea-row"><span class="nea-row-name">Development &mdash; iterative</span><span class="nea-row-score" style="color:var(--maths)">13 / 15</span></div>
+    <div class="nea-row"><span class="nea-row-name">Development &mdash; testing</span><span class="nea-row-score" style="color:var(--maths)">9 / 10</span></div>
     <div class="nea-row"><span class="nea-row-name">Testing</span><span class="nea-row-score" style="color:var(--maths)">4 / 5</span></div>
     <div class="nea-row"><span class="nea-row-name">Evaluation</span><span class="nea-row-score" style="color:var(--amber)">13 / 15</span></div>
-  </div>
-  <div style="margin-top:12px;padding:12px 16px;background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.2);border-radius:10px;">
-    <div style="font-size:0.74rem;color:var(--muted2);line-height:1.6;">⚠ These are self-assessed estimates based on the mark scheme — they are <b style="color:var(--amber)">not confirmed by the centre or moderator</b>. The actual mark could differ. Official result expected before <b style="color:var(--text)">w/e 25 April 2026</b>.</div>
   </div>
   <div style="margin-top:28px">
     <div class="card-title">University Offers</div>
     <div class="uni-grid">
-      <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">QMUL</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">First choice · A is non-negotiable</div></div>
+      <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">QMUL</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">First choice &middot; A is non-negotiable</div></div>
       <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">Sussex</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">Non-negotiable A requirement</div></div>
       <div class="uni-card" style="border-top:3px solid var(--maths)"><div class="uni-name">City</div><div class="uni-offer">ABB + A in Maths</div><div class="uni-note">Non-negotiable A requirement</div></div>
       <div class="uni-card" style="border-top:3px solid var(--econ)"><div class="uni-name">Exeter</div><div class="uni-offer">BBB</div><div class="uni-note">No specific subject requirement</div></div>
-      <div class="uni-card" style="border-top:3px solid var(--econ)"><div class="uni-name">Reading</div><div class="uni-offer">BCC + B in Maths</div><div class="uni-note">Insurance — achievable</div></div>
-      <div class="uni-card" style="border-top:3px solid var(--border2);background:rgba(74,80,112,0.12)">
-        <div class="uni-name" style="color:var(--muted2)">Outcome paths</div>
-        <div style="font-size:0.72rem;color:var(--muted2);margin-top:6px;line-height:1.6">Maths A → QMUL/Sussex/City<br>Maths B → Exeter or Reading<br>Maths C → Reading (BCC)</div>
-      </div>
+      <div class="uni-card" style="border-top:3px solid var(--econ)"><div class="uni-name">Reading</div><div class="uni-offer">BCC + B in Maths</div><div class="uni-note">Insurance &mdash; achievable</div></div>
+      <div class="uni-card" style="border-top:3px solid var(--border2);background:color-mix(in srgb,var(--muted) 10%,var(--surface2))"><div class="uni-name" style="color:var(--muted2)">Outcome paths</div><div style="font-size:0.72rem;color:var(--muted2);margin-top:6px;line-height:1.6">Maths A &rarr; QMUL/Sussex/City<br>Maths B &rarr; Exeter or Reading<br>Maths C &rarr; Reading (BCC)</div></div>
     </div>
   </div>
 </div>
-
 <!-- GUIDE -->
 <div class="tab-pane" id="tab-guide">
-<div class="guide-wrap">
-  <div style="margin-bottom:28px">
-    <div style="font-size:1.15rem;font-weight:700;margin-bottom:5px">Dashboard Guide</div>
-    <div style="font-size:0.8rem;color:var(--muted2)">How everything works.</div>
-  </div>
-  <div class="guide-section">
-    <div class="guide-h">Session structure (post-Easter)</div>
-    <p class="guide-p"><b>Free days (Tue/Fri):</b> 2 heavy sessions — Maths 11am–1pm hard cap (2hrs), CS or Econ 11am–12:30pm (1.5hrs).</p>
-    <p class="guide-p"><b>College days (Mon/Wed/Thu):</b> 1 light evening session only (~45min–1hr).</p>
-    <p class="guide-p"><b>Weekends (Sat/Sun):</b> 2 sessions per day, same structure as free days.</p>
-    <p class="guide-p"><b>Hard cap:</b> If Maths runs over 2hrs the CS/Econ session is cancelled. Burnout is the structural risk.</p>
-    <p class="guide-p"><b>Missed sessions:</b> Roll high-priority topics to next free slot. Drop low-priority topics if time runs short before an exam.</p>
-  </div>
-  <div class="guide-section">
-    <div class="guide-h">Session packs — launching from Today or the Packs tab</div>
-    <p class="guide-p">Any task on the Today tab that maps to a session pack shows a <span style="font-family:var(--mono);font-size:0.7rem;padding:1px 6px;border-radius:5px;border:1px solid rgba(192,132,252,0.4);color:var(--purple);background:rgba(192,132,252,0.08)">▶ pack</span> button. Click it to open the pack modal. Hit <b>Copy prompt</b> — the full AI instruction block + all 4 tiers is now on your clipboard. Paste directly into Gemini. You never need to open the raw <code>.md</code> file.</p>
-    <p class="guide-p">You can also browse all 60 packs on the <b>Session Packs tab</b> and click any row to open the same modal.</p>
-  </div>
-  <div class="guide-section">
-    <div class="guide-h">Confidence scale (1–5)</div>
-    <div class="guide-kv">
-      <span class="guide-key">1 · Not started</span><span class="guide-val">Haven't touched it.</span>
-      <span class="guide-key">2 · Seen it</span><span class="guide-val">Looked at it but can't do questions cold.</span>
-      <span class="guide-key">3 · Shaky</span><span class="guide-val">Can attempt but still making errors.</span>
-      <span class="guide-key">4 · Solid</span><span class="guide-val">Can do exam questions with minor slips.</span>
-      <span class="guide-key">5 · Locked in</span><span class="guide-val">Reliable under timed exam conditions.</span>
-    </div>
-  </div>
-  <div class="guide-section">
-    <div class="guide-h">NEA (OCR H446)</div>
-    <p class="guide-p">Self-assessed estimate: 60/70, Grade A. Submitted 27 Mar 2026. <b>Official mark expected before w/e 25 April 2026.</b> Do not count on the grade until it's confirmed by centre. NEA work is closed regardless.</p>
-  </div>
-  <div class="guide-section">
-    <div class="guide-h">All Sessions tab</div>
-    <p class="guide-p">Shows today + future sessions by default. Click <em>Show earlier this week</em> to reveal any sessions from earlier in the current week. Past archive sessions (pre-Easter) are never shown — they only exist for the heatmap streak history.</p>
-  </div>
-  <div class="guide-section">
-    <div class="guide-h">Data &amp; storage</div>
-    <p class="guide-p">All persistent data is in your browser's <code>localStorage</code>. Survives reloads on the same device and browser. Schedule is hardcoded — edit source and push to GitHub Pages to update it.</p>
+  <div class="guide-wrap">
+    <div style="margin-bottom:28px"><div style="font-size:1.15rem;font-weight:700;margin-bottom:5px">Dashboard Guide</div><div style="font-size:0.8rem;color:var(--muted2)">How everything works.</div></div>
+    <div class="guide-section"><div class="guide-h">Session structure (post-Easter)</div><p class="guide-p"><b>Alternating days:</b> Maths 11am&ndash;1pm hard cap (2hrs), CS or Econ 11am&ndash;12:30pm (1.5hrs). Hard cap on Maths is non-negotiable &mdash; burnout wipes out secondary subjects.</p><p class="guide-p"><b>Missed sessions:</b> Reschedule to next available alternate slot. Never stack mid-week.</p></div>
+    <div class="guide-section"><div class="guide-h">Theme</div><p class="guide-p">Use the <b>Auto / Light / Dark</b> toggle in the top-right. Auto follows OS preference. Saved to localStorage across sessions.</p></div>
+    <div class="guide-section"><div class="guide-h">Session packs</div><p class="guide-p">Tasks with a matching pack show a <span style="font-family:var(--mono);font-size:0.7rem;padding:1px 6px;border-radius:5px;border:1px solid color-mix(in srgb,var(--purple) 40%,transparent);color:var(--purple);background:color-mix(in srgb,var(--purple) 8%,transparent)">&blacktriangleright; pack</span> button. Click &rarr; modal &rarr; Copy prompt &rarr; paste into Gemini. 60 packs also browsable on the Session Packs tab.</p></div>
+    <div class="guide-section"><div class="guide-h">Confidence scale (1&ndash;5)</div><div class="guide-kv"><span class="guide-key">1 &middot; Not started</span><span class="guide-val">Haven&apos;t touched it.</span><span class="guide-key">2 &middot; Seen it</span><span class="guide-val">Looked at it but can&apos;t do questions cold.</span><span class="guide-key">3 &middot; Shaky</span><span class="guide-val">Can attempt but still making errors.</span><span class="guide-key">4 &middot; Solid</span><span class="guide-val">Can do exam questions with minor slips.</span><span class="guide-key">5 &middot; Locked in</span><span class="guide-val">Reliable under timed exam conditions.</span></div></div>
+    <div class="guide-section"><div class="guide-h">Data &amp; storage</div><p class="guide-p">All state lives in <code>localStorage</code>. Survives reloads on same device/browser. Schedule is hardcoded &mdash; edit source and push to GitHub Pages to update.</p></div>
   </div>
 </div>
-</div>
-
-<div class="footer">A in Maths is non-negotiable · QMUL/Sussex/City all require it · every session counts</div>
-
+<div class="footer">A in Maths is non-negotiable &middot; QMUL/Sussex/City all require it &middot; every session counts</div>
 <!-- TIMER FAB -->
 <div class="timer-fab">
   <div class="timer-sess-txt" id="timer-sess"></div>
@@ -697,36 +585,26 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <button class="log-fab-btn" id="timer-30" onclick="setTimerDuration(30)" style="font-size:0.5rem;padding:3px 8px;">30m</button>
     <button class="log-fab-btn" id="timer-60" onclick="setTimerDuration(60)" style="font-size:0.5rem;padding:3px 8px;">60m</button>
   </div>
-  <button class="timer-btn" id="timer-btn" onclick="toggleTimer()" oncontextmenu="event.preventDefault();resetTimer()" title="Click: start/pause · Right-click: reset">
+  <button class="timer-btn" id="timer-btn" onclick="toggleTimer()" oncontextmenu="event.preventDefault();resetTimer()" title="Click: start/pause &middot; Right-click: reset">
     <div class="timer-time-txt" id="timer-time">60:00</div>
     <div class="timer-sub-txt" id="timer-lbl">START</div>
   </button>
   <button class="log-fab-btn" onclick="showSessionLog(false)">Log session</button>
 </div>
-
 <!-- PACK MODAL -->
 <div class="pack-overlay" id="pack-overlay" onclick="if(event.target===this)closePackModal()">
   <div class="pack-modal">
     <div class="pack-modal-header">
       <div class="pack-modal-id" id="pack-modal-id">M1</div>
-      <div style="flex:1">
-        <div class="pack-modal-title" id="pack-modal-title">—</div>
-        <div class="pack-modal-sub" id="pack-modal-sub">Session pack · 4 tiers · ~2 hours</div>
-      </div>
-      <button class="pack-modal-close" onclick="closePackModal()">✕</button>
+      <div style="flex:1"><div class="pack-modal-title" id="pack-modal-title">&mdash;</div><div class="pack-modal-sub" id="pack-modal-sub">Session pack &middot; 4 tiers &middot; ~2 hours</div></div>
+      <button class="pack-modal-close" onclick="closePackModal()">&times;</button>
     </div>
     <div class="pack-modal-actions">
-      <button class="pack-copy-btn" id="pack-copy-btn" onclick="copyPackPrompt()">
-        <span id="pack-copy-icon">⧉</span>
-        <span id="pack-copy-text">Copy full prompt to clipboard</span>
-      </button>
+      <button class="pack-copy-btn" id="pack-copy-btn" onclick="copyPackPrompt()"><span id="pack-copy-icon">&#8999;</span><span id="pack-copy-text">Copy full prompt to clipboard</span></button>
     </div>
-    <div class="pack-modal-body">
-      <pre id="pack-modal-content">Loading…</pre>
-    </div>
+    <div class="pack-modal-body"><pre id="pack-modal-content">Loading&hellip;</pre></div>
   </div>
 </div>
-
 <!-- SESSION LOG MODAL -->
 <div class="slog-overlay" id="slog-overlay" onclick="if(event.target===this)closeSessionLog()">
   <div class="slog-modal">
@@ -736,11 +614,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <div id="slog-chips-wrap"></div>
     <div class="slog-sec-lbl" style="margin-top:18px">How well did it go?</div>
     <div class="slog-conf-row">
-      <button class="slog-conf-btn" id="slog-c1" onclick="setSlogConf(1)">1 · Not started</button>
-      <button class="slog-conf-btn" id="slog-c2" onclick="setSlogConf(2)">2 · Seen it</button>
-      <button class="slog-conf-btn" id="slog-c3" onclick="setSlogConf(3)">3 · Shaky</button>
-      <button class="slog-conf-btn" id="slog-c4" onclick="setSlogConf(4)">4 · Solid</button>
-      <button class="slog-conf-btn" id="slog-c5" onclick="setSlogConf(5)">5 · Locked in</button>
+      <button class="slog-conf-btn" id="slog-c1" onclick="setSlogConf(1)">1 &middot; Not started</button>
+      <button class="slog-conf-btn" id="slog-c2" onclick="setSlogConf(2)">2 &middot; Seen it</button>
+      <button class="slog-conf-btn" id="slog-c3" onclick="setSlogConf(3)">3 &middot; Shaky</button>
+      <button class="slog-conf-btn" id="slog-c4" onclick="setSlogConf(4)">4 &middot; Solid</button>
+      <button class="slog-conf-btn" id="slog-c5" onclick="setSlogConf(5)">5 &middot; Locked in</button>
     </div>
     <div class="slog-sess-row" id="slog-sess-row">
       <input type="checkbox" id="slog-count-sess">
@@ -752,8 +630,24 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 </div>
-
 <script>
+// ── THEME ──────────────────────────────────────────────────────────────────────
+function setTheme(t){
+  if(t==='auto'){delete document.documentElement.dataset.theme;localStorage.removeItem('theme_pref');}
+  else{document.documentElement.dataset.theme=t;localStorage.setItem('theme_pref',t);}
+  updateThemeUI();
+  // Re-render charts with new theme colours
+  if(typeof renderCharts==='function')setTimeout(renderCharts,60);
+}
+function updateThemeUI(){
+  var stored=localStorage.getItem('theme_pref')||'auto';
+  ['auto','light','dark'].forEach(function(t){
+    var btn=document.getElementById('theme-'+t);
+    if(btn)btn.classList.toggle('active',stored===t);
+  });
+}
+updateThemeUI();
+
 // ── CONSTANTS ─────────────────────────────────────────────────────────────────
 const CONF_LABELS={0:'—',1:'Not started',2:'Seen it',3:'Shaky',4:'Solid',5:'Locked in'};
 const CONF_COLORS={1:'var(--muted)',2:'var(--red)',3:'var(--amber)',4:'var(--maths)',5:'#22d3ee'};
@@ -803,6 +697,8 @@ const PACK_LABEL_MAP={
   'CS-P2.4':['cs-p2.4',"dijkstra's + sorting",'algorithms: bfs'],
   'CS-TIMED-P1':['cs-timed-p1','cs p1 timed'],
   'CS-TIMED-P2':['cs-timed-p2','cs p2 timed'],
+  'DIAG':['cross-subject diagnostic','cold recall','diagnostic'],
+  'GAP-DRILL':['gap drill','gap drill','worst 1-2 topics','worst 1','targeted remediation'],
 };
 
 function getPackIdForLabel(label){
@@ -828,8 +724,11 @@ const SESSIONS={
   '2026-04-08':[{sub:'maths',label:'M10 — Exponentials + logarithms',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P1.3 — Normalisation + SQL',dur:'2hrs',archived:true}],
   '2026-04-09':[{sub:'maths',label:'M11 — Sequences + series',dur:'2hrs',archived:true},{sub:'econ',label:'E6 — Supply-side + P3 competition',dur:'2hrs',archived:true}],
   '2026-04-10':[{sub:'maths',label:'M12 — Numerical methods + vectors',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS',dur:'2hrs',archived:true}],
-  '2026-04-11':[{sub:'maths',label:'Diagnostic — cross-subject cold recall',dur:'45min',detail:'2–3 cold Qs each: trig integration, implicit diff, Boolean algebra, kinked demand. Mark yourself, note worst 1–2.'},{sub:'maths',label:'Gap drill — worst 1–2 topics from diagnostic',dur:'45min',detail:'Work only the topics you scored 0 on above. 45-min hard cap. Stop when cap hits.'}],
-  '2026-04-12':[{sub:'econ',label:'E1 — Core diagrams from memory (rest day)',dur:'45min',detail:'Draw all 6 core diagrams cold. No timer, no marking. Rest day — this is the only session.'}],
+    '2026-04-11':[
+    {sub:'maths',label:'Cross-subject diagnostic (cold recall)',dur:'1.5hrs',detail:'2-3 Qs cold from trig integration, implicit diff, boolean algebra, kinked demand. Mark yourself. Write down exactly what broke.'},
+    {sub:'econ',label:'Easter gap drill (worst 1-2 topics)',dur:'45min',detail:'Target the 1-2 weakest gaps from the morning diagnostic. 45 min cap. No new content.'},
+  ],
+  '2026-04-12':[{sub:'econ',label:'E1 (light) - Core diagrams from memory',dur:'45min',detail:'All 6 diagrams from memory. No timer, no marking. Confidence not performance. Rest of day off.'}],
   '2026-04-13':[{sub:'econ',label:'E3a — Oligopoly + kinked demand (eve, light)',dur:'45min',detail:'Recall kinked demand mechanism + game theory from memory.'}],
   '2026-04-14':[{sub:'maths',label:'M4a — Substitution + DEs (revisit)',dur:'2hrs',detail:'11am–1pm hard cap.'},{sub:'econ',label:'E4a — Macro: AD/AS + economic cycle',dur:'1.5hrs',detail:'Diagrams from memory: AD/AS, SRAS/LRAS shifts.'}],
   '2026-04-15':[{sub:'cs',label:'CS-P1.5a — CPU architecture (eve)',dur:'45min',detail:'FDE cycle + CISC/RISC from memory.'}],
@@ -963,7 +862,7 @@ const MOCK_DEFAULTS={
   cs:[{label:'Feb mock',pct:22},{label:'30 Mar',pct:51},{label:'9 Apr',pct:50}],
 };
 const SUB_COL={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)',nea:'var(--purple)',am:'var(--amber)',college:'var(--muted2)','':'var(--muted)'};
-const SUB_BADGE_CLASS={maths:'badge-m',econ:'badge-e',cs:'badge-c',nea:'badge-nea',college:'badge-college'};
+const SUB_BADGE_CLASS={maths:'badge-m',econ:'badge-e',cs:'badge-c',nea:'badge-nea'};
 const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -1173,7 +1072,7 @@ function renderFocusCard(){
   document.getElementById('focus-card').innerHTML=`<div style="font-family:var(--mono);font-size:1.8rem;color:${subCols[best.sub]};flex-shrink:0;line-height:1">${icons[best.sub]}</div><div style="flex:1;min-width:0"><div class="focus-label">Today's #1 Focus</div><div class="focus-topic" style="color:${subCols[best.sub]}">${best.name}</div><div class="focus-reason">${subNames[best.sub]} · exam in ${days} days · ${getGapPriority(best)} priority${confLabel}</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:var(--mono);font-size:2rem;font-weight:700;color:${daysCol};line-height:1">${days}</div><div style="font-family:var(--mono);font-size:0.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">days left</div></div>`;
 }
 
-function toggleGapDone(key){const state=lsGet('gap_state',{});state[key]={...state[key],done:!state[key]?.done,lastRevised:Date.now()};lsSet('gap_state',state);renderSmartGaps();renderFocusCard();updateMathsTopicsBar();}
+function toggleGapDone(key){const state=lsGet('gap_state',{});state[key]={...state[key],done:!state[key]?.done,lastRevised:Date.now()};lsSet('gap_state',state);renderSmartGaps();renderFocusCard();updateSubjectBars();}
 function setGapConfidence(key,level){const state=lsGet('gap_state',{});const cur=state[key]?.confidence||0;state[key]={...state[key],confidence:cur===level?0:level,lastRevised:Date.now()};lsSet('gap_state',state);renderSmartGaps();renderFocusCard();}
 
 function renderSmartGaps(){
@@ -1190,18 +1089,23 @@ function renderSmartGaps(){
   const c=document.getElementById('gaps-container');if(c)c.innerHTML=`<div class="gaps-grid">${cols}</div>`;
 }
 
-function updateMathsTopicsBar(){
-  // Count completed maths sessions across all non-archived dates
-  let done=0;const total=27;
-  Object.keys(SESSIONS).forEach(dk=>{
-    const checked=lsGet('tasks_done_'+dk,[]);
-    (SESSIONS[dk]||[]).forEach((s,i)=>{
-      if(s.sub==='maths'&&!s.archived&&!s.label.includes('EXAM')&&checked.includes(i))done++;
+function updateSubjectBars(){
+  updateSubBar('maths',27,'maths-topics-lbl','maths-topics-bar');
+  updateSubBar('econ',28,'econ-topics-lbl','econ-topics-bar');
+  updateSubBar('cs',21,'cs-topics-lbl','cs-topics-bar');
+}
+function updateSubBar(sub,total,lblId,barId){
+  var done=0;
+  Object.keys(SESSIONS).forEach(function(dk){
+    var checked=lsGet('tasks_done_'+dk,[]);
+    (SESSIONS[dk]||[]).forEach(function(s,i){
+      if(s.sub===sub&&!s.archived&&!s.label.includes('EXAM')&&checked.includes(i))done++;
     });
   });
-  const pct=Math.round(done/total*100);
-  const lbl=document.getElementById('maths-topics-lbl');const bar=document.getElementById('maths-topics-bar');
-  if(lbl)lbl.textContent=`${done} / ${total}`;if(bar)bar.style.width=Math.max(3,Math.min(100,pct))+'%';
+  var pct=Math.round(done/total*100);
+  var lbl=document.getElementById(lblId);var bar=document.getElementById(barId);
+  if(lbl)lbl.textContent=done+' / '+total;
+  if(bar)bar.style.width=Math.max(3,Math.min(100,pct))+'%';
 }
 
 function getMissedThisWeek(){
@@ -1281,7 +1185,7 @@ function logConfidenceForTask(gapKey,level,taskIdx,dk){
   if(!gapKey)return;const state=lsGet('gap_state',{});state[gapKey]={...state[gapKey],confidence:level,lastRevised:Date.now()};lsSet('gap_state',state);
   const dayLog=lsGet('daily_log_'+dk,[]);const g=PRIORITY_GAPS.find(x=>x.key===gapKey);
   if(g){const entry={key:gapKey,name:g.name,sub:g.sub,conf:level,time:Date.now()};const idx=dayLog.findIndex(x=>x.key===gapKey);if(idx>=0)dayLog[idx]=entry;else dayLog.push(entry);lsSet('daily_log_'+dk,dayLog);}
-  renderSmartGaps();renderFocusCard();updateMathsTopicsBar();updateEconTopicsBar();updateCSTopicsBar();renderTodayLog();
+  renderSmartGaps();renderFocusCard();updateSubjectBars();updateEconTopicsBar();updateCSTopicsBar();renderTodayLog();
   const confRow=document.getElementById('conf-row-'+taskIdx);if(confRow)confRow.querySelectorAll('.task-conf-btn').forEach((btn,i)=>{btn.className='task-conf-btn';if(i+1===level)btn.classList.add('act-'+(i+1));});
 }
 
@@ -1309,7 +1213,7 @@ function renderToday(){
         item.classList.toggle('done-item',this.checked);document.getElementById('lbl'+origIdx).classList.toggle('done',this.checked);
         setTaskChecked(key,origIdx,this.checked);
         const nowDone=getTodayChecked(key);if(this.checked&&nowDone.length===1)incrementSessions();
-        renderMissedThisWeek();updateMathsTopicsBar();updateEconTopicsBar();updateCSTopicsBar();
+        renderMissedThisWeek();updateSubjectBars();updateEconTopicsBar();updateCSTopicsBar();
       });
     }
     container.appendChild(item);
@@ -1391,6 +1295,7 @@ function promptAddMock(sub){
   if(isNaN(pct))return;pct=Math.max(0,Math.min(100,pct));const h=loadMockHistory();h[sub]=h[sub]||[];h[sub].push({label:new Date().toLocaleDateString('en-GB',{month:'short'}),pct});saveMockHistory(h);renderCharts();renderGradeBounds();
 }
 function renderCharts(){
+  const getVar=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
   const h=loadMockHistory();const bounds=lsGet('grade_bounds',{});
   [{sub:'maths',id:'chart-maths',color:'var(--maths)'},{sub:'econ',id:'chart-econ',color:'var(--econ)'},{sub:'cs',id:'chart-cs',color:'var(--cs)'}].forEach(c=>{
     const canvas=document.getElementById(c.id);if(!canvas)return;if(chartInstances[c.sub])chartInstances[c.sub].destroy();
@@ -1472,7 +1377,7 @@ function submitSessionLog(){
       state[key]={...state[key],lastRevised:Date.now()};if(slogConf>0)state[key].confidence=slogConf;
       const g=PRIORITY_GAPS.find(x=>x.key===key);if(g){const idx=dayLog.findIndex(x=>x.key===key);const entry={key,name:g.name,sub:g.sub,conf:slogConf,time:Date.now()};if(idx>=0)dayLog[idx]=entry;else dayLog.push(entry);}
     });
-    lsSet('gap_state',state);lsSet('daily_log_'+todayKey,dayLog);renderSmartGaps();renderFocusCard();updateMathsTopicsBar();updateEconTopicsBar();updateCSTopicsBar();renderTodayLog();
+    lsSet('gap_state',state);lsSet('daily_log_'+todayKey,dayLog);renderSmartGaps();renderFocusCard();updateSubjectBars();updateEconTopicsBar();updateCSTopicsBar();renderTodayLog();
   }
   if(!slogFromTimer){const chk=document.getElementById('slog-count-sess');if(chk&&chk.checked)incrementSessions();}
   closeSessionLog();
@@ -1489,7 +1394,7 @@ function init(){
   document.getElementById('live-date').textContent=`${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]} ${t.getFullYear()}`;
   document.getElementById('live-phase').textContent=getPhase();
   renderCountdowns();renderFocusCard();renderToday();renderTomorrow();renderMissedThisWeek();
-  renderWeek();renderSmartGaps();updateMathsTopicsBar();updateEconTopicsBar();updateCSTopicsBar();renderStreak();renderTodayLog();updateTimerUI();
+  renderWeek();renderSmartGaps();updateSubjectBars();updateEconTopicsBar();updateCSTopicsBar();renderStreak();renderTodayLog();updateTimerUI();
   // Preload pack data in background
   setTimeout(()=>loadPackData(()=>{}),2000);
 }
