@@ -4,19 +4,64 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abdul — Academic Dashboard</title>
+<script>
+(function(){
+  var p=localStorage.getItem('theme_pref');
+  if(p==='light'||p==='dark')document.documentElement.setAttribute('data-theme',p);
+})();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
-:root{--bg:#0c0e13;--surface:#13161f;--surface2:#1a1d29;--surface3:#21253a;--border:#252a3a;--border2:#2e3450;--text:#e8eaf0;--muted:#4a5070;--muted2:#6b7490;--maths:#4ade80;--econ:#60a5fa;--cs:#fbbf24;--red:#e94560;--amber:#fb923c;--purple:#c084fc;--mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;--radius:14px;}
+/* ── BASE TOKENS (never change between themes) ─────────────────────────────── */
+:root{
+  --maths:#22c55e;--econ:#3b82f6;--cs:#d97706;
+  --red:#dc2626;--amber:#ea580c;--purple:#9333ea;--cyan:#22d3ee;
+  --mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;--radius:14px;
+}
+/* ── DARK THEME (default) ───────────────────────────────────────────────────── */
+:root{
+  --bg:#0d0f17;--surface:#131720;--surface2:#191e2e;--surface3:#1f2438;
+  --border:#232840;--border2:#2c3354;
+  --text:#e2e4ed;--muted:#464d6a;--muted2:#636d90;
+  --topbar-bg:rgba(13,15,23,0.92);
+  --shadow:0 4px 24px rgba(0,0,0,0.5);
+}
+/* ── LIGHT THEME (auto) ─────────────────────────────────────────────────────── */
+@media(prefers-color-scheme:light){
+  :root{
+    --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0efe9;--surface3:#e8e6de;
+    --border:#dddbd2;--border2:#c8c5bb;
+    --text:#1a1c24;--muted:#8a8778;--muted2:#6b6859;
+    --topbar-bg:rgba(245,244,240,0.94);
+    --shadow:0 4px 20px rgba(0,0,0,0.08);
+  }
+}
+/* ── MANUAL OVERRIDE: FORCE DARK ────────────────────────────────────────────── */
+:root[data-theme="dark"]{
+  --bg:#0d0f17;--surface:#131720;--surface2:#191e2e;--surface3:#1f2438;
+  --border:#232840;--border2:#2c3354;
+  --text:#e2e4ed;--muted:#464d6a;--muted2:#636d90;
+  --topbar-bg:rgba(13,15,23,0.92);
+  --shadow:0 4px 24px rgba(0,0,0,0.5);
+}
+/* ── MANUAL OVERRIDE: FORCE LIGHT ───────────────────────────────────────────── */
+:root[data-theme="light"]{
+  --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0efe9;--surface3:#e8e6de;
+  --border:#dddbd2;--border2:#c8c5bb;
+  --text:#1a1c24;--muted:#8a8778;--muted2:#6b6859;
+  --topbar-bg:rgba(245,244,240,0.94);
+  --shadow:0 4px 20px rgba(0,0,0,0.08);
+}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;}
-.topbar{position:sticky;top:0;z-index:100;background:rgba(12,14,19,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:58px;}
+.topbar{position:sticky;top:0;z-index:100;background:var(--topbar-bg);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:58px;}
 .topbar-left{display:flex;align-items:center;gap:16px;}
 .topbar-title{font-family:var(--mono);font-size:0.8rem;letter-spacing:0.06em;color:var(--muted2);text-transform:uppercase;}
 .topbar-date{font-family:var(--mono);font-size:0.7rem;color:var(--muted);}
 .topbar-phase{font-family:var(--mono);font-size:0.65rem;color:var(--amber);}
-.nea-pill{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.3);border-radius:20px;padding:4px 12px;font-family:var(--mono);font-size:0.65rem;font-weight:700;color:var(--amber);letter-spacing:0.06em;white-space:nowrap;cursor:pointer;transition:background 0.15s;}
-.nea-pill:hover{background:rgba(251,146,60,0.2);}
+.nea-pill{background:color-mix(in srgb,var(--amber) 12%,transparent);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent);border-radius:20px;padding:4px 12px;font-family:var(--mono);font-size:0.65rem;font-weight:700;color:var(--amber);letter-spacing:0.06em;white-space:nowrap;cursor:pointer;transition:background 0.15s;}
+.nea-pill:hover{background:color-mix(in srgb,var(--amber) 20%,transparent);}
 .cd-strip{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border);}
 .cd-item{padding:20px 28px;border-right:1px solid var(--border);display:flex;align-items:center;gap:20px;}
 .cd-item:last-child{border-right:none;}
@@ -39,7 +84,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .tab-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .tab-pane{display:none;padding:28px;max-width:1200px;margin:0 auto;}
 .tab-pane.active{display:block;}
-.focus-card{background:linear-gradient(135deg,rgba(251,146,60,0.07) 0%,rgba(233,69,96,0.04) 100%);border:1px solid rgba(251,146,60,0.28);border-left:4px solid var(--amber);border-radius:var(--radius);padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;}
+.focus-card{background:linear-gradient(135deg,color-mix(in srgb,var(--amber) 7%,transparent) 0%,color-mix(in srgb,var(--red) 4%,transparent) 100%);border:1px solid color-mix(in srgb,var(--amber) 28%,transparent);border-left:4px solid var(--amber);border-radius:var(--radius);padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;}
 .focus-label{font-family:var(--mono);font-size:0.57rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--amber);margin-bottom:5px;}
 .focus-topic{font-size:0.98rem;font-weight:700;margin-bottom:3px;}
 .focus-reason{font-size:0.73rem;color:var(--muted2);}
@@ -50,7 +95,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .task-item.clickable{cursor:pointer;}
 .task-item.clickable:hover{background:var(--surface3);border-color:var(--border2);}
 .task-item.done-item{opacity:0.45;}
-.task-item.has-pack{border-left:2px solid rgba(192,132,252,0.4);}
+.task-item.has-pack{border-left:2px solid color-mix(in srgb,var(--purple) 40%,transparent);}
 .task-item.has-pack:hover{border-left-color:var(--purple);}
 .task-check{margin-top:2px;flex-shrink:0;}
 .task-check input{width:17px;height:17px;accent-color:var(--maths);cursor:pointer;}
@@ -64,21 +109,21 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .task-conf-lbl{font-family:var(--mono);font-size:0.5rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
 .task-conf-btn{font-family:var(--mono);font-size:0.58rem;padding:3px 8px;border-radius:8px;border:1px solid var(--border2);background:var(--surface3);color:var(--muted2);cursor:pointer;transition:all 0.12s;}
 .task-conf-btn:hover{border-color:var(--muted2);color:var(--text);}
-.task-conf-btn.act-1{border-color:var(--muted);color:var(--muted);background:rgba(74,80,112,0.15);}
-.task-conf-btn.act-2{border-color:var(--red);color:var(--red);background:rgba(233,69,96,0.1);}
-.task-conf-btn.act-3{border-color:var(--amber);color:var(--amber);background:rgba(251,146,60,0.1);}
-.task-conf-btn.act-4{border-color:var(--maths);color:var(--maths);background:rgba(74,222,128,0.1);}
-.task-conf-btn.act-5{border-color:#22d3ee;color:#22d3ee;background:rgba(34,211,238,0.1);}
-.open-pack-btn{font-family:var(--mono);font-size:0.55rem;padding:3px 9px;border-radius:8px;border:1px solid rgba(192,132,252,0.35);background:rgba(192,132,252,0.08);color:var(--purple);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all 0.12s;flex-shrink:0;}
-.open-pack-btn:hover{background:rgba(192,132,252,0.18);border-color:var(--purple);}
+.task-conf-btn.act-1{border-color:var(--muted);color:var(--muted);background:color-mix(in srgb,var(--muted) 15%,transparent);}
+.task-conf-btn.act-2{border-color:var(--red);color:var(--red);background:color-mix(in srgb,var(--red) 10%,transparent);}
+.task-conf-btn.act-3{border-color:var(--amber);color:var(--amber);background:color-mix(in srgb,var(--amber) 10%,transparent);}
+.task-conf-btn.act-4{border-color:var(--maths);color:var(--maths);background:color-mix(in srgb,var(--maths) 10%,transparent);}
+.task-conf-btn.act-5{border-color:var(--cyan);color:var(--cyan);background:color-mix(in srgb,var(--cyan) 10%,transparent);}
+.open-pack-btn{font-family:var(--mono);font-size:0.55rem;padding:3px 9px;border-radius:8px;border:1px solid color-mix(in srgb,var(--purple) 35%,transparent);background:color-mix(in srgb,var(--purple) 8%,transparent);color:var(--purple);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all 0.12s;flex-shrink:0;}
+.open-pack-btn:hover{background:color-mix(in srgb,var(--purple) 18%,transparent);border-color:var(--purple);}
 .sub-badge{font-size:0.6rem;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap;flex-shrink:0;}
-.badge-m{background:rgba(74,222,128,0.15);color:var(--maths);}
-.badge-e{background:rgba(96,165,250,0.15);color:var(--econ);}
-.badge-c{background:rgba(251,191,36,0.15);color:var(--cs);}
-.badge-nea{background:rgba(192,132,252,0.15);color:var(--purple);}
-.badge-hw{background:rgba(233,69,96,0.2);color:var(--red);}
-.badge-college{background:rgba(74,80,112,0.3);color:var(--muted2);}
-.bonus-section{margin-top:8px;padding:12px 14px;background:rgba(74,80,112,0.1);border:1px dashed var(--border2);border-radius:10px;}
+.badge-m{background:color-mix(in srgb,var(--maths) 15%,transparent);color:var(--maths);}
+.badge-e{background:color-mix(in srgb,var(--econ) 15%,transparent);color:var(--econ);}
+.badge-c{background:color-mix(in srgb,var(--cs) 15%,transparent);color:var(--cs);}
+.badge-nea{background:color-mix(in srgb,var(--purple) 15%,transparent);color:var(--purple);}
+.badge-hw{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red);}
+.badge-college{background:color-mix(in srgb,var(--muted) 30%,transparent);color:var(--muted2);}
+.bonus-section{margin-top:8px;padding:12px 14px;background:color-mix(in srgb,var(--muted) 10%,transparent);border:1px dashed var(--border2);border-radius:10px;}
 .bonus-lbl{font-family:var(--mono);font-size:0.5rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:7px;}
 .bonus-row{display:flex;align-items:center;gap:8px;}
 .bonus-dismiss-btn{font-family:var(--mono);font-size:0.54rem;padding:2px 9px;border-radius:8px;background:transparent;border:1px solid var(--border2);color:var(--muted);cursor:pointer;flex-shrink:0;transition:all 0.15s;}
@@ -92,9 +137,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .tmr-detail{font-size:0.71rem;color:var(--muted2);margin-top:3px;}
 .week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;}
 .wday{background:var(--surface2);border-radius:10px;padding:14px;border:1px solid var(--border);min-height:100px;transition:border-color 0.12s;}
-.wday.today-col{border-color:var(--amber);background:rgba(251,146,60,0.04);}
-.wday.deadline{border-color:var(--red);background:rgba(233,69,96,0.05);}
-.wday.weekend-col{border-color:var(--border);background:rgba(74,80,112,0.08);}
+.wday.today-col{border-color:var(--amber);background:color-mix(in srgb,var(--amber) 4%,transparent);}
+.wday.deadline{border-color:var(--red);background:color-mix(in srgb,var(--red) 5%,transparent);}
+.wday.weekend-col{border-color:var(--border);background:color-mix(in srgb,var(--muted) 8%,transparent);}
 .wday-head{font-family:var(--mono);font-size:0.6rem;margin-bottom:8px;font-weight:700;}
 .wday.today-col .wday-head{color:var(--amber);}
 .wday.deadline .wday-head{color:var(--red);}
@@ -111,7 +156,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .all-sessions-date-rel{font-family:var(--mono);font-size:0.58rem;color:var(--muted2);}
 .all-sessions-date-exam{font-family:var(--mono);font-size:0.58rem;color:var(--red);font-weight:700;}
 .all-sess-row{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;background:var(--surface2);border-radius:8px;margin-bottom:6px;border:1px solid transparent;}
-.all-sess-row.is-today{border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.04);}
+.all-sess-row.is-today{border-color:color-mix(in srgb,var(--amber) 30%,transparent);background:color-mix(in srgb,var(--amber) 4%,transparent);}
 .all-sess-row.is-done{opacity:0.4;}
 .all-sess-body{flex:1;}
 .all-sess-name{font-size:0.82rem;font-weight:600;margin-bottom:2px;}
@@ -127,9 +172,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .subj-card.e .subj-name{color:var(--econ);}
 .subj-card.c .subj-name{color:var(--cs);}
 .subj-status-tag{display:inline-block;font-family:var(--mono);font-size:0.62rem;font-weight:700;padding:2px 10px;border-radius:20px;margin-bottom:18px;letter-spacing:0.06em;}
-.tag-critical{background:rgba(233,69,96,0.2);color:var(--red);}
-.tag-protect{background:rgba(96,165,250,0.15);color:var(--econ);}
-.tag-target{background:rgba(251,191,36,0.15);color:var(--cs);}
+.tag-critical{background:color-mix(in srgb,var(--red) 20%,transparent);color:var(--red);}
+.tag-protect{background:color-mix(in srgb,var(--econ) 15%,transparent);color:var(--econ);}
+.tag-target{background:color-mix(in srgb,var(--cs) 15%,transparent);color:var(--cs);}
 .bar-section{margin-bottom:16px;}
 .bar-lbl{font-size:0.7rem;color:var(--muted2);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;}
 .bar-lbl span{font-family:var(--mono);font-size:0.65rem;}
@@ -139,7 +184,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .gb-section{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
 .gb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
 .gb-section-lbl{font-family:var(--mono);font-size:0.52rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
-.gb-edit-btn{font-family:var(--mono);font-size:0.52rem;padding:2px 8px;border-radius:8px;background:rgba(74,80,112,0.3);border:1px solid var(--border2);color:var(--muted);cursor:pointer;transition:all 0.15s;}
+.gb-edit-btn{font-family:var(--mono);font-size:0.52rem;padding:2px 8px;border-radius:8px;background:color-mix(in srgb,var(--muted) 30%,transparent);border:1px solid var(--border2);color:var(--muted);cursor:pointer;transition:all 0.15s;}
 .gb-edit-btn:hover{color:var(--text);border-color:var(--muted2);}
 .gb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
 .gb-cell{background:var(--surface2);border-radius:8px;padding:9px 10px;text-align:center;}
@@ -147,7 +192,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .gb-val{font-family:var(--mono);font-size:0.82rem;font-weight:700;}
 .chart-wrap{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
 .chart-wrap-title{font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted2);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
-.add-mock-btn{font-family:var(--mono);font-size:0.56rem;padding:2px 8px;border-radius:10px;background:rgba(74,80,112,0.3);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;transition:color 0.15s,border-color 0.15s;}
+.add-mock-btn{font-family:var(--mono);font-size:0.56rem;padding:2px 8px;border-radius:10px;background:color-mix(in srgb,var(--muted) 30%,transparent);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;transition:color 0.15s,border-color 0.15s;}
 .add-mock-btn:hover{color:var(--text);border-color:var(--muted2);}
 .gaps-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-top:16px;}
 .gaps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
@@ -166,11 +211,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .conf-dot{width:6px;height:6px;border-radius:50%;background:var(--surface3);border:1px solid var(--border2);cursor:pointer;transition:background 0.15s,border-color 0.15s;flex-shrink:0;}
 .conf-dot:hover{border-color:var(--muted2);}
 .gaps-hint{font-family:var(--mono);font-size:0.56rem;color:var(--muted);margin-left:6px;}
-.reschedule-btn{font-family:var(--mono);font-size:0.57rem;padding:3px 9px;border-radius:12px;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.25);color:var(--econ);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background 0.15s;}
-.reschedule-btn:hover{background:rgba(96,165,250,0.2);}
-.reschedule-btn.rescheduled{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.25);color:var(--maths);cursor:default;}
-.unreschedule-btn{font-family:var(--mono);font-size:0.57rem;padding:3px 7px;border-radius:12px;background:rgba(233,69,96,0.08);border:1px solid rgba(233,69,96,0.2);color:var(--red);cursor:pointer;flex-shrink:0;margin-left:4px;transition:background 0.15s;}
-.unreschedule-btn:hover{background:rgba(233,69,96,0.18);}
+.reschedule-btn{font-family:var(--mono);font-size:0.57rem;padding:3px 9px;border-radius:12px;background:color-mix(in srgb,var(--econ) 10%,transparent);border:1px solid color-mix(in srgb,var(--econ) 25%,transparent);color:var(--econ);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background 0.15s;}
+.reschedule-btn:hover{background:color-mix(in srgb,var(--econ) 20%,transparent);}
+.reschedule-btn.rescheduled{background:color-mix(in srgb,var(--maths) 10%,transparent);border-color:color-mix(in srgb,var(--maths) 25%,transparent);color:var(--maths);cursor:default;}
+.unreschedule-btn{font-family:var(--mono);font-size:0.57rem;padding:3px 7px;border-radius:12px;background:color-mix(in srgb,var(--red) 8%,transparent);border:1px solid color-mix(in srgb,var(--red) 20%,transparent);color:var(--red);cursor:pointer;flex-shrink:0;margin-left:4px;transition:background 0.15s;}
+.unreschedule-btn:hover{background:color-mix(in srgb,var(--red) 18%,transparent);}
 .streak-section{margin-top:28px;}
 .streak-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .streak-title{font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);}
@@ -202,9 +247,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .pack-modal-close{width:28px;height:28px;border-radius:8px;background:var(--surface2);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;transition:all 0.12s;}
 .pack-modal-close:hover{color:var(--text);border-color:var(--muted2);}
 .pack-modal-actions{padding:12px 24px;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-shrink:0;}
-.pack-copy-btn{flex:1;padding:10px;border-radius:10px;background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.35);color:var(--purple);font-family:var(--mono);font-size:0.72rem;font-weight:700;cursor:pointer;transition:all 0.12s;display:flex;align-items:center;justify-content:center;gap:8px;}
-.pack-copy-btn:hover{background:rgba(192,132,252,0.22);}
-.pack-copy-btn.copied{background:rgba(74,222,128,0.12);border-color:rgba(74,222,128,0.35);color:var(--maths);}
+.pack-copy-btn{flex:1;padding:10px;border-radius:10px;background:color-mix(in srgb,var(--purple) 12%,transparent);border:1px solid color-mix(in srgb,var(--purple) 35%,transparent);color:var(--purple);font-family:var(--mono);font-size:0.72rem;font-weight:700;cursor:pointer;transition:all 0.12s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.pack-copy-btn:hover{background:color-mix(in srgb,var(--purple) 22%,transparent);}
+.pack-copy-btn.copied{background:color-mix(in srgb,var(--maths) 12%,transparent);border-color:color-mix(in srgb,var(--maths) 35%,transparent);color:var(--maths);}
 .pack-modal-body{flex:1;overflow-y:auto;padding:20px 24px;}
 .pack-modal-body pre{font-family:var(--mono);font-size:0.68rem;line-height:1.65;color:var(--muted2);white-space:pre-wrap;word-break:break-word;}
 .pack-modal-body pre b{color:var(--text);}
@@ -219,16 +264,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .pack-row-arrow{font-family:var(--mono);font-size:0.6rem;color:var(--muted);flex-shrink:0;}
 /* Timer */
 .timer-fab{position:fixed;bottom:28px;right:28px;z-index:200;display:flex;flex-direction:column;align-items:center;gap:7px;}
-.timer-btn{width:72px;height:72px;border-radius:50%;background:var(--surface2);border:2px solid var(--border2);color:var(--text);font-family:var(--mono);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:border-color 0.2s,background 0.2s;box-shadow:0 4px 24px rgba(0,0,0,0.5);}
+.timer-btn{width:72px;height:72px;border-radius:50%;background:var(--surface2);border:2px solid var(--border2);color:var(--text);font-family:var(--mono);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:border-color 0.2s,background 0.2s;box-shadow:var(--shadow);}
 .timer-btn:hover{border-color:var(--amber);}
-.timer-btn.running{border-color:var(--maths);background:rgba(74,222,128,0.08);}
+.timer-btn.running{border-color:var(--maths);background:color-mix(in srgb,var(--maths) 8%,transparent);}
 .timer-btn.urgent{border-color:var(--red);animation:pulse-t 1.2s ease-in-out infinite;}
-@keyframes pulse-t{0%,100%{box-shadow:0 4px 24px rgba(233,69,96,0.2)}50%{box-shadow:0 4px 32px rgba(233,69,96,0.65)}}
+@keyframes pulse-t{0%,100%{box-shadow:0 4px 24px color-mix(in srgb,var(--red) 20%,transparent)}50%{box-shadow:0 4px 32px color-mix(in srgb,var(--red) 65%,transparent)}}
 .timer-time-txt{font-size:0.82rem;font-weight:700;line-height:1;}
 .timer-sub-txt{font-size:0.48rem;color:var(--muted2);text-transform:uppercase;letter-spacing:0.08em;}
 .timer-sess-txt{font-family:var(--mono);font-size:0.58rem;color:var(--muted);text-align:center;white-space:nowrap;}
-.log-fab-btn{font-family:var(--mono);font-size:0.55rem;padding:5px 12px;border-radius:10px;background:rgba(74,80,112,0.35);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;white-space:nowrap;transition:all 0.15s;text-align:center;}
-.log-fab-btn:hover{color:var(--text);border-color:var(--amber);background:rgba(251,146,60,0.1);}
+.log-fab-btn{font-family:var(--mono);font-size:0.55rem;padding:5px 12px;border-radius:10px;background:color-mix(in srgb,var(--muted) 35%,transparent);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;white-space:nowrap;transition:all 0.15s;text-align:center;}
+.log-fab-btn:hover{color:var(--text);border-color:var(--amber);background:color-mix(in srgb,var(--amber) 10%,transparent);}
 /* Session log modal */
 .slog-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.78);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
 .slog-overlay.open{opacity:1;pointer-events:auto;}
@@ -240,21 +285,21 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .slog-sub-lbl{font-family:var(--mono);font-size:0.52rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;margin-top:10px;}
 .slog-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:16px;background:var(--surface2);border:1px solid var(--border2);font-size:0.73rem;cursor:pointer;transition:all 0.12s;user-select:none;}
 .slog-chip:hover{border-color:var(--muted2);}
-.slog-chip.sel{background:rgba(251,146,60,0.1);border-color:var(--amber);}
+.slog-chip.sel{background:color-mix(in srgb,var(--amber) 10%,transparent);border-color:var(--amber);}
 .slog-conf-row{display:flex;gap:6px;flex-wrap:wrap;}
 .slog-conf-btn{flex:1;min-width:80px;padding:9px 0;border-radius:10px;background:var(--surface2);border:1px solid var(--border2);font-family:var(--mono);font-size:0.6rem;color:var(--muted2);cursor:pointer;text-align:center;transition:all 0.12s;}
 .slog-conf-btn:hover{border-color:var(--muted2);color:var(--text);}
-.slog-conf-btn.act-1{border-color:var(--muted);color:var(--muted);background:rgba(74,80,112,0.12);}
-.slog-conf-btn.act-2{border-color:var(--red);color:var(--red);background:rgba(233,69,96,0.08);}
-.slog-conf-btn.act-3{border-color:var(--amber);color:var(--amber);background:rgba(251,146,60,0.08);}
-.slog-conf-btn.act-4{border-color:var(--maths);color:var(--maths);background:rgba(74,222,128,0.08);}
-.slog-conf-btn.act-5{border-color:#22d3ee;color:#22d3ee;background:rgba(34,211,238,0.08);}
+.slog-conf-btn.act-1{border-color:var(--muted);color:var(--muted);background:color-mix(in srgb,var(--muted) 12%,transparent);}
+.slog-conf-btn.act-2{border-color:var(--red);color:var(--red);background:color-mix(in srgb,var(--red) 8%,transparent);}
+.slog-conf-btn.act-3{border-color:var(--amber);color:var(--amber);background:color-mix(in srgb,var(--amber) 8%,transparent);}
+.slog-conf-btn.act-4{border-color:var(--maths);color:var(--maths);background:color-mix(in srgb,var(--maths) 8%,transparent);}
+.slog-conf-btn.act-5{border-color:var(--cyan);color:var(--cyan);background:color-mix(in srgb,var(--cyan) 8%,transparent);}
 .slog-sess-row{display:flex;align-items:center;gap:10px;margin-top:16px;padding:10px 14px;background:var(--surface2);border-radius:10px;}
 .slog-sess-row input[type=checkbox]{width:15px;height:15px;accent-color:var(--maths);cursor:pointer;}
 .slog-sess-label{font-size:0.76rem;color:var(--muted2);cursor:pointer;user-select:none;}
 .slog-actions{display:flex;gap:10px;margin-top:18px;}
-.slog-submit{flex:1;padding:11px;border-radius:10px;background:rgba(251,146,60,0.15);border:1px solid rgba(251,146,60,0.4);color:var(--amber);font-family:var(--mono);font-size:0.74rem;font-weight:700;cursor:pointer;transition:all 0.12s;}
-.slog-submit:hover{background:rgba(251,146,60,0.25);}
+.slog-submit{flex:1;padding:11px;border-radius:10px;background:color-mix(in srgb,var(--amber) 15%,transparent);border:1px solid color-mix(in srgb,var(--amber) 40%,transparent);color:var(--amber);font-family:var(--mono);font-size:0.74rem;font-weight:700;cursor:pointer;transition:all 0.12s;}
+.slog-submit:hover{background:color-mix(in srgb,var(--amber) 25%,transparent);}
 .slog-cancel{padding:11px 18px;border-radius:10px;background:transparent;border:1px solid var(--border2);color:var(--muted2);font-family:var(--mono);font-size:0.72rem;cursor:pointer;transition:all 0.12s;}
 .slog-cancel:hover{color:var(--text);border-color:var(--muted2);}
 .tlog-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;}
@@ -280,6 +325,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .missed-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border);}
 .missed-row:first-child{border-top:none;}
 .missed-when{font-family:var(--mono);font-size:0.6rem;color:var(--muted);flex-shrink:0;}
+
+/* ── THEME TOGGLE ──────────────────────────────────────────────────────────── */
+.theme-toggle{display:flex;border:1px solid var(--border2);border-radius:8px;overflow:hidden;flex-shrink:0;}
+.theme-btn{font-family:var(--mono);font-size:0.54rem;letter-spacing:0.06em;text-transform:uppercase;padding:4px 9px;background:transparent;border:none;color:var(--muted);cursor:pointer;transition:background 0.12s,color 0.12s;white-space:nowrap;}
+.theme-btn:hover{color:var(--text);}
+.theme-btn.active{background:color-mix(in srgb,var(--amber) 15%,transparent);color:var(--amber);}
 </style>
 </head>
 <body>
@@ -292,7 +343,14 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     </div>
     <div class="topbar-phase" id="live-phase"></div>
   </div>
-  <span class="nea-pill" onclick="switchTab('nea',document.querySelector('[onclick*=\"nea\"]'))" title="Click to view NEA details">NEA est. 60/70 · mark pending</span>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="theme-toggle" id="theme-toggle">
+      <button class="theme-btn" id="tbtn-auto" onclick="setTheme('auto')" title="Follow system">Auto</button>
+      <button class="theme-btn" id="tbtn-light" onclick="setTheme('light')" title="Force light">Light</button>
+      <button class="theme-btn" id="tbtn-dark" onclick="setTheme('dark')" title="Force dark">Dark</button>
+    </div>
+    <span class="nea-pill" onclick="switchTab('nea',document.querySelector('[onclick*=\"nea\"]'))" title="Click to view NEA details">NEA est. 60/70 · mark pending</span>
+  </div>
 </div>
 
 <div class="cd-strip">
@@ -338,8 +396,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   <button class="tab-btn active" onclick="switchTab('today',this)"><span class="tab-dot" style="background:var(--amber)"></span> Today</button>
   <button class="tab-btn" onclick="switchTab('week',this)"><span class="tab-dot" style="background:var(--econ)"></span> This Week</button>
   <button class="tab-btn" onclick="switchTab('all',this)"><span class="tab-dot" style="background:var(--purple)"></span> All Sessions</button>
-  <button class="tab-btn" onclick="switchTab('subjects',this)"><span class="tab-dot" style="background:var(--maths)"></span> Subjects</button>
   <button class="tab-btn" onclick="switchTab('packs',this)"><span class="tab-dot" style="background:var(--purple)"></span> Session Packs</button>
+  <button class="tab-btn" onclick="switchTab('subjects',this)"><span class="tab-dot" style="background:var(--maths)"></span> Subjects</button>
   <button class="tab-btn" onclick="switchTab('nea',this)"><span class="tab-dot" style="background:var(--purple)"></span> NEA + Offers</button>
   <button class="tab-btn" onclick="switchTab('guide',this)"><span class="tab-dot" style="background:var(--muted2)"></span> Guide</button>
 </div>
@@ -430,6 +488,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <div class="subj-name">Economics</div>
       <div class="subj-status-tag tag-protect">BEST SUBJECT — Protect B, target A</div>
       <div class="bar-section">
+        <div class="bar-lbl">Sessions done (out of 28 total) <span id="econ-topics-lbl">0 / 28</span></div>
+        <div class="bar"><div class="bar-fill" id="econ-topics-bar" style="width:3%;background:var(--econ)"></div></div>
+      </div>
+      <div class="bar-section">
         <div class="bar-lbl">Easter check-in 9 Apr — 9/22 <span style="color:var(--amber)">41% · diagram avoided</span></div>
         <div class="bar"><div class="bar-fill" style="width:41%;background:var(--econ)"></div></div>
       </div>
@@ -450,6 +512,10 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <div class="subj-card c">
       <div class="subj-name">Computer Science</div>
       <div class="subj-status-tag tag-target">MIDDLE — B target</div>
+      <div class="bar-section">
+        <div class="bar-lbl">Sessions done (out of 21 total) <span id="cs-topics-lbl">0 / 21</span></div>
+        <div class="bar"><div class="bar-fill" id="cs-topics-bar" style="width:3%;background:var(--cs)"></div></div>
+      </div>
       <div class="bar-section">
         <div class="bar-lbl">Easter check-in 9 Apr — 10/20 <span style="color:var(--amber)">50%</span></div>
         <div class="bar"><div class="bar-fill" style="width:50%;background:var(--cs)"></div></div>
@@ -544,7 +610,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <h2 style="font-size:1.3rem;font-weight:700;color:var(--amber);margin-bottom:4px;">OCR H446 NEA — Investment Simulator</h2>
       <p style="font-size:0.82rem;color:var(--muted2);">Submitted 27 Mar 2026 · Unity/C# · <strong style="color:var(--amber)">Self-assessed estimate only</strong></p>
       <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;">
-        <span style="font-family:var(--mono);font-size:0.65rem;padding:3px 10px;border-radius:20px;background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.3);color:var(--amber);font-weight:700;">GRADE A (est.) · PENDING MODERATION</span>
+        <span style="font-family:var(--mono);font-size:0.65rem;padding:3px 10px;border-radius:20px;background:color-mix(in srgb,var(--amber) 12%,transparent);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent);color:var(--amber);font-weight:700;">GRADE A (est.) · PENDING MODERATION</span>
       </div>
       <p style="font-size:0.76rem;color:var(--muted2);margin-top:10px;line-height:1.6;">Official mark expected before the end of the week starting <b style="color:var(--text)">19 April 2026</b>. This will be updated once confirmed by centre. Do not plan on this grade until it's official.</p>
     </div>
@@ -762,72 +828,72 @@ const SESSIONS={
   '2026-04-08':[{sub:'maths',label:'M10 — Exponentials + logarithms',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P1.3 — Normalisation + SQL',dur:'2hrs',archived:true}],
   '2026-04-09':[{sub:'maths',label:'M11 — Sequences + series',dur:'2hrs',archived:true},{sub:'econ',label:'E6 — Supply-side + P3 competition',dur:'2hrs',archived:true}],
   '2026-04-10':[{sub:'maths',label:'M12 — Numerical methods + vectors',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS',dur:'2hrs',archived:true}],
-  '2026-04-11':[{sub:'maths',label:'Maths catch-up — weakest M1–M12 topic',dur:'2hrs',detail:'Revisit weakest topic.'},{sub:'econ',label:'E7 — Timed essay practice',dur:'2hrs',detail:'2 full essays, 20 min each, strict MOPS.'}],
-  '2026-04-12':[{sub:'cs',label:'CS-P1.4 — TCP/IP + networking + compression',dur:'1.5hrs',detail:'TCP/IP layers, encapsulation, DNS, compression.'}],
-  '2026-04-13':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E3 — Oligopoly + kinked demand (eve, light)',dur:'45min',detail:'Recall kinked demand mechanism + game theory from memory.'}],
-  '2026-04-14':[{sub:'maths',label:'M4 — Substitution + DEs (revisit)',dur:'2hrs',detail:'11am–1pm hard cap.'},{sub:'econ',label:'E4 — Macro: AD/AS + economic cycle',dur:'1.5hrs',detail:'Diagrams from memory: AD/AS, SRAS/LRAS shifts.'}],
-  '2026-04-15':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P1.5 — CPU architecture (eve)',dur:'45min',detail:'FDE cycle + CISC/RISC from memory.'}],
-  '2026-04-16':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M5 — Rational inequalities (eve)',dur:'1hr',detail:'Critical values method.'}],
-  '2026-04-17':[{sub:'maths',label:'M6 — Binomial expansion (neg/frac n)',dur:'2hrs',detail:'11am–1pm hard cap.'},{sub:'cs',label:'CS-P1.6 — OS + memory management + compilation',dur:'1.5hrs',detail:'Session pack CS-P1.6.'}],
-  '2026-04-18':[{sub:'maths',label:'M7 — Trig identities + R form',dur:'2hrs',detail:'Cold test first.'},{sub:'econ',label:'E5 — Macro policy: fiscal + monetary + supply-side',dur:'1.5hrs',detail:'Session pack E5.'}],
+  '2026-04-11':[{sub:'maths',label:'Diagnostic — cross-subject cold recall',dur:'45min',detail:'2–3 cold Qs each: trig integration, implicit diff, Boolean algebra, kinked demand. Mark yourself, note worst 1–2.'},{sub:'maths',label:'Gap drill — worst 1–2 topics from diagnostic',dur:'45min',detail:'Work only the topics you scored 0 on above. 45-min hard cap. Stop when cap hits.'}],
+  '2026-04-12':[{sub:'econ',label:'E1 — Core diagrams from memory (rest day)',dur:'45min',detail:'Draw all 6 core diagrams cold. No timer, no marking. Rest day — this is the only session.'}],
+  '2026-04-13':[{sub:'econ',label:'E3a — Oligopoly + kinked demand (eve, light)',dur:'45min',detail:'Recall kinked demand mechanism + game theory from memory.'}],
+  '2026-04-14':[{sub:'maths',label:'M4a — Substitution + DEs (revisit)',dur:'2hrs',detail:'11am–1pm hard cap.'},{sub:'econ',label:'E4a — Macro: AD/AS + economic cycle',dur:'1.5hrs',detail:'Diagrams from memory: AD/AS, SRAS/LRAS shifts.'}],
+  '2026-04-15':[{sub:'cs',label:'CS-P1.5a — CPU architecture (eve)',dur:'45min',detail:'FDE cycle + CISC/RISC from memory.'}],
+  '2026-04-16':[{sub:'maths',label:'M5a — Rational inequalities (eve)',dur:'1hr',detail:'Critical values method.'}],
+  '2026-04-17':[{sub:'maths',label:'M6 — Binomial expansion (neg/frac n)',dur:'2hrs',detail:'11am–1pm hard cap.'},{sub:'cs',label:'CS-P1.6a — OS + memory management + compilation',dur:'1.5hrs',detail:'Session pack CS-P1.6.'}],
+  '2026-04-18':[{sub:'maths',label:'M7 — Trig identities + R form',dur:'2hrs',detail:'Cold test first.'},{sub:'econ',label:'E5a — Macro policy: fiscal + monetary + supply-side',dur:'1.5hrs',detail:'Session pack E5.'}],
   '2026-04-19':[{sub:'maths',label:'M8 — Logs + exponentials + modelling',dur:'2hrs',detail:'Session pack M8.'},{sub:'cs',label:'CS-P1.7 — Web tech + legal/ethical + data types',dur:'1.5hrs',detail:'Session pack CS-P1.7.'}],
-  '2026-04-20':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E2 — Efficiency + market structures (eve)',dur:'45min',detail:'Productive vs allocative from memory ×5.'}],
-  '2026-04-21':[{sub:'maths',label:'M10 — Sequences + series',dur:'2hrs',detail:'Session pack M10.'},{sub:'econ',label:'E6 — Globalisation + labour markets',dur:'1.5hrs',detail:'Session pack E6.'}],
-  '2026-04-22':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS (eve)',dur:'45min',detail:'Floating point conversion.'}],
-  '2026-04-23':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M9 — Implicit + parametric diff (eve)',dur:'1hr',detail:'Product rule inside implicit diff.'}],
+  '2026-04-20':[{sub:'econ',label:'E2a — Efficiency + market structures (eve)',dur:'45min',detail:'Productive vs allocative from memory ×5.'}],
+  '2026-04-21':[{sub:'maths',label:'M10 — Sequences + series',dur:'2hrs',detail:'Session pack M10.'},{sub:'econ',label:'E6a — Globalisation + labour markets',dur:'1.5hrs',detail:'Session pack E6.'}],
+  '2026-04-22':[{sub:'cs',label:'CS-P2.3a — Floating point + BFS/DFS (eve)',dur:'45min',detail:'Floating point conversion.'}],
+  '2026-04-23':[{sub:'maths',label:'M9a — Implicit + parametric diff (eve)',dur:'1hr',detail:'Product rule inside implicit diff.'}],
   '2026-04-24':[{sub:'maths',label:'M11 — Numerical methods + vectors',dur:'2hrs',detail:'Session pack M11.'},{sub:'cs',label:"CS-P2.4 — Algorithms: Dijkstra's + sorting",dur:'1.5hrs',detail:'Session pack CS-P2.4.'}],
-  '2026-04-25':[{sub:'maths',label:'M12 — Coordinate geometry + circles + proof',dur:'2hrs',detail:'Session pack M12.'},{sub:'econ',label:'E7 — P3 competition synoptic: CMA + contestability',dur:'1.5hrs',detail:'Session pack E7.'}],
-  '2026-04-26':[{sub:'maths',label:'Maths Pure — timed past paper (2022)',dur:'2hrs',detail:'P1 2022. Full exam conditions.'},{sub:'econ',label:'E8 — Timed essay practice (20-mark)',dur:'1.5hrs',detail:'25 min strict. Mark against level descriptors.'}],
-  '2026-04-27':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E1 — Core diagrams revisit (eve)',dur:'45min',detail:'All 6 diagrams from memory. No notes.'}],
-  '2026-04-28':[{sub:'maths',label:'Maths Pure — timed past paper (2023)',dur:'2hrs',detail:'Full exam conditions.'},{sub:'econ',label:'E3 — Oligopoly + game theory (deep)',dur:'1.5hrs',detail:'Session pack E3 full. All 4 tiers.'}],
-  '2026-04-29':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'econ',label:'E4 — AD/AS + fiscal policy essay (eve)',dur:'45min',detail:'One MOPS chain on fiscal policy from memory.'}],
-  '2026-04-30':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M3 — Partial fractions revisit (eve)',dur:'1hr',detail:'Cold test two Qs.'}],
-  '2026-05-01':[{sub:'maths',label:'M2 — IBP revisit (double IBP focus)',dur:'2hrs',detail:'Tier 3 only.'},{sub:'econ',label:'E8 — Timed essay: monetary policy',dur:'1.5hrs',detail:'Essay 1. 25 min strict.'}],
-  '2026-05-02':[{sub:'econ',label:'Econ P1 — timed past paper (2022)',dur:'2hrs',detail:'Full paper, exam conditions.'},{sub:'maths',label:'M1 — Trig integration revisit',dur:'1.5hrs',detail:'Session pack M1 Tier 3.'}],
-  '2026-05-03':[{sub:'econ',label:'Econ P1 — timed past paper (2023)',dur:'2hrs',detail:'P1 2023 full paper.'},{sub:'cs',label:'CS-TIMED-P1 — CS P1 timed paper (2023)',dur:'2.5hrs',detail:'Only if Econ done by 1pm.'}],
-  '2026-05-04':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E5 — Transmission mechanism (eve)',dur:'45min',detail:'Write full monetary transmission from memory.'}],
-  '2026-05-05':[{sub:'econ',label:'Econ P1 — timed past paper (2024)',dur:'2hrs',detail:'Full paper.'},{sub:'maths',label:'M9 — Implicit diff (product rule focus)',dur:'2hrs',detail:'Every Q must use product rule on xy terms.'}],
-  '2026-05-06':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'econ',label:'E1 — Core diagrams from memory (eve)',dur:'45min',detail:'6 diagrams, no notes, cold.'}],
-  '2026-05-07':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'econ',label:"E8 — Timed essay: workers' rights (eve)",dur:'45min',detail:'Essay 2. 25 min strict.'}],
-  '2026-05-08':[{sub:'econ',label:'Econ P1 — timed paper (weakest of 2022–24)',dur:'2hrs',detail:'Full exam conditions.'},{sub:'maths',label:'M4 — Substitution + DEs Tier 3 only',dur:'1.5hrs',detail:'Tier 3 questions only.'}],
+  '2026-04-25':[{sub:'maths',label:'M12 — Coordinate geometry + circles + proof',dur:'2hrs',detail:'Session pack M12.'},{sub:'econ',label:'E7a — P3 competition synoptic: CMA + contestability',dur:'1.5hrs',detail:'Session pack E7.'}],
+  '2026-04-26':[{sub:'maths',label:'Maths Pure — timed past paper (2022)',dur:'2hrs',detail:'P1 2022. Full exam conditions.'},{sub:'econ',label:'E8b — Timed essay practice (20-mark)',dur:'1.5hrs',detail:'25 min strict. Mark against level descriptors.'}],
+  '2026-04-27':[{sub:'econ',label:'E1a — Core diagrams revisit (eve)',dur:'45min',detail:'All 6 diagrams from memory. No notes.'}],
+  '2026-04-28':[{sub:'maths',label:'Maths Pure — timed past paper (2023)',dur:'2hrs',detail:'Full exam conditions.'},{sub:'econ',label:'E3b — Oligopoly + game theory (deep)',dur:'1.5hrs',detail:'Session pack E3 full. All 4 tiers.'}],
+  '2026-04-29':[{sub:'econ',label:'E4b — AD/AS + fiscal policy essay (eve)',dur:'45min',detail:'One MOPS chain on fiscal policy from memory.'}],
+  '2026-04-30':[{sub:'maths',label:'M3a — Partial fractions revisit (eve)',dur:'1hr',detail:'Cold test two Qs.'}],
+  '2026-05-01':[{sub:'maths',label:'M2a — IBP revisit (double IBP focus)',dur:'2hrs',detail:'Tier 3 only.'},{sub:'econ',label:'E8c — Timed essay: monetary policy',dur:'1.5hrs',detail:'Essay 1. 25 min strict.'}],
+  '2026-05-02':[{sub:'econ',label:'Econ P1 — timed past paper (2022)',dur:'2hrs',detail:'Full paper, exam conditions.'},{sub:'maths',label:'M1a — Trig integration revisit',dur:'1.5hrs',detail:'Session pack M1 Tier 3.'}],
+  '2026-05-03':[{sub:'econ',label:'Econ P1 — timed past paper (2023)',dur:'2hrs',detail:'P1 2023 full paper.'},{sub:'cs',label:'CS-TIMED-P1a — CS P1 timed paper (2023)',dur:'2.5hrs',detail:'Only if Econ done by 1pm.'}],
+  '2026-05-04':[{sub:'econ',label:'E5b — Transmission mechanism (eve)',dur:'45min',detail:'Write full monetary transmission from memory.'}],
+  '2026-05-05':[{sub:'econ',label:'Econ P1 — timed past paper (2024)',dur:'2hrs',detail:'Full paper.'},{sub:'maths',label:'M9b — Implicit diff (product rule focus)',dur:'2hrs',detail:'Every Q must use product rule on xy terms.'}],
+  '2026-05-06':[{sub:'econ',label:'E1b — Core diagrams from memory (eve)',dur:'45min',detail:'6 diagrams, no notes, cold.'}],
+  '2026-05-07':[{sub:'econ',label:"E8d — Timed essay: workers' rights (eve)",dur:'45min',detail:'Essay 2. 25 min strict.'}],
+  '2026-05-08':[{sub:'econ',label:'Econ P1 — timed paper (weakest of 2022–24)',dur:'2hrs',detail:'Full exam conditions.'},{sub:'maths',label:'M4b — Substitution + DEs Tier 3 only',dur:'1.5hrs',detail:'Tier 3 questions only.'}],
   '2026-05-09':[{sub:'econ',label:'Econ P1 cram — all diagrams + one essay',dur:'2hrs',detail:'All diagrams from memory. One timed 20-mark essay.'},{sub:'maths',label:'Maths Pure — timed paper (2024)',dur:'2hrs',detail:'Full exam conditions.'}],
   '2026-05-10':[{sub:'econ',label:'DAY BEFORE ECON P1 — Econ only',dur:'2hrs',detail:'Diagrams ×3 each. Read all extracts 2022–24. Two MOPS paragraphs. No maths.'}],
   '2026-05-11':[{sub:'econ',label:'⚡ ECON P1 EXAM — 9:30am',detail:'9EB0/01 · Theme 1 + Theme 4 · 2 hours.'}],
   '2026-05-12':[{sub:'maths',label:'S1 — Statistical sampling',dur:'2hrs',detail:'Session pack S1.'},{sub:'econ',label:'Econ P2 prep — macro topics',dur:'1.5hrs',detail:'Session packs E4/E5 review.'}],
-  '2026-05-13':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P1.1 — Scheduling + LMC revisit (eve)',dur:'45min',detail:'All scheduling algorithms + one LMC trace.'}],
-  '2026-05-14':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'S2 — Data presentation + probability (eve)',dur:'1hr',detail:'Session pack S2 Tier 1+2 only.'}],
+  '2026-05-13':[{sub:'cs',label:'CS-P1.1a — Scheduling + LMC revisit (eve)',dur:'45min',detail:'All scheduling algorithms + one LMC trace.'}],
+  '2026-05-14':[{sub:'maths',label:'S2 — Data presentation + probability (eve)',dur:'1hr',detail:'Session pack S2 Tier 1+2 only.'}],
   '2026-05-15':[{sub:'maths',label:'S3 — Binomial distribution',dur:'2hrs',detail:'Session pack S3.'},{sub:'econ',label:'Econ P2 — timed past paper (2022)',dur:'2hrs',detail:'P2 2022 full paper.'}],
   '2026-05-16':[{sub:'maths',label:'S4 — Normal distribution',dur:'2hrs',detail:'Session pack S4.'},{sub:'econ',label:'Econ P2 — timed past paper (2023)',dur:'2hrs',detail:'P2 2023 full paper.'}],
   '2026-05-17':[{sub:'econ',label:'DAY BEFORE ECON P2 — Econ only',dur:'2hrs',detail:'Macro diagrams. One essay on globalisation. No maths.'}],
   '2026-05-18':[{sub:'econ',label:'⚡ ECON P2 EXAM — 13:30pm',detail:'9EB0/02 · Theme 3 + Theme 2 · 2 hours.'}],
-  '2026-05-19':[{sub:'maths',label:'S5 — Hypothesis testing',dur:'2hrs',detail:'Session pack S5.'},{sub:'cs',label:'CS-P1.2 — Boolean algebra + logic gates',dur:'1.5hrs',detail:'Session pack CS-P1.2.'}],
-  '2026-05-20':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'maths',label:'S6 — Kinematics (eve)',dur:'1hr',detail:'Session pack S6 Tier 1+2.'}],
-  '2026-05-21':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'cs',label:'CS-P1.3 — Normalisation + SQL (eve)',dur:'1hr',detail:'Session pack CS-P1.3.'}],
+  '2026-05-19':[{sub:'maths',label:'S5 — Hypothesis testing',dur:'2hrs',detail:'Session pack S5.'},{sub:'cs',label:'CS-P1.2a — Boolean algebra + logic gates',dur:'1.5hrs',detail:'Session pack CS-P1.2.'}],
+  '2026-05-20':[{sub:'maths',label:'S6 — Kinematics (eve)',dur:'1hr',detail:'Session pack S6 Tier 1+2.'}],
+  '2026-05-21':[{sub:'cs',label:'CS-P1.3a — Normalisation + SQL (eve)',dur:'1hr',detail:'Session pack CS-P1.3.'}],
   '2026-05-22':[{sub:'maths',label:"S7 — Forces + Newton's laws + friction",dur:'2hrs',detail:'Session pack S7.'},{sub:'econ',label:'Econ P3 prep — competition theme',dur:'1.5hrs',detail:'Session pack E7.'}],
-  '2026-05-23':[{sub:'maths',label:'S8 — Moments + inclined planes',dur:'2hrs',detail:'Session pack S8.'},{sub:'cs',label:'CS-P1.5 — CPU architecture + CISC/RISC',dur:'1.5hrs',detail:'Session pack CS-P1.5.'}],
+  '2026-05-23':[{sub:'maths',label:'S8 — Moments + inclined planes',dur:'2hrs',detail:'Session pack S8.'},{sub:'cs',label:'CS-P1.5b — CPU architecture + CISC/RISC',dur:'1.5hrs',detail:'Session pack CS-P1.5.'}],
   '2026-05-24':[{sub:'maths',label:'S9 — S&M timed past paper simulation',dur:'2hrs',detail:'Session pack S9. Full timed paper.'},{sub:'econ',label:'Econ P3 — timed past paper (2022)',dur:'2hrs',detail:'P3 2022 full paper.'}],
-  '2026-05-25':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'maths',label:'Pure revisit — trig proofs (eve)',dur:'45min',detail:'Two trig proof Qs from M7 pack. Cold.'}],
+  '2026-05-25':[{sub:'maths',label:'Pure revisit — trig proofs (eve)',dur:'45min',detail:'Two trig proof Qs from M7 pack. Cold.'}],
   '2026-05-26':[{sub:'maths',label:'Maths Pure 2 — timed paper (2022 P2)',dur:'2hrs',detail:'P2 2022.'},{sub:'econ',label:'Econ P3 — timed past paper (2023)',dur:'2hrs',detail:'P3 2023 full paper.'}],
-  '2026-05-27':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P1.6 — OS + methodologies (eve)',dur:'45min',detail:'Session pack CS-P1.6 Tier 1 cold test.'}],
-  '2026-05-28':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'Pure — PF + IBP mixed (eve)',dur:'1hr',detail:'One PF integral, one IBP. Cold test.'}],
+  '2026-05-27':[{sub:'cs',label:'CS-P1.6b — OS + methodologies (eve)',dur:'45min',detail:'Session pack CS-P1.6 Tier 1 cold test.'}],
+  '2026-05-28':[{sub:'maths',label:'Pure — PF + IBP mixed (eve)',dur:'1hr',detail:'One PF integral, one IBP. Cold test.'}],
   '2026-05-29':[{sub:'maths',label:'Maths Pure — weakest pure topic revisit',dur:'2hrs',detail:'Identify from timed papers.'},{sub:'econ',label:'Econ P3 — timed past paper (2024)',dur:'2hrs',detail:'P3 2024.'}],
   '2026-05-30':[{sub:'maths',label:'Maths Pure 1 — final full paper (2024 P1)',dur:'2hrs',detail:'Strict exam conditions.'},{sub:'econ',label:'Econ cram — all diagrams + one essay',dur:'1.5hrs',detail:'Every diagram once. One 20-mark essay.'}],
-  '2026-05-31':[{sub:'maths',label:'Maths Pure 2 — final full paper (2023 P2)',dur:'2hrs',detail:'P2 2023.'},{sub:'cs',label:'CS-P2.1 — Stack/queue pseudocode revisit',dur:'1.5hrs',detail:'Push/pop from scratch.'}],
-  '2026-06-01':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'maths',label:'Maths — integration rapid review (eve)',dur:'45min',detail:'One IBP, one trig int, one substitution. All cold.'}],
+  '2026-05-31':[{sub:'maths',label:'Maths Pure 2 — final full paper (2023 P2)',dur:'2hrs',detail:'P2 2023.'},{sub:'cs',label:'CS-P2.1a — Stack/queue pseudocode revisit',dur:'1.5hrs',detail:'Push/pop from scratch.'}],
+  '2026-06-01':[{sub:'maths',label:'Maths — integration rapid review (eve)',dur:'45min',detail:'One IBP, one trig int, one substitution. All cold.'}],
   '2026-06-02':[{sub:'maths',label:'DAY BEFORE PURE 1 — Maths only',dur:'2hrs',detail:'Read all Pure topics. 3 short Qs on weakest areas. Rest by 3pm.'}],
   '2026-06-03':[{sub:'maths',label:'⚡ MATHS PURE 1 EXAM — 13:30pm',detail:'9MA0/01 · 2 hours.'}],
   '2026-06-04':[{sub:'econ',label:'⚡ ECON P3 EXAM — 9:30am',detail:'9EB0/03 · Synoptic · 2 hours.'},{sub:'maths',label:'Review Pure 1 + start Pure 2 prep (afternoon)',dur:'1hr',detail:'Only after P3 exam.'}],
-  '2026-06-05':[{sub:'maths',label:'Maths Pure 2 — timed paper (2024 P2)',dur:'2hrs',detail:'P2 2024.'},{sub:'cs',label:'CS-TIMED-P1 — full CS P1 timed (2022)',dur:'2.5hrs',detail:'Session pack CS-TIMED-P1. Full 140-mark paper.'}],
-  '2026-06-06':[{sub:'maths',label:'S&M — kinematics + forces Tier 3',dur:'2hrs',detail:'Session packs S6+S7 Tier 3.'},{sub:'cs',label:'CS-P1.2 — Boolean + K-maps (heavy)',dur:'1.5hrs',detail:'Session pack CS-P1.2 all 4 tiers.'}],
-  '2026-06-07':[{sub:'maths',label:'S8 — Moments harder questions',dur:'2hrs',detail:'Session pack S8 Tier 3+4.'},{sub:'cs',label:'CS-P2.2 — Recursion + ISR',dur:'1.5hrs',detail:'Session pack CS-P2.2.'}],
-  '2026-06-08':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS — Boolean algebra rapid recall (eve)',dur:'45min',detail:'Session pack CS-P1.2 Tier 1 again. Cold.'}],
+  '2026-06-05':[{sub:'maths',label:'Maths Pure 2 — timed paper (2024 P2)',dur:'2hrs',detail:'P2 2024.'},{sub:'cs',label:'CS-TIMED-P1b — full CS P1 timed (2022)',dur:'2.5hrs',detail:'Session pack CS-TIMED-P1. Full 140-mark paper.'}],
+  '2026-06-06':[{sub:'maths',label:'S&M — kinematics + forces Tier 3',dur:'2hrs',detail:'Session packs S6+S7 Tier 3.'},{sub:'cs',label:'CS-P1.2b — Boolean + K-maps (heavy)',dur:'1.5hrs',detail:'Session pack CS-P1.2 all 4 tiers.'}],
+  '2026-06-07':[{sub:'maths',label:'S8a — Moments harder questions',dur:'2hrs',detail:'Session pack S8 Tier 3+4.'},{sub:'cs',label:'CS-P2.2a — Recursion + ISR',dur:'1.5hrs',detail:'Session pack CS-P2.2.'}],
+  '2026-06-08':[{sub:'cs',label:'CS — Boolean algebra rapid recall (eve)',dur:'45min',detail:'Session pack CS-P1.2 Tier 1 again. Cold.'}],
   '2026-06-09':[{sub:'cs',label:'DAY BEFORE CS P1 — CS only',dur:'2hrs',detail:'All CS P1 topics rapid review. No maths.'}],
   '2026-06-10':[{sub:'cs',label:'⚡ CS PAPER 1 EXAM — 13:30pm',detail:'H446/01 · Computer Systems · 2h30m.'}],
   '2026-06-11':[{sub:'maths',label:'⚡ MATHS PURE 2 EXAM — 13:30pm',detail:'9MA0/02 · 2 hours.'}],
   '2026-06-12':[{sub:'maths',label:'S&M — full timed paper review',dur:'2hrs',detail:'Session pack S9 or actual past paper.'},{sub:'cs',label:"CS-P2.4 — Algorithms: Dijkstra's Tier 3",dur:'1.5hrs',detail:'Session pack CS-P2.4 Tier 3.'}],
   '2026-06-13':[{sub:'maths',label:'S&M — mixed paper (forces + stats)',dur:'2hrs',detail:'Combined S7/S5 questions.'},{sub:'cs',label:'CS-TIMED-P2 — full CS P2 timed paper',dur:'2.5hrs',detail:'Session pack CS-TIMED-P2. Full 140-mark paper.'}],
   '2026-06-14':[{sub:'maths',label:'S&M — moments + kinematics combined',dur:'2hrs',detail:'One harder moments Q + one kinematics Q. Cold.'},{sub:'cs',label:'CS P2 prep — recursion + algorithms',dur:'1.5hrs',detail:'Session packs CS-P2.2 + CS-P2.4.'}],
-  '2026-06-15':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS — stack pseudocode rapid recall (eve)',dur:'45min',detail:'Write push() and pop() from scratch.'}],
+  '2026-06-15':[{sub:'cs',label:'CS — stack pseudocode rapid recall (eve)',dur:'45min',detail:'Write push() and pop() from scratch.'}],
   '2026-06-16':[{sub:'cs',label:'DAY BEFORE CS P2 — CS only',dur:'2hrs',detail:'CS P2 topics: recursion, sorting, Dijkstra, BFS/DFS.'}],
   '2026-06-17':[{sub:'cs',label:'⚡ CS PAPER 2 EXAM — 9:30am',detail:'H446/02 · Algorithms & Programming · 2h30m.'}],
   '2026-06-18':[{sub:'maths',label:'⚡ MATHS S&M EXAM — 13:30pm',detail:'9MA0/03 · Statistics & Mechanics · 2h30m. FINAL EXAM.'}],
@@ -876,8 +942,7 @@ const PRIORITY_GAPS=[
   {key:'c_sql',sub:'cs',name:'SQL (SELECT, JOIN, ORDER BY)',defPrio:'med',examDate:'2026-06-10'},
   {key:'c_comp',sub:'cs',name:'Compression (RLE, Huffman, lossy)',defPrio:'med',examDate:'2026-06-10'},
   {key:'c_bfs',sub:'cs',name:'BFS/DFS traversal',defPrio:'low',examDate:'2026-06-17'},
-  {key:'c_kmap',sub:'cs',name:'Karnaugh maps',defPrio:'low',examDate:'2026-06-10'},
-];
+  {key:'c_kmap',sub:'cs',name:'Karnaugh maps',defPrio:'low',examDate:'2026-06-10'}];
 
 // Seed initial completion state
 const INITIAL_TASKS_DONE={'2026-03-30':[0,1],'2026-03-31':[0,1],'2026-04-01':[0,1],'2026-04-02':[0],'2026-04-04':[0]};
@@ -1021,8 +1086,7 @@ const PACK_DEFINITIONS=[
   {id:'CS-P2.3',name:'Floating point + BFS/DFS',listId:'pack-list-csp2',col:'var(--cs)'},
   {id:'CS-P2.4',name:"Algorithms: Dijkstra's + sorting",listId:'pack-list-csp2',col:'var(--cs)'},
   {id:'CS-TIMED-P1',name:'CS P1 timed past paper (2023 full)',listId:'pack-list-csp2',col:'var(--cs)'},
-  {id:'CS-TIMED-P2',name:'CS P2 timed past paper (2022 full)',listId:'pack-list-csp2',col:'var(--cs)'},
-];
+  {id:'CS-TIMED-P2',name:'CS P2 timed past paper (2022 full)',listId:'pack-list-csp2',col:'var(--cs)'}];
 
 function renderPacksTab(){
   const listIds=['pack-list-pure','pack-list-sm','pack-list-econ','pack-list-csp1','pack-list-csp2'];
@@ -1217,7 +1281,7 @@ function logConfidenceForTask(gapKey,level,taskIdx,dk){
   if(!gapKey)return;const state=lsGet('gap_state',{});state[gapKey]={...state[gapKey],confidence:level,lastRevised:Date.now()};lsSet('gap_state',state);
   const dayLog=lsGet('daily_log_'+dk,[]);const g=PRIORITY_GAPS.find(x=>x.key===gapKey);
   if(g){const entry={key:gapKey,name:g.name,sub:g.sub,conf:level,time:Date.now()};const idx=dayLog.findIndex(x=>x.key===gapKey);if(idx>=0)dayLog[idx]=entry;else dayLog.push(entry);lsSet('daily_log_'+dk,dayLog);}
-  renderSmartGaps();renderFocusCard();updateMathsTopicsBar();renderTodayLog();
+  renderSmartGaps();renderFocusCard();updateMathsTopicsBar();updateEconTopicsBar();updateCSTopicsBar();renderTodayLog();
   const confRow=document.getElementById('conf-row-'+taskIdx);if(confRow)confRow.querySelectorAll('.task-conf-btn').forEach((btn,i)=>{btn.className='task-conf-btn';if(i+1===level)btn.classList.add('act-'+(i+1));});
 }
 
@@ -1230,12 +1294,9 @@ function renderToday(){
   sessions.forEach((s,i)=>{
     // Find original index (before archive filter) for persistence
     const origIdx=(SESSIONS[key]||[]).indexOf(s);
-    const isTimetable=s.sub==='college'||s.sub==='am';const badgeCls=SUB_BADGE_CLASS[s.sub]||'badge-college';
+    const badgeCls=SUB_BADGE_CLASS[s.sub]||'badge-college';
     const item=document.createElement('div');item.className='task-item';
-    if(isTimetable){
-      item.style.opacity='0.7';
-      item.innerHTML=`<div class="task-body"><div class="task-top"><span class="sub-badge ${badgeCls}">College</span></div><div class="task-name">${s.label}</div>${s.detail?`<div class="task-detail">${s.detail}</div>`:''}</div>`;
-    }else{
+    {
       item.classList.add('clickable');const isChecked=checkedIdxs.includes(origIdx);
       const gapKey=getGapKeyForSession(s.label);const packId=getPackIdForLabel(s.label);
       const state=lsGet('gap_state',{});const currentConf=gapKey?(state[gapKey]?.confidence||0):0;
@@ -1248,7 +1309,7 @@ function renderToday(){
         item.classList.toggle('done-item',this.checked);document.getElementById('lbl'+origIdx).classList.toggle('done',this.checked);
         setTaskChecked(key,origIdx,this.checked);
         const nowDone=getTodayChecked(key);if(this.checked&&nowDone.length===1)incrementSessions();
-        renderMissedThisWeek();updateMathsTopicsBar();
+        renderMissedThisWeek();updateMathsTopicsBar();updateEconTopicsBar();updateCSTopicsBar();
       });
     }
     container.appendChild(item);
@@ -1299,8 +1360,7 @@ function renderAllSessions(){
       if(showPastSessions)return k>=weekStartKey;
       return k>=todayKey;
     }),
-    ...Object.keys(EXAM_DAYS).filter(k=>showPastSessions?k>=weekStartKey:k>=todayKey),
-  ]);
+    ...Object.keys(EXAM_DAYS).filter(k=>showPastSessions?k>=weekStartKey:k>=todayKey)]);
   const sortedDates=Array.from(allDates).sort();
   let html='';
   for(const dk of sortedDates){
@@ -1309,7 +1369,7 @@ function renderAllSessions(){
     const d=toDate(dk);const isToday=dk===todayKey;const daysFromNow=Math.ceil((toDate(dk)-t)/864e5);
     const relLabel=isToday?'today':daysFromNow===1?'tomorrow':daysFromNow===-1?'yesterday':daysFromNow<0?`${Math.abs(daysFromNow)}d ago`:`in ${daysFromNow}d`;
     const dateFormatted=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});const checked=lsGet('tasks_done_'+dk,[]);
-    html+=`<div class="all-sessions-day"><div class="all-sessions-date-hdr"><span class="all-sessions-date-lbl">${dateFormatted}</span><span class="all-sessions-date-rel">${relLabel}</span>${examLabel?`<span class="all-sessions-date-exam">📝 ${examLabel}</span>`:''}</div>`;
+    html+=`<div class="all-sessions-day"><div class="all-sessions-date-hdr"><span class="all-sessions-date-lbl">${dateFormatted}</span><span class="all-sessions-date-rel">${relLabel}</span>${examLabel?`<span class="all-sessions-date-exam">EXAM: ${examLabel}</span>`:''}</div>`;
     if(examLabel&&!sessions.length)html+=`<div class="all-sess-row${isToday?' is-today':''}"><div class="all-sess-body"><div class="all-sess-name" style="color:var(--red)">EXAM DAY — ${examLabel}</div></div></div>`;
     for(const s of sessions){
       const origIdx=allSess.indexOf(s);const isDone=checked.includes(origIdx);const badgeCls=SUB_BADGE_CLASS[s.sub]||'badge-college';
@@ -1332,12 +1392,12 @@ function promptAddMock(sub){
 }
 function renderCharts(){
   const h=loadMockHistory();const bounds=lsGet('grade_bounds',{});
-  [{sub:'maths',id:'chart-maths',color:'#4ade80'},{sub:'econ',id:'chart-econ',color:'#60a5fa'},{sub:'cs',id:'chart-cs',color:'#fbbf24'}].forEach(c=>{
+  [{sub:'maths',id:'chart-maths',color:'var(--maths)'},{sub:'econ',id:'chart-econ',color:'var(--econ)'},{sub:'cs',id:'chart-cs',color:'var(--cs)'}].forEach(c=>{
     const canvas=document.getElementById(c.id);if(!canvas)return;if(chartInstances[c.sub])chartInstances[c.sub].destroy();
     const data=h[c.sub]||[];const target=(bounds[c.sub]?.targetPct)||null;
     const datasets=[{data:data.map(d=>d.pct),borderColor:c.color,backgroundColor:c.color+'18',borderWidth:2,pointRadius:4,pointBackgroundColor:c.color,tension:0.3,fill:true}];
     if(target!==null)datasets.push({data:data.map(()=>target),borderColor:'rgba(255,255,255,0.15)',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false});
-    chartInstances[c.sub]=new Chart(canvas,{type:'line',data:{labels:data.map(d=>d.label),datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'rgba(19,22,31,0.95)',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#e8eaf0',bodyColor:'#6b7490',callbacks:{label:ctx=>` ${ctx.parsed.y}%`}}},scales:{y:{min:0,max:100,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#4a5070',font:{size:9},callback:v=>v+'%',maxTicksLimit:4}},x:{grid:{display:false},ticks:{color:'#4a5070',font:{size:9}}}}}});
+    chartInstances[c.sub]=new Chart(canvas,{type:'line',data:{labels:data.map(d=>d.label),datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'var(--surface)',borderColor:'var(--border2)',borderWidth:1,titleColor:'var(--text)',bodyColor:'var(--muted2)',callbacks:{label:ctx=>` ${ctx.parsed.y}%`}}},scales:{y:{min:0,max:100,grid:{color:'var(--border)'},ticks:{color:'var(--muted)',font:{size:9},callback:v=>v+'%',maxTicksLimit:4}},x:{grid:{display:false},ticks:{color:'var(--muted)',font:{size:9}}}}}});
   });
 }
 
@@ -1412,7 +1472,7 @@ function submitSessionLog(){
       state[key]={...state[key],lastRevised:Date.now()};if(slogConf>0)state[key].confidence=slogConf;
       const g=PRIORITY_GAPS.find(x=>x.key===key);if(g){const idx=dayLog.findIndex(x=>x.key===key);const entry={key,name:g.name,sub:g.sub,conf:slogConf,time:Date.now()};if(idx>=0)dayLog[idx]=entry;else dayLog.push(entry);}
     });
-    lsSet('gap_state',state);lsSet('daily_log_'+todayKey,dayLog);renderSmartGaps();renderFocusCard();updateMathsTopicsBar();renderTodayLog();
+    lsSet('gap_state',state);lsSet('daily_log_'+todayKey,dayLog);renderSmartGaps();renderFocusCard();updateMathsTopicsBar();updateEconTopicsBar();updateCSTopicsBar();renderTodayLog();
   }
   if(!slogFromTimer){const chk=document.getElementById('slog-count-sess');if(chk&&chk.checked)incrementSessions();}
   closeSessionLog();
@@ -1429,11 +1489,56 @@ function init(){
   document.getElementById('live-date').textContent=`${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]} ${t.getFullYear()}`;
   document.getElementById('live-phase').textContent=getPhase();
   renderCountdowns();renderFocusCard();renderToday();renderTomorrow();renderMissedThisWeek();
-  renderWeek();renderSmartGaps();updateMathsTopicsBar();renderStreak();renderTodayLog();updateTimerUI();
+  renderWeek();renderSmartGaps();updateMathsTopicsBar();updateEconTopicsBar();updateCSTopicsBar();renderStreak();renderTodayLog();updateTimerUI();
   // Preload pack data in background
   setTimeout(()=>loadPackData(()=>{}),2000);
 }
 init();
+initThemeToggle();
+
+// ── THEME TOGGLE ──────────────────────────────────────────────────────────────
+function setTheme(mode){
+  const root=document.documentElement;
+  if(mode==='light'||mode==='dark'){root.setAttribute('data-theme',mode);}
+  else{root.removeAttribute('data-theme');}
+  localStorage.setItem('theme_pref',mode);
+  // Update toggle active state
+  ['auto','light','dark'].forEach(m=>{
+    const btn=document.getElementById('tbtn-'+m);
+    if(btn)btn.classList.toggle('active',m===mode);
+  });
+}
+function initThemeToggle(){
+  const pref=localStorage.getItem('theme_pref')||'auto';
+  setTheme(pref);
+}
+
+// ── ECON + CS SESSION BARS ─────────────────────────────────────────────────────
+function updateEconTopicsBar(){
+  let done=0;const total=28;
+  Object.keys(SESSIONS).forEach(dk=>{
+    const checked=lsGet('tasks_done_'+dk,[]);
+    (SESSIONS[dk]||[]).forEach((s,i)=>{
+      if(s.sub==='econ'&&!s.archived&&!s.label.includes('EXAM')&&checked.includes(i))done++;
+    });
+  });
+  const pct=Math.round(done/total*100);
+  const lbl=document.getElementById('econ-topics-lbl');const bar=document.getElementById('econ-topics-bar');
+  if(lbl)lbl.textContent=`${done} / ${total}`;if(bar)bar.style.width=Math.max(3,Math.min(100,pct))+'%';
+}
+function updateCSTopicsBar(){
+  let done=0;const total=21;
+  Object.keys(SESSIONS).forEach(dk=>{
+    const checked=lsGet('tasks_done_'+dk,[]);
+    (SESSIONS[dk]||[]).forEach((s,i)=>{
+      if(s.sub==='cs'&&!s.archived&&!s.label.includes('EXAM')&&checked.includes(i))done++;
+    });
+  });
+  const pct=Math.round(done/total*100);
+  const lbl=document.getElementById('cs-topics-lbl');const bar=document.getElementById('cs-topics-bar');
+  if(lbl)lbl.textContent=`${done} / ${total}`;if(bar)bar.style.width=Math.max(3,Math.min(100,pct))+'%';
+}
+
 </script>
 </body>
 </html>
