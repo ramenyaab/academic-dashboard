@@ -129,6 +129,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .badge-m{background:color-mix(in srgb,var(--maths) 15%,transparent);color:var(--maths);}
 .badge-e{background:color-mix(in srgb,var(--econ) 15%,transparent);color:var(--econ);}
 .badge-c{background:color-mix(in srgb,var(--cs) 15%,transparent);color:var(--cs);}
+.badge-multi{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.45);border:none;}
 .badge-nea{background:color-mix(in srgb,var(--purple) 15%,transparent);color:var(--purple);}
 .badge-hw{background:color-mix(in srgb,var(--red) 18%,transparent);color:var(--red);}
 .bonus-section{margin-top:8px;padding:12px 14px;background:color-mix(in srgb,var(--muted) 8%,transparent);border:1px dashed var(--border2);border-radius:10px;}
@@ -725,8 +726,8 @@ const SESSIONS={
   '2026-04-09':[{sub:'maths',label:'M11 — Sequences + series',dur:'2hrs',archived:true},{sub:'econ',label:'E6 — Supply-side + P3 competition',dur:'2hrs',archived:true}],
   '2026-04-10':[{sub:'maths',label:'M12 — Numerical methods + vectors',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS',dur:'2hrs',archived:true}],
     '2026-04-11':[
-    {sub:'maths',label:'Cross-subject diagnostic (cold recall)',dur:'1.5hrs',detail:'2-3 Qs cold from trig integration, implicit diff, boolean algebra, kinked demand. Mark yourself. Write down exactly what broke.'},
-    {sub:'econ',label:'Easter gap drill (worst 1-2 topics)',dur:'45min',detail:'Target the 1-2 weakest gaps from the morning diagnostic. 45 min cap. No new content.'},
+    {sub:'multi',subs:['maths','econ','cs'],label:'Cross-subject diagnostic (cold recall)',dur:'1.5hrs',detail:'2-3 Qs cold from trig integration, implicit diff, boolean algebra, kinked demand. Mark yourself. Write down exactly what broke.'},
+    {sub:'multi',subs:['maths','econ','cs'],label:'Gap drill — worst 1-2 topics from diagnostic',dur:'45min',detail:'Work only the topics you scored 0 on above. 45-min hard cap. Stop when cap hits.'},
   ],
   '2026-04-12':[{sub:'econ',label:'E1 (light) - Core diagrams from memory',dur:'45min',detail:'All 6 diagrams from memory. No timer, no marking. Confidence not performance. Rest of day off.'}],
   '2026-04-13':[{sub:'econ',label:'E3a — Oligopoly + kinked demand (eve, light)',dur:'45min',detail:'Recall kinked demand mechanism + game theory from memory.'}],
@@ -862,7 +863,24 @@ const MOCK_DEFAULTS={
   cs:[{label:'Feb mock',pct:22},{label:'30 Mar',pct:51},{label:'9 Apr',pct:50}],
 };
 const SUB_COL={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)',nea:'var(--purple)',am:'var(--amber)',college:'var(--muted2)','':'var(--muted)'};
-const SUB_BADGE_CLASS={maths:'badge-m',econ:'badge-e',cs:'badge-c',nea:'badge-nea'};
+const SUB_BADGE_CLASS={maths:'badge-m',econ:'badge-e',cs:'badge-c',nea:'badge-nea',multi:'badge-multi'};
+
+// Multi-subject badge renderer
+function getSubBadgeHTML(s,size){
+  var sz=size||'';
+  if(s.sub==='multi'&&s.subs&&s.subs.length){
+    var cols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};
+    var labels={maths:'Maths',econ:'Econ',cs:'CS'};
+    var pct=100/s.subs.length;
+    var stops=s.subs.map(function(sub,i){
+      return 'color-mix(in srgb,'+cols[sub]+' 60%,transparent) '+(i*pct)+'% '+(i*pct+pct)+'%';
+    }).join(',');
+    return '<span class="sub-badge badge-multi" style="background:linear-gradient(90deg,'+stops+');color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.5);'+sz+'">'+s.subs.map(function(sub){return labels[sub];}).join('+')+'</span>';
+  }
+  var cls=SUB_BADGE_CLASS[s.sub]||'badge-m';
+  var lbl=s.sub==='maths'?'Maths':s.sub==='econ'?'Econ':s.sub==='cs'?'CS':s.sub||'—';
+  return '<span class="sub-badge '+cls+'" style="'+sz+'">'+lbl+'</span>';
+}
 const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
 
@@ -1129,7 +1147,7 @@ function renderMissedThisWeek(){
   const missed=getMissedThisWeek();const rescheduled=lsGet('rescheduled',[]);
   if(!missed.length){el.innerHTML='<div style="font-size:0.76rem;color:var(--muted2)">Nothing missed this week — nice work.</div>';return;}
   el.innerHTML=missed.map(m=>{
-    const tag=m.sub==='maths'?'badge-m':m.sub==='econ'?'badge-e':'badge-c';const lab=m.sub==='maths'?'Maths':m.sub==='econ'?'Econ':'CS';
+    const tag=m.sub==='maths'?'badge-m':m.sub==='econ'?'badge-e':m.sub==='multi'?'badge-multi':'badge-c';const lab=m.sub==='maths'?'Maths':m.sub==='econ'?'Econ':m.sub==='multi'?'Multi':'CS';
     const rKey=`missed_${m.dateKey}_${m.idx}`;const r=rescheduled.find(x=>x.key===rKey);
     const actionBtns=r?`<span class="reschedule-btn rescheduled">→ ${r.label}</span><button class="unreschedule-btn" onclick="unrescheduleItem('${rKey}')">×</button>`:`<button class="reschedule-btn" onclick="rescheduleMissed('${m.dateKey}',${m.idx},'${m.label.replace(/'/g,"\\'")}','${m.sub}')">Reschedule →</button>`;
     return`<div class="missed-row"><span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span><span style="font-size:0.76rem;flex:1">${m.label}</span><span class="missed-when">${m.dayLabel}</span>${actionBtns}</div>`;
@@ -1198,7 +1216,6 @@ function renderToday(){
   sessions.forEach((s,i)=>{
     // Find original index (before archive filter) for persistence
     const origIdx=(SESSIONS[key]||[]).indexOf(s);
-    const badgeCls=SUB_BADGE_CLASS[s.sub]||'badge-college';
     const item=document.createElement('div');item.className='task-item';
     {
       item.classList.add('clickable');const isChecked=checkedIdxs.includes(origIdx);
@@ -1207,7 +1224,7 @@ function renderToday(){
       if(packId)item.classList.add('has-pack');
       const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')">▶ pack</button>`:'';
       const confBtns=gapKey?`<div class="task-actions" id="conf-row-${origIdx}"><span class="task-conf-lbl">Conf:</span>${[1,2,3,4,5].map(n=>`<button class="task-conf-btn${currentConf===n?' act-'+n:''}" onclick="event.stopPropagation();logConfidenceForTask('${gapKey}',${n},${origIdx},'${key}')" title="${CONF_LABELS[n]}">${n}</button>`).join('')}<span style="font-family:var(--mono);font-size:0.5rem;color:${currentConf>0?CONF_COLORS[currentConf]:'var(--muted)'};margin-left:4px">${currentConf>0?CONF_LABELS[currentConf]:''}</span>${packBtn}</div>`:(packId?`<div class="task-actions">${packBtn}</div>`:'');
-      item.innerHTML=`<div class="task-check"><input type="checkbox" id="chk${origIdx}"${isChecked?' checked':''}></div><div class="task-body"><div class="task-top"><span class="sub-badge ${badgeCls}">${s.sub||'—'}</span>${s.hw?'<span class="sub-badge badge-hw">HW DUE</span>':''}</div><div class="task-name" id="lbl${origIdx}"${isChecked?' class="done"':''}>${s.label}</div>${s.detail?`<div class="task-detail">${s.detail}</div>`:''}${confBtns}</div>${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
+      item.innerHTML=`<div class="task-check"><input type="checkbox" id="chk${origIdx}"${isChecked?' checked':''}></div><div class="task-body"><div class="task-top">${getSubBadgeHTML(s)}${s.hw?'<span class="sub-badge badge-hw">HW DUE</span>':''}</div><div class="task-name" id="lbl${origIdx}"${isChecked?' class="done"':''}>${s.label}</div>${s.detail?`<div class="task-detail">${s.detail}</div>`:''}${confBtns}</div>${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
       if(isChecked)item.classList.add('done-item');
       item.querySelector('input').addEventListener('change',function(){
         item.classList.toggle('done-item',this.checked);document.getElementById('lbl'+origIdx).classList.toggle('done',this.checked);
@@ -1227,7 +1244,7 @@ function renderTomorrow(){
   const container=document.getElementById('tmr-tasks');container.innerHTML='';
   if(!sessions.length){container.innerHTML='<div style="font-size:0.78rem;color:var(--muted2)">Nothing scheduled.</div>';return;}
   sessions.forEach(s=>{
-    const col=SUB_COL[s.sub]||'var(--muted)';const row=document.createElement('div');row.className='tmr-row';
+    const col=s.sub==='multi'&&s.subs?'var(--purple)':SUB_COL[s.sub]||'var(--muted)';const row=document.createElement('div');row.className='tmr-row';
     const packId=getPackIdForLabel(s.label);const packBtn=packId?` <button class="open-pack-btn" onclick="openPackModal('${packId}')" style="margin-left:4px">▶</button>`:'';
     row.innerHTML=`<div class="tmr-left-dot" style="background:${col}"></div><div class="tmr-body"><div class="tmr-name">${s.hw?'<span style="color:var(--red);font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}${packBtn}</div>${s.detail?`<div class="tmr-detail">${s.detail}</div>`:''}</div>`;
     container.appendChild(row);
@@ -1244,7 +1261,7 @@ function renderWeek(){
     const col=document.createElement('div');col.className='wday'+(isToday?' today-col':'')+(isWeekend&&!isToday?' weekend-col':'')+(examLabel?' deadline':'');
     const headStr=examLabel?`${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)} — ${examLabel}`:`${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)}`;
     const tasksHtml=sessions.length?sessions.map((s,idx)=>{
-      const origIdx=(SESSIONS[key]||[]).indexOf(s);const c2=SUB_COL[s.sub]||'var(--muted)';const cls=s.sub==='college'?' college-task':s.hw?' hw-task':'';const isDone=checked.includes(origIdx);
+      const origIdx=(SESSIONS[key]||[]).indexOf(s);const c2=s.sub==='multi'&&s.subs?'var(--purple)':SUB_COL[s.sub]||'var(--muted)';const cls=s.sub==='college'?' college-task':s.hw?' hw-task':'';const isDone=checked.includes(origIdx);
       return`<div class="wday-task${cls}${isDone?' done-task':''}"><div class="wday-task-dot" style="background:${c2}"></div><span>${s.hw?'<b style="color:var(--red)">HW</b> · ':''}${isDone?'✓ ':''}${s.label}</span></div>`;
     }).join(''):examLabel?'<div style="color:var(--red);font-size:0.7rem;font-weight:700">EXAM DAY</div>':'<div style="color:var(--muted);font-size:0.7rem">—</div>';
     col.innerHTML=`<div class="wday-head">${headStr}</div>${tasksHtml}`;grid.appendChild(col);
@@ -1276,9 +1293,8 @@ function renderAllSessions(){
     html+=`<div class="all-sessions-day"><div class="all-sessions-date-hdr"><span class="all-sessions-date-lbl">${dateFormatted}</span><span class="all-sessions-date-rel">${relLabel}</span>${examLabel?`<span class="all-sessions-date-exam">EXAM: ${examLabel}</span>`:''}</div>`;
     if(examLabel&&!sessions.length)html+=`<div class="all-sess-row${isToday?' is-today':''}"><div class="all-sess-body"><div class="all-sess-name" style="color:var(--red)">EXAM DAY — ${examLabel}</div></div></div>`;
     for(const s of sessions){
-      const origIdx=allSess.indexOf(s);const isDone=checked.includes(origIdx);const badgeCls=SUB_BADGE_CLASS[s.sub]||'badge-college';
-      const packId=getPackIdForLabel(s.label);const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')" style="margin-left:auto;flex-shrink:0">▶ pack</button>`:'';
-      html+=`<div class="all-sess-row${isToday?' is-today':''}${isDone?' is-done':''}"><span class="sub-badge ${badgeCls}" style="flex-shrink:0;margin-top:2px">${s.sub||'—'}</span><div class="all-sess-body"><div class="all-sess-name${isDone?' done-name':''}">${isDone?'✓ ':''}${s.hw?'<span style="color:var(--red);font-size:0.72rem;font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>${s.detail?`<div class="all-sess-detail">${s.detail}</div>`:''}</div>${packBtn}</div>`;
+      const origIdx=allSess.indexOf(s);const isDone=checked.includes(origIdx);const packId=getPackIdForLabel(s.label);const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')" style="margin-left:auto;flex-shrink:0">▶ pack</button>`:'';
+      html+=`<div class="all-sess-row${isToday?' is-today':''}${isDone?' is-done':''}"><span style="flex-shrink:0;margin-top:2px">${getSubBadgeHTML(s)}<div class="all-sess-body"><div class="all-sess-name${isDone?' done-name':''}">${isDone?'✓ ':''}${s.hw?'<span style="color:var(--red);font-size:0.72rem;font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>${s.detail?`<div class="all-sess-detail">${s.detail}</div>`:''}</div>${packBtn}</div>`;
     }
     html+=`</div>`;
   }
@@ -1384,8 +1400,8 @@ function submitSessionLog(){
 }
 function renderTodayLog(){
   const el=document.getElementById('today-log-section');if(!el)return;const todayKey=dateKey(today());const dayLog=lsGet('daily_log_'+todayKey,[]);if(!dayLog.length){el.innerHTML='';return;}
-  const subBadge={maths:'badge-m',econ:'badge-e',cs:'badge-c'};
-  const rows=dayLog.map(e=>{const timeStr=new Date(e.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});const confHtml=e.conf>0?`<span class="tlog-conf" style="background:${CONF_BG[e.conf]};color:${CONF_COLORS[e.conf]}">${CONF_LABELS[e.conf]}</span>`:'';return`<div class="tlog-row"><span class="sub-badge ${subBadge[e.sub]||'badge-college'}" style="font-size:0.52rem">${e.sub==='maths'?'M':e.sub==='econ'?'E':'CS'}</span><span class="tlog-name">${e.name}</span>${confHtml}<span class="tlog-time">${timeStr}</span></div>`;}).join('');
+  const subBadge={maths:'badge-m',econ:'badge-e',cs:'badge-c',multi:'badge-multi'};
+  const rows=dayLog.map(e=>{const timeStr=new Date(e.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});const confHtml=e.conf>0?`<span class="tlog-conf" style="background:${CONF_BG[e.conf]};color:${CONF_COLORS[e.conf]}">${CONF_LABELS[e.conf]}</span>`:'';return`<div class="tlog-row"><span class="sub-badge ${subBadge[e.sub]||'badge-c'}" style="font-size:0.52rem">${e.sub==='maths'?'M':e.sub==='econ'?'E':e.sub==='cs'?'CS':'M+E+CS'}</span><span class="tlog-name">${e.name}</span>${confHtml}<span class="tlog-time">${timeStr}</span></div>`;}).join('');
   el.innerHTML=`<div class="tlog-wrap"><div class="tlog-header"><span class="tlog-title">Logged today</span><span style="font-family:var(--mono);font-size:0.58rem;color:var(--muted2)">${dayLog.length} topic${dayLog.length!==1?'s':''}</span></div>${rows}</div>`;
 }
 
