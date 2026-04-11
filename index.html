@@ -7,12 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
-:root {
-  --bg:#0c0e13;--surface:#13161f;--surface2:#1a1d29;--surface3:#21253a;
-  --border:#252a3a;--border2:#2e3450;--text:#e8eaf0;--muted:#4a5070;--muted2:#6b7490;
-  --maths:#4ade80;--econ:#60a5fa;--cs:#fbbf24;--red:#e94560;--amber:#fb923c;--purple:#c084fc;
-  --mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;--radius:14px;
-}
+:root{--bg:#0c0e13;--surface:#13161f;--surface2:#1a1d29;--surface3:#21253a;--border:#252a3a;--border2:#2e3450;--text:#e8eaf0;--muted:#4a5070;--muted2:#6b7490;--maths:#4ade80;--econ:#60a5fa;--cs:#fbbf24;--red:#e94560;--amber:#fb923c;--purple:#c084fc;--mono:'Space Mono',monospace;--sans:'DM Sans',sans-serif;--radius:14px;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;}
 .topbar{position:sticky;top:0;z-index:100;background:rgba(12,14,19,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:58px;}
@@ -20,7 +15,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .topbar-title{font-family:var(--mono);font-size:0.8rem;letter-spacing:0.06em;color:var(--muted2);text-transform:uppercase;}
 .topbar-date{font-family:var(--mono);font-size:0.7rem;color:var(--muted);}
 .topbar-phase{font-family:var(--mono);font-size:0.65rem;color:var(--amber);}
-.nea-pill{background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);border-radius:20px;padding:4px 12px;font-family:var(--mono);font-size:0.65rem;font-weight:700;color:var(--maths);letter-spacing:0.06em;white-space:nowrap;}
+.nea-pill{background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.3);border-radius:20px;padding:4px 12px;font-family:var(--mono);font-size:0.65rem;font-weight:700;color:var(--amber);letter-spacing:0.06em;white-space:nowrap;cursor:pointer;transition:background 0.15s;}
+.nea-pill:hover{background:rgba(251,146,60,0.2);}
 .cd-strip{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border);}
 .cd-item{padding:20px 28px;border-right:1px solid var(--border);display:flex;align-items:center;gap:20px;}
 .cd-item:last-child{border-right:none;}
@@ -54,6 +50,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .task-item.clickable{cursor:pointer;}
 .task-item.clickable:hover{background:var(--surface3);border-color:var(--border2);}
 .task-item.done-item{opacity:0.45;}
+.task-item.has-pack{border-left:2px solid rgba(192,132,252,0.4);}
+.task-item.has-pack:hover{border-left-color:var(--purple);}
 .task-check{margin-top:2px;flex-shrink:0;}
 .task-check input{width:17px;height:17px;accent-color:var(--maths);cursor:pointer;}
 .task-body{flex:1;min-width:0;}
@@ -62,7 +60,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .task-name.done{text-decoration:line-through;color:var(--muted2);}
 .task-detail{font-size:0.76rem;color:var(--muted2);line-height:1.5;}
 .task-dur{font-family:var(--mono);font-size:0.65rem;color:var(--muted);flex-shrink:0;margin-top:3px;}
-.task-conf-row{display:flex;align-items:center;gap:5px;margin-top:8px;flex-wrap:wrap;}
+.task-actions{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap;}
 .task-conf-lbl{font-family:var(--mono);font-size:0.5rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);}
 .task-conf-btn{font-family:var(--mono);font-size:0.58rem;padding:3px 8px;border-radius:8px;border:1px solid var(--border2);background:var(--surface3);color:var(--muted2);cursor:pointer;transition:all 0.12s;}
 .task-conf-btn:hover{border-color:var(--muted2);color:var(--text);}
@@ -71,6 +69,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .task-conf-btn.act-3{border-color:var(--amber);color:var(--amber);background:rgba(251,146,60,0.1);}
 .task-conf-btn.act-4{border-color:var(--maths);color:var(--maths);background:rgba(74,222,128,0.1);}
 .task-conf-btn.act-5{border-color:#22d3ee;color:#22d3ee;background:rgba(34,211,238,0.1);}
+.open-pack-btn{font-family:var(--mono);font-size:0.55rem;padding:3px 9px;border-radius:8px;border:1px solid rgba(192,132,252,0.35);background:rgba(192,132,252,0.08);color:var(--purple);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all 0.12s;flex-shrink:0;}
+.open-pack-btn:hover{background:rgba(192,132,252,0.18);border-color:var(--purple);}
 .sub-badge{font-size:0.6rem;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap;flex-shrink:0;}
 .badge-m{background:rgba(74,222,128,0.15);color:var(--maths);}
 .badge-e{background:rgba(96,165,250,0.15);color:var(--econ);}
@@ -191,6 +191,33 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .uni-name{font-size:0.85rem;font-weight:600;margin-bottom:6px;}
 .uni-offer{font-family:var(--mono);font-size:0.75rem;color:var(--econ);margin-bottom:4px;}
 .uni-note{font-size:0.7rem;color:var(--muted2);}
+/* Pack modal */
+.pack-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.82);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
+.pack-overlay.open{opacity:1;pointer-events:auto;}
+.pack-modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;width:min(720px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;}
+.pack-modal-header{padding:20px 24px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:12px;flex-shrink:0;}
+.pack-modal-id{font-family:var(--mono);font-size:0.7rem;font-weight:700;padding:3px 10px;border-radius:8px;flex-shrink:0;margin-top:2px;}
+.pack-modal-title{font-size:1rem;font-weight:700;flex:1;line-height:1.3;}
+.pack-modal-sub{font-size:0.73rem;color:var(--muted2);margin-top:3px;}
+.pack-modal-close{width:28px;height:28px;border-radius:8px;background:var(--surface2);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.9rem;flex-shrink:0;transition:all 0.12s;}
+.pack-modal-close:hover{color:var(--text);border-color:var(--muted2);}
+.pack-modal-actions{padding:12px 24px;border-bottom:1px solid var(--border);display:flex;gap:10px;flex-shrink:0;}
+.pack-copy-btn{flex:1;padding:10px;border-radius:10px;background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.35);color:var(--purple);font-family:var(--mono);font-size:0.72rem;font-weight:700;cursor:pointer;transition:all 0.12s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.pack-copy-btn:hover{background:rgba(192,132,252,0.22);}
+.pack-copy-btn.copied{background:rgba(74,222,128,0.12);border-color:rgba(74,222,128,0.35);color:var(--maths);}
+.pack-modal-body{flex:1;overflow-y:auto;padding:20px 24px;}
+.pack-modal-body pre{font-family:var(--mono);font-size:0.68rem;line-height:1.65;color:var(--muted2);white-space:pre-wrap;word-break:break-word;}
+.pack-modal-body pre b{color:var(--text);}
+.pack-modal-body pre .tier-head{color:var(--amber);font-weight:700;}
+.pack-modal-body pre .instruction-head{color:var(--purple);}
+/* Session Packs tab */
+.pack-list{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
+.pack-row{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--surface2);border-radius:8px;cursor:pointer;border:1px solid transparent;transition:all 0.12s;}
+.pack-row:hover{background:var(--surface3);border-color:var(--border2);}
+.pack-row-id{font-family:var(--mono);font-size:0.68rem;font-weight:700;flex-shrink:0;min-width:60px;}
+.pack-row-name{font-size:0.79rem;color:var(--muted2);flex:1;}
+.pack-row-arrow{font-family:var(--mono);font-size:0.6rem;color:var(--muted);flex-shrink:0;}
+/* Timer */
 .timer-fab{position:fixed;bottom:28px;right:28px;z-index:200;display:flex;flex-direction:column;align-items:center;gap:7px;}
 .timer-btn{width:72px;height:72px;border-radius:50%;background:var(--surface2);border:2px solid var(--border2);color:var(--text);font-family:var(--mono);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:border-color 0.2s,background 0.2s;box-shadow:0 4px 24px rgba(0,0,0,0.5);}
 .timer-btn:hover{border-color:var(--amber);}
@@ -202,6 +229,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .timer-sess-txt{font-family:var(--mono);font-size:0.58rem;color:var(--muted);text-align:center;white-space:nowrap;}
 .log-fab-btn{font-family:var(--mono);font-size:0.55rem;padding:5px 12px;border-radius:10px;background:rgba(74,80,112,0.35);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;white-space:nowrap;transition:all 0.15s;text-align:center;}
 .log-fab-btn:hover{color:var(--text);border-color:var(--amber);background:rgba(251,146,60,0.1);}
+/* Session log modal */
 .slog-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.78);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
 .slog-overlay.open{opacity:1;pointer-events:auto;}
 .slog-modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:28px 30px;width:min(540px,92vw);max-height:85vh;overflow-y:auto;}
@@ -252,13 +280,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .missed-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border);}
 .missed-row:first-child{border-top:none;}
 .missed-when{font-family:var(--mono);font-size:0.6rem;color:var(--muted);flex-shrink:0;}
-/* Session Packs tab */
-.packs-hero{background:linear-gradient(135deg,rgba(192,132,252,0.07) 0%,rgba(96,165,250,0.04) 100%);border:1px solid rgba(192,132,252,0.25);border-left:4px solid var(--purple);border-radius:var(--radius);padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;}
-.pack-list{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
-.pack-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--surface2);border-radius:7px;}
-.pack-id{font-family:var(--mono);font-size:0.65rem;font-weight:700;flex-shrink:0;min-width:54px;}
-.pack-name{font-size:0.78rem;color:var(--muted2);flex:1;}
-.tier-pill{font-family:var(--mono);font-size:0.48rem;padding:2px 6px;border-radius:6px;background:rgba(74,80,112,0.3);color:var(--muted);flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -271,7 +292,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     </div>
     <div class="topbar-phase" id="live-phase"></div>
   </div>
-  <span class="nea-pill" id="nea-status-pill">NEA submitted 27 Mar ✓</span>
+  <span class="nea-pill" onclick="switchTab('nea',document.querySelector('[onclick*=\"nea\"]'))" title="Click to view NEA details">NEA est. 60/70 · mark pending</span>
 </div>
 
 <div class="cd-strip">
@@ -360,12 +381,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 
 <!-- ALL SESSIONS -->
 <div class="tab-pane" id="tab-all">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
     <div>
-      <div style="font-size:1rem;font-weight:700;margin-bottom:4px">All Scheduled Sessions</div>
-      <div style="font-size:0.76rem;color:var(--muted2)">Everything from this week onwards.</div>
+      <div style="font-size:1rem;font-weight:700;margin-bottom:4px" id="all-sessions-heading">Today + upcoming sessions</div>
+      <div style="font-size:0.76rem;color:var(--muted2)" id="all-sessions-sub">Showing from today onwards.</div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <button class="log-fab-btn" id="toggle-past-btn" onclick="togglePastSessions()" style="font-size:0.6rem;padding:4px 10px">Show earlier this week</button>
       <span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted)">Filter:</span>
       <button class="task-conf-btn" id="filter-all" onclick="setFilter('all')" style="border-color:var(--amber);color:var(--amber);background:rgba(251,146,60,0.1)">All</button>
       <button class="task-conf-btn" id="filter-maths" onclick="setFilter('maths')">Maths</button>
@@ -394,7 +416,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         <div class="bar-lbl">Diagnosis 30 Mar — 17/76 <span style="color:var(--red)">22% · U</span></div>
         <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
       </div>
-      <div class="subj-note">Pure 1: 3 Jun · Pure 2: 11 Jun · S&amp;M: 18 Jun. Easter Pure plan (M1–M12) complete. Post-Easter: Stats &amp; Mechanics (S1–S9) + timed papers + Pure revisits. Recurring losses: product rule inside implicit diff (3xy → 3y + 3x·dy/dx), bracket omission in parametric fractions.</div>
+      <div class="subj-note">Pure 1: 3 Jun · Pure 2: 11 Jun · S&amp;M: 18 Jun. Easter Pure plan (M1–M12) complete. Post-Easter: Stats &amp; Mechanics (S1–S9) + timed papers + Pure revisits. Recurring losses: product rule inside implicit diff, bracket omission in parametric fractions.</div>
       <div class="gb-section">
         <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('maths')">✏ edit</button></div>
         <div class="gb-grid" id="gb-maths"></div>
@@ -415,7 +437,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         <div class="bar-lbl">Diagnosis 30 Mar — 35/70 <span style="color:var(--econ)">50%</span></div>
         <div class="bar"><div class="bar-fill" style="width:50%;background:var(--econ)"></div></div>
       </div>
-      <div class="subj-note">P1 (Theme 1+4): 11 May · P2 (Theme 3+2): 18 May · P3 (Competition): 4 Jun. ⚠ P1 is nearest — diagrams and essay structure are the priority. April check-in: essay 7/8 but dropped 6 marks skipping diagram question. Conceptual understanding is there — failures are elastic/inelastic terminology, not using extract data, and diagram avoidance.</div>
+      <div class="subj-note">P1 (Theme 1+4): 11 May · P2 (Theme 3+2): 18 May · P3 (Competition): 4 Jun. ⚠ P1 is nearest — diagrams and essay structure are priority. April check-in: essay 7/8 but dropped 6 marks skipping diagram. Failures are elastic/inelastic terminology, not using extract data, and diagram avoidance.</div>
       <div class="gb-section">
         <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('econ')">✏ edit</button></div>
         <div class="gb-grid" id="gb-econ"></div>
@@ -436,7 +458,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         <div class="bar-lbl">Diagnosis 30 Mar — 36/70 <span style="color:var(--amber)">51%</span></div>
         <div class="bar"><div class="bar-fill" style="width:51%;background:var(--cs)"></div></div>
       </div>
-      <div class="subj-note">P1 (Computer Systems): 10 Jun · P2 (Algorithms): 17 Jun. NEA submitted 27 Mar — est. 52/70, Grade B target met, closed. Clean split: strong on algorithms/architecture, weak on systems knowledge. Priority gaps: Boolean algebra (0/4 Easter), scheduling, normalisation, TCP/IP. Recurring errors: -1 as empty sentinel, pre-order traversal ordering, missing free storage list step on deletion.</div>
+      <div class="subj-note">P1 (Computer Systems): 10 Jun · P2 (Algorithms): 17 Jun. NEA est. 60/70 (Grade A est.) submitted — focus shifts fully to Paper 1 &amp; 2. Clean split: strong on algorithms/architecture, weak on systems knowledge. Priority gaps: Boolean algebra (0/4 Easter), scheduling, normalisation, TCP/IP.</div>
       <div class="gb-section">
         <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('cs')">✏ edit</button></div>
         <div class="gb-grid" id="gb-cs"></div>
@@ -458,11 +480,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 
 <!-- SESSION PACKS -->
 <div class="tab-pane" id="tab-packs">
-  <div class="packs-hero">
-    <div style="font-family:var(--mono);font-size:2.2rem;color:var(--purple);line-height:1;flex-shrink:0">📦</div>
+  <div style="background:linear-gradient(135deg,rgba(192,132,252,0.07) 0%,rgba(96,165,250,0.04) 100%);border:1px solid rgba(192,132,252,0.25);border-left:4px solid var(--purple);border-radius:var(--radius);padding:16px 22px;margin-bottom:20px;display:flex;align-items:center;gap:18px;">
+    <div style="font-family:var(--mono);font-size:1.6rem;color:var(--purple);line-height:1;flex-shrink:0;letter-spacing:-0.02em">SP</div>
     <div style="flex:1">
       <div style="font-size:0.98rem;font-weight:700;color:var(--purple);margin-bottom:4px">60 Session Packs — real past paper questions, 4 tiers each</div>
-      <div style="font-size:0.73rem;color:var(--muted2)">Each pack runs ~2 hours: foundation cold test → exam standard → hard multi-step → timed simulation. Built from OCR H446, Edexcel 9MA0, Edexcel 9EB0 papers (2022–2024). Model answers at the bottom — never visible until you've submitted.</div>
+      <div style="font-size:0.73rem;color:var(--muted2)">Click any pack to copy the full AI prompt to clipboard — then paste straight into Gemini. No hunting through files. Today's tasks also have a launch button if the task maps to a pack.</div>
     </div>
     <div style="text-align:right;flex-shrink:0">
       <div style="font-family:var(--mono);font-size:2.5rem;font-weight:700;color:var(--purple);line-height:1">60</div>
@@ -471,107 +493,40 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   </div>
 
   <div style="padding:14px 18px;background:rgba(74,80,112,0.1);border:1px solid var(--border2);border-radius:10px;margin-bottom:24px;">
-    <div style="font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);margin-bottom:8px">How to use a pack</div>
+    <div style="font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);margin-bottom:8px">How to use</div>
     <div style="font-size:0.77rem;color:var(--muted2);line-height:1.8">
-      1. Open the <code style="font-family:var(--mono);font-size:0.7rem;background:var(--surface2);padding:1px 6px;border-radius:4px;color:var(--cs)">session_packs.md</code> file. Find today's pack by ID (e.g. <b style="color:var(--text)">M4</b>, <b style="color:var(--text)">E3</b>, <b style="color:var(--text)">CS-P1.2</b>).<br>
-      2. Copy everything from the <b style="color:var(--text)">AI INSTRUCTION BLOCK</b> down to the <b style="color:var(--text)">SESSION REPORT</b> template at the bottom.<br>
-      3. Paste into Gemini (or any AI). The instruction block turns it into a strict examiner — no hints, cold recall only.<br>
-      4. Work through Tier 1 → 4. If you score 0 on Tier 1, the remediation block activates. No going back on Tier 4.<br>
-      5. Fill in the session report. Log your confidence here via the <b style="color:var(--text)">Log Session</b> button.
+      1. Click a pack below (or click a task in Today that has a <span style="font-family:var(--mono);font-size:0.68rem;padding:1px 6px;border-radius:5px;border:1px solid rgba(192,132,252,0.4);color:var(--purple);background:rgba(192,132,252,0.08)">▶ pack</span> button).<br>
+      2. Hit <b style="color:var(--text)">Copy prompt</b> in the modal. The full AI instruction block + all 4 tiers is now in your clipboard.<br>
+      3. Open Gemini (or any AI) and paste. The instruction block makes it a strict examiner — no hints, cold recall only.<br>
+      4. Work Tier 1 → 4. Score 0 on Tier 1 → remediation block activates automatically. No going back on Tier 4.<br>
+      5. Fill in the session report at the end. Log your confidence here via the Log Session button.
     </div>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
-    <!-- MATHS -->
+  <div id="packs-loading" style="font-family:var(--mono);font-size:0.72rem;color:var(--muted);padding:20px 0">Loading pack data…</div>
+  <div id="packs-content" style="display:none;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
     <div>
       <div class="card-title" style="color:var(--maths)">Maths Pure — 12 packs</div>
-      <div class="pack-list">
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M1</span><span class="pack-name">Trig integration (sin²x, cos²x, odd powers)</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M2</span><span class="pack-name">Integration by parts (DI table)</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M3</span><span class="pack-name">Partial fractions — all types</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M4</span><span class="pack-name">Substitution + differential equations</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M5</span><span class="pack-name">Inequalities + functions + modulus</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M6</span><span class="pack-name">Binomial expansion (neg/frac n)</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M7</span><span class="pack-name">Trig identities + R form</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M8</span><span class="pack-name">Logs + exponentials + modelling</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M9</span><span class="pack-name">Implicit + parametric differentiation</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M10</span><span class="pack-name">Sequences + series (arith/geom/sigma)</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M11</span><span class="pack-name">Numerical methods + vectors</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--maths)">M12</span><span class="pack-name">Coordinate geometry + circles + proof</span></div>
-      </div>
+      <div class="pack-list" id="pack-list-pure"></div>
       <div class="card-title" style="color:#22d3ee;margin-top:16px">Stats &amp; Mechanics — 9 packs</div>
-      <div class="pack-list">
-        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S1</span><span class="pack-name">Statistical sampling</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S2</span><span class="pack-name">Data presentation + probability</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S3</span><span class="pack-name">Binomial distribution</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S4</span><span class="pack-name">Normal distribution</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S5</span><span class="pack-name">Hypothesis testing</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S6</span><span class="pack-name">Kinematics (suvat + calculus)</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S7</span><span class="pack-name">Forces + Newton's laws + friction</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S8</span><span class="pack-name">Moments + inclined planes</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:#22d3ee">S9</span><span class="pack-name">S&amp;M timed past paper simulation</span></div>
-      </div>
+      <div class="pack-list" id="pack-list-sm"></div>
     </div>
-
-    <!-- ECON + CS P1 -->
     <div>
       <div class="card-title" style="color:var(--econ)">Economics — 8 packs</div>
-      <div class="pack-list">
-        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E1</span><span class="pack-name">Core diagrams from memory (all 6)</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E2</span><span class="pack-name">Efficiency + market structures</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E3</span><span class="pack-name">Oligopoly + kinked demand + game theory</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E4</span><span class="pack-name">Macro: AD/AS + economic cycle</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E5</span><span class="pack-name">Macro policy: fiscal + monetary + supply-side</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E6</span><span class="pack-name">Globalisation + labour markets</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E7</span><span class="pack-name">P3 competition synoptic: CMA + contestability</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--econ)">E8</span><span class="pack-name">Timed 20-mark essay practice (5 essays)</span></div>
-      </div>
+      <div class="pack-list" id="pack-list-econ"></div>
       <div class="card-title" style="color:var(--cs);margin-top:16px">CS Paper 1 — 7 packs</div>
-      <div class="pack-list">
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.1</span><span class="pack-name">Scheduling + LMC / assembly</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.2</span><span class="pack-name">Boolean algebra + Karnaugh maps</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.3</span><span class="pack-name">Normalisation 1NF→3NF + SQL</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.4</span><span class="pack-name">TCP/IP + networking + compression</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.5</span><span class="pack-name">CPU architecture + CISC/RISC</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.6</span><span class="pack-name">OS + memory management + compilation</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1.7</span><span class="pack-name">Web tech + legal/ethical + data types</span></div>
-      </div>
+      <div class="pack-list" id="pack-list-csp1"></div>
     </div>
-
-    <!-- CS P2 + HOW IT WORKS -->
     <div>
       <div class="card-title" style="color:var(--cs)">CS Paper 2 + Timed — 6 packs</div>
-      <div class="pack-list">
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P2.1</span><span class="pack-name">Stack/queue pseudocode</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P2.2</span><span class="pack-name">Recursion + ISR sequence</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P2.3</span><span class="pack-name">Floating point + BFS/DFS</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P2.4</span><span class="pack-name">Algorithms: Dijkstra + sorting</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P1-T</span><span class="pack-name">CS P1 timed past paper (2023 full)</span></div>
-        <div class="pack-row"><span class="pack-id" style="color:var(--cs)">P2-T</span><span class="pack-name">CS P2 timed past paper (2022 full)</span></div>
-      </div>
-
+      <div class="pack-list" id="pack-list-csp2"></div>
       <div style="margin-top:20px;padding:16px 18px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);">
-        <div class="card-title">Pack structure (every pack)</div>
+        <div class="card-title">Pack structure</div>
         <div style="display:flex;flex-direction:column;gap:9px">
-          <div style="display:flex;gap:10px;align-items:flex-start">
-            <span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--muted2);flex-shrink:0;min-width:52px">TIER 1</span>
-            <span style="font-size:0.73rem;color:var(--muted2)">Foundation — 2 cold Qs, core method only. ~20 min. Score 0 → remediation activates (pre-written worked example + retry Q, no hints).</span>
-          </div>
-          <div style="display:flex;gap:10px;align-items:flex-start">
-            <span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--amber);flex-shrink:0;min-width:52px">TIER 2</span>
-            <span style="font-size:0.73rem;color:var(--muted2)">Exam standard — 3 real past paper Qs, correct mark tariffs. ~40 min. Checkpoint Q if you drop below half.</span>
-          </div>
-          <div style="display:flex;gap:10px;align-items:flex-start">
-            <span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--red);flex-shrink:0;min-width:52px">TIER 3</span>
-            <span style="font-size:0.73rem;color:var(--muted2)">Hard — 2 multi-step, combined-topic or unfamiliar-setup Qs. ~40 min.</span>
-          </div>
-          <div style="display:flex;gap:10px;align-items:flex-start">
-            <span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--maths);flex-shrink:0;min-width:52px">TIER 4</span>
-            <span style="font-size:0.73rem;color:var(--muted2)">Timed — 1 Q, timer set, no going back. ~20 min. Submit whatever you have.</span>
-          </div>
-        </div>
-        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:0.72rem;color:var(--muted2);line-height:1.65">
-          <b style="color:var(--text)">Gemini instruction block</b> turns the AI into a strict examiner: no hints, no encouragement, mark strictly, report exact marks lost per question. If Gemini goes soft, re-paste the instruction block from the top of the pack.
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--muted2);flex-shrink:0;min-width:52px">TIER 1</span><span style="font-size:0.73rem;color:var(--muted2)">Foundation — 2 cold Qs. Score 0 → remediation activates (pre-written worked example + retry, no hints).</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--amber);flex-shrink:0;min-width:52px">TIER 2</span><span style="font-size:0.73rem;color:var(--muted2)">Exam standard — 3 real past paper Qs. Checkpoint if you drop below half.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--red);flex-shrink:0;min-width:52px">TIER 3</span><span style="font-size:0.73rem;color:var(--muted2)">Hard — 2 multi-step or combined-topic Qs.</span></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="font-family:var(--mono);font-size:0.62rem;font-weight:700;color:var(--maths);flex-shrink:0;min-width:52px">TIER 4</span><span style="font-size:0.73rem;color:var(--muted2)">Timed — 1 Q, timer set, no going back.</span></div>
         </div>
       </div>
     </div>
@@ -582,29 +537,29 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 <div class="tab-pane" id="tab-nea">
   <div class="nea-hero" style="background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.25);">
     <div style="text-align:center;flex-shrink:0;">
-      <div style="font-family:var(--mono);font-size:3.5rem;font-weight:700;color:var(--amber);line-height:1;">52</div>
-      <div style="font-family:var(--mono);font-size:0.6rem;color:var(--muted2);margin-top:4px;">/ 70 (est.)</div>
+      <div style="font-family:var(--mono);font-size:3.5rem;font-weight:700;color:var(--amber);line-height:1;">60</div>
+      <div style="font-family:var(--mono);font-size:0.6rem;color:var(--muted2);margin-top:4px;">/ 70 <span style="color:var(--amber)">ESTIMATED</span></div>
     </div>
     <div>
       <h2 style="font-size:1.3rem;font-weight:700;color:var(--amber);margin-bottom:4px;">OCR H446 NEA — Investment Simulator</h2>
-      <p style="font-size:0.82rem;color:var(--muted2);">Submitted 27 Mar 2026 · Unity/C# · <strong style="color:var(--amber)">52/70 is an estimate only</strong></p>
+      <p style="font-size:0.82rem;color:var(--muted2);">Submitted 27 Mar 2026 · Unity/C# · <strong style="color:var(--amber)">Self-assessed estimate only</strong></p>
       <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;">
-        <span style="font-family:var(--mono);font-size:0.65rem;padding:3px 10px;border-radius:20px;background:rgba(74,222,128,0.12);border:1px solid rgba(74,222,128,0.3);color:var(--maths);font-weight:700;">GRADE B (est.) · TARGET MET</span>
-        <span style="font-family:var(--mono);font-size:0.68rem;color:var(--muted2);">NEA is closed — focus fully on written papers.</span>
+        <span style="font-family:var(--mono);font-size:0.65rem;padding:3px 10px;border-radius:20px;background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.3);color:var(--amber);font-weight:700;">GRADE A (est.) · PENDING MODERATION</span>
       </div>
+      <p style="font-size:0.76rem;color:var(--muted2);margin-top:10px;line-height:1.6;">Official mark expected before the end of the week starting <b style="color:var(--text)">19 April 2026</b>. This will be updated once confirmed by centre. Do not plan on this grade until it's official.</p>
     </div>
   </div>
-  <div class="card-title">Estimated breakdown by section</div>
+  <div class="card-title">Estimated breakdown by section <span style="font-size:0.58rem;color:var(--amber);letter-spacing:0;text-transform:none;font-family:var(--sans)">(self-assessed — treat as approximate)</span></div>
   <div class="nea-breakdown">
-    <div class="nea-row"><span class="nea-row-name">Analysis <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--maths)">9 / 10</span></div>
-    <div class="nea-row"><span class="nea-row-name">Design <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--amber)">11 / 15</span></div>
-    <div class="nea-row"><span class="nea-row-name">Development — iterative <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--maths)">13 / 15</span></div>
-    <div class="nea-row"><span class="nea-row-name">Development — testing <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--maths)">9 / 10</span></div>
-    <div class="nea-row"><span class="nea-row-name">Testing <span style="font-size:0.65rem;color:var(--muted)">(est.)</span></span><span class="nea-row-score" style="color:var(--maths)">4 / 5</span></div>
-    <div class="nea-row"><span class="nea-row-name">Evaluation <span style="font-size:0.65rem;color:var(--muted)">(est.) · weakest</span></span><span class="nea-row-score" style="color:var(--red)">8 / 15</span></div>
+    <div class="nea-row"><span class="nea-row-name">Analysis</span><span class="nea-row-score" style="color:var(--maths)">9 / 10</span></div>
+    <div class="nea-row"><span class="nea-row-name">Design</span><span class="nea-row-score" style="color:var(--amber)">12 / 15</span></div>
+    <div class="nea-row"><span class="nea-row-name">Development — iterative</span><span class="nea-row-score" style="color:var(--maths)">13 / 15</span></div>
+    <div class="nea-row"><span class="nea-row-name">Development — testing</span><span class="nea-row-score" style="color:var(--maths)">9 / 10</span></div>
+    <div class="nea-row"><span class="nea-row-name">Testing</span><span class="nea-row-score" style="color:var(--maths)">4 / 5</span></div>
+    <div class="nea-row"><span class="nea-row-name">Evaluation</span><span class="nea-row-score" style="color:var(--amber)">13 / 15</span></div>
   </div>
-  <div style="margin-top:12px;padding:12px 16px;background:rgba(74,80,112,0.1);border:1px dashed var(--border2);border-radius:10px;">
-    <div style="font-size:0.74rem;color:var(--muted2);line-height:1.6;">Self-assessed estimates. Evaluation (8/15) is the weakest section — not worth revisiting, target is met at B. Official mark released when centre moderates.</div>
+  <div style="margin-top:12px;padding:12px 16px;background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.2);border-radius:10px;">
+    <div style="font-size:0.74rem;color:var(--muted2);line-height:1.6;">⚠ These are self-assessed estimates based on the mark scheme — they are <b style="color:var(--amber)">not confirmed by the centre or moderator</b>. The actual mark could differ. Official result expected before <b style="color:var(--text)">w/e 25 April 2026</b>.</div>
   </div>
   <div style="margin-top:28px">
     <div class="card-title">University Offers</div>
@@ -632,14 +587,15 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   <div class="guide-section">
     <div class="guide-h">Session structure (post-Easter)</div>
     <p class="guide-p"><b>Free days (Tue/Fri):</b> 2 heavy sessions — Maths 11am–1pm hard cap (2hrs), CS or Econ 11am–12:30pm (1.5hrs).</p>
-    <p class="guide-p"><b>College days (Mon/Wed/Thu):</b> 1 light evening session only (~45min–1hr). Never stack two full sessions on a college day.</p>
+    <p class="guide-p"><b>College days (Mon/Wed/Thu):</b> 1 light evening session only (~45min–1hr).</p>
     <p class="guide-p"><b>Weekends (Sat/Sun):</b> 2 sessions per day, same structure as free days.</p>
-    <p class="guide-p"><b>Hard cap:</b> If Maths runs over 2hrs, the CS/Econ session is cancelled — not rescheduled to the same day. Burnout is the structural risk.</p>
+    <p class="guide-p"><b>Hard cap:</b> If Maths runs over 2hrs the CS/Econ session is cancelled. Burnout is the structural risk.</p>
     <p class="guide-p"><b>Missed sessions:</b> Roll high-priority topics to next free slot. Drop low-priority topics if time runs short before an exam.</p>
   </div>
   <div class="guide-section">
-    <div class="guide-h">Today tab — ticking off sessions</div>
-    <p class="guide-p">Tick a session checkbox to mark it done. <b>Confidence buttons</b> appear inline — log 1–5 to update the Priority Gaps urgency score and Focus card. The 28-day heatmap darkens as sessions accumulate. Amber border = today.</p>
+    <div class="guide-h">Session packs — launching from Today or the Packs tab</div>
+    <p class="guide-p">Any task on the Today tab that maps to a session pack shows a <span style="font-family:var(--mono);font-size:0.7rem;padding:1px 6px;border-radius:5px;border:1px solid rgba(192,132,252,0.4);color:var(--purple);background:rgba(192,132,252,0.08)">▶ pack</span> button. Click it to open the pack modal. Hit <b>Copy prompt</b> — the full AI instruction block + all 4 tiers is now on your clipboard. Paste directly into Gemini. You never need to open the raw <code>.md</code> file.</p>
+    <p class="guide-p">You can also browse all 60 packs on the <b>Session Packs tab</b> and click any row to open the same modal.</p>
   </div>
   <div class="guide-section">
     <div class="guide-h">Confidence scale (1–5)</div>
@@ -652,8 +608,12 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
   <div class="guide-section">
-    <div class="guide-h">Session packs</div>
-    <p class="guide-p">60 packs in <code>session_packs.md</code>. Find today's pack by ID, copy from AI INSTRUCTION BLOCK to SESSION REPORT, paste into Gemini. Fill the report at the end, log confidence here.</p>
+    <div class="guide-h">NEA (OCR H446)</div>
+    <p class="guide-p">Self-assessed estimate: 60/70, Grade A. Submitted 27 Mar 2026. <b>Official mark expected before w/e 25 April 2026.</b> Do not count on the grade until it's confirmed by centre. NEA work is closed regardless.</p>
+  </div>
+  <div class="guide-section">
+    <div class="guide-h">All Sessions tab</div>
+    <p class="guide-p">Shows today + future sessions by default. Click <em>Show earlier this week</em> to reveal any sessions from earlier in the current week. Past archive sessions (pre-Easter) are never shown — they only exist for the heatmap streak history.</p>
   </div>
   <div class="guide-section">
     <div class="guide-h">Data &amp; storage</div>
@@ -678,11 +638,34 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   <button class="log-fab-btn" onclick="showSessionLog(false)">Log session</button>
 </div>
 
+<!-- PACK MODAL -->
+<div class="pack-overlay" id="pack-overlay" onclick="if(event.target===this)closePackModal()">
+  <div class="pack-modal">
+    <div class="pack-modal-header">
+      <div class="pack-modal-id" id="pack-modal-id">M1</div>
+      <div style="flex:1">
+        <div class="pack-modal-title" id="pack-modal-title">—</div>
+        <div class="pack-modal-sub" id="pack-modal-sub">Session pack · 4 tiers · ~2 hours</div>
+      </div>
+      <button class="pack-modal-close" onclick="closePackModal()">✕</button>
+    </div>
+    <div class="pack-modal-actions">
+      <button class="pack-copy-btn" id="pack-copy-btn" onclick="copyPackPrompt()">
+        <span id="pack-copy-icon">⧉</span>
+        <span id="pack-copy-text">Copy full prompt to clipboard</span>
+      </button>
+    </div>
+    <div class="pack-modal-body">
+      <pre id="pack-modal-content">Loading…</pre>
+    </div>
+  </div>
+</div>
+
 <!-- SESSION LOG MODAL -->
 <div class="slog-overlay" id="slog-overlay" onclick="if(event.target===this)closeSessionLog()">
   <div class="slog-modal">
     <div class="slog-title">Session Log</div>
-    <div class="slog-sub" id="slog-sub-text">What did you cover? Select topics below.</div>
+    <div class="slog-sub" id="slog-sub-text">What did you cover?</div>
     <div class="slog-sec-lbl">Topics covered</div>
     <div id="slog-chips-wrap"></div>
     <div class="slog-sec-lbl" style="margin-top:18px">How well did it go?</div>
@@ -703,60 +686,115 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 </div>
+
 <script>
+// ── CONSTANTS ─────────────────────────────────────────────────────────────────
 const CONF_LABELS={0:'—',1:'Not started',2:'Seen it',3:'Shaky',4:'Solid',5:'Locked in'};
 const CONF_COLORS={1:'var(--muted)',2:'var(--red)',3:'var(--amber)',4:'var(--maths)',5:'#22d3ee'};
 const CONF_BG={1:'rgba(74,80,112,0.12)',2:'rgba(233,69,96,0.12)',3:'rgba(251,146,60,0.12)',4:'rgba(74,222,128,0.12)',5:'rgba(34,211,238,0.12)'};
 
+// ── PACK LABEL MAPPING (session label → pack ID) ──────────────────────────────
+const PACK_LABEL_MAP={
+  'M1':['m1 —','trig integration','sin²x'],
+  'M2':['m2 —','integration by parts','ibp revisit'],
+  'M3':['m3 —','partial fractions'],
+  'M4':['m4 —','substitution + d','pf + de'],
+  'M5':['m5 —','inequalities + m','rational inequal'],
+  'M6':['m6 —','binomial expansion'],
+  'M7':['m7 —','trig identities + r'],
+  'M8':['m8 —','logs + exponential','exponentials + log'],
+  'M9':['m9 —','implicit + para','implicit diff','parametric diff'],
+  'M10':['m10 —','sequences + series'],
+  'M11':['m11 —','numerical methods + v'],
+  'M12':['m12 —','coordinate geom'],
+  'S1':['s1 —','statistical sampling'],
+  'S2':['s2 —','data presentation'],
+  'S3':['s3 —','binomial distribution'],
+  'S4':['s4 —','normal distribution'],
+  'S5':['s5 —','hypothesis testing'],
+  'S6':['s6 —','kinematics'],
+  'S7':['s7 —',"forces + newton","newton's laws"],
+  'S8':['s8 —','moments + inclined'],
+  'S9':['s9 —','s&m timed'],
+  'E1':['e1 —','core diagrams','diagrams revisit'],
+  'E2':['e2 —','efficiency + market'],
+  'E3':['e3 —','oligopoly','kinked demand','game theory'],
+  'E4':['e4 —','ad/as + economic cycle','macro: ad/as'],
+  'E5':['e5 —','macro policy','fiscal + monetary','transmission mech'],
+  'E6':['e6 —','globalisation','labour markets'],
+  'E7':['e7 —','p3 competition synoptic','cma + contestab'],
+  'E8':['e8 —','timed essay','20-mark essay'],
+  'CS-P1.1':['cs-p1.1','scheduling + lmc'],
+  'CS-P1.2':['cs-p1.2','boolean algebra'],
+  'CS-P1.3':['cs-p1.3','normalisation','sql'],
+  'CS-P1.4':['cs-p1.4','tcp/ip','networking + compress'],
+  'CS-P1.5':['cs-p1.5','cpu architecture','cisc/risc'],
+  'CS-P1.6':['cs-p1.6','os + memory','methodologies'],
+  'CS-P1.7':['cs-p1.7','web tech','legal/ethical'],
+  'CS-P2.1':['cs-p2.1','stack/queue pseudocode'],
+  'CS-P2.2':['cs-p2.2','recursion + isr'],
+  'CS-P2.3':['cs-p2.3','floating point + bfs'],
+  'CS-P2.4':['cs-p2.4',"dijkstra's + sorting",'algorithms: bfs'],
+  'CS-TIMED-P1':['cs-timed-p1','cs p1 timed'],
+  'CS-TIMED-P2':['cs-timed-p2','cs p2 timed'],
+};
+
+function getPackIdForLabel(label){
+  const l=label.toLowerCase();
+  for(const[packId,keywords]of Object.entries(PACK_LABEL_MAP)){
+    if(keywords.some(kw=>l.includes(kw)))return packId;
+  }
+  return null;
+}
+
 // ── SESSION DATA ──────────────────────────────────────────────────────────────
+// archived:true → streak history only, never shown in UI
 const SESSIONS={
-  // Pre-Easter archive (kept for streak history)
-  '2026-03-30':[{sub:'maths',label:'M1 — Trig integration',dur:'2hrs',detail:'sin²x/cos²x via double angle. Cold test first.'},{sub:'cs',label:'CS-P1.1 — Scheduling + LMC/Assembly',dur:'2hrs',detail:'Scheduling algorithms + LMC instruction set.'}],
-  '2026-03-31':[{sub:'maths',label:'M2 — Integration by parts',dur:'2hrs',detail:'DI table method. 4 Qs minimum.'},{sub:'econ',label:'E1 — Core diagrams from memory',dur:'2hrs',detail:'Draw all 6 diagrams 3× each from scratch.'}],
-  '2026-04-01':[{sub:'maths',label:'M3 — Partial fractions',dur:'2hrs',detail:'Standard, repeated, improper. 4 Qs.'},{sub:'cs',label:'CS-P2.1 — Stack/queue pseudocode',dur:'2hrs',detail:'Write PUSH/POP/ENQUEUE/DEQUEUE from scratch.'}],
-  '2026-04-02':[{sub:'maths',label:'M4 — Integration by partial fractions',dur:'2hrs',detail:'Decompose then integrate. 3 Qs.'},{sub:'econ',label:'E2 — Efficiency + market structures',dur:'2hrs',detail:'Productive vs allocative ×5 from memory.'}],
-  '2026-04-03':[{sub:'maths',label:'M5 — Substitution + DEs',dur:'2hrs',detail:'Substitution + separation of variables. 4 Qs.'},{sub:'cs',label:'CS-P1.2 — Boolean algebra + logic gates',dur:'2hrs',detail:"De Morgan's laws, truth tables, K-maps."}],
-  '2026-04-04':[{sub:'maths',label:'M6 — Rational inequalities',dur:'2hrs',detail:'Critical values method, sign diagram. 4 Qs.'},{sub:'econ',label:'E3 — Kinked demand + game theory',dur:'2hrs',detail:'Kinked demand mechanism, Nash equilibrium.'}],
-  '2026-04-05':[{sub:'maths',label:'M7 — Binomial expansion',dur:'2hrs',detail:'General formula (1+x)^n. 3 Qs.'},{sub:'econ',label:'E4 — Multiplier + MOPS',dur:'1.5hrs',detail:'Multiplier = 1/(1−MPC). MOPS structure.'}],
-  '2026-04-06':[{sub:'maths',label:'M8 — Trig identities + R form',dur:'2hrs',detail:'Double angle, compound angle, R form. 3 Qs.'},{sub:'cs',label:'CS-P2.2 — Recursion + ISR',dur:'2hrs',detail:'Factorial, fibonacci, binary search. ISR from memory.'}],
-  '2026-04-07':[{sub:'maths',label:'M9 — Trig equations in range',dur:'2hrs',detail:'CAST, multi-angle, quadratic in trig. 4 Qs.'},{sub:'econ',label:'E5 — Macro: AD/AS + fiscal/monetary',dur:'2hrs',detail:'AD components, SRAS/LRAS, policy effects.'}],
-  '2026-04-08':[{sub:'maths',label:'M10 — Exponentials + logarithms',dur:'2hrs',detail:'Log laws, solving, calculus with e^x. 4 Qs.'},{sub:'cs',label:'CS-P1.3 — Normalisation + SQL',dur:'2hrs',detail:'1NF→2NF→3NF worked problems. SQL from scratch.'}],
-  '2026-04-09':[{sub:'maths',label:'M11 — Sequences + series',dur:'2hrs',detail:'Arith, geom, sum to infinity, sigma. 4 Qs.'},{sub:'econ',label:'E6 — Supply-side + P3 competition',dur:'2hrs',detail:'Supply-side vs demand management. Competition policy.'}],
-  '2026-04-10':[{sub:'maths',label:'M12 — Numerical methods + vectors',dur:'2hrs',detail:'Sign change, iteration, trapezium, vectors. 3 Qs.'},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS',dur:'2hrs',detail:'Floating point normalised form. BFS/DFS trace.'}],
+  '2026-03-30':[{sub:'maths',label:'M1 — Trig integration',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P1.1 — Scheduling + LMC',dur:'2hrs',archived:true}],
+  '2026-03-31':[{sub:'maths',label:'M2 — Integration by parts',dur:'2hrs',archived:true},{sub:'econ',label:'E1 — Core diagrams',dur:'2hrs',archived:true}],
+  '2026-04-01':[{sub:'maths',label:'M3 — Partial fractions',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P2.1 — Stack/queue pseudocode',dur:'2hrs',archived:true}],
+  '2026-04-02':[{sub:'maths',label:'M4 — Integration by partial fractions',dur:'2hrs',archived:true},{sub:'econ',label:'E2 — Efficiency + market structures',dur:'2hrs',archived:true}],
+  '2026-04-03':[{sub:'maths',label:'M5 — Substitution + DEs',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P1.2 — Boolean algebra',dur:'2hrs',archived:true}],
+  '2026-04-04':[{sub:'maths',label:'M6 — Rational inequalities',dur:'2hrs',archived:true},{sub:'econ',label:'E3 — Kinked demand + game theory',dur:'2hrs',archived:true}],
+  '2026-04-05':[{sub:'maths',label:'M7 — Binomial expansion',dur:'2hrs',archived:true},{sub:'econ',label:'E4 — Multiplier + MOPS',dur:'1.5hrs',archived:true}],
+  '2026-04-06':[{sub:'maths',label:'M8 — Trig identities + R form',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P2.2 — Recursion + ISR',dur:'2hrs',archived:true}],
+  '2026-04-07':[{sub:'maths',label:'M9 — Trig equations in range',dur:'2hrs',archived:true},{sub:'econ',label:'E5 — Macro: AD/AS + fiscal/monetary',dur:'2hrs',archived:true}],
+  '2026-04-08':[{sub:'maths',label:'M10 — Exponentials + logarithms',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P1.3 — Normalisation + SQL',dur:'2hrs',archived:true}],
+  '2026-04-09':[{sub:'maths',label:'M11 — Sequences + series',dur:'2hrs',archived:true},{sub:'econ',label:'E6 — Supply-side + P3 competition',dur:'2hrs',archived:true}],
+  '2026-04-10':[{sub:'maths',label:'M12 — Numerical methods + vectors',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS',dur:'2hrs',archived:true}],
   '2026-04-11':[{sub:'maths',label:'Maths catch-up — weakest M1–M12 topic',dur:'2hrs',detail:'Revisit weakest topic.'},{sub:'econ',label:'E7 — Timed essay practice',dur:'2hrs',detail:'2 full essays, 20 min each, strict MOPS.'}],
   '2026-04-12':[{sub:'cs',label:'CS-P1.4 — TCP/IP + networking + compression',dur:'1.5hrs',detail:'TCP/IP layers, encapsulation, DNS, compression.'}],
-  // POST-EASTER
-  '2026-04-13':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E3 — Oligopoly + kinked demand (eve, light)',dur:'45min',detail:'Session pack E3. Recall mechanism + game theory from memory.'}],
-  '2026-04-14':[{sub:'maths',label:'M4 — Substitution + DEs (revisit)',dur:'2hrs',detail:'Session pack M4. 11am–1pm hard cap.'},{sub:'econ',label:'E4 — Macro: AD/AS + economic cycle',dur:'1.5hrs',detail:'Session pack E4. Diagrams from memory: AD/AS, SRAS/LRAS.'}],
-  '2026-04-15':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P1.5 — CPU architecture (eve)',dur:'45min',detail:'Session pack CS-P1.5. FDE cycle + CISC/RISC from memory.'}],
-  '2026-04-16':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M5 — Rational inequalities (eve)',dur:'1hr',detail:'Session pack M5. Critical values method.'}],
-  '2026-04-17':[{sub:'maths',label:'M6 — Binomial expansion (neg/frac n)',dur:'2hrs',detail:'Session pack M6. 11am–1pm hard cap.'},{sub:'cs',label:'CS-P1.6 — OS + memory management + compilation',dur:'1.5hrs',detail:'Session pack CS-P1.6.'}],
-  '2026-04-18':[{sub:'maths',label:'M7 — Trig identities + R form',dur:'2hrs',detail:'Session pack M7. Cold test first.'},{sub:'econ',label:'E5 — Macro policy: fiscal + monetary + supply-side',dur:'1.5hrs',detail:'Session pack E5.'}],
+  '2026-04-13':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E3 — Oligopoly + kinked demand (eve, light)',dur:'45min',detail:'Recall kinked demand mechanism + game theory from memory.'}],
+  '2026-04-14':[{sub:'maths',label:'M4 — Substitution + DEs (revisit)',dur:'2hrs',detail:'11am–1pm hard cap.'},{sub:'econ',label:'E4 — Macro: AD/AS + economic cycle',dur:'1.5hrs',detail:'Diagrams from memory: AD/AS, SRAS/LRAS shifts.'}],
+  '2026-04-15':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P1.5 — CPU architecture (eve)',dur:'45min',detail:'FDE cycle + CISC/RISC from memory.'}],
+  '2026-04-16':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M5 — Rational inequalities (eve)',dur:'1hr',detail:'Critical values method.'}],
+  '2026-04-17':[{sub:'maths',label:'M6 — Binomial expansion (neg/frac n)',dur:'2hrs',detail:'11am–1pm hard cap.'},{sub:'cs',label:'CS-P1.6 — OS + memory management + compilation',dur:'1.5hrs',detail:'Session pack CS-P1.6.'}],
+  '2026-04-18':[{sub:'maths',label:'M7 — Trig identities + R form',dur:'2hrs',detail:'Cold test first.'},{sub:'econ',label:'E5 — Macro policy: fiscal + monetary + supply-side',dur:'1.5hrs',detail:'Session pack E5.'}],
   '2026-04-19':[{sub:'maths',label:'M8 — Logs + exponentials + modelling',dur:'2hrs',detail:'Session pack M8.'},{sub:'cs',label:'CS-P1.7 — Web tech + legal/ethical + data types',dur:'1.5hrs',detail:'Session pack CS-P1.7.'}],
   '2026-04-20':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E2 — Efficiency + market structures (eve)',dur:'45min',detail:'Productive vs allocative from memory ×5.'}],
   '2026-04-21':[{sub:'maths',label:'M10 — Sequences + series',dur:'2hrs',detail:'Session pack M10.'},{sub:'econ',label:'E6 — Globalisation + labour markets',dur:'1.5hrs',detail:'Session pack E6.'}],
-  '2026-04-22':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS (eve)',dur:'45min',detail:'Session pack CS-P2.3. Floating point conversion.'}],
-  '2026-04-23':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M9 — Implicit + parametric diff (eve)',dur:'1hr',detail:'Session pack M9. Product rule inside implicit diff.'}],
+  '2026-04-22':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS (eve)',dur:'45min',detail:'Floating point conversion.'}],
+  '2026-04-23':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M9 — Implicit + parametric diff (eve)',dur:'1hr',detail:'Product rule inside implicit diff.'}],
   '2026-04-24':[{sub:'maths',label:'M11 — Numerical methods + vectors',dur:'2hrs',detail:'Session pack M11.'},{sub:'cs',label:"CS-P2.4 — Algorithms: Dijkstra's + sorting",dur:'1.5hrs',detail:'Session pack CS-P2.4.'}],
   '2026-04-25':[{sub:'maths',label:'M12 — Coordinate geometry + circles + proof',dur:'2hrs',detail:'Session pack M12.'},{sub:'econ',label:'E7 — P3 competition synoptic: CMA + contestability',dur:'1.5hrs',detail:'Session pack E7.'}],
-  '2026-04-26':[{sub:'maths',label:'Maths Pure — timed past paper (2022)',dur:'2hrs',detail:'P1 2022. Full exam conditions. Mark immediately.'},{sub:'econ',label:'E8 — Timed essay practice (20-mark)',dur:'1.5hrs',detail:'Session pack E8. 25 min strict. Mark against level descriptors.'}],
+  '2026-04-26':[{sub:'maths',label:'Maths Pure — timed past paper (2022)',dur:'2hrs',detail:'P1 2022. Full exam conditions.'},{sub:'econ',label:'E8 — Timed essay practice (20-mark)',dur:'1.5hrs',detail:'25 min strict. Mark against level descriptors.'}],
   '2026-04-27':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E1 — Core diagrams revisit (eve)',dur:'45min',detail:'All 6 diagrams from memory. No notes.'}],
-  '2026-04-28':[{sub:'maths',label:'Maths Pure — timed past paper (2023)',dur:'2hrs',detail:'P1 2023. Full exam conditions.'},{sub:'econ',label:'E3 — Oligopoly + game theory (deep)',dur:'1.5hrs',detail:'Session pack E3 full. All 4 tiers.'}],
+  '2026-04-28':[{sub:'maths',label:'Maths Pure — timed past paper (2023)',dur:'2hrs',detail:'Full exam conditions.'},{sub:'econ',label:'E3 — Oligopoly + game theory (deep)',dur:'1.5hrs',detail:'Session pack E3 full. All 4 tiers.'}],
   '2026-04-29':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'econ',label:'E4 — AD/AS + fiscal policy essay (eve)',dur:'45min',detail:'One MOPS chain on fiscal policy from memory.'}],
-  '2026-04-30':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M3 — Partial fractions revisit (eve)',dur:'1hr',detail:'Session pack M3. Cold test two Qs.'}],
-  '2026-05-01':[{sub:'maths',label:'M2 — IBP revisit (double IBP focus)',dur:'2hrs',detail:'Session pack M2 Tier 3 only.'},{sub:'econ',label:'E8 — Timed essay: monetary policy',dur:'1.5hrs',detail:'Session pack E8 Essay 1. 25 min strict.'}],
+  '2026-04-30':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'M3 — Partial fractions revisit (eve)',dur:'1hr',detail:'Cold test two Qs.'}],
+  '2026-05-01':[{sub:'maths',label:'M2 — IBP revisit (double IBP focus)',dur:'2hrs',detail:'Tier 3 only.'},{sub:'econ',label:'E8 — Timed essay: monetary policy',dur:'1.5hrs',detail:'Essay 1. 25 min strict.'}],
   '2026-05-02':[{sub:'econ',label:'Econ P1 — timed past paper (2022)',dur:'2hrs',detail:'Full paper, exam conditions.'},{sub:'maths',label:'M1 — Trig integration revisit',dur:'1.5hrs',detail:'Session pack M1 Tier 3.'}],
-  '2026-05-03':[{sub:'econ',label:'Econ P1 — timed past paper (2023)',dur:'2hrs',detail:'P1 2023 full paper.'},{sub:'cs',label:'CS-TIMED-P1 — CS P1 timed paper (2023)',dur:'2.5hrs',detail:'Session pack CS-TIMED-P1. Only if Econ done by 1pm.'}],
-  '2026-05-04':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E5 — Transmission mechanism (eve)',dur:'45min',detail:'Write full monetary transmission from memory. Check every link.'}],
-  '2026-05-05':[{sub:'econ',label:'Econ P1 — timed past paper (2024)',dur:'2hrs',detail:'P1 2024 full paper.'},{sub:'maths',label:'M9 — Implicit diff (product rule focus)',dur:'2hrs',detail:'Session pack M9. Every Q must use product rule on xy terms.'}],
+  '2026-05-03':[{sub:'econ',label:'Econ P1 — timed past paper (2023)',dur:'2hrs',detail:'P1 2023 full paper.'},{sub:'cs',label:'CS-TIMED-P1 — CS P1 timed paper (2023)',dur:'2.5hrs',detail:'Only if Econ done by 1pm.'}],
+  '2026-05-04':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'econ',label:'E5 — Transmission mechanism (eve)',dur:'45min',detail:'Write full monetary transmission from memory.'}],
+  '2026-05-05':[{sub:'econ',label:'Econ P1 — timed past paper (2024)',dur:'2hrs',detail:'Full paper.'},{sub:'maths',label:'M9 — Implicit diff (product rule focus)',dur:'2hrs',detail:'Every Q must use product rule on xy terms.'}],
   '2026-05-06':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'econ',label:'E1 — Core diagrams from memory (eve)',dur:'45min',detail:'6 diagrams, no notes, cold.'}],
-  '2026-05-07':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'econ',label:"E8 — Timed essay: workers' rights (eve)",dur:'45min',detail:'Session pack E8 Essay 2. 25 min strict.'}],
-  '2026-05-08':[{sub:'econ',label:'Econ P1 — timed paper (weakest of 2022–24)',dur:'2hrs',detail:'Whichever scored lowest. Full exam conditions.'},{sub:'maths',label:'M4 — Substitution + DEs Tier 3 only',dur:'1.5hrs',detail:'Session pack M4 Tier 3.'}],
-  '2026-05-09':[{sub:'econ',label:'Econ P1 cram — all diagrams + one essay',dur:'2hrs',detail:'All diagrams from memory. One timed 20-mark essay.'},{sub:'maths',label:'Maths Pure — timed paper (2024)',dur:'2hrs',detail:'P2 2024. Full exam conditions.'}],
-  '2026-05-10':[{sub:'econ',label:'DAY BEFORE ECON P1 — Econ only',dur:'2hrs',detail:'Diagrams ×3 each. Read all extracts 2022–24. Two MOPS paragraphs. No maths today.'}],
+  '2026-05-07':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'econ',label:"E8 — Timed essay: workers' rights (eve)",dur:'45min',detail:'Essay 2. 25 min strict.'}],
+  '2026-05-08':[{sub:'econ',label:'Econ P1 — timed paper (weakest of 2022–24)',dur:'2hrs',detail:'Full exam conditions.'},{sub:'maths',label:'M4 — Substitution + DEs Tier 3 only',dur:'1.5hrs',detail:'Tier 3 questions only.'}],
+  '2026-05-09':[{sub:'econ',label:'Econ P1 cram — all diagrams + one essay',dur:'2hrs',detail:'All diagrams from memory. One timed 20-mark essay.'},{sub:'maths',label:'Maths Pure — timed paper (2024)',dur:'2hrs',detail:'Full exam conditions.'}],
+  '2026-05-10':[{sub:'econ',label:'DAY BEFORE ECON P1 — Econ only',dur:'2hrs',detail:'Diagrams ×3 each. Read all extracts 2022–24. Two MOPS paragraphs. No maths.'}],
   '2026-05-11':[{sub:'econ',label:'⚡ ECON P1 EXAM — 9:30am',detail:'9EB0/01 · Theme 1 + Theme 4 · 2 hours.'}],
-  '2026-05-12':[{sub:'maths',label:'S1 — Statistical sampling',dur:'2hrs',detail:'Session pack S1. First Stats session.'},{sub:'econ',label:'Econ P2 prep — macro topics',dur:'1.5hrs',detail:'Session packs E4/E5 review.'}],
-  '2026-05-13':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P1.1 — Scheduling + LMC revisit (eve)',dur:'45min',detail:'All scheduling algorithms + one LMC trace. Cold.'}],
+  '2026-05-12':[{sub:'maths',label:'S1 — Statistical sampling',dur:'2hrs',detail:'Session pack S1.'},{sub:'econ',label:'Econ P2 prep — macro topics',dur:'1.5hrs',detail:'Session packs E4/E5 review.'}],
+  '2026-05-13':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P1.1 — Scheduling + LMC revisit (eve)',dur:'45min',detail:'All scheduling algorithms + one LMC trace.'}],
   '2026-05-14':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'S2 — Data presentation + probability (eve)',dur:'1hr',detail:'Session pack S2 Tier 1+2 only.'}],
   '2026-05-15':[{sub:'maths',label:'S3 — Binomial distribution',dur:'2hrs',detail:'Session pack S3.'},{sub:'econ',label:'Econ P2 — timed past paper (2022)',dur:'2hrs',detail:'P2 2022 full paper.'}],
   '2026-05-16':[{sub:'maths',label:'S4 — Normal distribution',dur:'2hrs',detail:'Session pack S4.'},{sub:'econ',label:'Econ P2 — timed past paper (2023)',dur:'2hrs',detail:'P2 2023 full paper.'}],
@@ -772,44 +810,31 @@ const SESSIONS={
   '2026-05-26':[{sub:'maths',label:'Maths Pure 2 — timed paper (2022 P2)',dur:'2hrs',detail:'P2 2022.'},{sub:'econ',label:'Econ P3 — timed past paper (2023)',dur:'2hrs',detail:'P3 2023 full paper.'}],
   '2026-05-27':[{sub:'college',label:'College: CS 9–11 · SSC 12:30 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS-P1.6 — OS + methodologies (eve)',dur:'45min',detail:'Session pack CS-P1.6 Tier 1 cold test.'}],
   '2026-05-28':[{sub:'college',label:'College: Econ 11:25–13:35',detail:''},{sub:'maths',label:'Pure — PF + IBP mixed (eve)',dur:'1hr',detail:'One PF integral, one IBP. Cold test.'}],
-  '2026-05-29':[{sub:'maths',label:'Maths Pure — weakest pure topic revisit',dur:'2hrs',detail:'Identify from timed papers. Session pack for that topic.'},{sub:'econ',label:'Econ P3 — timed past paper (2024)',dur:'2hrs',detail:'P3 2024. Final econ paper practice.'}],
-  '2026-05-30':[{sub:'maths',label:'Maths Pure 1 — final full paper (2024 P1)',dur:'2hrs',detail:'P1 2024. Strict exam conditions.'},{sub:'econ',label:'Econ cram — all diagrams + one essay',dur:'1.5hrs',detail:'Every diagram once. One 20-mark essay.'}],
-  '2026-05-31':[{sub:'maths',label:'Maths Pure 2 — final full paper (2023 P2)',dur:'2hrs',detail:'P2 2023.'},{sub:'cs',label:'CS-P2.1 — Stack/queue pseudocode revisit',dur:'1.5hrs',detail:'Session pack CS-P2.1. Push/pop from scratch.'}],
+  '2026-05-29':[{sub:'maths',label:'Maths Pure — weakest pure topic revisit',dur:'2hrs',detail:'Identify from timed papers.'},{sub:'econ',label:'Econ P3 — timed past paper (2024)',dur:'2hrs',detail:'P3 2024.'}],
+  '2026-05-30':[{sub:'maths',label:'Maths Pure 1 — final full paper (2024 P1)',dur:'2hrs',detail:'Strict exam conditions.'},{sub:'econ',label:'Econ cram — all diagrams + one essay',dur:'1.5hrs',detail:'Every diagram once. One 20-mark essay.'}],
+  '2026-05-31':[{sub:'maths',label:'Maths Pure 2 — final full paper (2023 P2)',dur:'2hrs',detail:'P2 2023.'},{sub:'cs',label:'CS-P2.1 — Stack/queue pseudocode revisit',dur:'1.5hrs',detail:'Push/pop from scratch.'}],
   '2026-06-01':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'maths',label:'Maths — integration rapid review (eve)',dur:'45min',detail:'One IBP, one trig int, one substitution. All cold.'}],
-  '2026-06-02':[{sub:'maths',label:'DAY BEFORE PURE 1 — Maths only',dur:'2hrs',detail:'Read all Pure topics. 3 short Qs on weakest areas. No new content. Rest by 3pm.'}],
+  '2026-06-02':[{sub:'maths',label:'DAY BEFORE PURE 1 — Maths only',dur:'2hrs',detail:'Read all Pure topics. 3 short Qs on weakest areas. Rest by 3pm.'}],
   '2026-06-03':[{sub:'maths',label:'⚡ MATHS PURE 1 EXAM — 13:30pm',detail:'9MA0/01 · 2 hours.'}],
-  '2026-06-04':[{sub:'econ',label:'⚡ ECON P3 EXAM — 9:30am',detail:'9EB0/03 · Synoptic · 2 hours.'},{sub:'maths',label:'Review Pure 1 + start Pure 2 prep (afternoon)',dur:'1hr',detail:'Only after P3 exam. Identify 2 topics to strengthen for Pure 2.'}],
+  '2026-06-04':[{sub:'econ',label:'⚡ ECON P3 EXAM — 9:30am',detail:'9EB0/03 · Synoptic · 2 hours.'},{sub:'maths',label:'Review Pure 1 + start Pure 2 prep (afternoon)',dur:'1hr',detail:'Only after P3 exam.'}],
   '2026-06-05':[{sub:'maths',label:'Maths Pure 2 — timed paper (2024 P2)',dur:'2hrs',detail:'P2 2024.'},{sub:'cs',label:'CS-TIMED-P1 — full CS P1 timed (2022)',dur:'2.5hrs',detail:'Session pack CS-TIMED-P1. Full 140-mark paper.'}],
-  '2026-06-06':[{sub:'maths',label:'S&M — kinematics + forces Tier 3',dur:'2hrs',detail:'Session packs S6+S7 Tier 3 questions.'},{sub:'cs',label:'CS-P1.2 — Boolean + K-maps (heavy)',dur:'1.5hrs',detail:'Session pack CS-P1.2 all 4 tiers.'}],
+  '2026-06-06':[{sub:'maths',label:'S&M — kinematics + forces Tier 3',dur:'2hrs',detail:'Session packs S6+S7 Tier 3.'},{sub:'cs',label:'CS-P1.2 — Boolean + K-maps (heavy)',dur:'1.5hrs',detail:'Session pack CS-P1.2 all 4 tiers.'}],
   '2026-06-07':[{sub:'maths',label:'S8 — Moments harder questions',dur:'2hrs',detail:'Session pack S8 Tier 3+4.'},{sub:'cs',label:'CS-P2.2 — Recursion + ISR',dur:'1.5hrs',detail:'Session pack CS-P2.2.'}],
   '2026-06-08':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS — Boolean algebra rapid recall (eve)',dur:'45min',detail:'Session pack CS-P1.2 Tier 1 again. Cold.'}],
-  '2026-06-09':[{sub:'cs',label:'DAY BEFORE CS P1 — CS only',dur:'2hrs',detail:'All CS P1 topics rapid review. No maths. CS-P1.1 through CS-P1.7 recall.'}],
+  '2026-06-09':[{sub:'cs',label:'DAY BEFORE CS P1 — CS only',dur:'2hrs',detail:'All CS P1 topics rapid review. No maths.'}],
   '2026-06-10':[{sub:'cs',label:'⚡ CS PAPER 1 EXAM — 13:30pm',detail:'H446/01 · Computer Systems · 2h30m.'}],
   '2026-06-11':[{sub:'maths',label:'⚡ MATHS PURE 2 EXAM — 13:30pm',detail:'9MA0/02 · 2 hours.'}],
-  '2026-06-12':[{sub:'maths',label:'S&M — full timed paper review',dur:'2hrs',detail:'Session pack S9 or actual past paper.'},{sub:'cs',label:"CS-P2.4 — Algorithms: Dijkstra's + sorting Tier 3",dur:'1.5hrs',detail:'Session pack CS-P2.4 Tier 3.'}],
+  '2026-06-12':[{sub:'maths',label:'S&M — full timed paper review',dur:'2hrs',detail:'Session pack S9 or actual past paper.'},{sub:'cs',label:"CS-P2.4 — Algorithms: Dijkstra's Tier 3",dur:'1.5hrs',detail:'Session pack CS-P2.4 Tier 3.'}],
   '2026-06-13':[{sub:'maths',label:'S&M — mixed paper (forces + stats)',dur:'2hrs',detail:'Combined S7/S5 questions.'},{sub:'cs',label:'CS-TIMED-P2 — full CS P2 timed paper',dur:'2.5hrs',detail:'Session pack CS-TIMED-P2. Full 140-mark paper.'}],
-  '2026-06-14':[{sub:'maths',label:'S&M — moments + kinematics combined',dur:'2hrs',detail:'One harder moments Q + one kinematics Q. Cold.'},{sub:'cs',label:'CS P2 prep — recursion + algorithms',dur:'1.5hrs',detail:'Session packs CS-P2.2 + CS-P2.4 key questions.'}],
-  '2026-06-15':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS — stack pseudocode rapid recall (eve)',dur:'45min',detail:'Write push() and pop() from scratch. No notes.'}],
-  '2026-06-16':[{sub:'cs',label:'DAY BEFORE CS P2 — CS only',dur:'2hrs',detail:'CS P2 topics: recursion, sorting, Dijkstra, BFS/DFS. No maths.'}],
+  '2026-06-14':[{sub:'maths',label:'S&M — moments + kinematics combined',dur:'2hrs',detail:'One harder moments Q + one kinematics Q. Cold.'},{sub:'cs',label:'CS P2 prep — recursion + algorithms',dur:'1.5hrs',detail:'Session packs CS-P2.2 + CS-P2.4.'}],
+  '2026-06-15':[{sub:'college',label:'College: Econ 9–11 · CS 11:25 · Maths 14–16:30',detail:''},{sub:'cs',label:'CS — stack pseudocode rapid recall (eve)',dur:'45min',detail:'Write push() and pop() from scratch.'}],
+  '2026-06-16':[{sub:'cs',label:'DAY BEFORE CS P2 — CS only',dur:'2hrs',detail:'CS P2 topics: recursion, sorting, Dijkstra, BFS/DFS.'}],
   '2026-06-17':[{sub:'cs',label:'⚡ CS PAPER 2 EXAM — 9:30am',detail:'H446/02 · Algorithms & Programming · 2h30m.'}],
   '2026-06-18':[{sub:'maths',label:'⚡ MATHS S&M EXAM — 13:30pm',detail:'9MA0/03 · Statistics & Mechanics · 2h30m. FINAL EXAM.'}],
 };
 
-const EXAM_DAYS={
-  '2026-05-11':'Econ P1','2026-05-18':'Econ P2',
-  '2026-06-03':'Maths Pure 1','2026-06-04':'Econ P3',
-  '2026-06-10':'CS Paper 1','2026-06-11':'Maths Pure 2',
-  '2026-06-17':'CS Paper 2','2026-06-18':'Maths S&M',
-};
-
-const PHASES=[
-  {label:'Phase 1',start:'2026-03-09',end:'2026-03-29',desc:'Pre-Easter'},
-  {label:'Phase 2',start:'2026-03-30',end:'2026-04-12',desc:'Easter — library daily'},
-  {label:'Phase 3',start:'2026-04-13',end:'2026-05-10',desc:'Back at college'},
-  {label:'Phase 4',start:'2026-05-11',end:'2026-06-02',desc:'Econ exams'},
-  {label:'Phase 5',start:'2026-06-03',end:'2026-06-18',desc:'Maths + CS exams'},
-];
-
+const EXAM_DAYS={'2026-05-11':'Econ P1','2026-05-18':'Econ P2','2026-06-03':'Maths Pure 1','2026-06-04':'Econ P3','2026-06-10':'CS Paper 1','2026-06-11':'Maths Pure 2','2026-06-17':'CS Paper 2','2026-06-18':'Maths S&M'};
+const PHASES=[{label:'Phase 1',start:'2026-03-09',end:'2026-03-29',desc:'Pre-Easter'},{label:'Phase 2',start:'2026-03-30',end:'2026-04-12',desc:'Easter — library daily'},{label:'Phase 3',start:'2026-04-13',end:'2026-05-10',desc:'Back at college'},{label:'Phase 4',start:'2026-05-11',end:'2026-06-02',desc:'Econ exams'},{label:'Phase 5',start:'2026-06-03',end:'2026-06-18',desc:'Maths + CS exams'}];
 const PRIORITY_GAPS=[
   {key:'m_trig_int',sub:'maths',name:'Trig integration (sin²x, cos²x)',defPrio:'hot',examDate:'2026-06-03'},
   {key:'m_ibp',sub:'maths',name:'Integration by parts',defPrio:'hot',examDate:'2026-06-03'},
@@ -854,37 +879,24 @@ const PRIORITY_GAPS=[
   {key:'c_kmap',sub:'cs',name:'Karnaugh maps',defPrio:'low',examDate:'2026-06-10'},
 ];
 
-const INITIAL_TASKS_DONE={
-  '2026-03-30':[0,1],'2026-03-31':[0,1],'2026-04-01':[0,1],
-  '2026-04-02':[0],'2026-04-04':[0],
-};
-const INITIAL_GAP_STATE={
-  'm_trig_int':{confidence:4,lastRevised:Date.parse('2026-03-30T18:00:00')},
-  'm_ibp':{confidence:4,lastRevised:Date.parse('2026-03-31T18:00:00')},
-  'm_pf':{confidence:4,lastRevised:Date.parse('2026-04-01T18:00:00')},
-  'm_pf_int':{confidence:4,lastRevised:Date.parse('2026-04-02T18:00:00')},
-  'm_ineq':{confidence:4,lastRevised:Date.parse('2026-04-04T18:00:00')},
-  'c_sched':{confidence:3,lastRevised:Date.parse('2026-03-30T18:00:00')},
-  'c_lmc':{confidence:3,lastRevised:Date.parse('2026-03-30T18:00:00')},
-  'c_pp':{confidence:3,lastRevised:Date.parse('2026-04-01T18:00:00')},
-  'e_diag':{confidence:3,lastRevised:Date.parse('2026-03-31T18:00:00')},
-};
+// Seed initial completion state
+const INITIAL_TASKS_DONE={'2026-03-30':[0,1],'2026-03-31':[0,1],'2026-04-01':[0,1],'2026-04-02':[0],'2026-04-04':[0]};
+const INITIAL_GAP_STATE={'m_trig_int':{confidence:4,lastRevised:Date.parse('2026-03-30T18:00:00')},'m_ibp':{confidence:4,lastRevised:Date.parse('2026-03-31T18:00:00')},'m_pf':{confidence:4,lastRevised:Date.parse('2026-04-01T18:00:00')},'m_pf_int':{confidence:4,lastRevised:Date.parse('2026-04-02T18:00:00')},'m_ineq':{confidence:4,lastRevised:Date.parse('2026-04-04T18:00:00')},'c_sched':{confidence:3,lastRevised:Date.parse('2026-03-30T18:00:00')},'c_lmc':{confidence:3,lastRevised:Date.parse('2026-03-30T18:00:00')},'c_pp':{confidence:3,lastRevised:Date.parse('2026-04-01T18:00:00')},'e_diag':{confidence:3,lastRevised:Date.parse('2026-03-31T18:00:00')}};
 const INITIAL_STREAK={'2026-03-30':2,'2026-03-31':2,'2026-04-01':2,'2026-04-02':1,'2026-04-04':1};
 
 function seedInitialState(){
-  for(const[dk,idxs]of Object.entries(INITIAL_TASKS_DONE)){const e=lsGet('tasks_done_'+dk,null);if(e===null)lsSet('tasks_done_'+dk,idxs);}
+  for(const[dk,idxs]of Object.entries(INITIAL_TASKS_DONE)){if(lsGet('tasks_done_'+dk,null)===null)lsSet('tasks_done_'+dk,idxs);}
   const eg=lsGet('gap_state',null);
   if(eg===null){lsSet('gap_state',INITIAL_GAP_STATE);}
   else{let ch=false;for(const[k,v]of Object.entries(INITIAL_GAP_STATE)){if(!eg[k]){eg[k]=v;ch=true;}}if(ch)lsSet('gap_state',eg);}
-  for(const[dk,n]of Object.entries(INITIAL_STREAK)){const e=lsGet('sess_'+dk,0);if(e===0)lsSet('sess_'+dk,n);}
+  for(const[dk,n]of Object.entries(INITIAL_STREAK)){if(lsGet('sess_'+dk,0)===0)lsSet('sess_'+dk,n);}
 }
 
 const MOCK_DEFAULTS={
-  maths:[{label:'Feb mock',pct:20},{label:'30 Mar diag',pct:22},{label:'9 Apr check',pct:56}],
-  econ:[{label:'Feb mock',pct:68},{label:'30 Mar diag',pct:50},{label:'9 Apr check',pct:41}],
-  cs:[{label:'Feb mock',pct:22},{label:'30 Mar diag',pct:51},{label:'9 Apr check',pct:50}],
+  maths:[{label:'Feb mock',pct:20},{label:'30 Mar',pct:22},{label:'9 Apr',pct:56}],
+  econ:[{label:'Feb mock',pct:68},{label:'30 Mar',pct:50},{label:'9 Apr',pct:41}],
+  cs:[{label:'Feb mock',pct:22},{label:'30 Mar',pct:51},{label:'9 Apr',pct:50}],
 };
-
 const SUB_COL={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)',nea:'var(--purple)',am:'var(--amber)',college:'var(--muted2)','':'var(--muted)'};
 const SUB_BADGE_CLASS={maths:'badge-m',econ:'badge-e',cs:'badge-c',nea:'badge-nea',college:'badge-college'};
 const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -892,13 +904,144 @@ const MONTHS=['January','February','March','April','May','June','July','August',
 
 function today(){const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate());}
 function toDate(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d);}
-function dateKey(d){const y=d.getFullYear();const m=String(d.getMonth()+1).padStart(2,'0');const day=String(d.getDate()).padStart(2,'0');return`${y}-${m}-${day}`;}
+function dateKey(d){return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
 function daysUntil(s){return Math.ceil((toDate(s)-today())/864e5);}
 function getPhase(){const t=today();for(const p of PHASES){const ps=toDate(p.start),pe=toDate(p.end);if(t>=ps&&t<=pe){const w=Math.floor((t-ps)/6048e5)+1;return`${p.label} · Week ${w} · ${p.desc}`;}}return'Exam prep';}
 function lsGet(k,def){try{return JSON.parse(localStorage.getItem(k)||'null')??def;}catch(e){return def;}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 
+// ── PACK MODAL ─────────────────────────────────────────────────────────────────
+let packDataCache=null;let packDataLoading=false;
+
+function loadPackData(cb){
+  if(packDataCache){cb(packDataCache);return;}
+  if(packDataLoading){setTimeout(()=>loadPackData(cb),100);return;}
+  packDataLoading=true;
+  const s=document.createElement('script');
+  s.src='packs.js';
+  s.onload=()=>{packDataCache=window.SESSION_PACK_DATA||{};packDataLoading=false;cb(packDataCache);};
+  s.onerror=()=>{packDataLoading=false;packDataCache={};cb({});};
+  document.head.appendChild(s);
+}
+
+function openPackModal(packId){
+  loadPackData(data=>{
+    const pack=data[packId];
+    const overlay=document.getElementById('pack-overlay');
+    const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};
+    const subNames={maths:'Maths',econ:'Economics',cs:'CS'};
+    let sub='cs';
+    if(packId.startsWith('M')||packId.startsWith('S'))sub='maths';
+    else if(packId.startsWith('E'))sub='econ';
+    const col=subCols[sub]||'var(--purple)';
+    const idEl=document.getElementById('pack-modal-id');
+    idEl.textContent=packId;
+    idEl.style.background=`${col}20`;
+    idEl.style.color=col;
+    idEl.style.border=`1px solid ${col}50`;
+    document.getElementById('pack-modal-title').textContent=pack?pack.title:`Pack ${packId}`;
+    document.getElementById('pack-modal-sub').textContent=`${subNames[sub]} · 4 tiers · ~2 hours`;
+    const copyBtn=document.getElementById('pack-copy-btn');
+    copyBtn.className='pack-copy-btn';
+    document.getElementById('pack-copy-icon').textContent='⧉';
+    document.getElementById('pack-copy-text').textContent='Copy full prompt to clipboard';
+    const content=pack?pack.prompt:'Pack data not found — check packs.js is deployed alongside index.html.';
+    document.getElementById('pack-modal-content').textContent=content;
+    overlay.classList.add('open');
+    document.body.style.overflow='hidden';
+  });
+}
+
+function closePackModal(){
+  document.getElementById('pack-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function copyPackPrompt(){
+  loadPackData(data=>{
+    const btn=document.getElementById('pack-copy-btn');
+    const idEl=document.getElementById('pack-modal-id');
+    const packId=idEl.textContent;
+    const pack=data[packId];
+    const text=pack?pack.prompt:'Pack data not available.';
+    navigator.clipboard.writeText(text).then(()=>{
+      btn.classList.add('copied');
+      document.getElementById('pack-copy-icon').textContent='✓';
+      document.getElementById('pack-copy-text').textContent='Copied! Paste into Gemini now';
+      setTimeout(()=>{btn.classList.remove('copied');document.getElementById('pack-copy-icon').textContent='⧉';document.getElementById('pack-copy-text').textContent='Copy full prompt to clipboard';},2500);
+    }).catch(()=>{
+      document.getElementById('pack-copy-text').textContent='Copy failed — select text below manually';
+    });
+  });
+}
+
+// Close on Escape
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePackModal();closeSessionLog();}});
+
+// ── PACKS TAB RENDERING ───────────────────────────────────────────────────────
+const PACK_DEFINITIONS=[
+  {id:'M1',name:'Trig integration (sin²x, cos²x)',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'M2',name:'Integration by parts',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'M3',name:'Partial fractions — all types',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'M4',name:'Substitution + differential equations',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'M5',name:'Inequalities + functions + modulus',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'M6',name:'Binomial expansion (neg/frac n)',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'M7',name:'Trig identities + R form',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'M8',name:'Logs + exponentials + modelling',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'M9',name:'Implicit + parametric differentiation',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'M10',name:'Sequences + series',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'M11',name:'Numerical methods + vectors',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'M12',name:'Coordinate geometry + circles + proof',listId:'pack-list-pure',col:'var(--maths)'},
+  {id:'S1',name:'Statistical sampling',listId:'pack-list-sm',col:'#22d3ee'},
+  {id:'S2',name:'Data presentation + probability',listId:'pack-list-sm',col:'#22d3ee'},
+  {id:'S3',name:'Binomial distribution',listId:'pack-list-sm',col:'#22d3ee'},
+  {id:'S4',name:'Normal distribution',listId:'pack-list-sm',col:'#22d3ee'},
+  {id:'S5',name:'Hypothesis testing',listId:'pack-list-sm',col:'#22d3ee'},
+  {id:'S6',name:'Kinematics (suvat + calculus)',listId:'pack-list-sm',col:'#22d3ee'},
+  {id:'S7',name:"Forces + Newton's laws + friction",listId:'pack-list-sm',col:'#22d3ee'},
+  {id:'S8',name:'Moments + inclined planes',listId:'pack-list-sm',col:'#22d3ee'},
+  {id:'S9',name:'S&M timed past paper simulation',listId:'pack-list-sm',col:'#22d3ee'},
+  {id:'E1',name:'Core diagrams from memory (all 6)',listId:'pack-list-econ',col:'var(--econ)'},
+  {id:'E2',name:'Efficiency + market structures',listId:'pack-list-econ',col:'var(--econ)'},
+  {id:'E3',name:'Oligopoly + kinked demand + game theory',listId:'pack-list-econ',col:'var(--econ)'},
+  {id:'E4',name:'Macro: AD/AS + economic cycle',listId:'pack-list-econ',col:'var(--econ)'},
+  {id:'E5',name:'Macro policy: fiscal + monetary + supply-side',listId:'pack-list-econ',col:'var(--econ)'},
+  {id:'E6',name:'Globalisation + labour markets',listId:'pack-list-econ',col:'var(--econ)'},
+  {id:'E7',name:'P3 competition: CMA + contestability',listId:'pack-list-econ',col:'var(--econ)'},
+  {id:'E8',name:'Timed 20-mark essay practice',listId:'pack-list-econ',col:'var(--econ)'},
+  {id:'CS-P1.1',name:'Scheduling + LMC / assembly',listId:'pack-list-csp1',col:'var(--cs)'},
+  {id:'CS-P1.2',name:'Boolean algebra + Karnaugh maps',listId:'pack-list-csp1',col:'var(--cs)'},
+  {id:'CS-P1.3',name:'Normalisation 1NF→3NF + SQL',listId:'pack-list-csp1',col:'var(--cs)'},
+  {id:'CS-P1.4',name:'TCP/IP + networking + compression',listId:'pack-list-csp1',col:'var(--cs)'},
+  {id:'CS-P1.5',name:'CPU architecture + CISC/RISC',listId:'pack-list-csp1',col:'var(--cs)'},
+  {id:'CS-P1.6',name:'OS + memory management + compilation',listId:'pack-list-csp1',col:'var(--cs)'},
+  {id:'CS-P1.7',name:'Web tech + legal/ethical + data types',listId:'pack-list-csp1',col:'var(--cs)'},
+  {id:'CS-P2.1',name:'Stack/queue pseudocode',listId:'pack-list-csp2',col:'var(--cs)'},
+  {id:'CS-P2.2',name:'Recursion + ISR sequence',listId:'pack-list-csp2',col:'var(--cs)'},
+  {id:'CS-P2.3',name:'Floating point + BFS/DFS',listId:'pack-list-csp2',col:'var(--cs)'},
+  {id:'CS-P2.4',name:"Algorithms: Dijkstra's + sorting",listId:'pack-list-csp2',col:'var(--cs)'},
+  {id:'CS-TIMED-P1',name:'CS P1 timed past paper (2023 full)',listId:'pack-list-csp2',col:'var(--cs)'},
+  {id:'CS-TIMED-P2',name:'CS P2 timed past paper (2022 full)',listId:'pack-list-csp2',col:'var(--cs)'},
+];
+
+function renderPacksTab(){
+  const listIds=['pack-list-pure','pack-list-sm','pack-list-econ','pack-list-csp1','pack-list-csp2'];
+  listIds.forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});
+  PACK_DEFINITIONS.forEach(p=>{
+    const el=document.getElementById(p.listId);if(!el)return;
+    const row=document.createElement('div');row.className='pack-row';
+    row.onclick=()=>openPackModal(p.id);
+    row.innerHTML=`<span class="pack-row-id" style="color:${p.col}">${p.id}</span><span class="pack-row-name">${p.name}</span><span class="pack-row-arrow">▶</span>`;
+    el.appendChild(row);
+  });
+  document.getElementById('packs-loading').style.display='none';
+  document.getElementById('packs-content').style.display='grid';
+}
+
+// ── ALL SESSIONS ──────────────────────────────────────────────────────────────
 let currentFilter='all';
+let showPastSessions=false;
+
 function setFilter(f){
   currentFilter=f;
   ['all','maths','econ','cs'].forEach(x=>{
@@ -909,115 +1052,92 @@ function setFilter(f){
   renderAllSessions();
 }
 
+function togglePastSessions(){
+  showPastSessions=!showPastSessions;
+  const btn=document.getElementById('toggle-past-btn');
+  if(btn){
+    btn.textContent=showPastSessions?'Hide earlier this week':'Show earlier this week';
+    btn.style.borderColor=showPastSessions?'var(--amber)':'';
+    btn.style.color=showPastSessions?'var(--amber)':'';
+  }
+  const heading=document.getElementById('all-sessions-heading');
+  const sub=document.getElementById('all-sessions-sub');
+  if(heading)heading.textContent=showPastSessions?'All sessions this week + upcoming':'Today + upcoming sessions';
+  if(sub)sub.textContent=showPastSessions?'Including earlier this week.':'Showing from today onwards.';
+  renderAllSessions();
+}
+
 function switchTab(id,btn){
   document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
-  btn.classList.add('active');
+  if(btn)btn.classList.add('active');
   if(id==='subjects'){renderSmartGaps();renderGradeBounds();setTimeout(renderCharts,60);}
   if(id==='all')renderAllSessions();
   if(id==='week')renderWeek();
+  if(id==='packs')renderPacksTab();
 }
 
 function renderCountdowns(){
   const revStart=toDate('2026-03-09');
   [{id:'econ',date:'2026-05-11',subCol:'var(--econ)'},{id:'maths',date:'2026-06-03',subCol:'var(--maths)'},{id:'cs',date:'2026-06-10',subCol:'var(--cs)'}].forEach(e=>{
-    const d=daysUntil(e.date);
-    const urgCol=d<60?'var(--red)':d<90?'var(--amber)':e.subCol;
-    const urgText=d<60?'URGENT':d<90?'BUILD NOW':'ON TRACK';
-    document.getElementById('cd-'+e.id).textContent=d;
-    document.getElementById('cd-'+e.id).style.color=urgCol;
+    const d=daysUntil(e.date);const urgCol=d<60?'var(--red)':d<90?'var(--amber)':e.subCol;const urgText=d<60?'URGENT':d<90?'BUILD NOW':'ON TRACK';
+    document.getElementById('cd-'+e.id).textContent=d;document.getElementById('cd-'+e.id).style.color=urgCol;
     const examDate=toDate(e.date);const totalSpan=Math.max(1,examDate-revStart);const elapsed=today()-revStart;
     const pct=Math.max(0,Math.min(100,(elapsed/totalSpan)*100));
-    const bar=document.getElementById('cd-'+e.id+'-bar');
-    bar.style.width=pct+'%';bar.style.background=urgCol;
-    const urg=document.getElementById('cd-'+e.id+'-urg');
-    if(urg){urg.textContent=urgText;urg.style.color=urgCol;}
+    const bar=document.getElementById('cd-'+e.id+'-bar');bar.style.width=pct+'%';bar.style.background=urgCol;
+    const urg=document.getElementById('cd-'+e.id+'-urg');if(urg){urg.textContent=urgText;urg.style.color=urgCol;}
   });
 }
 
 function getGapPriority(g){const user=lsGet('user_priority',{});return user[g.key]??g.defPrio;}
 function cyclePriority(key,event){
-  event.stopPropagation();
-  const g=PRIORITY_GAPS.find(x=>x.key===key);
-  const cur=getGapPriority(g);const next=cur==='hot'?'med':cur==='med'?'low':'hot';
-  const user=lsGet('user_priority',{});user[key]=next;lsSet('user_priority',user);
+  event.stopPropagation();const g=PRIORITY_GAPS.find(x=>x.key===key);const cur=getGapPriority(g);
+  const next=cur==='hot'?'med':cur==='med'?'low':'hot';const user=lsGet('user_priority',{});user[key]=next;lsSet('user_priority',user);
   renderSmartGaps();renderFocusCard();
 }
 function gapUrgencyScore(g,state){
-  if(state[g.key]?.done)return-1;
-  const prio=getGapPriority(g);const days=Math.max(1,daysUntil(g.examDate));const conf=state[g.key]?.confidence||1;
-  const w=prio==='hot'?2:prio==='med'?1:0.3;return(w*100)/(days*conf);
+  if(state[g.key]?.done)return-1;const prio=getGapPriority(g);const days=Math.max(1,daysUntil(g.examDate));const conf=state[g.key]?.confidence||1;const w=prio==='hot'?2:prio==='med'?1:0.3;return(w*100)/(days*conf);
 }
 
 function renderFocusCard(){
   const state=lsGet('gap_state',{});let best=null,bestScore=-Infinity;
   for(const g of PRIORITY_GAPS){const s=gapUrgencyScore(g,state);if(s>bestScore){bestScore=s;best=g;}}
   if(!best)return;
-  const days=daysUntil(best.examDate);
-  const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};
-  const subNames={maths:'Maths',econ:'Economics',cs:'Computer Science'};
-  const icons={maths:'∫',econ:'↗',cs:'λ'};
-  const daysCol=days<60?'var(--red)':days<90?'var(--amber)':subCols[best.sub];
-  const conf=state[best.key]?.confidence||0;
-  const confLabel=conf>0?` · ${CONF_LABELS[conf]}`:'';
-  document.getElementById('focus-card').innerHTML=`
-    <div style="font-family:var(--mono);font-size:1.8rem;color:${subCols[best.sub]};flex-shrink:0;line-height:1">${icons[best.sub]}</div>
-    <div style="flex:1;min-width:0">
-      <div class="focus-label">Today's #1 Focus</div>
-      <div class="focus-topic" style="color:${subCols[best.sub]}">${best.name}</div>
-      <div class="focus-reason">${subNames[best.sub]} · exam in ${days} days · ${getGapPriority(best)} priority${confLabel}</div>
-    </div>
-    <div style="text-align:right;flex-shrink:0">
-      <div style="font-family:var(--mono);font-size:2rem;font-weight:700;color:${daysCol};line-height:1">${days}</div>
-      <div style="font-family:var(--mono);font-size:0.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">days left</div>
-    </div>`;
+  const days=daysUntil(best.examDate);const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};const subNames={maths:'Maths',econ:'Economics',cs:'Computer Science'};const icons={maths:'∫',econ:'↗',cs:'λ'};
+  const daysCol=days<60?'var(--red)':days<90?'var(--amber)':subCols[best.sub];const conf=state[best.key]?.confidence||0;const confLabel=conf>0?` · ${CONF_LABELS[conf]}`:'';
+  document.getElementById('focus-card').innerHTML=`<div style="font-family:var(--mono);font-size:1.8rem;color:${subCols[best.sub]};flex-shrink:0;line-height:1">${icons[best.sub]}</div><div style="flex:1;min-width:0"><div class="focus-label">Today's #1 Focus</div><div class="focus-topic" style="color:${subCols[best.sub]}">${best.name}</div><div class="focus-reason">${subNames[best.sub]} · exam in ${days} days · ${getGapPriority(best)} priority${confLabel}</div></div><div style="text-align:right;flex-shrink:0"><div style="font-family:var(--mono);font-size:2rem;font-weight:700;color:${daysCol};line-height:1">${days}</div><div style="font-family:var(--mono);font-size:0.55rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em">days left</div></div>`;
 }
 
-function toggleGapDone(key){
-  const state=lsGet('gap_state',{});state[key]={...state[key],done:!state[key]?.done,lastRevised:Date.now()};
-  lsSet('gap_state',state);renderSmartGaps();renderFocusCard();updateMathsTopicsBar();
-}
-function setGapConfidence(key,level){
-  const state=lsGet('gap_state',{});const cur=state[key]?.confidence||0;
-  state[key]={...state[key],confidence:cur===level?0:level,lastRevised:Date.now()};
-  lsSet('gap_state',state);renderSmartGaps();renderFocusCard();
-}
+function toggleGapDone(key){const state=lsGet('gap_state',{});state[key]={...state[key],done:!state[key]?.done,lastRevised:Date.now()};lsSet('gap_state',state);renderSmartGaps();renderFocusCard();updateMathsTopicsBar();}
+function setGapConfidence(key,level){const state=lsGet('gap_state',{});const cur=state[key]?.confidence||0;state[key]={...state[key],confidence:cur===level?0:level,lastRevised:Date.now()};lsSet('gap_state',state);renderSmartGaps();renderFocusCard();}
 
 function renderSmartGaps(){
-  const state=lsGet('gap_state',{});
-  const subs=['maths','econ','cs'];
-  const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};
-  const subTitles={maths:'MATHS',econ:'ECONOMICS',cs:'COMPUTER SCIENCE'};
+  const state=lsGet('gap_state',{});const subs=['maths','econ','cs'];const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};const subTitles={maths:'MATHS',econ:'ECONOMICS',cs:'COMPUTER SCIENCE'};
   const cols=subs.map(sub=>{
     const gaps=PRIORITY_GAPS.filter(g=>g.sub===sub).sort((a,b)=>gapUrgencyScore(b,state)-gapUrgencyScore(a,state));
     const rows=gaps.map(g=>{
-      const s=state[g.key]||{};const conf=s.confidence||0;const done=s.done||false;
-      const prio=getGapPriority(g);const dotCls=prio==='hot'?'dot-hot':prio==='med'?'dot-med':'dot-low';
-      const dots=[1,2,3,4,5].map(n=>{
-        const active=n<=conf;const col=active?CONF_COLORS[conf]:'';const style=active?`background:${col};border-color:${col}`:'';
-        return`<div class="conf-dot" style="${style}" onclick="event.stopPropagation();setGapConfidence('${g.key}',${n})" title="${CONF_LABELS[n]}"></div>`;
-      }).join('');
+      const s=state[g.key]||{};const conf=s.confidence||0;const done=s.done||false;const prio=getGapPriority(g);const dotCls=prio==='hot'?'dot-hot':prio==='med'?'dot-med':'dot-low';
+      const dots=[1,2,3,4,5].map(n=>{const active=n<=conf;const col=active?CONF_COLORS[conf]:'';const style=active?`background:${col};border-color:${col}`:'';return`<div class="conf-dot" style="${style}" onclick="event.stopPropagation();setGapConfidence('${g.key}',${n})" title="${CONF_LABELS[n]}"></div>`;}).join('');
       return`<div class="gap-row${done?' gap-done':''}" onclick="toggleGapDone('${g.key}')"><div class="gap-dot ${dotCls}" onclick="cyclePriority('${g.key}',event)"></div><span class="gap-name">${g.name}</span><div class="gap-conf">${dots}</div></div>`;
     }).join('');
     return`<div><div class="gaps-col-title" style="color:${subCols[sub]}">${subTitles[sub]}</div>${rows}</div>`;
   }).join('');
-  const c=document.getElementById('gaps-container');
-  if(c)c.innerHTML=`<div class="gaps-grid">${cols}</div>`;
+  const c=document.getElementById('gaps-container');if(c)c.innerHTML=`<div class="gaps-grid">${cols}</div>`;
 }
 
 function updateMathsTopicsBar(){
-  const allDates=Object.keys(SESSIONS);let done=0,total=0;
-  allDates.forEach(dk=>{
+  // Count completed maths sessions across all non-archived dates
+  let done=0;const total=27;
+  Object.keys(SESSIONS).forEach(dk=>{
     const checked=lsGet('tasks_done_'+dk,[]);
     (SESSIONS[dk]||[]).forEach((s,i)=>{
-      if(s.sub==='maths'&&!s.label.includes('EXAM')){total++;if(checked.includes(i))done++;}
+      if(s.sub==='maths'&&!s.archived&&!s.label.includes('EXAM')&&checked.includes(i))done++;
     });
   });
-  total=27;// hardcoded total
   const pct=Math.round(done/total*100);
   const lbl=document.getElementById('maths-topics-lbl');const bar=document.getElementById('maths-topics-bar');
-  if(lbl)lbl.textContent=`${done} / ${total}`;if(bar)bar.style.width=Math.max(3,pct)+'%';
+  if(lbl)lbl.textContent=`${done} / ${total}`;if(bar)bar.style.width=Math.max(3,Math.min(100,pct))+'%';
 }
 
 function getMissedThisWeek(){
@@ -1029,7 +1149,7 @@ function getMissedThisWeek(){
     if(dk>=dateKey(t))break;
     const sessions=SESSIONS[dk]||[];const checked=lsGet('tasks_done_'+dk,[]);
     sessions.forEach((s,idx)=>{
-      if(s.sub==='college'||s.sub==='am'||s.sub==='nea')return;
+      if(s.archived||s.sub==='college'||s.sub==='am'||s.sub==='nea')return;
       if(!checked.includes(idx))missed.push({dateKey:dk,idx,sub:s.sub,label:s.label,dur:s.dur,dayLabel:d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})});
     });
   }
@@ -1041,48 +1161,28 @@ function renderMissedThisWeek(){
   const missed=getMissedThisWeek();const rescheduled=lsGet('rescheduled',[]);
   if(!missed.length){el.innerHTML='<div style="font-size:0.76rem;color:var(--muted2)">Nothing missed this week — nice work.</div>';return;}
   el.innerHTML=missed.map(m=>{
-    const tag=m.sub==='maths'?'badge-m':m.sub==='econ'?'badge-e':'badge-c';
-    const lab=m.sub==='maths'?'Maths':m.sub==='econ'?'Econ':'CS';
+    const tag=m.sub==='maths'?'badge-m':m.sub==='econ'?'badge-e':'badge-c';const lab=m.sub==='maths'?'Maths':m.sub==='econ'?'Econ':'CS';
     const rKey=`missed_${m.dateKey}_${m.idx}`;const r=rescheduled.find(x=>x.key===rKey);
     const actionBtns=r?`<span class="reschedule-btn rescheduled">→ ${r.label}</span><button class="unreschedule-btn" onclick="unrescheduleItem('${rKey}')">×</button>`:`<button class="reschedule-btn" onclick="rescheduleMissed('${m.dateKey}',${m.idx},'${m.label.replace(/'/g,"\\'")}','${m.sub}')">Reschedule →</button>`;
     return`<div class="missed-row"><span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span><span style="font-size:0.76rem;flex:1">${m.label}</span><span class="missed-when">${m.dayLabel}</span>${actionBtns}</div>`;
   }).join('');
 }
 
-function rescheduleMissed(dk,idx,label,sub){
-  const rescheduled=lsGet('rescheduled',[]);const rKey=`missed_${dk}_${idx}`;
-  if(rescheduled.find(r=>r.key===rKey))return;const slot=findNextFreeEvening();if(!slot)return;
-  rescheduled.push({key:rKey,name:label,sub,targetKey:slot.key,label:slot.label});lsSet('rescheduled',rescheduled);renderMissedThisWeek();
-}
-function findNextFreeEvening(){
-  const rescheduled=lsGet('rescheduled',[]);const t=today();
-  for(let i=0;i<=28;i++){
-    const d=new Date(t.getTime()+i*864e5);const key=dateKey(d);
-    const base=(SESSIONS[key]||[]).filter(s=>s.sub!=='college'&&s.sub!=='am');
-    const extra=rescheduled.filter(r=>r.targetKey===key);
-    if(base.length+extra.length<2)return{key,label:d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})};
-  }
-  return null;
-}
+function rescheduleMissed(dk,idx,label,sub){const rescheduled=lsGet('rescheduled',[]);const rKey=`missed_${dk}_${idx}`;if(rescheduled.find(r=>r.key===rKey))return;const slot=findNextFreeEvening();if(!slot)return;rescheduled.push({key:rKey,name:label,sub,targetKey:slot.key,label:slot.label});lsSet('rescheduled',rescheduled);renderMissedThisWeek();}
+function findNextFreeEvening(){const rescheduled=lsGet('rescheduled',[]);const t=today();for(let i=0;i<=28;i++){const d=new Date(t.getTime()+i*864e5);const key=dateKey(d);const base=(SESSIONS[key]||[]).filter(s=>!s.archived&&s.sub!=='college'&&s.sub!=='am');const extra=rescheduled.filter(r=>r.targetKey===key);if(base.length+extra.length<2)return{key,label:d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})};}return null;}
 function unrescheduleItem(itemKey){lsSet('rescheduled',lsGet('rescheduled',[]).filter(r=>r.key!==itemKey));renderMissedThisWeek();}
 
 function getTodayBonusItem(){
   const dismissed=lsGet('dismissed_bonuses',[]);const todayKey=dateKey(today());const state=lsGet('gap_state',{});
-  const sorted=PRIORITY_GAPS.filter(g=>{
-    if(dismissed.includes(g.key+'_'+todayKey))return false;
-    if(state[g.key]?.done)return false;
-    if((state[g.key]?.confidence||0)>=4)return false;
-    return true;
-  }).sort((a,b)=>gapUrgencyScore(b,lsGet('gap_state',{}))-gapUrgencyScore(a,lsGet('gap_state',{})));
-  return sorted[0]||null;
+  return PRIORITY_GAPS.filter(g=>{if(dismissed.includes(g.key+'_'+todayKey))return false;if(state[g.key]?.done)return false;if((state[g.key]?.confidence||0)>=4)return false;return true;}).sort((a,b)=>gapUrgencyScore(b,state)-gapUrgencyScore(a,state))[0]||null;
 }
-function dismissBonus(key){const dismissed=lsGet('dismissed_bonuses',[]);dismissed.push(key+'_'+dateKey(today()));lsSet('dismissed_bonuses',dismissed);renderBonusSection();}
+function dismissBonus(key){const d=lsGet('dismissed_bonuses',[]);d.push(key+'_'+dateKey(today()));lsSet('dismissed_bonuses',d);renderBonusSection();}
 function renderBonusSection(){
   const el=document.getElementById('bonus-section');if(!el)return;
   const item=getTodayBonusItem();if(!item){el.innerHTML='';return;}
-  const tag=item.sub==='maths'?'badge-m':item.sub==='econ'?'badge-e':'badge-c';
-  const lab=item.sub==='maths'?'Maths':item.sub==='econ'?'Econ':'CS';
-  el.innerHTML=`<div class="bonus-section"><div class="bonus-lbl">Bonus — only if main tasks done</div><div class="bonus-row"><span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span><span style="font-size:0.78rem;flex:1;color:var(--muted2)">${item.name}</span><button class="bonus-dismiss-btn" onclick="dismissBonus('${item.key}')">Skip today</button></div></div>`;
+  const tag=item.sub==='maths'?'badge-m':item.sub==='econ'?'badge-e':'badge-c';const lab=item.sub==='maths'?'Maths':item.sub==='econ'?'Econ':'CS';
+  const packId=getPackIdForLabel(item.name);const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')">▶ pack</button>`:'';
+  el.innerHTML=`<div class="bonus-section"><div class="bonus-lbl">Bonus — only if main tasks done</div><div class="bonus-row"><span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span><span style="font-size:0.78rem;flex:1;color:var(--muted2)">${item.name}</span>${packBtn}<button class="bonus-dismiss-btn" onclick="dismissBonus('${item.key}')">Skip today</button></div></div>`;
 }
 
 function getLatestMock(sub){const h=loadMockHistory();const entries=h[sub]||[];if(!entries.length)return null;return entries[entries.length-1].pct;}
@@ -1090,8 +1190,7 @@ function renderGradeBounds(){
   const subs=['maths','econ','cs'];const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};const bounds=lsGet('grade_bounds',{});
   subs.forEach(sub=>{
     const el=document.getElementById('gb-'+sub);if(!el)return;
-    const b=bounds[sub]||{};const latestMock=getLatestMock(sub);
-    const targetPct=b.targetPct??null;const targetLabel=b.targetLabel||(sub==='cs'?'B':'A');
+    const b=bounds[sub]||{};const latestMock=getLatestMock(sub);const targetPct=b.targetPct??null;const targetLabel=b.targetLabel||(sub==='cs'?'B':'A');
     const targetHTML=targetPct!==null?`<div class="gb-val" style="color:${subCols[sub]}">${targetLabel} · ${targetPct}%</div>`:`<div class="gb-val" style="color:var(--muted)">—</div>`;
     const mockHTML=latestMock!==null?`<div class="gb-val" style="color:${latestMock>=(targetPct||999)?'var(--maths)':latestMock>=(targetPct||999)*0.75?'var(--amber)':'var(--red)'}">${latestMock}%</div>`:`<div class="gb-val" style="color:var(--muted)">—</div>`;
     let gapHTML=`<div class="gb-val" style="color:var(--muted)">—</div>`;
@@ -1100,79 +1199,54 @@ function renderGradeBounds(){
   });
 }
 function editGradeBounds(sub){
-  const bounds=lsGet('grade_bounds',{});const b=bounds[sub]||{};const subName={maths:'Maths',econ:'Economics',cs:'CS'}[sub];
-  const gradeDefault=sub==='cs'?'B':'A';const gradeLabel=prompt(`${subName} — target grade:`,b.targetLabel||gradeDefault);if(gradeLabel===null)return;
+  const bounds=lsGet('grade_bounds',{});const b=bounds[sub]||{};const subName={maths:'Maths',econ:'Economics',cs:'CS'}[sub];const gradeDefault=sub==='cs'?'B':'A';
+  const gradeLabel=prompt(`${subName} — target grade:`,b.targetLabel||gradeDefault);if(gradeLabel===null)return;
   const pctRaw=prompt(`${subName} — approx boundary % for ${gradeLabel}:`,b.targetPct??'');if(pctRaw===null)return;
   if(!bounds[sub])bounds[sub]={};bounds[sub].targetLabel=gradeLabel.trim().toUpperCase();
   const pct=parseInt(pctRaw);bounds[sub].targetPct=isNaN(pct)?null:Math.max(0,Math.min(100,pct));
   lsSet('grade_bounds',bounds);renderGradeBounds();
 }
 
-const SESSION_GAP_MAP={
-  'trig integration':'m_trig_int','integration by parts':'m_ibp','partial fractions':'m_pf',
-  'integration by partial':'m_pf_int','substitution':'m_sub','differential equation':'m_de',
-  'rational inequalit':'m_ineq','binomial expansion':'m_binom','r form':'m_rform',
-  'trig solving':'m_trig_sol','trig identit':'m_rform','trig equations':'m_trig_sol',
-  'exponential':'m_logs','logarithm':'m_logs','sequences':'m_seq','series':'m_seq',
-  'numerical method':'m_num','implicit diff':'m_impl','parametric stationary':'m_para_sp',
-  'vectors':'m_vec','proof':'m_proof','kinematics':'m_num','forces':'m_vec',
-  'scheduling':'c_sched','lmc':'c_lmc','assembly':'c_lmc','boolean algebra':'c_bool',
-  'normalisation':'c_norm','stack':'c_pp','queue':'c_pp','pseudocode':'c_pp',
-  'recursion':'c_recur','isr':'c_isr','interrupt':'c_isr','floating point':'c_fp',
-  'tcp':'c_tcp','networking':'c_tcp','compression':'c_comp','sql':'c_sql',
-  'bfs':'c_bfs','dfs':'c_bfs','karnaugh':'c_kmap',
-  'diagrams':'e_diag','diagram':'e_diag','efficiency':'e_eff','perfect competition':'e_pc',
-  'kinked demand':'e_kink','game theory':'e_game','nash':'e_game','multiplier':'e_mult',
-  'macro':'e_macro','ad/as':'e_macro','fiscal':'e_macro','monetary':'e_macro',
-  'supply-side':'e_ss','mops':'e_mops','competition theme':'e_comp','govt intervention':'e_govt',
-};
-function getGapKeyForSession(label){
-  const l=label.toLowerCase();
-  for(const[kw,gapKey]of Object.entries(SESSION_GAP_MAP)){if(l.includes(kw))return gapKey;}
-  return null;
-}
+const SESSION_GAP_MAP={'trig integration':'m_trig_int','integration by parts':'m_ibp','partial fractions':'m_pf','integration by partial':'m_pf_int','substitution':'m_sub','differential equation':'m_de','rational inequalit':'m_ineq','binomial expansion':'m_binom','r form':'m_rform','trig solving':'m_trig_sol','trig identit':'m_rform','trig equations':'m_trig_sol','exponential':'m_logs','logarithm':'m_logs','sequences':'m_seq','series':'m_seq','numerical method':'m_num','implicit diff':'m_impl','parametric stationary':'m_para_sp','vectors':'m_vec','proof':'m_proof','scheduling':'c_sched','lmc':'c_lmc','assembly':'c_lmc','boolean algebra':'c_bool','normalisation':'c_norm','stack':'c_pp','queue':'c_pp','pseudocode':'c_pp','recursion':'c_recur','isr':'c_isr','interrupt':'c_isr','floating point':'c_fp','tcp':'c_tcp','networking':'c_tcp','compression':'c_comp','sql':'c_sql','bfs':'c_bfs','dfs':'c_bfs','karnaugh':'c_kmap','diagram':'e_diag','efficiency':'e_eff','perfect competition':'e_pc','kinked demand':'e_kink','game theory':'e_game','nash':'e_game','multiplier':'e_mult','macro':'e_macro','ad/as':'e_macro','fiscal':'e_macro','monetary':'e_macro','supply-side':'e_ss','mops':'e_mops','competition theme':'e_comp','govt intervention':'e_govt'};
+function getGapKeyForSession(label){const l=label.toLowerCase();for(const[kw,gapKey]of Object.entries(SESSION_GAP_MAP)){if(l.includes(kw))return gapKey;}return null;}
 
 function getTodayChecked(dk){return lsGet('tasks_done_'+dk,[]);}
-function setTaskChecked(dk,idx,checked){
-  const done=getTodayChecked(dk);
-  if(checked&&!done.includes(idx))done.push(idx);
-  if(!checked){const p=done.indexOf(idx);if(p!==-1)done.splice(p,1);}
-  lsSet('tasks_done_'+dk,done);
-}
+function setTaskChecked(dk,idx,checked){const done=getTodayChecked(dk);if(checked&&!done.includes(idx))done.push(idx);if(!checked){const p=done.indexOf(idx);if(p!==-1)done.splice(p,1);}lsSet('tasks_done_'+dk,done);}
 
 function logConfidenceForTask(gapKey,level,taskIdx,dk){
-  if(!gapKey)return;
-  const state=lsGet('gap_state',{});state[gapKey]={...state[gapKey],confidence:level,lastRevised:Date.now()};lsSet('gap_state',state);
+  if(!gapKey)return;const state=lsGet('gap_state',{});state[gapKey]={...state[gapKey],confidence:level,lastRevised:Date.now()};lsSet('gap_state',state);
   const dayLog=lsGet('daily_log_'+dk,[]);const g=PRIORITY_GAPS.find(x=>x.key===gapKey);
   if(g){const entry={key:gapKey,name:g.name,sub:g.sub,conf:level,time:Date.now()};const idx=dayLog.findIndex(x=>x.key===gapKey);if(idx>=0)dayLog[idx]=entry;else dayLog.push(entry);lsSet('daily_log_'+dk,dayLog);}
   renderSmartGaps();renderFocusCard();updateMathsTopicsBar();renderTodayLog();
-  const confRow=document.getElementById('conf-row-'+taskIdx);
-  if(confRow)confRow.querySelectorAll('.task-conf-btn').forEach((btn,i)=>{btn.className='task-conf-btn';if(i+1===level)btn.classList.add('act-'+(i+1));});
+  const confRow=document.getElementById('conf-row-'+taskIdx);if(confRow)confRow.querySelectorAll('.task-conf-btn').forEach((btn,i)=>{btn.className='task-conf-btn';if(i+1===level)btn.classList.add('act-'+(i+1));});
 }
 
 function renderToday(){
-  const t=today();const key=dateKey(t);const sessions=SESSIONS[key]||[];
+  const t=today();const key=dateKey(t);const sessions=(SESSIONS[key]||[]).filter(s=>!s.archived);
   document.getElementById('today-title').textContent=`${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]}`;
   const container=document.getElementById('today-tasks');container.innerHTML='';
   if(!sessions.length){container.innerHTML='<div style="font-size:0.82rem;color:var(--muted2);padding:14px 0">Nothing scheduled — rest day.</div>';renderBonusSection();return;}
   const checkedIdxs=getTodayChecked(key);
   sessions.forEach((s,i)=>{
-    const isTimetable=s.sub==='college'||s.sub==='am';
-    const badgeCls=SUB_BADGE_CLASS[s.sub]||'badge-college';
+    // Find original index (before archive filter) for persistence
+    const origIdx=(SESSIONS[key]||[]).indexOf(s);
+    const isTimetable=s.sub==='college'||s.sub==='am';const badgeCls=SUB_BADGE_CLASS[s.sub]||'badge-college';
     const item=document.createElement('div');item.className='task-item';
     if(isTimetable){
       item.style.opacity='0.7';
-      item.innerHTML=`<div class="task-body"><div class="task-top"><span class="sub-badge ${badgeCls}">${s.sub==='am'?'AM':'College'}</span></div><div class="task-name">${s.label}</div>${s.detail?`<div class="task-detail">${s.detail}</div>`:''}</div>${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
+      item.innerHTML=`<div class="task-body"><div class="task-top"><span class="sub-badge ${badgeCls}">College</span></div><div class="task-name">${s.label}</div>${s.detail?`<div class="task-detail">${s.detail}</div>`:''}</div>`;
     }else{
-      item.classList.add('clickable');const isChecked=checkedIdxs.includes(i);
-      const gapKey=getGapKeyForSession(s.label);const state=lsGet('gap_state',{});const currentConf=gapKey?(state[gapKey]?.confidence||0):0;
-      const confBtns=gapKey?`<div class="task-conf-row" id="conf-row-${i}"><span class="task-conf-lbl">Confidence</span>${[1,2,3,4,5].map(n=>`<button class="task-conf-btn${currentConf===n?' act-'+n:''}" onclick="event.stopPropagation();logConfidenceForTask('${gapKey}',${n},${i},'${key}')" title="${CONF_LABELS[n]}">${n}</button>`).join('')}<span style="font-family:var(--mono);font-size:0.5rem;color:${currentConf>0?CONF_COLORS[currentConf]:'var(--muted)'};margin-left:4px">${currentConf>0?CONF_LABELS[currentConf]:''}</span></div>`:'';
-      item.innerHTML=`<div class="task-check"><input type="checkbox" id="chk${i}"${isChecked?' checked':''}></div><div class="task-body"><div class="task-top"><span class="sub-badge ${badgeCls}">${s.sub||'—'}</span>${s.hw?'<span class="sub-badge badge-hw">HW DUE</span>':''}</div><div class="task-name" id="lbl${i}"${isChecked?' class="done"':''}>${s.label}</div>${s.detail?`<div class="task-detail">${s.detail}</div>`:''}${confBtns}</div>${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
+      item.classList.add('clickable');const isChecked=checkedIdxs.includes(origIdx);
+      const gapKey=getGapKeyForSession(s.label);const packId=getPackIdForLabel(s.label);
+      const state=lsGet('gap_state',{});const currentConf=gapKey?(state[gapKey]?.confidence||0):0;
+      if(packId)item.classList.add('has-pack');
+      const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')">▶ pack</button>`:'';
+      const confBtns=gapKey?`<div class="task-actions" id="conf-row-${origIdx}"><span class="task-conf-lbl">Conf:</span>${[1,2,3,4,5].map(n=>`<button class="task-conf-btn${currentConf===n?' act-'+n:''}" onclick="event.stopPropagation();logConfidenceForTask('${gapKey}',${n},${origIdx},'${key}')" title="${CONF_LABELS[n]}">${n}</button>`).join('')}<span style="font-family:var(--mono);font-size:0.5rem;color:${currentConf>0?CONF_COLORS[currentConf]:'var(--muted)'};margin-left:4px">${currentConf>0?CONF_LABELS[currentConf]:''}</span>${packBtn}</div>`:(packId?`<div class="task-actions">${packBtn}</div>`:'');
+      item.innerHTML=`<div class="task-check"><input type="checkbox" id="chk${origIdx}"${isChecked?' checked':''}></div><div class="task-body"><div class="task-top"><span class="sub-badge ${badgeCls}">${s.sub||'—'}</span>${s.hw?'<span class="sub-badge badge-hw">HW DUE</span>':''}</div><div class="task-name" id="lbl${origIdx}"${isChecked?' class="done"':''}>${s.label}</div>${s.detail?`<div class="task-detail">${s.detail}</div>`:''}${confBtns}</div>${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
       if(isChecked)item.classList.add('done-item');
       item.querySelector('input').addEventListener('change',function(){
-        item.classList.toggle('done-item',this.checked);
-        document.getElementById('lbl'+i).classList.toggle('done',this.checked);
-        setTaskChecked(key,i,this.checked);
+        item.classList.toggle('done-item',this.checked);document.getElementById('lbl'+origIdx).classList.toggle('done',this.checked);
+        setTaskChecked(key,origIdx,this.checked);
         const nowDone=getTodayChecked(key);if(this.checked&&nowDone.length===1)incrementSessions();
         renderMissedThisWeek();updateMathsTopicsBar();
       });
@@ -1183,33 +1257,29 @@ function renderToday(){
 }
 
 function renderTomorrow(){
-  const t=today();const tmr=new Date(t.getTime()+864e5);const key=dateKey(tmr);const sessions=SESSIONS[key]||[];
+  const t=today();const tmr=new Date(t.getTime()+864e5);const key=dateKey(tmr);const sessions=(SESSIONS[key]||[]).filter(s=>!s.archived);
   document.getElementById('tmr-title').textContent=`Tomorrow — ${DAYS[tmr.getDay()].slice(0,3)} ${tmr.getDate()} ${MONTHS[tmr.getMonth()]}`;
   const container=document.getElementById('tmr-tasks');container.innerHTML='';
   if(!sessions.length){container.innerHTML='<div style="font-size:0.78rem;color:var(--muted2)">Nothing scheduled.</div>';return;}
   sessions.forEach(s=>{
     const col=SUB_COL[s.sub]||'var(--muted)';const row=document.createElement('div');row.className='tmr-row';
-    row.innerHTML=`<div class="tmr-left-dot" style="background:${col}"></div><div class="tmr-body"><div class="tmr-name">${s.hw?'<span style="color:var(--red);font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>${s.detail?`<div class="tmr-detail">${s.detail}</div>`:''}</div>`;
+    const packId=getPackIdForLabel(s.label);const packBtn=packId?` <button class="open-pack-btn" onclick="openPackModal('${packId}')" style="margin-left:4px">▶</button>`:'';
+    row.innerHTML=`<div class="tmr-left-dot" style="background:${col}"></div><div class="tmr-body"><div class="tmr-name">${s.hw?'<span style="color:var(--red);font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}${packBtn}</div>${s.detail?`<div class="tmr-detail">${s.detail}</div>`:''}</div>`;
     container.appendChild(row);
   });
 }
 
 function renderWeek(){
-  const t=today();const dow=t.getDay();let monday=new Date(t);
-  if(dow===0)monday.setDate(t.getDate()-6);else monday.setDate(t.getDate()-(dow-1));
-  const opts={day:'numeric',month:'short'};
-  document.getElementById('week-title').textContent=`Week beginning ${monday.toLocaleDateString('en-GB',opts)}`;
-  const grid=document.getElementById('week-grid');grid.innerHTML='';
-  const todayKey=dateKey(t);const dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const t=today();const dow=t.getDay();let monday=new Date(t);if(dow===0)monday.setDate(t.getDate()-6);else monday.setDate(t.getDate()-(dow-1));
+  const opts={day:'numeric',month:'short'};document.getElementById('week-title').textContent=`Week beginning ${monday.toLocaleDateString('en-GB',opts)}`;
+  const grid=document.getElementById('week-grid');grid.innerHTML='';const todayKey=dateKey(t);const dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   for(let i=0;i<7;i++){
     const day=new Date(monday);day.setDate(monday.getDate()+i);const key=dateKey(day);
-    const sessions=SESSIONS[key]||[];const isToday=key===todayKey;const isWeekend=(i===5||i===6);const examLabel=EXAM_DAYS[key];
-    const checked=lsGet('tasks_done_'+key,[]);
-    const col=document.createElement('div');
-    col.className='wday'+(isToday?' today-col':'')+(isWeekend&&!isToday?' weekend-col':'')+(examLabel?' deadline':'');
+    const sessions=(SESSIONS[key]||[]).filter(s=>!s.archived);const isToday=key===todayKey;const isWeekend=(i===5||i===6);const examLabel=EXAM_DAYS[key];const checked=lsGet('tasks_done_'+key,[]);
+    const col=document.createElement('div');col.className='wday'+(isToday?' today-col':'')+(isWeekend&&!isToday?' weekend-col':'')+(examLabel?' deadline':'');
     const headStr=examLabel?`${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)} — ${examLabel}`:`${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)}`;
     const tasksHtml=sessions.length?sessions.map((s,idx)=>{
-      const c2=SUB_COL[s.sub]||'var(--muted)';const cls=s.sub==='college'?' college-task':s.hw?' hw-task':'';const isDone=checked.includes(idx);
+      const origIdx=(SESSIONS[key]||[]).indexOf(s);const c2=SUB_COL[s.sub]||'var(--muted)';const cls=s.sub==='college'?' college-task':s.hw?' hw-task':'';const isDone=checked.includes(origIdx);
       return`<div class="wday-task${cls}${isDone?' done-task':''}"><div class="wday-task-dot" style="background:${c2}"></div><span>${s.hw?'<b style="color:var(--red)">HW</b> · ':''}${isDone?'✓ ':''}${s.label}</span></div>`;
     }).join(''):examLabel?'<div style="color:var(--red);font-size:0.7rem;font-weight:700">EXAM DAY</div>':'<div style="color:var(--muted);font-size:0.7rem">—</div>';
     col.innerHTML=`<div class="wday-head">${headStr}</div>${tasksHtml}`;grid.appendChild(col);
@@ -1221,23 +1291,30 @@ function renderAllSessions(){
   const t=today();const todayKey=dateKey(t);const dow=t.getDay();let monday=new Date(t);
   if(dow===0)monday.setDate(t.getDate()-6);else monday.setDate(t.getDate()-(dow-1));
   const weekStartKey=dateKey(monday);
-  const allDates=new Set([...Object.keys(SESSIONS).filter(k=>k>=weekStartKey),...Object.keys(EXAM_DAYS).filter(k=>k>=weekStartKey)]);
+  // Build date set: only non-archived session dates + exam days
+  const allDates=new Set([
+    ...Object.keys(SESSIONS).filter(k=>{
+      const d=SESSIONS[k];const hasVisible=d.some(s=>!s.archived);
+      if(!hasVisible)return false;
+      if(showPastSessions)return k>=weekStartKey;
+      return k>=todayKey;
+    }),
+    ...Object.keys(EXAM_DAYS).filter(k=>showPastSessions?k>=weekStartKey:k>=todayKey),
+  ]);
   const sortedDates=Array.from(allDates).sort();
   let html='';
   for(const dk of sortedDates){
-    const sessions=(SESSIONS[dk]||[]).filter(s=>currentFilter==='all'||s.sub===currentFilter);
+    const allSess=SESSIONS[dk]||[];const sessions=allSess.filter(s=>!s.archived&&(currentFilter==='all'||s.sub===currentFilter));
     const examLabel=EXAM_DAYS[dk];if(!sessions.length&&!examLabel)continue;
-    const d=toDate(dk);const isToday=dk===todayKey;
-    const daysFromNow=Math.ceil((toDate(dk)-t)/864e5);
-    const relLabel=isToday?'today':daysFromNow===1?'tomorrow':daysFromNow===-1?'yesterday':daysFromNow<0?`${Math.abs(daysFromNow)} days ago`:`in ${daysFromNow} days`;
-    const dateFormatted=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
-    const checked=lsGet('tasks_done_'+dk,[]);
+    const d=toDate(dk);const isToday=dk===todayKey;const daysFromNow=Math.ceil((toDate(dk)-t)/864e5);
+    const relLabel=isToday?'today':daysFromNow===1?'tomorrow':daysFromNow===-1?'yesterday':daysFromNow<0?`${Math.abs(daysFromNow)}d ago`:`in ${daysFromNow}d`;
+    const dateFormatted=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});const checked=lsGet('tasks_done_'+dk,[]);
     html+=`<div class="all-sessions-day"><div class="all-sessions-date-hdr"><span class="all-sessions-date-lbl">${dateFormatted}</span><span class="all-sessions-date-rel">${relLabel}</span>${examLabel?`<span class="all-sessions-date-exam">📝 ${examLabel}</span>`:''}</div>`;
     if(examLabel&&!sessions.length)html+=`<div class="all-sess-row${isToday?' is-today':''}"><div class="all-sess-body"><div class="all-sess-name" style="color:var(--red)">EXAM DAY — ${examLabel}</div></div></div>`;
-    for(let si=0;si<sessions.length;si++){
-      const s=sessions[si];const origIdx=(SESSIONS[dk]||[]).indexOf(s);const isDone=checked.includes(origIdx);
-      const badgeCls=SUB_BADGE_CLASS[s.sub]||'badge-college';
-      html+=`<div class="all-sess-row${isToday?' is-today':''}${isDone?' is-done':''}"><span class="sub-badge ${badgeCls}" style="flex-shrink:0;margin-top:2px">${s.sub||'—'}</span><div class="all-sess-body"><div class="all-sess-name${isDone?' done-name':''}">${isDone?'✓ ':''}${s.hw?'<span style="color:var(--red);font-size:0.72rem;font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>${s.detail?`<div class="all-sess-detail">${s.detail}</div>`:''}</div></div>`;
+    for(const s of sessions){
+      const origIdx=allSess.indexOf(s);const isDone=checked.includes(origIdx);const badgeCls=SUB_BADGE_CLASS[s.sub]||'badge-college';
+      const packId=getPackIdForLabel(s.label);const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')" style="margin-left:auto;flex-shrink:0">▶ pack</button>`:'';
+      html+=`<div class="all-sess-row${isToday?' is-today':''}${isDone?' is-done':''}"><span class="sub-badge ${badgeCls}" style="flex-shrink:0;margin-top:2px">${s.sub||'—'}</span><div class="all-sess-body"><div class="all-sess-name${isDone?' done-name':''}">${isDone?'✓ ':''}${s.hw?'<span style="color:var(--red);font-size:0.72rem;font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>${s.detail?`<div class="all-sess-detail">${s.detail}</div>`:''}</div>${packBtn}</div>`;
     }
     html+=`</div>`;
   }
@@ -1249,20 +1326,14 @@ let chartInstances={};
 function loadMockHistory(){const stored=lsGet('mock_history',null);return stored||JSON.parse(JSON.stringify(MOCK_DEFAULTS));}
 function saveMockHistory(h){lsSet('mock_history',h);}
 function promptAddMock(sub){
-  const subName={maths:'Maths',econ:'Economics',cs:'CS'}[sub];
-  const raw=prompt(`Add ${subName} mock score (e.g. "45/100" or "45%"):`);if(!raw)return;
-  const match=raw.match(/(\d+)\s*[\/of]\s*(\d+)/);
-  let pct;if(match){pct=Math.round(parseInt(match[1])/parseInt(match[2])*100);}else{pct=parseInt(raw.replace('%','').trim());}
-  if(isNaN(pct))return;pct=Math.max(0,Math.min(100,pct));
-  const h=loadMockHistory();h[sub]=h[sub]||[];
-  const monthLabel=new Date().toLocaleDateString('en-GB',{month:'short'});
-  h[sub].push({label:monthLabel,pct});saveMockHistory(h);renderCharts();renderGradeBounds();
+  const subName={maths:'Maths',econ:'Economics',cs:'CS'}[sub];const raw=prompt(`Add ${subName} mock score (e.g. "45/100" or "45%"):`);if(!raw)return;
+  const match=raw.match(/(\d+)\s*[\/of]\s*(\d+)/);let pct;if(match){pct=Math.round(parseInt(match[1])/parseInt(match[2])*100);}else{pct=parseInt(raw.replace('%','').trim());}
+  if(isNaN(pct))return;pct=Math.max(0,Math.min(100,pct));const h=loadMockHistory();h[sub]=h[sub]||[];h[sub].push({label:new Date().toLocaleDateString('en-GB',{month:'short'}),pct});saveMockHistory(h);renderCharts();renderGradeBounds();
 }
 function renderCharts(){
   const h=loadMockHistory();const bounds=lsGet('grade_bounds',{});
   [{sub:'maths',id:'chart-maths',color:'#4ade80'},{sub:'econ',id:'chart-econ',color:'#60a5fa'},{sub:'cs',id:'chart-cs',color:'#fbbf24'}].forEach(c=>{
-    const canvas=document.getElementById(c.id);if(!canvas)return;
-    if(chartInstances[c.sub])chartInstances[c.sub].destroy();
+    const canvas=document.getElementById(c.id);if(!canvas)return;if(chartInstances[c.sub])chartInstances[c.sub].destroy();
     const data=h[c.sub]||[];const target=(bounds[c.sub]?.targetPct)||null;
     const datasets=[{data:data.map(d=>d.pct),borderColor:c.color,backgroundColor:c.color+'18',borderWidth:2,pointRadius:4,pointBackgroundColor:c.color,tension:0.3,fill:true}];
     if(target!==null)datasets.push({data:data.map(()=>target),borderColor:'rgba(255,255,255,0.15)',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false});
@@ -1271,11 +1342,9 @@ function renderCharts(){
 }
 
 function renderStreak(){
-  const grid=document.getElementById('streak-grid');const labels=document.getElementById('streak-labels');const stat=document.getElementById('streak-stat');
-  if(!grid)return;
+  const grid=document.getElementById('streak-grid');const labels=document.getElementById('streak-labels');const stat=document.getElementById('streak-stat');if(!grid)return;
   const t=today();const todayStr=dateKey(t);const cells=[];for(let i=27;i>=0;i--){const d=new Date(t.getTime()-i*864e5);cells.push(d);}
-  let streakCount=0;
-  for(let i=cells.length-1;i>=0;i--){const n=lsGet('sess_'+dateKey(cells[i]),0);if(n>0)streakCount++;else if(dateKey(cells[i])!==todayStr)break;else break;}
+  let streakCount=0;for(let i=cells.length-1;i>=0;i--){const n=lsGet('sess_'+dateKey(cells[i]),0);if(n>0)streakCount++;else if(dateKey(cells[i])!==todayStr)break;else break;}
   grid.innerHTML='';labels.innerHTML='';
   cells.forEach((d,idx)=>{
     const key=dateKey(d);const n=lsGet('sess_'+key,0);const isToday=key===todayStr;
@@ -1287,15 +1356,11 @@ function renderStreak(){
     cell.title=`${d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}: ${n} session${n!==1?'s':''}`;
     grid.appendChild(cell);
     const lbl=document.createElement('div');lbl.className='streak-day-lbl';const dayNum=d.getDate();
-    if(isToday){lbl.textContent='today';lbl.style.color='var(--amber)';}
-    else if(dayNum%7===0||idx===0){lbl.textContent=d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
+    if(isToday){lbl.textContent='today';lbl.style.color='var(--amber)';}else if(dayNum%7===0||idx===0){lbl.textContent=d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});}
     labels.appendChild(lbl);
   });
-  const totalToday=lsGet('sess_'+todayStr,0);
-  const streakStr=streakCount>0?`★ ${streakCount}-day streak`:'';
-  const todayStr2=totalToday>0?`${totalToday} session${totalToday!==1?'s':''} today`:'No sessions yet today';
-  stat.textContent=[streakStr,todayStr2].filter(Boolean).join(' · ');
-  stat.style.color=streakCount>=7?'var(--maths)':streakCount>=3?'var(--amber)':'var(--muted2)';
+  const totalToday=lsGet('sess_'+todayStr,0);const streakStr=streakCount>0?`★ ${streakCount}-day streak`:'';const todayStr2=totalToday>0?`${totalToday} session${totalToday!==1?'s':''} today`:'No sessions yet today';
+  stat.textContent=[streakStr,todayStr2].filter(Boolean).join(' · ');stat.style.color=streakCount>=7?'var(--maths)':streakCount>=3?'var(--amber)':'var(--muted2)';
 }
 
 let TIMER_TOTAL=3600;let timerSecs=TIMER_TOTAL;let timerRunning=false;let timerInterval=null;
@@ -1309,11 +1374,9 @@ function updateTimerDurationBtns(){
 }
 function updateTimerUI(){
   const m=Math.floor(timerSecs/60);const s=timerSecs%60;const isReset=!timerRunning&&timerSecs===TIMER_TOTAL;
-  document.getElementById('timer-time').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  document.getElementById('timer-lbl').textContent=timerRunning?'RUNNING':isReset?'START':'PAUSED';
+  document.getElementById('timer-time').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;document.getElementById('timer-lbl').textContent=timerRunning?'RUNNING':isReset?'START':'PAUSED';
   const n=sessionsToday();document.getElementById('timer-sess').textContent=n>0?`${n} session${n!==1?'s':''} today`:'';
-  const btn=document.getElementById('timer-btn');
-  btn.className='timer-btn'+(timerRunning?' running':'')+((!timerRunning&&timerSecs>0&&timerSecs<300)?' urgent':'');
+  const btn=document.getElementById('timer-btn');btn.className='timer-btn'+(timerRunning?' running':'')+((!timerRunning&&timerSecs>0&&timerSecs<300)?' urgent':'');
   updateTimerDurationBtns();
 }
 function toggleTimer(){
@@ -1326,10 +1389,8 @@ function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerSecs=
 let slogTopics=new Set();let slogConf=0;let slogFromTimer=false;
 function showSessionLog(fromTimer){
   slogFromTimer=!!fromTimer;slogTopics=new Set();slogConf=0;
-  const subText=document.getElementById('slog-sub-text');
-  if(subText)subText.textContent=fromTimer?'Session complete. What did you cover?':'What did you study?';
-  const sessRow=document.getElementById('slog-sess-row');
-  if(sessRow){sessRow.style.display=fromTimer?'none':'flex';const chk=document.getElementById('slog-count-sess');if(chk)chk.checked=false;}
+  const subText=document.getElementById('slog-sub-text');if(subText)subText.textContent=fromTimer?'Session complete. What did you cover?':'What did you study?';
+  const sessRow=document.getElementById('slog-sess-row');if(sessRow){sessRow.style.display=fromTimer?'none':'flex';const chk=document.getElementById('slog-count-sess');if(chk)chk.checked=false;}
   renderSlogChips();renderSlogConf();document.getElementById('slog-overlay').classList.add('open');
 }
 function closeSessionLog(){document.getElementById('slog-overlay').classList.remove('open');}
@@ -1338,8 +1399,7 @@ function renderSlogChips(){
   const wrap=document.getElementById('slog-chips-wrap');if(!wrap)return;
   const subOrder=['maths','econ','cs'];const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};const subLabel={maths:'Maths',econ:'Econ',cs:'CS'};
   wrap.innerHTML=subOrder.map(sub=>{
-    const gaps=PRIORITY_GAPS.filter(g=>g.sub===sub);
-    const chips=gaps.map(g=>{const sel=slogTopics.has(g.key);return`<span class="slog-chip${sel?' sel':''}" onclick="toggleSlogTopic('${g.key}')">${g.name}</span>`;}).join('');
+    const gaps=PRIORITY_GAPS.filter(g=>g.sub===sub);const chips=gaps.map(g=>{const sel=slogTopics.has(g.key);return`<span class="slog-chip${sel?' sel':''}" onclick="toggleSlogTopic('${g.key}')">${g.name}</span>`;}).join('');
     return`<div style="margin-bottom:6px"><div class="slog-sub-lbl" style="color:${subCols[sub]}">${subLabel[sub]}</div><div class="slog-chips">${chips}</div></div>`;
   }).join('');
 }
@@ -1350,39 +1410,28 @@ function submitSessionLog(){
     const state=lsGet('gap_state',{});const todayKey=dateKey(today());const dayLog=lsGet('daily_log_'+todayKey,[]);
     slogTopics.forEach(key=>{
       state[key]={...state[key],lastRevised:Date.now()};if(slogConf>0)state[key].confidence=slogConf;
-      const g=PRIORITY_GAPS.find(x=>x.key===key);
-      if(g){const idx=dayLog.findIndex(x=>x.key===key);const entry={key,name:g.name,sub:g.sub,conf:slogConf,time:Date.now()};if(idx>=0)dayLog[idx]=entry;else dayLog.push(entry);}
+      const g=PRIORITY_GAPS.find(x=>x.key===key);if(g){const idx=dayLog.findIndex(x=>x.key===key);const entry={key,name:g.name,sub:g.sub,conf:slogConf,time:Date.now()};if(idx>=0)dayLog[idx]=entry;else dayLog.push(entry);}
     });
-    lsSet('gap_state',state);lsSet('daily_log_'+todayKey,dayLog);
-    renderSmartGaps();renderFocusCard();updateMathsTopicsBar();renderTodayLog();
+    lsSet('gap_state',state);lsSet('daily_log_'+todayKey,dayLog);renderSmartGaps();renderFocusCard();updateMathsTopicsBar();renderTodayLog();
   }
   if(!slogFromTimer){const chk=document.getElementById('slog-count-sess');if(chk&&chk.checked)incrementSessions();}
   closeSessionLog();
 }
 function renderTodayLog(){
-  const el=document.getElementById('today-log-section');if(!el)return;
-  const todayKey=dateKey(today());const dayLog=lsGet('daily_log_'+todayKey,[]);
-  if(!dayLog.length){el.innerHTML='';return;}
+  const el=document.getElementById('today-log-section');if(!el)return;const todayKey=dateKey(today());const dayLog=lsGet('daily_log_'+todayKey,[]);if(!dayLog.length){el.innerHTML='';return;}
   const subBadge={maths:'badge-m',econ:'badge-e',cs:'badge-c'};
-  const rows=dayLog.map(e=>{
-    const timeStr=new Date(e.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-    const confHtml=e.conf>0?`<span class="tlog-conf" style="background:${CONF_BG[e.conf]};color:${CONF_COLORS[e.conf]}">${CONF_LABELS[e.conf]}</span>`:'';
-    return`<div class="tlog-row"><span class="sub-badge ${subBadge[e.sub]||'badge-college'}" style="font-size:0.52rem">${e.sub==='maths'?'M':e.sub==='econ'?'E':'CS'}</span><span class="tlog-name">${e.name}</span>${confHtml}<span class="tlog-time">${timeStr}</span></div>`;
-  }).join('');
+  const rows=dayLog.map(e=>{const timeStr=new Date(e.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});const confHtml=e.conf>0?`<span class="tlog-conf" style="background:${CONF_BG[e.conf]};color:${CONF_COLORS[e.conf]}">${CONF_LABELS[e.conf]}</span>`:'';return`<div class="tlog-row"><span class="sub-badge ${subBadge[e.sub]||'badge-college'}" style="font-size:0.52rem">${e.sub==='maths'?'M':e.sub==='econ'?'E':'CS'}</span><span class="tlog-name">${e.name}</span>${confHtml}<span class="tlog-time">${timeStr}</span></div>`;}).join('');
   el.innerHTML=`<div class="tlog-wrap"><div class="tlog-header"><span class="tlog-title">Logged today</span><span style="font-family:var(--mono);font-size:0.58rem;color:var(--muted2)">${dayLog.length} topic${dayLog.length!==1?'s':''}</span></div>${rows}</div>`;
 }
 
 function init(){
-  seedInitialState();
-  const t=today();
+  seedInitialState();const t=today();
   document.getElementById('live-date').textContent=`${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]} ${t.getFullYear()}`;
   document.getElementById('live-phase').textContent=getPhase();
-  const neaPill=document.getElementById('nea-status-pill');
-  if(neaPill){neaPill.textContent='NEA submitted · est. 52/70 · Grade B';neaPill.style.background='rgba(251,146,60,0.12)';neaPill.style.borderColor='rgba(251,146,60,0.3)';neaPill.style.color='var(--amber)';}
-  renderCountdowns();renderFocusCard();
-  renderToday();renderTomorrow();renderMissedThisWeek();
-  renderWeek();renderSmartGaps();updateMathsTopicsBar();
-  renderStreak();renderTodayLog();updateTimerUI();
+  renderCountdowns();renderFocusCard();renderToday();renderTomorrow();renderMissedThisWeek();
+  renderWeek();renderSmartGaps();updateMathsTopicsBar();renderStreak();renderTodayLog();updateTimerUI();
+  // Preload pack data in background
+  setTimeout(()=>loadPackData(()=>{}),2000);
 }
 init();
 </script>
