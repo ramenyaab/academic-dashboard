@@ -326,6 +326,50 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .missed-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border);}
 .missed-row:first-child{border-top:none;}
 .missed-when{font-family:var(--mono);font-size:0.6rem;color:var(--muted);flex-shrink:0;}
+
+/* ── RESCHEDULE MODAL ─────────────────────────────────────────────────────── */
+.rs-overlay{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
+.rs-overlay.open{opacity:1;pointer-events:auto;}
+.rs-modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;width:min(680px,95vw);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-lg);}
+.rs-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.rs-title{font-size:1rem;font-weight:700;}
+.rs-sub{font-size:0.74rem;color:var(--muted2);margin-top:3px;}
+.rs-close{width:28px;height:28px;border-radius:8px;background:var(--surface2);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;font-size:0.9rem;flex-shrink:0;transition:all 0.12s;display:flex;align-items:center;justify-content:center;}
+.rs-close:hover{color:var(--text);border-color:var(--muted2);}
+.rs-body{flex:1;overflow-y:auto;padding:20px 24px;}
+.rs-section-lbl{font-family:var(--mono);font-size:0.54rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;margin-top:18px;}
+.rs-section-lbl:first-child{margin-top:0;}
+.rs-session-list{display:flex;flex-direction:column;gap:6px;margin-bottom:4px;}
+.rs-session-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--surface2);border-radius:9px;border:2px solid transparent;cursor:pointer;transition:all 0.12s;user-select:none;}
+.rs-session-row:hover{background:var(--surface3);border-color:var(--border2);}
+.rs-session-row.selected{border-color:var(--amber);background:color-mix(in srgb,var(--amber) 6%,var(--surface2));}
+.rs-session-row.already-moved{opacity:0.45;cursor:default;}
+.rs-sess-date{font-family:var(--mono);font-size:0.62rem;color:var(--muted2);flex-shrink:0;min-width:72px;}
+.rs-sess-name{font-size:0.8rem;font-weight:500;flex:1;}
+.rs-sess-dur{font-family:var(--mono);font-size:0.58rem;color:var(--muted);flex-shrink:0;}
+.rs-date-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:4px;}
+.rs-date-cell{padding:9px 6px;border-radius:9px;background:var(--surface2);border:2px solid transparent;text-align:center;cursor:pointer;transition:all 0.12s;user-select:none;}
+.rs-date-cell:hover{background:var(--surface3);border-color:var(--border2);}
+.rs-date-cell.selected{border-color:var(--econ);background:color-mix(in srgb,var(--econ) 8%,var(--surface2));}
+.rs-date-cell.is-exam{border-color:color-mix(in srgb,var(--red) 40%,transparent);}
+.rs-date-cell.is-busy{opacity:0.6;}
+.rs-date-cell.past{opacity:0.3;cursor:default;}
+.rs-date-day{font-family:var(--mono);font-size:0.52rem;color:var(--muted);text-transform:uppercase;margin-bottom:3px;}
+.rs-date-num{font-size:0.88rem;font-weight:700;line-height:1;}
+.rs-date-count{font-family:var(--mono);font-size:0.48rem;color:var(--muted2);margin-top:3px;}
+.rs-date-cell.selected .rs-date-day{color:var(--econ);}
+.rs-date-cell.selected .rs-date-num{color:var(--econ);}
+.rs-footer{padding:16px 24px;border-top:1px solid var(--border);flex-shrink:0;display:flex;gap:10px;align-items:center;}
+.rs-confirm-btn{flex:1;padding:11px;border-radius:10px;background:color-mix(in srgb,var(--econ) 15%,transparent);border:1px solid color-mix(in srgb,var(--econ) 40%,transparent);color:var(--econ);font-family:var(--mono);font-size:0.74rem;font-weight:700;cursor:pointer;transition:all 0.12s;}
+.rs-confirm-btn:hover{background:color-mix(in srgb,var(--econ) 25%,transparent);}
+.rs-confirm-btn:disabled{opacity:0.35;cursor:default;}
+.rs-cancel-btn{padding:11px 18px;border-radius:10px;background:transparent;border:1px solid var(--border2);color:var(--muted2);font-family:var(--mono);font-size:0.72rem;cursor:pointer;transition:all 0.12s;}
+.rs-cancel-btn:hover{color:var(--text);border-color:var(--muted2);}
+.rs-hint{font-family:var(--mono);font-size:0.58rem;color:var(--muted);flex:1;text-align:right;}
+/* Reschedule button on task rows */
+.rs-launch-btn{font-family:var(--mono);font-size:0.52rem;padding:2px 8px;border-radius:8px;border:1px solid color-mix(in srgb,var(--econ) 30%,transparent);background:color-mix(in srgb,var(--econ) 8%,transparent);color:var(--econ);cursor:pointer;transition:all 0.12s;flex-shrink:0;white-space:nowrap;}
+.rs-launch-btn:hover{background:color-mix(in srgb,var(--econ) 18%,transparent);border-color:var(--econ);}
+.rs-moved-tag{font-family:var(--mono);font-size:0.5rem;padding:2px 7px;border-radius:8px;background:color-mix(in srgb,var(--maths) 12%,transparent);border:1px solid color-mix(in srgb,var(--maths) 25%,transparent);color:var(--maths);white-space:nowrap;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -343,6 +387,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <button class="theme-btn" id="theme-light" onclick="setTheme('light')">Light</button>
       <button class="theme-btn" id="theme-dark" onclick="setTheme('dark')">Dark</button>
     </div>
+    <button onclick="openRescheduleModal()" style="font-family:var(--mono);font-size:0.52rem;padding:4px 10px;border-radius:10px;background:color-mix(in srgb,var(--econ) 10%,transparent);border:1px solid color-mix(in srgb,var(--econ) 28%,transparent);color:var(--econ);cursor:pointer;white-space:nowrap;letter-spacing:0.04em;text-transform:uppercase;" title="Reschedule a session (shortcut: R)">&#x21C6; Reschedule</button>
     <span class="nea-pill" onclick="switchTab('nea',document.querySelector('[data-tab=nea]'))" title="NEA details">NEA est. 60/70 &middot; mark pending</span>
   </div>
 </div>
@@ -592,6 +637,31 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   </button>
   <button class="log-fab-btn" onclick="showSessionLog(false)">Log session</button>
 </div>
+
+<!-- RESCHEDULE MODAL -->
+<div class="rs-overlay" id="rs-overlay" onclick="if(event.target===this)closeRescheduleModal()">
+  <div class="rs-modal">
+    <div class="rs-header">
+      <div>
+        <div class="rs-title">Reschedule a session</div>
+        <div class="rs-sub" id="rs-sub">Pick a session, then pick the new date.</div>
+      </div>
+      <button class="rs-close" onclick="closeRescheduleModal()">&#x2715;</button>
+    </div>
+    <div class="rs-body">
+      <div class="rs-section-lbl">1 &mdash; Pick session to move</div>
+      <div class="rs-session-list" id="rs-session-list"></div>
+      <div class="rs-section-lbl" id="rs-date-lbl" style="display:none">2 &mdash; Move it to&hellip;</div>
+      <div class="rs-date-grid" id="rs-date-grid"></div>
+    </div>
+    <div class="rs-footer">
+      <button class="rs-cancel-btn" onclick="closeRescheduleModal()">Cancel</button>
+      <span class="rs-hint" id="rs-hint">Select a session above</span>
+      <button class="rs-confirm-btn" id="rs-confirm-btn" disabled onclick="confirmReschedule()">Move session &rarr;</button>
+    </div>
+  </div>
+</div>
+
 <!-- PACK MODAL -->
 <div class="pack-overlay" id="pack-overlay" onclick="if(event.target===this)closePackModal()">
   <div class="pack-modal">
@@ -726,10 +796,14 @@ const SESSIONS={
   '2026-04-09':[{sub:'maths',label:'M11 — Sequences + series',dur:'2hrs',archived:true},{sub:'econ',label:'E6 — Supply-side + P3 competition',dur:'2hrs',archived:true}],
   '2026-04-10':[{sub:'maths',label:'M12 — Numerical methods + vectors',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS',dur:'2hrs',archived:true}],
     '2026-04-11':[
+    {sub:'multi',subs:['maths','econ','cs'],label:'Cross-subject diagnostic (cold recall)',dur:'1.5hrs',detail:'Rescheduled to Sun 12 Apr — see Sunday.',archived:true},
+    {sub:'multi',subs:['maths','econ','cs'],label:'Gap drill — worst 1-2 topics from diagnostic',dur:'45min',detail:'Rescheduled to Sun 12 Apr — see Sunday.',archived:true},
+  ],
+  '2026-04-12':[
     {sub:'multi',subs:['maths','econ','cs'],label:'Cross-subject diagnostic (cold recall)',dur:'1.5hrs',detail:'2-3 Qs cold from trig integration, implicit diff, boolean algebra, kinked demand. Mark yourself. Write down exactly what broke.'},
     {sub:'multi',subs:['maths','econ','cs'],label:'Gap drill — worst 1-2 topics from diagnostic',dur:'45min',detail:'Work only the topics you scored 0 on above. 45-min hard cap. Stop when cap hits.'},
+    {sub:'econ',label:'E1 (light) — Core diagrams from memory',dur:'45min',detail:'All 6 diagrams from memory. No timer, no marking. Confidence not performance. Keep it light.'},
   ],
-  '2026-04-12':[{sub:'econ',label:'E1 (light) - Core diagrams from memory',dur:'45min',detail:'All 6 diagrams from memory. No timer, no marking. Confidence not performance. Rest of day off.'}],
   '2026-04-13':[{sub:'econ',label:'E3a — Oligopoly + kinked demand (eve, light)',dur:'45min',detail:'Recall kinked demand mechanism + game theory from memory.'}],
   '2026-04-14':[{sub:'maths',label:'M4a — Substitution + DEs (revisit)',dur:'2hrs',detail:'11am–1pm hard cap.'},{sub:'econ',label:'E4a — Macro: AD/AS + economic cycle',dur:'1.5hrs',detail:'Diagrams from memory: AD/AS, SRAS/LRAS shifts.'}],
   '2026-04-15':[{sub:'cs',label:'CS-P1.5a — CPU architecture (eve)',dur:'45min',detail:'FDE cycle + CISC/RISC from memory.'}],
@@ -958,7 +1032,7 @@ function copyPackPrompt(){
 }
 
 // Close on Escape
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePackModal();closeSessionLog();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePackModal();closeSessionLog();closeRescheduleModal();}if(e.key==='r'&&!e.ctrlKey&&!e.metaKey&&document.activeElement.tagName!=='INPUT'){openRescheduleModal();}});
 
 // ── PACKS TAB RENDERING ───────────────────────────────────────────────────────
 const PACK_DEFINITIONS=[
@@ -1133,7 +1207,7 @@ function getMissedThisWeek(){
   for(let i=0;i<7;i++){
     const d=new Date(monday);d.setDate(monday.getDate()+i);const dk=dateKey(d);
     if(dk>=dateKey(t))break;
-    const sessions=SESSIONS[dk]||[];const checked=lsGet('tasks_done_'+dk,[]);
+    const sessions=getSessionsForDate(dk);const checked=lsGet('tasks_done_'+dk,[]);
     sessions.forEach((s,idx)=>{
       if(s.archived||s.sub==='college'||s.sub==='am'||s.sub==='nea')return;
       if(!checked.includes(idx))missed.push({dateKey:dk,idx,sub:s.sub,label:s.label,dur:s.dur,dayLabel:d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})});
@@ -1208,7 +1282,7 @@ function logConfidenceForTask(gapKey,level,taskIdx,dk){
 }
 
 function renderToday(){
-  const t=today();const key=dateKey(t);const sessions=(SESSIONS[key]||[]).filter(s=>!s.archived);
+  const t=today();const key=dateKey(t);const sessions=getSessionsForDate(key);
   document.getElementById('today-title').textContent=`${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]}`;
   const container=document.getElementById('today-tasks');container.innerHTML='';
   if(!sessions.length){container.innerHTML='<div style="font-size:0.82rem;color:var(--muted2);padding:14px 0">Nothing scheduled — rest day.</div>';renderBonusSection();return;}
@@ -1224,7 +1298,8 @@ function renderToday(){
       if(packId)item.classList.add('has-pack');
       const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')">▶ pack</button>`:'';
       const confBtns=gapKey?`<div class="task-actions" id="conf-row-${origIdx}"><span class="task-conf-lbl">Conf:</span>${[1,2,3,4,5].map(n=>`<button class="task-conf-btn${currentConf===n?' act-'+n:''}" onclick="event.stopPropagation();logConfidenceForTask('${gapKey}',${n},${origIdx},'${key}')" title="${CONF_LABELS[n]}">${n}</button>`).join('')}<span style="font-family:var(--mono);font-size:0.5rem;color:${currentConf>0?CONF_COLORS[currentConf]:'var(--muted)'};margin-left:4px">${currentConf>0?CONF_LABELS[currentConf]:''}</span>${packBtn}</div>`:(packId?`<div class="task-actions">${packBtn}</div>`:'');
-      item.innerHTML=`<div class="task-check"><input type="checkbox" id="chk${origIdx}"${isChecked?' checked':''}></div><div class="task-body"><div class="task-top">${getSubBadgeHTML(s)}${s.hw?'<span class="sub-badge badge-hw">HW DUE</span>':''}</div><div class="task-name" id="lbl${origIdx}"${isChecked?' class="done"':''}>${s.label}</div>${s.detail?`<div class="task-detail">${s.detail}</div>`:''}${confBtns}</div>${s.dur?`<div class="task-dur">${s.dur}</div>`:''}`;
+      item.innerHTML=`<div class="task-check"><input type="checkbox" id="chk${origIdx}"${isChecked?' checked':''}></div><div class="task-body"><div class="task-top">${getSubBadgeHTML(s)}${s.hw?'<span class="sub-badge badge-hw">HW DUE</span>':''}</div><div class="task-name" id="lbl${origIdx}"${isChecked?' class="done"':''}>${s.label}</div>${s.detail?`<div class="task-detail">${s.detail}</div>`:''}${confBtns}</div>${s.dur?`<div class="task-dur">${s.dur}</div>`:''}
+    <button class="rs-launch-btn" onclick="event.stopPropagation();openRescheduleModal('${key}',${origIdx})" title="Reschedule this session">&#x21C6;</button>`;
       if(isChecked)item.classList.add('done-item');
       item.querySelector('input').addEventListener('change',function(){
         item.classList.toggle('done-item',this.checked);document.getElementById('lbl'+origIdx).classList.toggle('done',this.checked);
@@ -1239,7 +1314,7 @@ function renderToday(){
 }
 
 function renderTomorrow(){
-  const t=today();const tmr=new Date(t.getTime()+864e5);const key=dateKey(tmr);const sessions=(SESSIONS[key]||[]).filter(s=>!s.archived);
+  const t=today();const tmr=new Date(t.getTime()+864e5);const key=dateKey(tmr);const sessions=getSessionsForDate(key);
   document.getElementById('tmr-title').textContent=`Tomorrow — ${DAYS[tmr.getDay()].slice(0,3)} ${tmr.getDate()} ${MONTHS[tmr.getMonth()]}`;
   const container=document.getElementById('tmr-tasks');container.innerHTML='';
   if(!sessions.length){container.innerHTML='<div style="font-size:0.78rem;color:var(--muted2)">Nothing scheduled.</div>';return;}
@@ -1257,7 +1332,7 @@ function renderWeek(){
   const grid=document.getElementById('week-grid');grid.innerHTML='';const todayKey=dateKey(t);const dayNames=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
   for(let i=0;i<7;i++){
     const day=new Date(monday);day.setDate(monday.getDate()+i);const key=dateKey(day);
-    const sessions=(SESSIONS[key]||[]).filter(s=>!s.archived);const isToday=key===todayKey;const isWeekend=(i===5||i===6);const examLabel=EXAM_DAYS[key];const checked=lsGet('tasks_done_'+key,[]);
+    const sessions=getSessionsForDate(key);const isToday=key===todayKey;const isWeekend=(i===5||i===6);const examLabel=EXAM_DAYS[key];const checked=lsGet('tasks_done_'+key,[]);
     const col=document.createElement('div');col.className='wday'+(isToday?' today-col':'')+(isWeekend&&!isToday?' weekend-col':'')+(examLabel?' deadline':'');
     const headStr=examLabel?`${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)} — ${examLabel}`:`${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)}`;
     const tasksHtml=sessions.length?sessions.map((s,idx)=>{
@@ -1274,6 +1349,7 @@ function renderAllSessions(){
   if(dow===0)monday.setDate(t.getDate()-6);else monday.setDate(t.getDate()-(dow-1));
   const weekStartKey=dateKey(monday);
   // Build date set: only non-archived session dates + exam days
+  const _rsKeys=getUserReschedules().map(r=>r.toKey);
   const allDates=new Set([
     ...Object.keys(SESSIONS).filter(k=>{
       const d=SESSIONS[k];const hasVisible=d.some(s=>!s.archived);
@@ -1281,11 +1357,12 @@ function renderAllSessions(){
       if(showPastSessions)return k>=weekStartKey;
       return k>=todayKey;
     }),
+    ..._rsKeys.filter(k=>showPastSessions?k>=weekStartKey:k>=todayKey),
     ...Object.keys(EXAM_DAYS).filter(k=>showPastSessions?k>=weekStartKey:k>=todayKey)]);
   const sortedDates=Array.from(allDates).sort();
   let html='';
   for(const dk of sortedDates){
-    const allSess=SESSIONS[dk]||[];const sessions=allSess.filter(s=>!s.archived&&(currentFilter==='all'||s.sub===currentFilter));
+    const allSess=getSessionsForDate(dk);const sessions=allSess.filter(s=>(currentFilter==='all'||s.sub===currentFilter||s.subs&&s.subs.includes(currentFilter)));
     const examLabel=EXAM_DAYS[dk];if(!sessions.length&&!examLabel)continue;
     const d=toDate(dk);const isToday=dk===todayKey;const daysFromNow=Math.ceil((toDate(dk)-t)/864e5);
     const relLabel=isToday?'today':daysFromNow===1?'tomorrow':daysFromNow===-1?'yesterday':daysFromNow<0?`${Math.abs(daysFromNow)}d ago`:`in ${daysFromNow}d`;
@@ -1293,7 +1370,9 @@ function renderAllSessions(){
     html+=`<div class="all-sessions-day"><div class="all-sessions-date-hdr"><span class="all-sessions-date-lbl">${dateFormatted}</span><span class="all-sessions-date-rel">${relLabel}</span>${examLabel?`<span class="all-sessions-date-exam">EXAM: ${examLabel}</span>`:''}</div>`;
     if(examLabel&&!sessions.length)html+=`<div class="all-sess-row${isToday?' is-today':''}"><div class="all-sess-body"><div class="all-sess-name" style="color:var(--red)">EXAM DAY — ${examLabel}</div></div></div>`;
     for(const s of sessions){
-      const origIdx=allSess.indexOf(s);const isDone=checked.includes(origIdx);const packId=getPackIdForLabel(s.label);const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')" style="margin-left:auto;flex-shrink:0">▶ pack</button>`:'';
+      const origIdx=s._rescheduled?(s._fromIdx):(allSess.indexOf(s));
+      const origDk=s._rescheduled?s._fromKey:dk;
+      const isDone=lsGet('tasks_done_'+(s._rescheduled?s._fromKey:dk),[]).includes(origIdx);const packId=getPackIdForLabel(s.label);const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')" style="margin-left:auto;flex-shrink:0">▶ pack</button>`:'';
       html+=`<div class="all-sess-row${isToday?' is-today':''}${isDone?' is-done':''}"><span style="flex-shrink:0;margin-top:2px">${getSubBadgeHTML(s)}<div class="all-sess-body"><div class="all-sess-name${isDone?' done-name':''}">${isDone?'✓ ':''}${s.hw?'<span style="color:var(--red);font-size:0.72rem;font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>${s.detail?`<div class="all-sess-detail">${s.detail}</div>`:''}</div>${packBtn}</div>`;
     }
     html+=`</div>`;
@@ -1405,7 +1484,175 @@ function renderTodayLog(){
   el.innerHTML=`<div class="tlog-wrap"><div class="tlog-header"><span class="tlog-title">Logged today</span><span style="font-family:var(--mono);font-size:0.58rem;color:var(--muted2)">${dayLog.length} topic${dayLog.length!==1?'s':''}</span></div>${rows}</div>`;
 }
 
+
+// ── RESCHEDULE SYSTEM ─────────────────────────────────────────────────────────
+// localStorage key: 'user_reschedules' = [{fromKey, fromIdx, toKey, addedAt}]
+function getUserReschedules(){return lsGet('user_reschedules',[]);}
+function saveUserReschedules(arr){lsSet('user_reschedules',arr);}
+
+function openRescheduleModal(prefillKey,prefillIdx){
+  renderRsSessionList();
+  document.getElementById('rs-date-lbl').style.display='none';
+  document.getElementById('rs-date-grid').innerHTML='';
+  document.getElementById('rs-confirm-btn').disabled=true;
+  document.getElementById('rs-hint').textContent='Select a session above';
+  window._rsSel={fromKey:null,fromIdx:null,toKey:null};
+  document.getElementById('rs-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  if(prefillKey!=null&&prefillIdx!=null){
+    selectRsSession(prefillKey,prefillIdx);
+  }
+}
+function closeRescheduleModal(){
+  document.getElementById('rs-overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function renderRsSessionList(){
+  const list=document.getElementById('rs-session-list');
+  const t=today();const todayK=dateKey(t);
+  const reschedules=getUserReschedules();
+  const rows=[];
+  // Show today + next 14 days of sessions
+  for(let i=0;i<=14;i++){
+    const d=new Date(t.getTime()+i*864e5);
+    const dk=dateKey(d);
+    const sessions=(SESSIONS[dk]||[]).filter(s=>!s.archived&&!s.label.includes('EXAM'));
+    sessions.forEach((s,si)=>{
+      const origIdx=(SESSIONS[dk]||[]).indexOf(s);
+      const alreadyMoved=reschedules.some(r=>r.fromKey===dk&&r.fromIdx===origIdx);
+      const dayLbl=i===0?'Today':i===1?'Tomorrow':d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+      rows.push({dk,origIdx,s,dayLbl,alreadyMoved});
+    });
+  }
+  list.innerHTML=rows.map(r=>{
+    const badgeHtml=getSubBadgeHTML(r.s,'font-size:0.52rem;');
+    const movedTag=r.alreadyMoved?'<span class="rs-moved-tag">already moved</span>':'';
+    return `<div class="rs-session-row${r.alreadyMoved?' already-moved':''}" 
+      ${!r.alreadyMoved?`onclick="selectRsSession('${r.dk}',${r.origIdx})"`:''} 
+      id="rs-row-${r.dk}-${r.origIdx}">
+      <span class="rs-sess-date">${r.dayLbl}</span>
+      ${badgeHtml}
+      <span class="rs-sess-name">${r.s.label}</span>
+      ${r.s.dur?`<span class="rs-sess-dur">${r.s.dur}</span>`:''}
+      ${movedTag}
+    </div>`;
+  }).join('');
+}
+
+function selectRsSession(fromKey,fromIdx){
+  if(!window._rsSel)window._rsSel={};
+  window._rsSel.fromKey=fromKey;
+  window._rsSel.fromIdx=fromIdx;
+  window._rsSel.toKey=null;
+  // Highlight selected row
+  document.querySelectorAll('.rs-session-row').forEach(el=>el.classList.remove('selected'));
+  const row=document.getElementById('rs-row-'+fromKey+'-'+fromIdx);
+  if(row)row.classList.add('selected');
+  // Show date picker
+  document.getElementById('rs-date-lbl').style.display='';
+  renderRsDateGrid(fromKey);
+  document.getElementById('rs-confirm-btn').disabled=true;
+  document.getElementById('rs-hint').textContent='Now pick a new date';
+}
+
+function renderRsDateGrid(excludeKey){
+  const grid=document.getElementById('rs-date-grid');
+  const t=today();const todayK=dateKey(t);
+  const reschedules=getUserReschedules();
+  let html='';
+  for(let i=0;i<=27;i++){
+    const d=new Date(t.getTime()+i*864e5);
+    const dk=dateKey(d);
+    if(dk===excludeKey)continue; // can't move to same day
+    const isPast=dk<todayK;
+    const isExam=!!EXAM_DAYS[dk];
+    const existing=(SESSIONS[dk]||[]).filter(s=>!s.archived).length;
+    const extra=reschedules.filter(r=>r.toKey===dk).length;
+    const total=existing+extra;
+    const dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    const dayName=dayNames[d.getDay()];
+    html+=`<div class="rs-date-cell${isPast?' past':''}${isExam?' is-exam':''}${total>=3?' is-busy':''}" 
+      id="rs-dc-${dk}"
+      ${!isPast?`onclick="selectRsDate('${dk}')"`:''}
+      title="${isExam?'Exam day — ':''}${total} session${total!==1?'s':''} scheduled">
+      <div class="rs-date-day">${dayName}</div>
+      <div class="rs-date-num">${d.getDate()}</div>
+      <div class="rs-date-count">${isExam?'EXAM':total>0?total+'s':''}</div>
+    </div>`;
+  }
+  grid.innerHTML=html;
+}
+
+function selectRsDate(toKey){
+  if(!window._rsSel)return;
+  window._rsSel.toKey=toKey;
+  document.querySelectorAll('.rs-date-cell').forEach(el=>el.classList.remove('selected'));
+  const cell=document.getElementById('rs-dc-'+toKey);
+  if(cell)cell.classList.add('selected');
+  const d=toDate(toKey);
+  const dLbl=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
+  document.getElementById('rs-hint').textContent='Moving to '+dLbl;
+  document.getElementById('rs-confirm-btn').disabled=false;
+}
+
+function confirmReschedule(){
+  const sel=window._rsSel;
+  if(!sel||!sel.fromKey||sel.fromIdx==null||!sel.toKey)return;
+  const reschedules=getUserReschedules();
+  // Remove any existing move for this session
+  const filtered=reschedules.filter(r=>!(r.fromKey===sel.fromKey&&r.fromIdx===sel.fromIdx));
+  filtered.push({fromKey:sel.fromKey,fromIdx:sel.fromIdx,toKey:sel.toKey,addedAt:Date.now()});
+  saveUserReschedules(filtered);
+  closeRescheduleModal();
+  // Re-render everything that uses sessions
+  renderToday();renderTomorrow();renderMissedThisWeek();renderWeek();
+  if(document.getElementById('tab-all').classList.contains('active'))renderAllSessions();
+  updateSubjectBars();
+  // Toast
+  showToast('Session moved \u2192 '+toDate(sel.toKey).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}));
+}
+
+function undoReschedule(fromKey,fromIdx){
+  const reschedules=getUserReschedules().filter(r=>!(r.fromKey===fromKey&&r.fromIdx===fromIdx));
+  saveUserReschedules(reschedules);
+  renderToday();renderTomorrow();renderMissedThisWeek();renderWeek();
+  if(document.getElementById('tab-all').classList.contains('active'))renderAllSessions();
+  updateSubjectBars();
+  showToast('Reschedule undone');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function showToast(msg){
+  let t=document.getElementById('toast-el');
+  if(!t){t=document.createElement('div');t.id='toast-el';t.style.cssText='position:fixed;bottom:110px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:0.7rem;padding:10px 20px;border-radius:12px;box-shadow:var(--shadow-lg);z-index:9999;transition:opacity 0.3s;opacity:0;white-space:nowrap;';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._to);t._to=setTimeout(()=>{t.style.opacity='0';},2500);
+}
+
+// ── PATCH SESSION RESOLUTION TO INCLUDE USER RESCHEDULES ──────────────────────
+// Wrap the SESSIONS object access with a function that applies user reschedules
+function getSessionsForDate(dk){
+  const base=(SESSIONS[dk]||[]).filter(s=>!s.archived);
+  const reschedules=getUserReschedules();
+  // Remove sessions moved AWAY from this date
+  const movedAway=reschedules.filter(r=>r.fromKey===dk).map(r=>r.fromIdx);
+  const filtered=base.filter((s,i)=>{
+    const origIdx=(SESSIONS[dk]||[]).indexOf(s);
+    return !movedAway.includes(origIdx);
+  });
+  // Add sessions moved TO this date
+  const added=reschedules.filter(r=>r.toKey===dk).map(r=>{
+    const orig=(SESSIONS[r.fromKey]||[])[r.fromIdx];
+    if(!orig)return null;
+    return {...orig,_rescheduled:true,_fromKey:r.fromKey,_fromIdx:r.fromIdx};
+  }).filter(Boolean);
+  return [...filtered,...added];
+}
+
+
 function init(){
+
   seedInitialState();const t=today();
   document.getElementById('live-date').textContent=`${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]} ${t.getFullYear()}`;
   document.getElementById('live-phase').textContent=getPhase();
