@@ -15,7 +15,6 @@
   --red:#dc2626;--amber:#ea580c;--purple:#9333ea;--cyan:#22d3ee;
   --mono:"Space Mono",monospace;--sans:"DM Sans",sans-serif;--radius:14px;
 }
-/* DARK (default) */
 :root{
   --bg:#0d0f17;--surface:#131720;--surface2:#191e2e;--surface3:#1f2438;
   --border:#232840;--border2:#2c3354;
@@ -25,7 +24,6 @@
   --chart-grid:rgba(255,255,255,0.04);--chart-tick:#464d6a;
   --chart-tooltip-bg:rgba(19,23,32,0.96);--chart-tooltip-border:rgba(255,255,255,0.07);
 }
-/* LIGHT (OS preference) */
 @media(prefers-color-scheme:light){
   :root{
     --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0efe9;--surface3:#e8e6de;
@@ -37,7 +35,6 @@
     --chart-tooltip-bg:rgba(255,255,255,0.98);--chart-tooltip-border:rgba(0,0,0,0.08);
   }
 }
-/* FORCE DARK */
 :root[data-theme="dark"]{
   --bg:#0d0f17;--surface:#131720;--surface2:#191e2e;--surface3:#1f2438;
   --border:#232840;--border2:#2c3354;
@@ -47,7 +44,6 @@
   --chart-grid:rgba(255,255,255,0.04);--chart-tick:#464d6a;
   --chart-tooltip-bg:rgba(19,23,32,0.96);--chart-tooltip-border:rgba(255,255,255,0.07);
 }
-/* FORCE LIGHT */
 :root[data-theme="light"]{
   --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0efe9;--surface3:#e8e6de;
   --border:#dddbd2;--border2:#c8c5bb;
@@ -71,6 +67,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .theme-btn{font-family:var(--mono);font-size:0.52rem;padding:4px 9px;background:none;border:none;color:var(--muted2);cursor:pointer;letter-spacing:0.06em;text-transform:uppercase;transition:color 0.12s,background 0.12s;white-space:nowrap;}
 .theme-btn:hover{color:var(--text);}
 .theme-btn.active{background:color-mix(in srgb,var(--amber) 15%,transparent);color:var(--amber);font-weight:700;}
+/* FIX #12: Log session btn in topbar */
+.log-topbar-btn{font-family:var(--mono);font-size:0.52rem;padding:4px 10px;border-radius:10px;background:color-mix(in srgb,var(--maths) 10%,transparent);border:1px solid color-mix(in srgb,var(--maths) 28%,transparent);color:var(--maths);cursor:pointer;white-space:nowrap;letter-spacing:0.04em;text-transform:uppercase;transition:background 0.15s;}
+.log-topbar-btn:hover{background:color-mix(in srgb,var(--maths) 20%,transparent);}
 .cd-strip{display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--border);}
 .cd-item{padding:20px 28px;border-right:1px solid var(--border);display:flex;align-items:center;gap:20px;}
 .cd-item:last-child{border-right:none;}
@@ -86,6 +85,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .cd-bar{width:100%;height:3px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden;}
 .cd-bar-fill{height:100%;border-radius:2px;transition:width 0.6s ease,background 0.4s;}
 .cd-urgency{font-family:var(--mono);font-size:0.52rem;text-transform:uppercase;letter-spacing:0.08em;margin-top:5px;}
+/* FIX #10: Session window banner */
+.session-window-banner{padding:8px 28px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:0.62rem;display:flex;align-items:center;gap:10px;}
+.swb-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
 .tabs-nav{display:flex;border-bottom:1px solid var(--border);padding:0 28px;background:var(--bg);overflow-x:auto;}
 .tab-btn{padding:14px 18px;font-size:0.82rem;font-weight:500;font-family:var(--sans);color:var(--muted2);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:color 0.15s,border-color 0.15s;display:flex;align-items:center;gap:7px;}
 .tab-btn:hover{color:var(--text);}
@@ -198,10 +200,29 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .gb-cell{background:var(--surface2);border-radius:8px;padding:9px 10px;text-align:center;}
 .gb-lbl{font-family:var(--mono);font-size:0.48rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
 .gb-val{font-family:var(--mono);font-size:0.82rem;font-weight:700;}
+/* FIX #17/#20: Inline forms */
+.inline-score-form{display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap;}
+.inline-score-form input{font-family:var(--mono);font-size:0.7rem;padding:4px 8px;border-radius:8px;background:var(--surface3);border:1px solid var(--border2);color:var(--text);width:100px;outline:none;}
+.inline-score-form input:focus{border-color:var(--muted2);}
+.inline-score-form button{font-family:var(--mono);font-size:0.6rem;padding:4px 10px;border-radius:8px;cursor:pointer;border:1px solid;transition:all 0.12s;}
+.inline-score-form .save-btn{background:color-mix(in srgb,var(--maths) 12%,transparent);border-color:color-mix(in srgb,var(--maths) 35%,transparent);color:var(--maths);}
+.inline-score-form .cancel-btn{background:transparent;border-color:var(--border2);color:var(--muted2);}
+.inline-score-err{font-family:var(--mono);font-size:0.56rem;color:var(--red);margin-top:4px;}
+/* FIX #17: inline gb edit form */
+.gb-inline-form{margin-top:8px;display:flex;flex-direction:column;gap:6px;}
+.gb-inline-form-row{display:flex;gap:6px;align-items:center;}
+.gb-inline-form-row label{font-family:var(--mono);font-size:0.52rem;color:var(--muted2);min-width:55px;}
+.gb-inline-form-row input{font-family:var(--mono);font-size:0.68rem;padding:3px 7px;border-radius:6px;background:var(--surface3);border:1px solid var(--border2);color:var(--text);width:80px;outline:none;}
+.gb-inline-form-row input:focus{border-color:var(--muted2);}
+.gb-form-actions{display:flex;gap:6px;margin-top:4px;}
 .chart-wrap{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);}
 .chart-wrap-title{font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted2);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
 .add-mock-btn{font-family:var(--mono);font-size:0.56rem;padding:2px 8px;border-radius:10px;background:color-mix(in srgb,var(--muted) 20%,transparent);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;transition:color 0.15s,border-color 0.15s;}
 .add-mock-btn:hover{color:var(--text);border-color:var(--muted2);}
+/* FIX #15: Confidence legend */
+.conf-legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;padding:8px 12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);}
+.conf-legend-item{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:0.48rem;color:var(--muted2);}
+.conf-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .gaps-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-top:16px;}
 .gaps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
 .gaps-col-title{font-size:0.68rem;font-weight:600;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;}
@@ -218,6 +239,11 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .gap-conf{display:flex;gap:2px;flex-shrink:0;}
 .conf-dot{width:6px;height:6px;border-radius:50%;background:var(--surface3);border:1px solid var(--border2);cursor:pointer;transition:background 0.15s,border-color 0.15s;flex-shrink:0;}
 .conf-dot:hover{border-color:var(--muted2);}
+/* FIX #9: decay indicator */
+.gap-decay{font-family:var(--mono);font-size:0.46rem;flex-shrink:0;padding:1px 5px;border-radius:4px;}
+.gap-decay.fresh{color:var(--muted);background:transparent;}
+.gap-decay.stale{color:var(--amber);background:color-mix(in srgb,var(--amber) 10%,transparent);}
+.gap-decay.overdue{color:var(--red);background:color-mix(in srgb,var(--red) 10%,transparent);}
 .gaps-hint{font-family:var(--mono);font-size:0.56rem;color:var(--muted);margin-left:6px;}
 .reschedule-btn{font-family:var(--mono);font-size:0.57rem;padding:3px 9px;border-radius:12px;background:color-mix(in srgb,var(--econ) 10%,transparent);border:1px solid color-mix(in srgb,var(--econ) 25%,transparent);color:var(--econ);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:background 0.15s;}
 .reschedule-btn:hover{background:color-mix(in srgb,var(--econ) 20%,transparent);}
@@ -234,6 +260,18 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .streak-cell.today-cell{border-color:var(--amber)!important;}
 .streak-labels{display:grid;grid-template-columns:repeat(28,1fr);gap:3px;margin-top:3px;}
 .streak-day-lbl{font-family:var(--mono);font-size:0.42rem;color:var(--muted);text-align:center;}
+/* FIX #13: Weekly log section */
+.weekly-log-section{margin-top:20px;}
+.wlog-day{margin-bottom:8px;}
+.wlog-day-hdr{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--surface2);border-radius:7px;cursor:pointer;border:1px solid var(--border);}
+.wlog-day-lbl{font-family:var(--mono);font-size:0.6rem;font-weight:700;color:var(--muted2);flex:1;}
+.wlog-day-count{font-family:var(--mono);font-size:0.54rem;color:var(--muted);}
+.wlog-entries{padding:6px 10px 2px;display:flex;flex-direction:column;gap:4px;}
+.wlog-entry{display:flex;align-items:center;gap:7px;padding:4px 0;border-top:1px solid var(--border);}
+.wlog-entry:first-child{border-top:none;}
+.wlog-entry-name{font-size:0.74rem;flex:1;color:var(--muted2);}
+.wlog-entry-conf{font-family:var(--mono);font-size:0.52rem;padding:1px 6px;border-radius:6px;}
+.wlog-entry-time{font-family:var(--mono);font-size:0.5rem;color:var(--muted);}
 .nea-hero{display:flex;align-items:center;gap:24px;border-radius:12px;padding:24px 28px;margin-bottom:24px;}
 .nea-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .nea-row{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:var(--surface2);border-radius:8px;}
@@ -244,6 +282,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .uni-name{font-size:0.85rem;font-weight:600;margin-bottom:6px;}
 .uni-offer{font-family:var(--mono);font-size:0.75rem;color:var(--econ);margin-bottom:4px;}
 .uni-note{font-size:0.7rem;color:var(--muted2);}
+/* FIX #11: Live offer status */
+.offer-status-banner{margin-top:20px;padding:14px 18px;border-radius:10px;border:1px solid;font-size:0.8rem;line-height:1.6;}
 .pack-overlay{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
 .pack-overlay.open{opacity:1;pointer-events:auto;}
 .pack-modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;width:min(720px,94vw);max-height:88vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-lg);}
@@ -259,23 +299,17 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .pack-copy-btn.copied{background:color-mix(in srgb,var(--maths) 12%,transparent);border-color:color-mix(in srgb,var(--maths) 35%,transparent);color:var(--maths);}
 .pack-modal-body{flex:1;overflow-y:auto;padding:20px 24px;}
 .pack-modal-body pre{font-family:var(--mono);font-size:0.7rem;line-height:1.65;color:var(--muted2);white-space:pre-wrap;word-break:break-word;}
+/* FIX #14: Pack search */
+.pack-search-wrap{margin-bottom:16px;}
+.pack-search-wrap input{width:100%;font-family:var(--mono);font-size:0.72rem;padding:8px 14px;border-radius:10px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);outline:none;transition:border-color 0.15s;}
+.pack-search-wrap input:focus{border-color:var(--muted2);}
 .pack-list{display:flex;flex-direction:column;gap:5px;margin-top:10px;}
 .pack-row{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--surface2);border-radius:8px;cursor:pointer;border:1px solid transparent;transition:all 0.12s;}
 .pack-row:hover{background:var(--surface3);border-color:var(--border2);}
+.pack-row.hidden{display:none;}
 .pack-row-id{font-family:var(--mono);font-size:0.68rem;font-weight:700;flex-shrink:0;min-width:60px;}
 .pack-row-name{font-size:0.79rem;color:var(--muted2);flex:1;}
 .pack-row-arrow{font-family:var(--mono);font-size:0.6rem;color:var(--muted);flex-shrink:0;}
-.timer-fab{position:fixed;bottom:28px;right:28px;z-index:200;display:flex;flex-direction:column;align-items:center;gap:7px;}
-.timer-btn{width:72px;height:72px;border-radius:50%;background:var(--surface2);border:2px solid var(--border2);color:var(--text);font-family:var(--mono);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:border-color 0.2s,background 0.2s;box-shadow:var(--shadow-lg);}
-.timer-btn:hover{border-color:var(--amber);}
-.timer-btn.running{border-color:var(--maths);background:color-mix(in srgb,var(--maths) 8%,transparent);}
-.timer-btn.urgent{border-color:var(--red);animation:pulse-t 1.2s ease-in-out infinite;}
-@keyframes pulse-t{0%,100%{box-shadow:0 4px 24px color-mix(in srgb,var(--red) 20%,transparent)}50%{box-shadow:0 4px 32px color-mix(in srgb,var(--red) 60%,transparent)}}
-.timer-time-txt{font-size:0.82rem;font-weight:700;line-height:1;}
-.timer-sub-txt{font-size:0.48rem;color:var(--muted2);text-transform:uppercase;letter-spacing:0.08em;}
-.timer-sess-txt{font-family:var(--mono);font-size:0.58rem;color:var(--muted);text-align:center;white-space:nowrap;}
-.log-fab-btn{font-family:var(--mono);font-size:0.55rem;padding:5px 12px;border-radius:10px;background:color-mix(in srgb,var(--muted) 25%,transparent);border:1px solid var(--border2);color:var(--muted2);cursor:pointer;white-space:nowrap;transition:all 0.15s;text-align:center;}
-.log-fab-btn:hover{color:var(--text);border-color:var(--amber);background:color-mix(in srgb,var(--amber) 10%,transparent);}
 .slog-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,0.72);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
 .slog-overlay.open{opacity:1;pointer-events:auto;}
 .slog-modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;padding:28px 30px;width:min(540px,92vw);max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-lg);}
@@ -326,8 +360,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .missed-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--border);}
 .missed-row:first-child{border-top:none;}
 .missed-when{font-family:var(--mono);font-size:0.6rem;color:var(--muted);flex-shrink:0;}
-
-/* ── RESCHEDULE MODAL ─────────────────────────────────────────────────────── */
 .rs-overlay{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0.78);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.18s;}
 .rs-overlay.open{opacity:1;pointer-events:auto;}
 .rs-modal{background:var(--surface);border:1px solid var(--border2);border-radius:20px;width:min(680px,95vw);max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:var(--shadow-lg);}
@@ -366,7 +398,6 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
 .rs-cancel-btn{padding:11px 18px;border-radius:10px;background:transparent;border:1px solid var(--border2);color:var(--muted2);font-family:var(--mono);font-size:0.72rem;cursor:pointer;transition:all 0.12s;}
 .rs-cancel-btn:hover{color:var(--text);border-color:var(--muted2);}
 .rs-hint{font-family:var(--mono);font-size:0.58rem;color:var(--muted);flex:1;text-align:right;}
-/* Reschedule button on task rows */
 .rs-launch-btn{font-family:var(--mono);font-size:0.52rem;padding:2px 8px;border-radius:8px;border:1px solid color-mix(in srgb,var(--econ) 30%,transparent);background:color-mix(in srgb,var(--econ) 8%,transparent);color:var(--econ);cursor:pointer;transition:all 0.12s;flex-shrink:0;white-space:nowrap;}
 .rs-launch-btn:hover{background:color-mix(in srgb,var(--econ) 18%,transparent);border-color:var(--econ);}
 .rs-moved-tag{font-family:var(--mono);font-size:0.5rem;padding:2px 7px;border-radius:8px;background:color-mix(in srgb,var(--maths) 12%,transparent);border:1px solid color-mix(in srgb,var(--maths) 25%,transparent);color:var(--maths);white-space:nowrap;flex-shrink:0;}
@@ -382,6 +413,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <div class="topbar-phase" id="live-phase"></div>
   </div>
   <div class="topbar-right">
+    <!-- FIX #12: Log session button moved to topbar, timer removed -->
+    <button class="log-topbar-btn" onclick="showSessionLog(false)">+ Log session</button>
     <div class="theme-toggle">
       <button class="theme-btn" id="theme-auto" onclick="setTheme('auto')">Auto</button>
       <button class="theme-btn" id="theme-light" onclick="setTheme('light')">Light</button>
@@ -395,9 +428,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   <div class="cd-item e">
     <div class="cd-num" id="cd-econ">--</div>
     <div class="cd-meta">
-      <div class="cd-name">Economics P1</div>
-      <div class="cd-date">11 May 2026</div>
-      <div class="cd-next">P2 <b>18 May</b> &middot; P3 <b>4 Jun</b></div>
+      <div class="cd-name" id="cd-econ-name">Economics P1</div>
+      <div class="cd-date" id="cd-econ-date">11 May 2026</div>
+      <div class="cd-next" id="cd-econ-next">P2 <b>18 May</b> &middot; P3 <b>4 Jun</b></div>
       <div class="cd-bar"><div class="cd-bar-fill" id="cd-econ-bar"></div></div>
       <div class="cd-urgency" id="cd-econ-urg"></div>
     </div>
@@ -405,9 +438,9 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   <div class="cd-item m">
     <div class="cd-num" id="cd-maths">--</div>
     <div class="cd-meta">
-      <div class="cd-name">Maths Pure 1</div>
-      <div class="cd-date">3 June 2026</div>
-      <div class="cd-next">Pure 2 <b>11 Jun</b> &middot; S&amp;M <b>18 Jun</b></div>
+      <div class="cd-name" id="cd-maths-name">Maths Pure 1</div>
+      <div class="cd-date" id="cd-maths-date">3 June 2026</div>
+      <div class="cd-next" id="cd-maths-next">Pure 2 <b>11 Jun</b> &middot; S&amp;M <b>18 Jun</b></div>
       <div class="cd-bar"><div class="cd-bar-fill" id="cd-maths-bar"></div></div>
       <div class="cd-urgency" id="cd-maths-urg"></div>
     </div>
@@ -415,14 +448,16 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
   <div class="cd-item c">
     <div class="cd-num" id="cd-cs">--</div>
     <div class="cd-meta">
-      <div class="cd-name">CS Paper 1</div>
-      <div class="cd-date">10 June 2026</div>
-      <div class="cd-next">P2 <b>17 Jun</b></div>
+      <div class="cd-name" id="cd-cs-name">CS Paper 1</div>
+      <div class="cd-date" id="cd-cs-date">10 June 2026</div>
+      <div class="cd-next" id="cd-cs-next">P2 <b>17 Jun</b></div>
       <div class="cd-bar"><div class="cd-bar-fill" id="cd-cs-bar"></div></div>
       <div class="cd-urgency" id="cd-cs-urg"></div>
     </div>
   </div>
 </div>
+<!-- FIX #10: Session window banner -->
+<div class="session-window-banner" id="session-window-banner"></div>
 <div style="padding:8px 28px;border-bottom:1px solid var(--border);background:color-mix(in srgb,var(--amber) 3%,var(--bg));">
   <a href="why.html" style="font-family:var(--mono);font-size:0.62rem;color:var(--muted);text-decoration:none;letter-spacing:0.06em;" onmouseover="this.style.color='var(--amber)'" onmouseout="this.style.color='var(--muted)'">Need to remember why this matters? <span style="color:var(--amber)">&rarr; Read your WHY first</span></a>
 </div>
@@ -458,6 +493,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <div class="streak-grid" id="streak-grid"></div>
     <div class="streak-labels" id="streak-labels"></div>
   </div>
+  <!-- FIX #13: Weekly log section -->
+  <div class="weekly-log-section" id="weekly-log-section"></div>
   <div id="today-log-section" style="margin-top:18px"></div>
 </div>
 <!-- THIS WEEK -->
@@ -473,7 +510,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <div style="font-size:0.76rem;color:var(--muted2)" id="all-sessions-sub">Showing from today onwards.</div>
     </div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-      <button class="log-fab-btn" id="toggle-past-btn" onclick="togglePastSessions()" style="font-size:0.6rem;padding:4px 10px">Show earlier this week</button>
+      <button class="log-topbar-btn" id="toggle-past-btn" onclick="togglePastSessions()" style="font-size:0.6rem;padding:4px 10px">Show earlier this week</button>
       <span style="font-family:var(--mono);font-size:0.6rem;color:var(--muted)">Filter:</span>
       <button class="task-conf-btn" id="filter-all" onclick="setFilter('all')" style="border-color:var(--amber);color:var(--amber);background:color-mix(in srgb,var(--amber) 10%,transparent)">All</button>
       <button class="task-conf-btn" id="filter-maths" onclick="setFilter('maths')">Maths</button>
@@ -489,13 +526,17 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <div style="font-family:var(--mono);font-size:1.6rem;color:var(--purple);line-height:1;flex-shrink:0;letter-spacing:-0.02em">SP</div>
     <div style="flex:1">
       <div style="font-size:0.98rem;font-weight:700;color:var(--purple);margin-bottom:4px">60 Session Packs &mdash; real past paper questions, 4 tiers each</div>
-      <div style="font-size:0.73rem;color:var(--muted2)">Click any pack to copy the full AI prompt to clipboard &mdash; paste straight into Gemini. Today tasks with a pack show a launch button too.</div>
+      <div style="font-size:0.73rem;color:var(--muted2)">Click any pack to copy the full AI prompt to clipboard &mdash; paste straight into your AI tool. Today tasks with a pack show a launch button too.</div>
     </div>
     <div style="text-align:right;flex-shrink:0"><div style="font-family:var(--mono);font-size:2.5rem;font-weight:700;color:var(--purple);line-height:1">60</div><div style="font-family:var(--mono);font-size:0.5rem;color:var(--muted);text-transform:uppercase">packs</div></div>
   </div>
-  <div style="padding:14px 18px;background:color-mix(in srgb,var(--muted) 8%,transparent);border:1px solid var(--border2);border-radius:10px;margin-bottom:24px;">
+  <div style="padding:14px 18px;background:color-mix(in srgb,var(--muted) 8%,transparent);border:1px solid var(--border2);border-radius:10px;margin-bottom:16px;">
     <div style="font-family:var(--mono);font-size:0.58rem;text-transform:uppercase;letter-spacing:.1em;color:var(--amber);margin-bottom:8px">How to use</div>
-    <div style="font-size:0.77rem;color:var(--muted2);line-height:1.8">1. Click a pack below (or the <span style="font-family:var(--mono);font-size:0.68rem;padding:1px 6px;border-radius:5px;border:1px solid color-mix(in srgb,var(--purple) 40%,transparent);color:var(--purple);background:color-mix(in srgb,var(--purple) 8%,transparent)">&blacktriangleright; pack</span> button in Today).<br>2. Hit <b style="color:var(--text)">Copy prompt</b>. Full 4-tier block goes to clipboard.<br>3. Paste into Gemini. Cold recall only &mdash; no hints.<br>4. Work Tier 1 &rarr; 4. Log confidence when done.</div>
+    <div style="font-size:0.77rem;color:var(--muted2);line-height:1.8">1. Click a pack below (or the <span style="font-family:var(--mono);font-size:0.68rem;padding:1px 6px;border-radius:5px;border:1px solid color-mix(in srgb,var(--purple) 40%,transparent);color:var(--purple);background:color-mix(in srgb,var(--purple) 8%,transparent)">&blacktriangleright; pack</span> button in Today).<br>2. Hit <b style="color:var(--text)">Copy prompt</b>. Full 4-tier block goes to clipboard.<br>3. Paste into your AI tool. Cold recall only &mdash; no hints.<br>4. Work Tier 1 &rarr; 4. Log confidence when done.</div>
+  </div>
+  <!-- FIX #14: Pack search bar -->
+  <div class="pack-search-wrap">
+    <input type="text" id="pack-search" placeholder="Search packs... (e.g. boolean, integration, sql)" oninput="filterPacks(this.value)">
   </div>
   <div id="packs-loading" style="font-family:var(--mono);font-size:0.72rem;color:var(--muted);padding:20px 0">Loading pack data&hellip;</div>
   <div id="packs-content" style="display:none;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
@@ -536,8 +577,33 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         <div class="bar"><div class="bar-fill" style="width:22%;background:var(--red)"></div></div>
       </div>
       <div class="subj-note">Pure 1: 3 Jun &middot; Pure 2: 11 Jun &middot; S&amp;M: 18 Jun. Recurring losses: product rule inside implicit diff, bracket omission in parametric fractions.</div>
-      <div class="gb-section"><div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('maths')">edit</button></div><div class="gb-grid" id="gb-maths"></div></div>
-      <div class="chart-wrap"><div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('maths')">+ Add score</button></div><div style="height:80px;position:relative"><canvas id="chart-maths"></canvas></div></div>
+      <div class="gb-section">
+        <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="toggleGbForm('maths')">edit</button></div>
+        <div class="gb-grid" id="gb-maths"></div>
+        <!-- FIX #20: Inline grade boundary edit form -->
+        <div id="gb-form-maths" style="display:none" class="gb-inline-form">
+          <div class="gb-inline-form-row"><label>Grade</label><input type="text" id="gb-grade-maths" placeholder="A" maxlength="3"></div>
+          <div class="gb-inline-form-row"><label>Boundary %</label><input type="number" id="gb-pct-maths" placeholder="60" min="0" max="100"></div>
+          <div class="gb-form-actions">
+            <button class="inline-score-form save-btn" style="background:color-mix(in srgb,var(--maths) 12%,transparent);border-color:color-mix(in srgb,var(--maths) 35%,transparent);color:var(--maths);font-family:var(--mono);font-size:0.6rem;padding:4px 10px;border-radius:8px;cursor:pointer;border:1px solid;" onclick="saveGbForm('maths')">Save</button>
+            <button class="inline-score-form cancel-btn" style="background:transparent;border-color:var(--border2);color:var(--muted2);font-family:var(--mono);font-size:0.6rem;padding:4px 10px;border-radius:8px;cursor:pointer;border:1px solid;" onclick="toggleGbForm('maths')">Cancel</button>
+          </div>
+          <div class="inline-score-err" id="gb-err-maths"></div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-wrap-title">Mock trend
+          <!-- FIX #17: Inline add-score form -->
+          <button class="add-mock-btn" id="add-mock-btn-maths" onclick="toggleMockForm('maths')">+ Add score</button>
+        </div>
+        <div id="mock-form-maths" style="display:none" class="inline-score-form">
+          <input type="text" id="mock-input-maths" placeholder="e.g. 45/100 or 45%">
+          <button class="save-btn" onclick="submitMockForm('maths')">Save</button>
+          <button class="cancel-btn" onclick="toggleMockForm('maths')">Cancel</button>
+        </div>
+        <div class="inline-score-err" id="mock-err-maths"></div>
+        <div style="height:80px;position:relative"><canvas id="chart-maths"></canvas></div>
+      </div>
     </div>
     <div class="subj-card e">
       <div class="subj-name">Economics</div>
@@ -551,8 +617,29 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         <div class="bar"><div class="bar-fill" style="width:41%;background:var(--econ)"></div></div>
       </div>
       <div class="subj-note">P1 (Theme 1+4): 11 May &middot; P2 (Theme 3+2): 18 May &middot; P3 (Competition): 4 Jun. Failures: elastic/inelastic terminology, diagram avoidance, not using extract data.</div>
-      <div class="gb-section"><div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('econ')">edit</button></div><div class="gb-grid" id="gb-econ"></div></div>
-      <div class="chart-wrap"><div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('econ')">+ Add score</button></div><div style="height:80px;position:relative"><canvas id="chart-econ"></canvas></div></div>
+      <div class="gb-section">
+        <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="toggleGbForm('econ')">edit</button></div>
+        <div class="gb-grid" id="gb-econ"></div>
+        <div id="gb-form-econ" style="display:none" class="gb-inline-form">
+          <div class="gb-inline-form-row"><label>Grade</label><input type="text" id="gb-grade-econ" placeholder="A" maxlength="3"></div>
+          <div class="gb-inline-form-row"><label>Boundary %</label><input type="number" id="gb-pct-econ" placeholder="68" min="0" max="100"></div>
+          <div class="gb-form-actions">
+            <button style="background:color-mix(in srgb,var(--econ) 12%,transparent);border-color:color-mix(in srgb,var(--econ) 35%,transparent);color:var(--econ);font-family:var(--mono);font-size:0.6rem;padding:4px 10px;border-radius:8px;cursor:pointer;border:1px solid;" onclick="saveGbForm('econ')">Save</button>
+            <button style="background:transparent;border-color:var(--border2);color:var(--muted2);font-family:var(--mono);font-size:0.6rem;padding:4px 10px;border-radius:8px;cursor:pointer;border:1px solid;" onclick="toggleGbForm('econ')">Cancel</button>
+          </div>
+          <div class="inline-score-err" id="gb-err-econ"></div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-wrap-title">Mock trend <button class="add-mock-btn" id="add-mock-btn-econ" onclick="toggleMockForm('econ')">+ Add score</button></div>
+        <div id="mock-form-econ" style="display:none" class="inline-score-form">
+          <input type="text" id="mock-input-econ" placeholder="e.g. 45/100 or 45%">
+          <button class="save-btn" onclick="submitMockForm('econ')">Save</button>
+          <button class="cancel-btn" onclick="toggleMockForm('econ')">Cancel</button>
+        </div>
+        <div class="inline-score-err" id="mock-err-econ"></div>
+        <div style="height:80px;position:relative"><canvas id="chart-econ"></canvas></div>
+      </div>
     </div>
     <div class="subj-card c">
       <div class="subj-name">Computer Science</div>
@@ -566,12 +653,44 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
         <div class="bar"><div class="bar-fill" style="width:50%;background:var(--cs)"></div></div>
       </div>
       <div class="subj-note">P1 (Computer Systems): 10 Jun &middot; P2 (Algorithms): 17 Jun. NEA est. 60/70 submitted. Priority gaps: Boolean algebra, scheduling, normalisation, TCP/IP.</div>
-      <div class="gb-section"><div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="editGradeBounds('cs')">edit</button></div><div class="gb-grid" id="gb-cs"></div></div>
-      <div class="chart-wrap"><div class="chart-wrap-title">Mock trend <button class="add-mock-btn" onclick="promptAddMock('cs')">+ Add score</button></div><div style="height:80px;position:relative"><canvas id="chart-cs"></canvas></div></div>
+      <div class="gb-section">
+        <div class="gb-header"><span class="gb-section-lbl">Grade boundaries</span><button class="gb-edit-btn" onclick="toggleGbForm('cs')">edit</button></div>
+        <div class="gb-grid" id="gb-cs"></div>
+        <div id="gb-form-cs" style="display:none" class="gb-inline-form">
+          <div class="gb-inline-form-row"><label>Grade</label><input type="text" id="gb-grade-cs" placeholder="B" maxlength="3"></div>
+          <div class="gb-inline-form-row"><label>Boundary %</label><input type="number" id="gb-pct-cs" placeholder="55" min="0" max="100"></div>
+          <div class="gb-form-actions">
+            <button style="background:color-mix(in srgb,var(--cs) 12%,transparent);border-color:color-mix(in srgb,var(--cs) 35%,transparent);color:var(--cs);font-family:var(--mono);font-size:0.6rem;padding:4px 10px;border-radius:8px;cursor:pointer;border:1px solid;" onclick="saveGbForm('cs')">Save</button>
+            <button style="background:transparent;border-color:var(--border2);color:var(--muted2);font-family:var(--mono);font-size:0.6rem;padding:4px 10px;border-radius:8px;cursor:pointer;border:1px solid;" onclick="toggleGbForm('cs')">Cancel</button>
+          </div>
+          <div class="inline-score-err" id="gb-err-cs"></div>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <div class="chart-wrap-title">Mock trend <button class="add-mock-btn" id="add-mock-btn-cs" onclick="toggleMockForm('cs')">+ Add score</button></div>
+        <div id="mock-form-cs" style="display:none" class="inline-score-form">
+          <input type="text" id="mock-input-cs" placeholder="e.g. 45/100 or 45%">
+          <button class="save-btn" onclick="submitMockForm('cs')">Save</button>
+          <button class="cancel-btn" onclick="toggleMockForm('cs')">Cancel</button>
+        </div>
+        <div class="inline-score-err" id="mock-err-cs"></div>
+        <div style="height:80px;position:relative"><canvas id="chart-cs"></canvas></div>
+      </div>
     </div>
   </div>
   <div class="gaps-card">
     <div class="card-title" style="display:flex;align-items:center;gap:8px">Priority Gaps <span class="gaps-hint">&middot; click row = done &middot; click dot = change priority &middot; conf dots = confidence (1&ndash;5)</span></div>
+    <!-- FIX #15: Confidence legend -->
+    <div class="conf-legend">
+      <div class="conf-legend-item"><div class="conf-legend-dot" style="background:var(--muted)"></div>1 · Not started</div>
+      <div class="conf-legend-item"><div class="conf-legend-dot" style="background:var(--red)"></div>2 · Seen it</div>
+      <div class="conf-legend-item"><div class="conf-legend-dot" style="background:var(--amber)"></div>3 · Shaky</div>
+      <div class="conf-legend-item"><div class="conf-legend-dot" style="background:var(--maths)"></div>4 · Solid</div>
+      <div class="conf-legend-item"><div class="conf-legend-dot" style="background:var(--cyan)"></div>5 · Locked in</div>
+      <div class="conf-legend-item" style="margin-left:auto"><div class="conf-legend-dot" style="background:var(--red)"></div>Red dot = hot priority</div>
+      <div class="conf-legend-item"><div class="conf-legend-dot" style="background:var(--amber)"></div>Amber = medium</div>
+      <div class="conf-legend-item"><div class="conf-legend-dot" style="background:var(--muted)"></div>Grey = low</div>
+    </div>
     <div id="gaps-container"></div>
   </div>
 </div>
@@ -586,7 +705,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <h2 style="font-size:1.3rem;font-weight:700;color:var(--amber);margin-bottom:4px;">OCR H446 NEA &mdash; Investment Simulator</h2>
       <p style="font-size:0.82rem;color:var(--muted2);">Submitted 27 Mar 2026 &middot; Unity/C# &middot; <strong style="color:var(--amber)">Self-assessed estimate only</strong></p>
       <div style="display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap;">
-        <span style="font-family:var(--mono);font-size:0.65rem;padding:3px 10px;border-radius:20px;background:color-mix(in srgb,var(--amber) 12%,transparent);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent);color:var(--amber);font-weight:700;">GRADE A (est.) &middot; PENDING MODERATION</span>
+        <span style="font-family:var(--mono);font-size:0.65rem;padding:3px 10px;border-radius:20px;background:color-mix(in srgb,var(--amber) 12%,transparent);border:1px solid color-mix(in srgb,var(--amber) 30%,transparent);color:var(--amber);font-weight:700;">GRADE B (est.) &middot; PENDING MODERATION</span>
       </div>
       <p style="font-size:0.76rem;color:var(--muted2);margin-top:10px;line-height:1.6;">Official mark expected before end of week starting <b style="color:var(--text)">19 April 2026</b>. Do not count on this grade until confirmed.</p>
     </div>
@@ -610,6 +729,8 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
       <div class="uni-card" style="border-top:3px solid var(--econ)"><div class="uni-name">Reading</div><div class="uni-offer">BCC + B in Maths</div><div class="uni-note">Insurance &mdash; achievable</div></div>
       <div class="uni-card" style="border-top:3px solid var(--border2);background:color-mix(in srgb,var(--muted) 10%,var(--surface2))"><div class="uni-name" style="color:var(--muted2)">Outcome paths</div><div style="font-size:0.72rem;color:var(--muted2);margin-top:6px;line-height:1.6">Maths A &rarr; QMUL/Sussex/City<br>Maths B &rarr; Exeter or Reading<br>Maths C &rarr; Reading (BCC)</div></div>
     </div>
+    <!-- FIX #11: Live offer status -->
+    <div id="offer-status-banner" class="offer-status-banner" style="display:none"></div>
   </div>
 </div>
 <!-- GUIDE -->
@@ -618,34 +739,18 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <div style="margin-bottom:28px"><div style="font-size:1.15rem;font-weight:700;margin-bottom:5px">Dashboard Guide</div><div style="font-size:0.8rem;color:var(--muted2)">How everything works.</div></div>
     <div class="guide-section"><div class="guide-h">Session structure (post-Easter)</div><p class="guide-p"><b>Alternating days:</b> Maths 11am&ndash;1pm hard cap (2hrs), CS or Econ 11am&ndash;12:30pm (1.5hrs). Hard cap on Maths is non-negotiable &mdash; burnout wipes out secondary subjects.</p><p class="guide-p"><b>Missed sessions:</b> Reschedule to next available alternate slot. Never stack mid-week.</p></div>
     <div class="guide-section"><div class="guide-h">Theme</div><p class="guide-p">Use the <b>Auto / Light / Dark</b> toggle in the top-right. Auto follows OS preference. Saved to localStorage across sessions.</p></div>
-    <div class="guide-section"><div class="guide-h">Session packs</div><p class="guide-p">Tasks with a matching pack show a <span style="font-family:var(--mono);font-size:0.7rem;padding:1px 6px;border-radius:5px;border:1px solid color-mix(in srgb,var(--purple) 40%,transparent);color:var(--purple);background:color-mix(in srgb,var(--purple) 8%,transparent)">&blacktriangleright; pack</span> button. Click &rarr; modal &rarr; Copy prompt &rarr; paste into Gemini. 60 packs also browsable on the Session Packs tab.</p></div>
+    <div class="guide-section"><div class="guide-h">Session packs</div><p class="guide-p">Tasks with a matching pack show a <span style="font-family:var(--mono);font-size:0.7rem;padding:1px 6px;border-radius:5px;border:1px solid color-mix(in srgb,var(--purple) 40%,transparent);color:var(--purple);background:color-mix(in srgb,var(--purple) 8%,transparent)">&blacktriangleright; pack</span> button. Click &rarr; modal &rarr; Copy prompt &rarr; paste into your AI tool. 60 packs also browsable on the Session Packs tab.</p></div>
     <div class="guide-section"><div class="guide-h">Confidence scale (1&ndash;5)</div><div class="guide-kv"><span class="guide-key">1 &middot; Not started</span><span class="guide-val">Haven&apos;t touched it.</span><span class="guide-key">2 &middot; Seen it</span><span class="guide-val">Looked at it but can&apos;t do questions cold.</span><span class="guide-key">3 &middot; Shaky</span><span class="guide-val">Can attempt but still making errors.</span><span class="guide-key">4 &middot; Solid</span><span class="guide-val">Can do exam questions with minor slips.</span><span class="guide-key">5 &middot; Locked in</span><span class="guide-val">Reliable under timed exam conditions.</span></div></div>
     <div class="guide-section"><div class="guide-h">Data &amp; storage</div><p class="guide-p">All state lives in <code>localStorage</code>. Survives reloads on same device/browser. Schedule is hardcoded &mdash; edit source and push to GitHub Pages to update.</p></div>
   </div>
 </div>
 <div class="footer">A in Maths is non-negotiable &middot; QMUL/Sussex/City all require it &middot; every session counts</div>
-<!-- TIMER FAB -->
-<div class="timer-fab">
-  <div class="timer-sess-txt" id="timer-sess"></div>
-  <div style="display:flex;gap:4px;margin-bottom:2px;">
-    <button class="log-fab-btn" id="timer-30" onclick="setTimerDuration(30)" style="font-size:0.5rem;padding:3px 8px;">30m</button>
-    <button class="log-fab-btn" id="timer-60" onclick="setTimerDuration(60)" style="font-size:0.5rem;padding:3px 8px;">60m</button>
-  </div>
-  <button class="timer-btn" id="timer-btn" onclick="toggleTimer()" oncontextmenu="event.preventDefault();resetTimer()" title="Click: start/pause &middot; Right-click: reset">
-    <div class="timer-time-txt" id="timer-time">60:00</div>
-    <div class="timer-sub-txt" id="timer-lbl">START</div>
-  </button>
-  <button class="log-fab-btn" onclick="showSessionLog(false)">Log session</button>
-</div>
 
 <!-- RESCHEDULE MODAL -->
 <div class="rs-overlay" id="rs-overlay" onclick="if(event.target===this)closeRescheduleModal()">
   <div class="rs-modal">
     <div class="rs-header">
-      <div>
-        <div class="rs-title">Reschedule a session</div>
-        <div class="rs-sub" id="rs-sub">Pick a session, then pick the new date.</div>
-      </div>
+      <div><div class="rs-title">Reschedule a session</div><div class="rs-sub" id="rs-sub">Pick a session, then pick the new date.</div></div>
       <button class="rs-close" onclick="closeRescheduleModal()">&#x2715;</button>
     </div>
     <div class="rs-body">
@@ -676,6 +781,7 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     <div class="pack-modal-body"><pre id="pack-modal-content">Loading&hellip;</pre></div>
   </div>
 </div>
+
 <!-- SESSION LOG MODAL -->
 <div class="slog-overlay" id="slog-overlay" onclick="if(event.target===this)closeSessionLog()">
   <div class="slog-modal">
@@ -701,13 +807,13 @@ body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:1
     </div>
   </div>
 </div>
+
 <script>
-// ── THEME ──────────────────────────────────────────────────────────────────────
+// ── FIX #2: Single, correct setTheme using the actual IDs in the HTML ─────────
 function setTheme(t){
   if(t==='auto'){delete document.documentElement.dataset.theme;localStorage.removeItem('theme_pref');}
   else{document.documentElement.dataset.theme=t;localStorage.setItem('theme_pref',t);}
   updateThemeUI();
-  // Re-render charts with new theme colours
   if(typeof renderCharts==='function')setTimeout(renderCharts,60);
 }
 function updateThemeUI(){
@@ -724,64 +830,42 @@ const CONF_LABELS={0:'—',1:'Not started',2:'Seen it',3:'Shaky',4:'Solid',5:'Lo
 const CONF_COLORS={1:'var(--muted)',2:'var(--red)',3:'var(--amber)',4:'var(--maths)',5:'#22d3ee'};
 const CONF_BG={1:'rgba(74,80,112,0.12)',2:'rgba(233,69,96,0.12)',3:'rgba(251,146,60,0.12)',4:'rgba(74,222,128,0.12)',5:'rgba(34,211,238,0.12)'};
 
-// ── PACK LABEL MAPPING (session label → pack ID) ──────────────────────────────
+// FIX #8: Hardcoded grade boundary defaults with real approximate numbers
+const GRADE_BOUND_DEFAULTS={
+  maths:{targetLabel:'A',targetPct:58},
+  econ:{targetLabel:'A',targetPct:68},
+  cs:{targetLabel:'B',targetPct:55}
+};
+
+// ── PACK LABEL MAPPING ────────────────────────────────────────────────────────
 const PACK_LABEL_MAP={
-  'M1':['m1 —','trig integration','sin²x'],
-  'M2':['m2 —','integration by parts','ibp revisit'],
-  'M3':['m3 —','partial fractions'],
-  'M4':['m4 —','substitution + d','pf + de'],
-  'M5':['m5 —','inequalities + m','rational inequal'],
-  'M6':['m6 —','binomial expansion'],
-  'M7':['m7 —','trig identities + r'],
-  'M8':['m8 —','logs + exponential','exponentials + log'],
-  'M9':['m9 —','implicit + para','implicit diff','parametric diff'],
-  'M10':['m10 —','sequences + series'],
-  'M11':['m11 —','numerical methods + v'],
-  'M12':['m12 —','coordinate geom'],
-  'S1':['s1 —','statistical sampling'],
-  'S2':['s2 —','data presentation'],
-  'S3':['s3 —','binomial distribution'],
-  'S4':['s4 —','normal distribution'],
-  'S5':['s5 —','hypothesis testing'],
-  'S6':['s6 —','kinematics'],
-  'S7':['s7 —',"forces + newton","newton's laws"],
-  'S8':['s8 —','moments + inclined'],
-  'S9':['s9 —','s&m timed'],
-  'E1':['e1 —','core diagrams','diagrams revisit'],
-  'E2':['e2 —','efficiency + market'],
-  'E3':['e3 —','oligopoly','kinked demand','game theory'],
-  'E4':['e4 —','ad/as + economic cycle','macro: ad/as'],
-  'E5':['e5 —','macro policy','fiscal + monetary','transmission mech'],
-  'E6':['e6 —','globalisation','labour markets'],
-  'E7':['e7 —','p3 competition synoptic','cma + contestab'],
-  'E8':['e8 —','timed essay','20-mark essay'],
-  'CS-P1.1':['cs-p1.1','scheduling + lmc'],
-  'CS-P1.2':['cs-p1.2','boolean algebra'],
-  'CS-P1.3':['cs-p1.3','normalisation','sql'],
-  'CS-P1.4':['cs-p1.4','tcp/ip','networking + compress'],
-  'CS-P1.5':['cs-p1.5','cpu architecture','cisc/risc'],
-  'CS-P1.6':['cs-p1.6','os + memory','methodologies'],
-  'CS-P1.7':['cs-p1.7','web tech','legal/ethical'],
-  'CS-P2.1':['cs-p2.1','stack/queue pseudocode'],
-  'CS-P2.2':['cs-p2.2','recursion + isr'],
-  'CS-P2.3':['cs-p2.3','floating point + bfs'],
-  'CS-P2.4':['cs-p2.4',"dijkstra's + sorting",'algorithms: bfs'],
-  'CS-TIMED-P1':['cs-timed-p1','cs p1 timed'],
-  'CS-TIMED-P2':['cs-timed-p2','cs p2 timed'],
+  'M1':['m1 —','trig integration','sin²x'],'M2':['m2 —','integration by parts','ibp revisit'],
+  'M3':['m3 —','partial fractions'],'M4':['m4 —','substitution + d','pf + de'],
+  'M5':['m5 —','inequalities + m','rational inequal'],'M6':['m6 —','binomial expansion'],
+  'M7':['m7 —','trig identities + r'],'M8':['m8 —','logs + exponential','exponentials + log'],
+  'M9':['m9 —','implicit + para','implicit diff','parametric diff'],'M10':['m10 —','sequences + series'],
+  'M11':['m11 —','numerical methods + v'],'M12':['m12 —','coordinate geom'],
+  'S1':['s1 —','statistical sampling'],'S2':['s2 —','data presentation'],
+  'S3':['s3 —','binomial distribution'],'S4':['s4 —','normal distribution'],
+  'S5':['s5 —','hypothesis testing'],'S6':['s6 —','kinematics'],
+  'S7':['s7 —',"forces + newton","newton's laws"],'S8':['s8 —','moments + inclined'],
+  'S9':['s9 —','s&m timed'],'E1':['e1 —','core diagrams','diagrams revisit'],
+  'E2':['e2 —','efficiency + market'],'E3':['e3 —','oligopoly','kinked demand','game theory'],
+  'E4':['e4 —','ad/as + economic cycle','macro: ad/as'],'E5':['e5 —','macro policy','fiscal + monetary','transmission mech'],
+  'E6':['e6 —','globalisation','labour markets'],'E7':['e7 —','p3 competition synoptic','cma + contestab'],
+  'E8':['e8 —','timed essay','20-mark essay'],'CS-P1.1':['cs-p1.1','scheduling + lmc'],
+  'CS-P1.2':['cs-p1.2','boolean algebra'],'CS-P1.3':['cs-p1.3','normalisation','sql'],
+  'CS-P1.4':['cs-p1.4','tcp/ip','networking + compress'],'CS-P1.5':['cs-p1.5','cpu architecture','cisc/risc'],
+  'CS-P1.6':['cs-p1.6','os + memory','methodologies'],'CS-P1.7':['cs-p1.7','web tech','legal/ethical'],
+  'CS-P2.1':['cs-p2.1','stack/queue pseudocode'],'CS-P2.2':['cs-p2.2','recursion + isr'],
+  'CS-P2.3':['cs-p2.3','floating point + bfs'],'CS-P2.4':['cs-p2.4',"dijkstra's + sorting",'algorithms: bfs'],
+  'CS-TIMED-P1':['cs-timed-p1','cs p1 timed'],'CS-TIMED-P2':['cs-timed-p2','cs p2 timed'],
   'DIAG':['cross-subject diagnostic','cold recall','diagnostic'],
   'GAP-DRILL':['gap drill','gap drill','worst 1-2 topics','worst 1','targeted remediation'],
 };
-
-function getPackIdForLabel(label){
-  const l=label.toLowerCase();
-  for(const[packId,keywords]of Object.entries(PACK_LABEL_MAP)){
-    if(keywords.some(kw=>l.includes(kw)))return packId;
-  }
-  return null;
-}
+function getPackIdForLabel(label){const l=label.toLowerCase();for(const[packId,keywords]of Object.entries(PACK_LABEL_MAP)){if(keywords.some(kw=>l.includes(kw)))return packId;}return null;}
 
 // ── SESSION DATA ──────────────────────────────────────────────────────────────
-// archived:true → streak history only, never shown in UI
 const SESSIONS={
   '2026-03-30':[{sub:'maths',label:'M1 — Trig integration',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P1.1 — Scheduling + LMC',dur:'2hrs',archived:true}],
   '2026-03-31':[{sub:'maths',label:'M2 — Integration by parts',dur:'2hrs',archived:true},{sub:'econ',label:'E1 — Core diagrams',dur:'2hrs',archived:true}],
@@ -795,7 +879,7 @@ const SESSIONS={
   '2026-04-08':[{sub:'maths',label:'M10 — Exponentials + logarithms',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P1.3 — Normalisation + SQL',dur:'2hrs',archived:true}],
   '2026-04-09':[{sub:'maths',label:'M11 — Sequences + series',dur:'2hrs',archived:true},{sub:'econ',label:'E6 — Supply-side + P3 competition',dur:'2hrs',archived:true}],
   '2026-04-10':[{sub:'maths',label:'M12 — Numerical methods + vectors',dur:'2hrs',archived:true},{sub:'cs',label:'CS-P2.3 — Floating point + BFS/DFS',dur:'2hrs',archived:true}],
-    '2026-04-11':[
+  '2026-04-11':[
     {sub:'multi',subs:['maths','econ','cs'],label:'Cross-subject diagnostic (cold recall)',dur:'1.5hrs',detail:'Rescheduled to Sun 12 Apr — see Sunday.',archived:true},
     {sub:'multi',subs:['maths','econ','cs'],label:'Gap drill — worst 1-2 topics from diagnostic',dur:'45min',detail:'Rescheduled to Sun 12 Apr — see Sunday.',archived:true},
   ],
@@ -873,8 +957,26 @@ const SESSIONS={
   '2026-06-18':[{sub:'maths',label:'⚡ MATHS S&M EXAM — 13:30pm',detail:'9MA0/03 · Statistics & Mechanics · 2h30m. FINAL EXAM.'}],
 };
 
+// FIX #16: All exam dates per subject — countdown picks next upcoming one
+const EXAM_SCHEDULE={
+  econ:['2026-05-11','2026-05-18','2026-06-04'],
+  maths:['2026-06-03','2026-06-11','2026-06-18'],
+  cs:['2026-06-10','2026-06-17']
+};
+const EXAM_NAMES={
+  'econ':['Economics P1','Economics P2','Econ P3 (Synoptic)'],
+  'maths':['Maths Pure 1','Maths Pure 2','Maths S&M'],
+  'cs':['CS Paper 1','CS Paper 2']
+};
+const EXAM_NEXT_LABELS={
+  econ:{1:'P2 <b>18 May</b> &middot; P3 <b>4 Jun</b>',2:'P3 <b>4 Jun</b>',3:''},
+  maths:{1:'Pure 2 <b>11 Jun</b> &middot; S&amp;M <b>18 Jun</b>',2:'S&amp;M <b>18 Jun</b>',3:''},
+  cs:{1:'P2 <b>17 Jun</b>',2:''}
+};
+
 const EXAM_DAYS={'2026-05-11':'Econ P1','2026-05-18':'Econ P2','2026-06-03':'Maths Pure 1','2026-06-04':'Econ P3','2026-06-10':'CS Paper 1','2026-06-11':'Maths Pure 2','2026-06-17':'CS Paper 2','2026-06-18':'Maths S&M'};
 const PHASES=[{label:'Phase 1',start:'2026-03-09',end:'2026-03-29',desc:'Pre-Easter'},{label:'Phase 2',start:'2026-03-30',end:'2026-04-12',desc:'Easter — library daily'},{label:'Phase 3',start:'2026-04-13',end:'2026-05-10',desc:'Back at college'},{label:'Phase 4',start:'2026-05-11',end:'2026-06-02',desc:'Econ exams'},{label:'Phase 5',start:'2026-06-03',end:'2026-06-18',desc:'Maths + CS exams'}];
+
 const PRIORITY_GAPS=[
   {key:'m_trig_int',sub:'maths',name:'Trig integration (sin²x, cos²x)',defPrio:'hot',examDate:'2026-06-03'},
   {key:'m_ibp',sub:'maths',name:'Integration by parts',defPrio:'hot',examDate:'2026-06-03'},
@@ -916,9 +1018,9 @@ const PRIORITY_GAPS=[
   {key:'c_sql',sub:'cs',name:'SQL (SELECT, JOIN, ORDER BY)',defPrio:'med',examDate:'2026-06-10'},
   {key:'c_comp',sub:'cs',name:'Compression (RLE, Huffman, lossy)',defPrio:'med',examDate:'2026-06-10'},
   {key:'c_bfs',sub:'cs',name:'BFS/DFS traversal',defPrio:'low',examDate:'2026-06-17'},
-  {key:'c_kmap',sub:'cs',name:'Karnaugh maps',defPrio:'low',examDate:'2026-06-10'}];
+  {key:'c_kmap',sub:'cs',name:'Karnaugh maps',defPrio:'low',examDate:'2026-06-10'}
+];
 
-// Seed initial completion state
 const INITIAL_TASKS_DONE={'2026-03-30':[0,1],'2026-03-31':[0,1],'2026-04-01':[0,1],'2026-04-02':[0],'2026-04-04':[0]};
 const INITIAL_GAP_STATE={'m_trig_int':{confidence:4,lastRevised:Date.parse('2026-03-30T18:00:00')},'m_ibp':{confidence:4,lastRevised:Date.parse('2026-03-31T18:00:00')},'m_pf':{confidence:4,lastRevised:Date.parse('2026-04-01T18:00:00')},'m_pf_int':{confidence:4,lastRevised:Date.parse('2026-04-02T18:00:00')},'m_ineq':{confidence:4,lastRevised:Date.parse('2026-04-04T18:00:00')},'c_sched':{confidence:3,lastRevised:Date.parse('2026-03-30T18:00:00')},'c_lmc':{confidence:3,lastRevised:Date.parse('2026-03-30T18:00:00')},'c_pp':{confidence:3,lastRevised:Date.parse('2026-04-01T18:00:00')},'e_diag':{confidence:3,lastRevised:Date.parse('2026-03-31T18:00:00')}};
 const INITIAL_STREAK={'2026-03-30':2,'2026-03-31':2,'2026-04-01':2,'2026-04-02':1,'2026-04-04':1};
@@ -939,16 +1041,13 @@ const MOCK_DEFAULTS={
 const SUB_COL={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)',nea:'var(--purple)',am:'var(--amber)',college:'var(--muted2)','':'var(--muted)'};
 const SUB_BADGE_CLASS={maths:'badge-m',econ:'badge-e',cs:'badge-c',nea:'badge-nea',multi:'badge-multi'};
 
-// Multi-subject badge renderer
 function getSubBadgeHTML(s,size){
   var sz=size||'';
   if(s.sub==='multi'&&s.subs&&s.subs.length){
     var cols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};
     var labels={maths:'Maths',econ:'Econ',cs:'CS'};
     var pct=100/s.subs.length;
-    var stops=s.subs.map(function(sub,i){
-      return 'color-mix(in srgb,'+cols[sub]+' 60%,transparent) '+(i*pct)+'% '+(i*pct+pct)+'%';
-    }).join(',');
+    var stops=s.subs.map(function(sub,i){return 'color-mix(in srgb,'+cols[sub]+' 60%,transparent) '+(i*pct)+'% '+(i*pct+pct)+'%';}).join(',');
     return '<span class="sub-badge badge-multi" style="background:linear-gradient(90deg,'+stops+');color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.5);'+sz+'">'+s.subs.map(function(sub){return labels[sub];}).join('+')+'</span>';
   }
   var cls=SUB_BADGE_CLASS[s.sub]||'badge-m';
@@ -966,21 +1065,34 @@ function getPhase(){const t=today();for(const p of PHASES){const ps=toDate(p.sta
 function lsGet(k,def){try{return JSON.parse(localStorage.getItem(k)||'null')??def;}catch(e){return def;}}
 function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 
+// ── FIX #10: Session window banner ────────────────────────────────────────────
+function renderSessionWindowBanner(){
+  const el=document.getElementById('session-window-banner');if(!el)return;
+  const h=new Date().getHours();
+  const open=h>=9&&h<13;
+  el.style.background=open?'color-mix(in srgb,var(--maths) 5%,var(--bg))':'color-mix(in srgb,var(--muted) 4%,var(--bg))';
+  el.style.borderBottom='1px solid var(--border)';
+  const dot=open?'var(--maths)':'var(--muted)';
+  const msg=open?'Session window open — good time to start':'Session window closed — log topics or review only';
+  el.innerHTML=`<div class="swb-dot" style="background:${dot}"></div><span style="color:${open?'var(--maths)':'var(--muted2)'}">${msg}</span>`;
+}
+
 // ── PACK MODAL ─────────────────────────────────────────────────────────────────
 let packDataCache=null;let packDataLoading=false;
-
 function loadPackData(cb){
   if(packDataCache){cb(packDataCache);return;}
   if(packDataLoading){setTimeout(()=>loadPackData(cb),100);return;}
   packDataLoading=true;
-  const s=document.createElement('script');
-  s.src='packs.js';
+  const s=document.createElement('script');s.src='packs.js';
   s.onload=()=>{packDataCache=window.SESSION_PACK_DATA||{};packDataLoading=false;cb(packDataCache);};
   s.onerror=()=>{packDataLoading=false;packDataCache={};cb({});};
   document.head.appendChild(s);
 }
 
+// FIX #6: Capture packId locally to avoid race condition on re-open
+let _currentPackId=null;
 function openPackModal(packId){
+  _currentPackId=packId; // capture before async
   loadPackData(data=>{
     const pack=data[packId];
     const overlay=document.getElementById('pack-overlay');
@@ -991,10 +1103,8 @@ function openPackModal(packId){
     else if(packId.startsWith('E'))sub='econ';
     const col=subCols[sub]||'var(--purple)';
     const idEl=document.getElementById('pack-modal-id');
-    idEl.textContent=packId;
-    idEl.style.background=`${col}20`;
-    idEl.style.color=col;
-    idEl.style.border=`1px solid ${col}50`;
+    idEl.textContent=packId;idEl.dataset.packId=packId;
+    idEl.style.background=`${col}20`;idEl.style.color=col;idEl.style.border=`1px solid ${col}50`;
     document.getElementById('pack-modal-title').textContent=pack?pack.title:`Pack ${packId}`;
     document.getElementById('pack-modal-sub').textContent=`${subNames[sub]} · 4 tiers · ~2 hours`;
     const copyBtn=document.getElementById('pack-copy-btn');
@@ -1003,38 +1113,39 @@ function openPackModal(packId){
     document.getElementById('pack-copy-text').textContent='Copy full prompt to clipboard';
     const content=pack?pack.prompt:'Pack data not found — check packs.js is deployed alongside index.html.';
     document.getElementById('pack-modal-content').textContent=content;
-    overlay.classList.add('open');
-    document.body.style.overflow='hidden';
+    overlay.classList.add('open');document.body.style.overflow='hidden';
   });
 }
-
-function closePackModal(){
-  document.getElementById('pack-overlay').classList.remove('open');
-  document.body.style.overflow='';
-}
-
+function closePackModal(){document.getElementById('pack-overlay').classList.remove('open');document.body.style.overflow='';}
 function copyPackPrompt(){
+  // FIX #6: Use captured pack ID, not re-read from DOM
+  const packId=_currentPackId;
+  if(!packId)return;
   loadPackData(data=>{
     const btn=document.getElementById('pack-copy-btn');
-    const idEl=document.getElementById('pack-modal-id');
-    const packId=idEl.textContent;
     const pack=data[packId];
     const text=pack?pack.prompt:'Pack data not available.';
     navigator.clipboard.writeText(text).then(()=>{
       btn.classList.add('copied');
       document.getElementById('pack-copy-icon').textContent='✓';
-      document.getElementById('pack-copy-text').textContent='Copied! Paste into Gemini now';
+      document.getElementById('pack-copy-text').textContent='Copied! Paste into your AI tool now';
       setTimeout(()=>{btn.classList.remove('copied');document.getElementById('pack-copy-icon').textContent='⧉';document.getElementById('pack-copy-text').textContent='Copy full prompt to clipboard';},2500);
-    }).catch(()=>{
-      document.getElementById('pack-copy-text').textContent='Copy failed — select text below manually';
-    });
+    }).catch(()=>{document.getElementById('pack-copy-text').textContent='Copy failed — select text below manually';});
   });
 }
 
-// Close on Escape
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePackModal();closeSessionLog();closeRescheduleModal();}if(e.key==='r'&&!e.ctrlKey&&!e.metaKey&&document.activeElement.tagName!=='INPUT'){openRescheduleModal();}});
+// FIX #19: Escape / R keyboard guard — also blocks when session log is open
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closePackModal();closeSessionLog();closeRescheduleModal();}
+  // FIX #19: guard against slog overlay being open or focus inside a form element
+  if(e.key==='r'&&!e.ctrlKey&&!e.metaKey){
+    const tag=document.activeElement.tagName;
+    const inForm=(tag==='INPUT'||tag==='TEXTAREA'||document.activeElement.closest('.slog-overlay'));
+    if(!inForm)openRescheduleModal();
+  }
+});
 
-// ── PACKS TAB RENDERING ───────────────────────────────────────────────────────
+// ── PACKS TAB ─────────────────────────────────────────────────────────────────
 const PACK_DEFINITIONS=[
   {id:'M1',name:'Trig integration (sin²x, cos²x)',listId:'pack-list-pure',col:'var(--maths)'},
   {id:'M2',name:'Integration by parts',listId:'pack-list-pure',col:'var(--maths)'},
@@ -1077,14 +1188,15 @@ const PACK_DEFINITIONS=[
   {id:'CS-P2.3',name:'Floating point + BFS/DFS',listId:'pack-list-csp2',col:'var(--cs)'},
   {id:'CS-P2.4',name:"Algorithms: Dijkstra's + sorting",listId:'pack-list-csp2',col:'var(--cs)'},
   {id:'CS-TIMED-P1',name:'CS P1 timed past paper (2023 full)',listId:'pack-list-csp2',col:'var(--cs)'},
-  {id:'CS-TIMED-P2',name:'CS P2 timed past paper (2022 full)',listId:'pack-list-csp2',col:'var(--cs)'}];
+  {id:'CS-TIMED-P2',name:'CS P2 timed past paper (2022 full)',listId:'pack-list-csp2',col:'var(--cs)'}
+];
 
 function renderPacksTab(){
   const listIds=['pack-list-pure','pack-list-sm','pack-list-econ','pack-list-csp1','pack-list-csp2'];
   listIds.forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML='';});
   PACK_DEFINITIONS.forEach(p=>{
     const el=document.getElementById(p.listId);if(!el)return;
-    const row=document.createElement('div');row.className='pack-row';
+    const row=document.createElement('div');row.className='pack-row';row.dataset.search=(p.id+' '+p.name).toLowerCase();
     row.onclick=()=>openPackModal(p.id);
     row.innerHTML=`<span class="pack-row-id" style="color:${p.col}">${p.id}</span><span class="pack-row-name">${p.name}</span><span class="pack-row-arrow">▶</span>`;
     el.appendChild(row);
@@ -1093,10 +1205,16 @@ function renderPacksTab(){
   document.getElementById('packs-content').style.display='grid';
 }
 
-// ── ALL SESSIONS ──────────────────────────────────────────────────────────────
-let currentFilter='all';
-let showPastSessions=false;
+// FIX #14: Pack search filter
+function filterPacks(q){
+  const term=q.toLowerCase().trim();
+  document.querySelectorAll('.pack-row').forEach(row=>{
+    row.classList.toggle('hidden',term.length>0&&!row.dataset.search.includes(term));
+  });
+}
 
+// ── ALL SESSIONS ──────────────────────────────────────────────────────────────
+let currentFilter='all';let showPastSessions=false;
 function setFilter(f){
   currentFilter=f;
   ['all','maths','econ','cs'].forEach(x=>{
@@ -1106,17 +1224,11 @@ function setFilter(f){
   });
   renderAllSessions();
 }
-
 function togglePastSessions(){
   showPastSessions=!showPastSessions;
   const btn=document.getElementById('toggle-past-btn');
-  if(btn){
-    btn.textContent=showPastSessions?'Hide earlier this week':'Show earlier this week';
-    btn.style.borderColor=showPastSessions?'var(--amber)':'';
-    btn.style.color=showPastSessions?'var(--amber)':'';
-  }
-  const heading=document.getElementById('all-sessions-heading');
-  const sub=document.getElementById('all-sessions-sub');
+  if(btn){btn.textContent=showPastSessions?'Hide earlier this week':'Show earlier this week';btn.style.borderColor=showPastSessions?'var(--amber)':'';btn.style.color=showPastSessions?'var(--amber)':'';}
+  const heading=document.getElementById('all-sessions-heading');const sub=document.getElementById('all-sessions-sub');
   if(heading)heading.textContent=showPastSessions?'All sessions this week + upcoming':'Today + upcoming sessions';
   if(sub)sub.textContent=showPastSessions?'Including earlier this week.':'Showing from today onwards.';
   renderAllSessions();
@@ -1131,17 +1243,31 @@ function switchTab(id,btn){
   if(id==='all')renderAllSessions();
   if(id==='week')renderWeek();
   if(id==='packs')renderPacksTab();
+  if(id==='nea')renderOfferStatus();
 }
 
+// FIX #16: Countdown advances to next upcoming exam per subject
 function renderCountdowns(){
   const revStart=toDate('2026-03-09');
-  [{id:'econ',date:'2026-05-11',subCol:'var(--econ)'},{id:'maths',date:'2026-06-03',subCol:'var(--maths)'},{id:'cs',date:'2026-06-10',subCol:'var(--cs)'}].forEach(e=>{
-    const d=daysUntil(e.date);const urgCol=d<60?'var(--red)':d<90?'var(--amber)':e.subCol;const urgText=d<60?'URGENT':d<90?'BUILD NOW':'ON TRACK';
-    document.getElementById('cd-'+e.id).textContent=d;document.getElementById('cd-'+e.id).style.color=urgCol;
-    const examDate=toDate(e.date);const totalSpan=Math.max(1,examDate-revStart);const elapsed=today()-revStart;
+  const subs=['econ','maths','cs'];
+  subs.forEach(sub=>{
+    const subCol=sub==='econ'?'var(--econ)':sub==='maths'?'var(--maths)':'var(--cs)';
+    const dates=EXAM_SCHEDULE[sub];const names=EXAM_NAMES[sub];
+    // Find next upcoming exam
+    let nextIdx=dates.findIndex(d=>daysUntil(d)>0);
+    if(nextIdx<0)nextIdx=dates.length-1; // all past, show last
+    const nextDate=dates[nextIdx];const d=daysUntil(nextDate);
+    const urgCol=d<60?'var(--red)':d<90?'var(--amber)':subCol;const urgText=d<60?'URGENT':d<90?'BUILD NOW':'ON TRACK';
+    document.getElementById('cd-'+sub).textContent=d;document.getElementById('cd-'+sub).style.color=urgCol;
+    document.getElementById('cd-'+sub+'-name').textContent=names[nextIdx];
+    document.getElementById('cd-'+sub+'-date').textContent=toDate(nextDate).toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+    // Next label
+    const nextLbl=EXAM_NEXT_LABELS[sub][nextIdx+1]||'';
+    document.getElementById('cd-'+sub+'-next').innerHTML=nextLbl;
+    const examDate=toDate(nextDate);const totalSpan=Math.max(1,examDate-revStart);const elapsed=today()-revStart;
     const pct=Math.max(0,Math.min(100,(elapsed/totalSpan)*100));
-    const bar=document.getElementById('cd-'+e.id+'-bar');bar.style.width=pct+'%';bar.style.background=urgCol;
-    const urg=document.getElementById('cd-'+e.id+'-urg');if(urg){urg.textContent=urgText;urg.style.color=urgCol;}
+    const bar=document.getElementById('cd-'+sub+'-bar');bar.style.width=pct+'%';bar.style.background=urgCol;
+    const urg=document.getElementById('cd-'+sub+'-urg');if(urg){urg.textContent=urgText;urg.style.color=urgCol;}
   });
 }
 
@@ -1151,8 +1277,16 @@ function cyclePriority(key,event){
   const next=cur==='hot'?'med':cur==='med'?'low':'hot';const user=lsGet('user_priority',{});user[key]=next;lsSet('user_priority',user);
   renderSmartGaps();renderFocusCard();
 }
+
+// FIX #7: Dynamic urgency — penalise conf>=4 so solid gaps sink below urgent low-conf gaps
 function gapUrgencyScore(g,state){
-  if(state[g.key]?.done)return-1;const prio=getGapPriority(g);const days=Math.max(1,daysUntil(g.examDate));const conf=state[g.key]?.confidence||1;const w=prio==='hot'?2:prio==='med'?1:0.3;return(w*100)/(days*conf);
+  if(state[g.key]?.done)return -1;
+  const prio=getGapPriority(g);const days=Math.max(1,daysUntil(g.examDate));const conf=state[g.key]?.confidence||1;
+  const w=prio==='hot'?2:prio==='med'?1:0.3;
+  const baseScore=(w*100)/(days*conf);
+  // Heavily demote if already solid/locked — no need to keep drilling
+  const confPenalty=conf>=5?0.1:conf>=4?0.25:1;
+  return baseScore*confPenalty;
 }
 
 function renderFocusCard(){
@@ -1167,14 +1301,25 @@ function renderFocusCard(){
 function toggleGapDone(key){const state=lsGet('gap_state',{});state[key]={...state[key],done:!state[key]?.done,lastRevised:Date.now()};lsSet('gap_state',state);renderSmartGaps();renderFocusCard();updateSubjectBars();}
 function setGapConfidence(key,level){const state=lsGet('gap_state',{});const cur=state[key]?.confidence||0;state[key]={...state[key],confidence:cur===level?0:level,lastRevised:Date.now()};lsSet('gap_state',state);renderSmartGaps();renderFocusCard();}
 
+// FIX #9: Days-since-revised decay helper
+function decayHtml(lastRevised){
+  if(!lastRevised)return '';
+  const days=Math.floor((Date.now()-lastRevised)/864e5);
+  if(days<3)return `<span class="gap-decay fresh">${days}d</span>`;
+  if(days<7)return `<span class="gap-decay stale">${days}d ago</span>`;
+  return `<span class="gap-decay overdue">${days}d ago</span>`;
+}
+
 function renderSmartGaps(){
   const state=lsGet('gap_state',{});const subs=['maths','econ','cs'];const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};const subTitles={maths:'MATHS',econ:'ECONOMICS',cs:'COMPUTER SCIENCE'};
   const cols=subs.map(sub=>{
     const gaps=PRIORITY_GAPS.filter(g=>g.sub===sub).sort((a,b)=>gapUrgencyScore(b,state)-gapUrgencyScore(a,state));
     const rows=gaps.map(g=>{
       const s=state[g.key]||{};const conf=s.confidence||0;const done=s.done||false;const prio=getGapPriority(g);const dotCls=prio==='hot'?'dot-hot':prio==='med'?'dot-med':'dot-low';
+      // FIX #9: decay indicator
+      const decay=decayHtml(s.lastRevised);
       const dots=[1,2,3,4,5].map(n=>{const active=n<=conf;const col=active?CONF_COLORS[conf]:'';const style=active?`background:${col};border-color:${col}`:'';return`<div class="conf-dot" style="${style}" onclick="event.stopPropagation();setGapConfidence('${g.key}',${n})" title="${CONF_LABELS[n]}"></div>`;}).join('');
-      return`<div class="gap-row${done?' gap-done':''}" onclick="toggleGapDone('${g.key}')"><div class="gap-dot ${dotCls}" onclick="cyclePriority('${g.key}',event)"></div><span class="gap-name">${g.name}</span><div class="gap-conf">${dots}</div></div>`;
+      return`<div class="gap-row${done?' gap-done':''}" onclick="toggleGapDone('${g.key}')"><div class="gap-dot ${dotCls}" onclick="cyclePriority('${g.key}',event)"></div><span class="gap-name">${g.name}</span><div class="gap-conf">${dots}</div>${decay}</div>`;
     }).join('');
     return`<div><div class="gaps-col-title" style="color:${subCols[sub]}">${subTitles[sub]}</div>${rows}</div>`;
   }).join('');
@@ -1190,9 +1335,7 @@ function updateSubBar(sub,total,lblId,barId){
   var done=0;
   Object.keys(SESSIONS).forEach(function(dk){
     var checked=lsGet('tasks_done_'+dk,[]);
-    (SESSIONS[dk]||[]).forEach(function(s,i){
-      if(s.sub===sub&&!s.archived&&!s.label.includes('EXAM')&&checked.includes(i))done++;
-    });
+    (SESSIONS[dk]||[]).forEach(function(s,i){if(s.sub===sub&&!s.archived&&!s.label.includes('EXAM')&&checked.includes(i))done++;});
   });
   var pct=Math.round(done/total*100);
   var lbl=document.getElementById(lblId);var bar=document.getElementById(barId);
@@ -1232,9 +1375,17 @@ function rescheduleMissed(dk,idx,label,sub){const rescheduled=lsGet('rescheduled
 function findNextFreeEvening(){const rescheduled=lsGet('rescheduled',[]);const t=today();for(let i=0;i<=28;i++){const d=new Date(t.getTime()+i*864e5);const key=dateKey(d);const base=(SESSIONS[key]||[]).filter(s=>!s.archived&&s.sub!=='college'&&s.sub!=='am');const extra=rescheduled.filter(r=>r.targetKey===key);if(base.length+extra.length<2)return{key,label:d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})};}return null;}
 function unrescheduleItem(itemKey){lsSet('rescheduled',lsGet('rescheduled',[]).filter(r=>r.key!==itemKey));renderMissedThisWeek();}
 
+// FIX #18: Bonus only shows when ALL main tasks done
 function getTodayBonusItem(){
   const dismissed=lsGet('dismissed_bonuses',[]);const todayKey=dateKey(today());const state=lsGet('gap_state',{});
-  return PRIORITY_GAPS.filter(g=>{if(dismissed.includes(g.key+'_'+todayKey))return false;if(state[g.key]?.done)return false;if((state[g.key]?.confidence||0)>=4)return false;return true;}).sort((a,b)=>gapUrgencyScore(b,state)-gapUrgencyScore(a,state))[0]||null;
+  // FIX #18: Check if main tasks all done
+  const todaySessions=getSessionsForDate(todayKey).filter(s=>!s.label.includes('EXAM'));
+  const checked=getTodayChecked(todayKey);
+  if(todaySessions.length>0&&checked.length<todaySessions.length)return null;
+  return PRIORITY_GAPS.filter(g=>{
+    if(dismissed.includes(g.key+'_'+todayKey))return false;if(state[g.key]?.done)return false;
+    if((state[g.key]?.confidence||0)>=4)return false;return true;
+  }).sort((a,b)=>gapUrgencyScore(b,state)-gapUrgencyScore(a,state))[0]||null;
 }
 function dismissBonus(key){const d=lsGet('dismissed_bonuses',[]);d.push(key+'_'+dateKey(today()));lsSet('dismissed_bonuses',d);renderBonusSection();}
 function renderBonusSection(){
@@ -1242,15 +1393,20 @@ function renderBonusSection(){
   const item=getTodayBonusItem();if(!item){el.innerHTML='';return;}
   const tag=item.sub==='maths'?'badge-m':item.sub==='econ'?'badge-e':'badge-c';const lab=item.sub==='maths'?'Maths':item.sub==='econ'?'Econ':'CS';
   const packId=getPackIdForLabel(item.name);const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')">▶ pack</button>`:'';
-  el.innerHTML=`<div class="bonus-section"><div class="bonus-lbl">Bonus — only if main tasks done</div><div class="bonus-row"><span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span><span style="font-size:0.78rem;flex:1;color:var(--muted2)">${item.name}</span>${packBtn}<button class="bonus-dismiss-btn" onclick="dismissBonus('${item.key}')">Skip today</button></div></div>`;
+  el.innerHTML=`<div class="bonus-section"><div class="bonus-lbl">Bonus — main tasks done, this is next</div><div class="bonus-row"><span class="sub-badge ${tag}" style="font-size:0.55rem">${lab}</span><span style="font-size:0.78rem;flex:1;color:var(--muted2)">${item.name}</span>${packBtn}<button class="bonus-dismiss-btn" onclick="dismissBonus('${item.key}')">Skip today</button></div></div>`;
 }
 
 function getLatestMock(sub){const h=loadMockHistory();const entries=h[sub]||[];if(!entries.length)return null;return entries[entries.length-1].pct;}
+
+// FIX #8: Use GRADE_BOUND_DEFAULTS when no user-stored bounds exist
 function renderGradeBounds(){
-  const subs=['maths','econ','cs'];const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};const bounds=lsGet('grade_bounds',{});
+  const subs=['maths','econ','cs'];const subCols={maths:'var(--maths)',econ:'var(--econ)',cs:'var(--cs)'};
+  const storedBounds=lsGet('grade_bounds',{});
   subs.forEach(sub=>{
     const el=document.getElementById('gb-'+sub);if(!el)return;
-    const b=bounds[sub]||{};const latestMock=getLatestMock(sub);const targetPct=b.targetPct??null;const targetLabel=b.targetLabel||(sub==='cs'?'B':'A');
+    // FIX #8: merge defaults with user overrides
+    const b={...GRADE_BOUND_DEFAULTS[sub],...(storedBounds[sub]||{})};
+    const latestMock=getLatestMock(sub);const targetPct=b.targetPct??null;const targetLabel=b.targetLabel||(sub==='cs'?'B':'A');
     const targetHTML=targetPct!==null?`<div class="gb-val" style="color:${subCols[sub]}">${targetLabel} · ${targetPct}%</div>`:`<div class="gb-val" style="color:var(--muted)">—</div>`;
     const mockHTML=latestMock!==null?`<div class="gb-val" style="color:${latestMock>=(targetPct||999)?'var(--maths)':latestMock>=(targetPct||999)*0.75?'var(--amber)':'var(--red)'}">${latestMock}%</div>`:`<div class="gb-val" style="color:var(--muted)">—</div>`;
     let gapHTML=`<div class="gb-val" style="color:var(--muted)">—</div>`;
@@ -1258,13 +1414,46 @@ function renderGradeBounds(){
     el.innerHTML=`<div class="gb-cell"><div class="gb-lbl">Target</div>${targetHTML}</div><div class="gb-cell"><div class="gb-lbl">Latest mock</div>${mockHTML}</div><div class="gb-cell"><div class="gb-lbl">Gap</div>${gapHTML}</div>`;
   });
 }
-function editGradeBounds(sub){
-  const bounds=lsGet('grade_bounds',{});const b=bounds[sub]||{};const subName={maths:'Maths',econ:'Economics',cs:'CS'}[sub];const gradeDefault=sub==='cs'?'B':'A';
-  const gradeLabel=prompt(`${subName} — target grade:`,b.targetLabel||gradeDefault);if(gradeLabel===null)return;
-  const pctRaw=prompt(`${subName} — approx boundary % for ${gradeLabel}:`,b.targetPct??'');if(pctRaw===null)return;
-  if(!bounds[sub])bounds[sub]={};bounds[sub].targetLabel=gradeLabel.trim().toUpperCase();
-  const pct=parseInt(pctRaw);bounds[sub].targetPct=isNaN(pct)?null:Math.max(0,Math.min(100,pct));
-  lsSet('grade_bounds',bounds);renderGradeBounds();
+
+// FIX #20: Inline grade boundary edit (replaces double prompt())
+function toggleGbForm(sub){
+  const form=document.getElementById('gb-form-'+sub);if(!form)return;
+  const showing=form.style.display!=='none';
+  form.style.display=showing?'none':'block';
+  if(!showing){
+    const storedBounds=lsGet('grade_bounds',{});const b={...GRADE_BOUND_DEFAULTS[sub],...(storedBounds[sub]||{})};
+    const gradeIn=document.getElementById('gb-grade-'+sub);const pctIn=document.getElementById('gb-pct-'+sub);
+    if(gradeIn)gradeIn.value=b.targetLabel||'';if(pctIn)pctIn.value=b.targetPct||'';
+    const err=document.getElementById('gb-err-'+sub);if(err)err.textContent='';
+  }
+}
+function saveGbForm(sub){
+  const gradeIn=document.getElementById('gb-grade-'+sub);const pctIn=document.getElementById('gb-pct-'+sub);const err=document.getElementById('gb-err-'+sub);
+  const grade=(gradeIn?.value||'').trim().toUpperCase();const pctRaw=parseInt(pctIn?.value||'');
+  if(!grade){if(err)err.textContent='Enter a grade label (e.g. A, B)';return;}
+  if(isNaN(pctRaw)||pctRaw<0||pctRaw>100){if(err)err.textContent='Enter a valid % between 0 and 100';return;}
+  const storedBounds=lsGet('grade_bounds',{});if(!storedBounds[sub])storedBounds[sub]={};
+  storedBounds[sub].targetLabel=grade;storedBounds[sub].targetPct=pctRaw;
+  lsSet('grade_bounds',storedBounds);if(err)err.textContent='';
+  toggleGbForm(sub);renderGradeBounds();renderOfferStatus();
+}
+
+// FIX #17: Inline mock score form (replaces prompt())
+function toggleMockForm(sub){
+  const form=document.getElementById('mock-form-'+sub);if(!form)return;
+  form.style.display=form.style.display==='none'?'flex':'none';
+  const inp=document.getElementById('mock-input-'+sub);if(inp){inp.value='';inp.focus();}
+  const err=document.getElementById('mock-err-'+sub);if(err)err.textContent='';
+}
+function submitMockForm(sub){
+  const inp=document.getElementById('mock-input-'+sub);const err=document.getElementById('mock-err-'+sub);
+  if(!inp)return;const raw=inp.value.trim();
+  if(!raw){if(err)err.textContent='Enter a score';return;}
+  const match=raw.match(/(\d+)\s*[\/of]\s*(\d+)/);let pct;
+  if(match){pct=Math.round(parseInt(match[1])/parseInt(match[2])*100);}else{pct=parseInt(raw.replace('%','').trim());}
+  if(isNaN(pct)||pct<0||pct>100){if(err)err.textContent='Enter format like 45/100 or 45%';return;}
+  const h=loadMockHistory();h[sub]=h[sub]||[];h[sub].push({label:new Date().toLocaleDateString('en-GB',{day:'numeric',month:'short'}),pct});saveMockHistory(h);
+  toggleMockForm(sub);renderCharts();renderGradeBounds();renderOfferStatus();if(err)err.textContent='';
 }
 
 const SESSION_GAP_MAP={'trig integration':'m_trig_int','integration by parts':'m_ibp','partial fractions':'m_pf','integration by partial':'m_pf_int','substitution':'m_sub','differential equation':'m_de','rational inequalit':'m_ineq','binomial expansion':'m_binom','r form':'m_rform','trig solving':'m_trig_sol','trig identit':'m_rform','trig equations':'m_trig_sol','exponential':'m_logs','logarithm':'m_logs','sequences':'m_seq','series':'m_seq','numerical method':'m_num','implicit diff':'m_impl','parametric stationary':'m_para_sp','vectors':'m_vec','proof':'m_proof','scheduling':'c_sched','lmc':'c_lmc','assembly':'c_lmc','boolean algebra':'c_bool','normalisation':'c_norm','stack':'c_pp','queue':'c_pp','pseudocode':'c_pp','recursion':'c_recur','isr':'c_isr','interrupt':'c_isr','floating point':'c_fp','tcp':'c_tcp','networking':'c_tcp','compression':'c_comp','sql':'c_sql','bfs':'c_bfs','dfs':'c_bfs','karnaugh':'c_kmap','diagram':'e_diag','efficiency':'e_eff','perfect competition':'e_pc','kinked demand':'e_kink','game theory':'e_game','nash':'e_game','multiplier':'e_mult','macro':'e_macro','ad/as':'e_macro','fiscal':'e_macro','monetary':'e_macro','supply-side':'e_ss','mops':'e_mops','competition theme':'e_comp','govt intervention':'e_govt'};
@@ -1273,10 +1462,13 @@ function getGapKeyForSession(label){const l=label.toLowerCase();for(const[kw,gap
 function getTodayChecked(dk){return lsGet('tasks_done_'+dk,[]);}
 function setTaskChecked(dk,idx,checked){const done=getTodayChecked(dk);if(checked&&!done.includes(idx))done.push(idx);if(!checked){const p=done.indexOf(idx);if(p!==-1)done.splice(p,1);}lsSet('tasks_done_'+dk,done);}
 
+// FIX #1: re-trigger gap sort on confidence change — renderSmartGaps already sorts, 
+// but we also need to re-render the focus card immediately when conf buttons change on Today tab
 function logConfidenceForTask(gapKey,level,taskIdx,dk){
   if(!gapKey)return;const state=lsGet('gap_state',{});state[gapKey]={...state[gapKey],confidence:level,lastRevised:Date.now()};lsSet('gap_state',state);
   const dayLog=lsGet('daily_log_'+dk,[]);const g=PRIORITY_GAPS.find(x=>x.key===gapKey);
   if(g){const entry={key:gapKey,name:g.name,sub:g.sub,conf:level,time:Date.now()};const idx=dayLog.findIndex(x=>x.key===gapKey);if(idx>=0)dayLog[idx]=entry;else dayLog.push(entry);lsSet('daily_log_'+dk,dayLog);}
+  // FIX #1: Always re-sort and re-render focus card + gaps after confidence update
   renderSmartGaps();renderFocusCard();updateSubjectBars();updateEconTopicsBar();updateCSTopicsBar();renderTodayLog();
   const confRow=document.getElementById('conf-row-'+taskIdx);if(confRow)confRow.querySelectorAll('.task-conf-btn').forEach((btn,i)=>{btn.className='task-conf-btn';if(i+1===level)btn.classList.add('act-'+(i+1));});
 }
@@ -1288,8 +1480,8 @@ function renderToday(){
   if(!sessions.length){container.innerHTML='<div style="font-size:0.82rem;color:var(--muted2);padding:14px 0">Nothing scheduled — rest day.</div>';renderBonusSection();return;}
   const checkedIdxs=getTodayChecked(key);
   sessions.forEach((s,i)=>{
-    // Find original index (before archive filter) for persistence
-    const origIdx=(SESSIONS[key]||[]).indexOf(s);
+    // FIX #3: Use _origIdx for rescheduled sessions, indexOf for normal ones
+    const origIdx=s._origIdx!=null?s._origIdx:(SESSIONS[key]||[]).indexOf(s);
     const item=document.createElement('div');item.className='task-item';
     {
       item.classList.add('clickable');const isChecked=checkedIdxs.includes(origIdx);
@@ -1306,6 +1498,7 @@ function renderToday(){
         setTaskChecked(key,origIdx,this.checked);
         const nowDone=getTodayChecked(key);if(this.checked&&nowDone.length===1)incrementSessions();
         renderMissedThisWeek();updateSubjectBars();updateEconTopicsBar();updateCSTopicsBar();
+        renderBonusSection(); // FIX #18: re-check bonus eligibility when task checked
       });
     }
     container.appendChild(item);
@@ -1336,29 +1529,25 @@ function renderWeek(){
     const col=document.createElement('div');col.className='wday'+(isToday?' today-col':'')+(isWeekend&&!isToday?' weekend-col':'')+(examLabel?' deadline':'');
     const headStr=examLabel?`${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)} — ${examLabel}`:`${dayNames[i]} ${day.toLocaleDateString('en-GB',opts)}`;
     const tasksHtml=sessions.length?sessions.map((s,idx)=>{
-      const origIdx=(SESSIONS[key]||[]).indexOf(s);const c2=s.sub==='multi'&&s.subs?'var(--purple)':SUB_COL[s.sub]||'var(--muted)';const cls=s.sub==='college'?' college-task':s.hw?' hw-task':'';const isDone=checked.includes(origIdx);
+      const origIdx=s._origIdx!=null?s._origIdx:(SESSIONS[key]||[]).indexOf(s);const c2=s.sub==='multi'&&s.subs?'var(--purple)':SUB_COL[s.sub]||'var(--muted)';const cls=s.sub==='college'?' college-task':s.hw?' hw-task':'';const isDone=checked.includes(origIdx);
       return`<div class="wday-task${cls}${isDone?' done-task':''}"><div class="wday-task-dot" style="background:${c2}"></div><span>${s.hw?'<b style="color:var(--red)">HW</b> · ':''}${isDone?'✓ ':''}${s.label}</span></div>`;
     }).join(''):examLabel?'<div style="color:var(--red);font-size:0.7rem;font-weight:700">EXAM DAY</div>':'<div style="color:var(--muted);font-size:0.7rem">—</div>';
     col.innerHTML=`<div class="wday-head">${headStr}</div>${tasksHtml}`;grid.appendChild(col);
   }
 }
 
+// FIX #4: renderAllSessions — fixed unclosed <span> in row HTML
 function renderAllSessions(){
   const container=document.getElementById('all-sessions-container');if(!container)return;
   const t=today();const todayKey=dateKey(t);const dow=t.getDay();let monday=new Date(t);
   if(dow===0)monday.setDate(t.getDate()-6);else monday.setDate(t.getDate()-(dow-1));
   const weekStartKey=dateKey(monday);
-  // Build date set: only non-archived session dates + exam days
   const _rsKeys=getUserReschedules().map(r=>r.toKey);
   const allDates=new Set([
-    ...Object.keys(SESSIONS).filter(k=>{
-      const d=SESSIONS[k];const hasVisible=d.some(s=>!s.archived);
-      if(!hasVisible)return false;
-      if(showPastSessions)return k>=weekStartKey;
-      return k>=todayKey;
-    }),
+    ...Object.keys(SESSIONS).filter(k=>{const d=SESSIONS[k];const hasVisible=d.some(s=>!s.archived);if(!hasVisible)return false;return showPastSessions?k>=weekStartKey:k>=todayKey;}),
     ..._rsKeys.filter(k=>showPastSessions?k>=weekStartKey:k>=todayKey),
-    ...Object.keys(EXAM_DAYS).filter(k=>showPastSessions?k>=weekStartKey:k>=todayKey)]);
+    ...Object.keys(EXAM_DAYS).filter(k=>showPastSessions?k>=weekStartKey:k>=todayKey)
+  ]);
   const sortedDates=Array.from(allDates).sort();
   let html='';
   for(const dk of sortedDates){
@@ -1370,10 +1559,12 @@ function renderAllSessions(){
     html+=`<div class="all-sessions-day"><div class="all-sessions-date-hdr"><span class="all-sessions-date-lbl">${dateFormatted}</span><span class="all-sessions-date-rel">${relLabel}</span>${examLabel?`<span class="all-sessions-date-exam">EXAM: ${examLabel}</span>`:''}</div>`;
     if(examLabel&&!sessions.length)html+=`<div class="all-sess-row${isToday?' is-today':''}"><div class="all-sess-body"><div class="all-sess-name" style="color:var(--red)">EXAM DAY — ${examLabel}</div></div></div>`;
     for(const s of sessions){
-      const origIdx=s._rescheduled?(s._fromIdx):(allSess.indexOf(s));
-      const origDk=s._rescheduled?s._fromKey:dk;
-      const isDone=lsGet('tasks_done_'+(s._rescheduled?s._fromKey:dk),[]).includes(origIdx);const packId=getPackIdForLabel(s.label);const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')" style="margin-left:auto;flex-shrink:0">▶ pack</button>`:'';
-      html+=`<div class="all-sess-row${isToday?' is-today':''}${isDone?' is-done':''}"><span style="flex-shrink:0;margin-top:2px">${getSubBadgeHTML(s)}<div class="all-sess-body"><div class="all-sess-name${isDone?' done-name':''}">${isDone?'✓ ':''}${s.hw?'<span style="color:var(--red);font-size:0.72rem;font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>${s.detail?`<div class="all-sess-detail">${s.detail}</div>`:''}</div>${packBtn}</div>`;
+      // FIX #3 + #4: use _origIdx for rescheduled; fix unclosed span
+      const origIdx=s._origIdx!=null?s._origIdx:(allSess.indexOf(s));
+      const isDone=lsGet('tasks_done_'+(s._rescheduled?s._fromKey:dk),[]).includes(origIdx);
+      const packId=getPackIdForLabel(s.label);const packBtn=packId?`<button class="open-pack-btn" onclick="event.stopPropagation();openPackModal('${packId}')" style="margin-left:auto;flex-shrink:0">▶ pack</button>`:'';
+      // FIX #4: badge is its own element, not wrapped in unclosed span
+      html+=`<div class="all-sess-row${isToday?' is-today':''}${isDone?' is-done':''}"><div style="flex-shrink:0;margin-top:2px">${getSubBadgeHTML(s)}</div><div class="all-sess-body"><div class="all-sess-name${isDone?' done-name':''}">${isDone?'✓ ':''}${s.hw?'<span style="color:var(--red);font-size:0.72rem;font-weight:700">HW · </span>':''}${s.label}${s.dur?` <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted2)">(${s.dur})</span>`:''}</div>${s.detail?`<div class="all-sess-detail">${s.detail}</div>`:''}</div>${packBtn}</div>`;
     }
     html+=`</div>`;
   }
@@ -1381,24 +1572,64 @@ function renderAllSessions(){
   container.innerHTML=html;
 }
 
+// FIX #13: Weekly log view
+function renderWeeklyLog(){
+  const el=document.getElementById('weekly-log-section');if(!el)return;
+  const t=today();const todayKey=dateKey(t);
+  const dow=t.getDay();let monday=new Date(t);
+  if(dow===0)monday.setDate(t.getDate()-6);else monday.setDate(t.getDate()-(dow-1));
+  let hasAny=false;let html='<div class="streak-header" style="margin-top:0;margin-bottom:10px"><span class="streak-title">This week\'s session log</span></div>';
+  for(let i=0;i<7;i++){
+    const d=new Date(monday);d.setDate(monday.getDate()+i);const dk=dateKey(d);
+    if(dk>todayKey)break;
+    const dayLog=lsGet('daily_log_'+dk,[]);if(!dayLog.length)continue;
+    hasAny=true;
+    const dayLbl=dk===todayKey?'Today':d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
+    const entries=dayLog.map(e=>{
+      const confHtml=e.conf>0?`<span class="wlog-entry-conf" style="background:${CONF_BG[e.conf]};color:${CONF_COLORS[e.conf]}">${CONF_LABELS[e.conf]}</span>`:'';
+      const timeStr=new Date(e.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+      const tag=e.sub==='maths'?'badge-m':e.sub==='econ'?'badge-e':'badge-c';
+      return`<div class="wlog-entry"><span class="sub-badge ${tag}" style="font-size:0.48rem">${e.sub==='maths'?'M':e.sub==='econ'?'E':'CS'}</span><span class="wlog-entry-name">${e.name}</span>${confHtml}<span class="wlog-entry-time">${timeStr}</span></div>`;
+    }).join('');
+    html+=`<div class="wlog-day"><div class="wlog-day-hdr"><span class="wlog-day-lbl">${dayLbl}</span><span class="wlog-day-count">${dayLog.length} topic${dayLog.length!==1?'s':''}</span></div><div class="wlog-entries">${entries}</div></div>`;
+  }
+  el.innerHTML=hasAny?html:'';
+}
+
 let chartInstances={};
 function loadMockHistory(){const stored=lsGet('mock_history',null);return stored||JSON.parse(JSON.stringify(MOCK_DEFAULTS));}
 function saveMockHistory(h){lsSet('mock_history',h);}
-function promptAddMock(sub){
-  const subName={maths:'Maths',econ:'Economics',cs:'CS'}[sub];const raw=prompt(`Add ${subName} mock score (e.g. "45/100" or "45%"):`);if(!raw)return;
-  const match=raw.match(/(\d+)\s*[\/of]\s*(\d+)/);let pct;if(match){pct=Math.round(parseInt(match[1])/parseInt(match[2])*100);}else{pct=parseInt(raw.replace('%','').trim());}
-  if(isNaN(pct))return;pct=Math.max(0,Math.min(100,pct));const h=loadMockHistory();h[sub]=h[sub]||[];h[sub].push({label:new Date().toLocaleDateString('en-GB',{month:'short'}),pct});saveMockHistory(h);renderCharts();renderGradeBounds();
-}
+
 function renderCharts(){
-  const getVar=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-  const h=loadMockHistory();const bounds=lsGet('grade_bounds',{});
   [{sub:'maths',id:'chart-maths',color:'var(--maths)'},{sub:'econ',id:'chart-econ',color:'var(--econ)'},{sub:'cs',id:'chart-cs',color:'var(--cs)'}].forEach(c=>{
     const canvas=document.getElementById(c.id);if(!canvas)return;if(chartInstances[c.sub])chartInstances[c.sub].destroy();
-    const data=h[c.sub]||[];const target=(bounds[c.sub]?.targetPct)||null;
+    const h=loadMockHistory();const bounds=lsGet('grade_bounds',{});const b={...GRADE_BOUND_DEFAULTS[c.sub],...(bounds[c.sub]||{})};
+    const data=h[c.sub]||[];const target=b.targetPct||null;
     const datasets=[{data:data.map(d=>d.pct),borderColor:c.color,backgroundColor:c.color+'18',borderWidth:2,pointRadius:4,pointBackgroundColor:c.color,tension:0.3,fill:true}];
     if(target!==null)datasets.push({data:data.map(()=>target),borderColor:'rgba(255,255,255,0.15)',borderWidth:1,borderDash:[4,4],pointRadius:0,fill:false});
     chartInstances[c.sub]=new Chart(canvas,{type:'line',data:{labels:data.map(d=>d.label),datasets},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'var(--surface)',borderColor:'var(--border2)',borderWidth:1,titleColor:'var(--text)',bodyColor:'var(--muted2)',callbacks:{label:ctx=>` ${ctx.parsed.y}%`}}},scales:{y:{min:0,max:100,grid:{color:'var(--border)'},ticks:{color:'var(--muted)',font:{size:9},callback:v=>v+'%',maxTicksLimit:4}},x:{grid:{display:false},ticks:{color:'var(--muted)',font:{size:9}}}}}});
   });
+}
+
+// FIX #11: Live offer status on NEA tab
+function renderOfferStatus(){
+  const el=document.getElementById('offer-status-banner');if(!el)return;
+  const mathsMock=getLatestMock('maths');const storedBounds=lsGet('grade_bounds',{});
+  const mathsBounds={...GRADE_BOUND_DEFAULTS.maths,...(storedBounds.maths||{})};
+  const target=mathsBounds.targetPct;
+  if(mathsMock===null){el.style.display='none';return;}
+  el.style.display='block';
+  const gap=mathsMock-target;
+  if(gap>=0){
+    el.style.background='color-mix(in srgb,var(--maths) 6%,var(--surface2))';el.style.borderColor='color-mix(in srgb,var(--maths) 30%,transparent)';
+    el.innerHTML=`<span style="font-family:var(--mono);font-size:0.7rem;font-weight:700;color:var(--maths)">On track for QMUL/Sussex/City</span><br><span style="font-size:0.76rem;color:var(--muted2)">Latest Maths mock: ${mathsMock}% · boundary ${target}% · gap: <b style="color:var(--maths)">+${gap}pp</b> above A threshold.</span>`;
+  } else if(gap>=-15){
+    el.style.background='color-mix(in srgb,var(--amber) 6%,var(--surface2))';el.style.borderColor='color-mix(in srgb,var(--amber) 30%,transparent)';
+    el.innerHTML=`<span style="font-family:var(--mono);font-size:0.7rem;font-weight:700;color:var(--amber)">Maths A is within reach — keep pushing</span><br><span style="font-size:0.76rem;color:var(--muted2)">Latest Maths mock: ${mathsMock}% · boundary ${target}% · gap: <b style="color:var(--amber)">${gap}pp</b>. Close — Exeter is safe floor.</span>`;
+  } else {
+    el.style.background='color-mix(in srgb,var(--red) 6%,var(--surface2))';el.style.borderColor='color-mix(in srgb,var(--red) 30%,transparent)';
+    el.innerHTML=`<span style="font-family:var(--mono);font-size:0.7rem;font-weight:700;color:var(--red)">Maths A at risk — first choices under pressure</span><br><span style="font-size:0.76rem;color:var(--muted2)">Latest Maths mock: ${mathsMock}% · boundary ${target}% · gap: <b style="color:var(--red)">${gap}pp</b>. Exeter/Reading are likely floor without significant improvement.</span>`;
+  }
 }
 
 function renderStreak(){
@@ -1423,34 +1654,14 @@ function renderStreak(){
   stat.textContent=[streakStr,todayStr2].filter(Boolean).join(' · ');stat.style.color=streakCount>=7?'var(--maths)':streakCount>=3?'var(--amber)':'var(--muted2)';
 }
 
-let TIMER_TOTAL=3600;let timerSecs=TIMER_TOTAL;let timerRunning=false;let timerInterval=null;
 function sessionsToday(){return lsGet('sess_'+dateKey(today()),0);}
-function incrementSessions(){lsSet('sess_'+dateKey(today()),sessionsToday()+1);renderStreak();updateTimerUI();}
-function setTimerDuration(mins){if(timerRunning)return;TIMER_TOTAL=mins*60;timerSecs=TIMER_TOTAL;updateTimerUI();updateTimerDurationBtns();}
-function updateTimerDurationBtns(){
-  const btn30=document.getElementById('timer-30');const btn60=document.getElementById('timer-60');
-  if(btn30){if(TIMER_TOTAL===1800){btn30.style.borderColor='var(--amber)';btn30.style.color='var(--amber)';btn30.style.background='rgba(251,146,60,0.1)';}else{btn30.style.borderColor='';btn30.style.color='';btn30.style.background='';}}
-  if(btn60){if(TIMER_TOTAL===3600){btn60.style.borderColor='var(--amber)';btn60.style.color='var(--amber)';btn60.style.background='rgba(251,146,60,0.1)';}else{btn60.style.borderColor='';btn60.style.color='';btn60.style.background='';}}
-}
-function updateTimerUI(){
-  const m=Math.floor(timerSecs/60);const s=timerSecs%60;const isReset=!timerRunning&&timerSecs===TIMER_TOTAL;
-  document.getElementById('timer-time').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;document.getElementById('timer-lbl').textContent=timerRunning?'RUNNING':isReset?'START':'PAUSED';
-  const n=sessionsToday();document.getElementById('timer-sess').textContent=n>0?`${n} session${n!==1?'s':''} today`:'';
-  const btn=document.getElementById('timer-btn');btn.className='timer-btn'+(timerRunning?' running':'')+((!timerRunning&&timerSecs>0&&timerSecs<300)?' urgent':'');
-  updateTimerDurationBtns();
-}
-function toggleTimer(){
-  if(timerRunning){clearInterval(timerInterval);timerRunning=false;}
-  else{if(timerSecs<=0)timerSecs=TIMER_TOTAL;timerRunning=true;timerInterval=setInterval(()=>{timerSecs--;if(timerSecs<=0){timerSecs=0;timerRunning=false;clearInterval(timerInterval);incrementSessions();showSessionLog(true);}updateTimerUI();},1000);}
-  updateTimerUI();
-}
-function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerSecs=TIMER_TOTAL;updateTimerUI();}
+function incrementSessions(){lsSet('sess_'+dateKey(today()),sessionsToday()+1);renderStreak();}
 
 let slogTopics=new Set();let slogConf=0;let slogFromTimer=false;
 function showSessionLog(fromTimer){
   slogFromTimer=!!fromTimer;slogTopics=new Set();slogConf=0;
-  const subText=document.getElementById('slog-sub-text');if(subText)subText.textContent=fromTimer?'Session complete. What did you cover?':'What did you study?';
-  const sessRow=document.getElementById('slog-sess-row');if(sessRow){sessRow.style.display=fromTimer?'none':'flex';const chk=document.getElementById('slog-count-sess');if(chk)chk.checked=false;}
+  const subText=document.getElementById('slog-sub-text');if(subText)subText.textContent='What did you study?';
+  const sessRow=document.getElementById('slog-sess-row');if(sessRow){sessRow.style.display='flex';const chk=document.getElementById('slog-count-sess');if(chk)chk.checked=false;}
   renderSlogChips();renderSlogConf();document.getElementById('slog-overlay').classList.add('open');
 }
 function closeSessionLog(){document.getElementById('slog-overlay').classList.remove('open');}
@@ -1472,9 +1683,9 @@ function submitSessionLog(){
       state[key]={...state[key],lastRevised:Date.now()};if(slogConf>0)state[key].confidence=slogConf;
       const g=PRIORITY_GAPS.find(x=>x.key===key);if(g){const idx=dayLog.findIndex(x=>x.key===key);const entry={key,name:g.name,sub:g.sub,conf:slogConf,time:Date.now()};if(idx>=0)dayLog[idx]=entry;else dayLog.push(entry);}
     });
-    lsSet('gap_state',state);lsSet('daily_log_'+todayKey,dayLog);renderSmartGaps();renderFocusCard();updateSubjectBars();updateEconTopicsBar();updateCSTopicsBar();renderTodayLog();
+    lsSet('gap_state',state);lsSet('daily_log_'+todayKey,dayLog);renderSmartGaps();renderFocusCard();updateSubjectBars();updateEconTopicsBar();updateCSTopicsBar();renderTodayLog();renderWeeklyLog();
   }
-  if(!slogFromTimer){const chk=document.getElementById('slog-count-sess');if(chk&&chk.checked)incrementSessions();}
+  const chk=document.getElementById('slog-count-sess');if(chk&&chk.checked)incrementSessions();
   closeSessionLog();
 }
 function renderTodayLog(){
@@ -1484,9 +1695,7 @@ function renderTodayLog(){
   el.innerHTML=`<div class="tlog-wrap"><div class="tlog-header"><span class="tlog-title">Logged today</span><span style="font-family:var(--mono);font-size:0.58rem;color:var(--muted2)">${dayLog.length} topic${dayLog.length!==1?'s':''}</span></div>${rows}</div>`;
 }
 
-
 // ── RESCHEDULE SYSTEM ─────────────────────────────────────────────────────────
-// localStorage key: 'user_reschedules' = [{fromKey, fromIdx, toKey, addedAt}]
 function getUserReschedules(){return lsGet('user_reschedules',[]);}
 function saveUserReschedules(arr){lsSet('user_reschedules',arr);}
 
@@ -1499,214 +1708,122 @@ function openRescheduleModal(prefillKey,prefillIdx){
   window._rsSel={fromKey:null,fromIdx:null,toKey:null};
   document.getElementById('rs-overlay').classList.add('open');
   document.body.style.overflow='hidden';
-  if(prefillKey!=null&&prefillIdx!=null){
-    selectRsSession(prefillKey,prefillIdx);
-  }
+  if(prefillKey!=null&&prefillIdx!=null){selectRsSession(prefillKey,prefillIdx);}
 }
-function closeRescheduleModal(){
-  document.getElementById('rs-overlay').classList.remove('open');
-  document.body.style.overflow='';
-}
+function closeRescheduleModal(){document.getElementById('rs-overlay').classList.remove('open');document.body.style.overflow='';}
 
 function renderRsSessionList(){
   const list=document.getElementById('rs-session-list');
-  const t=today();const todayK=dateKey(t);
-  const reschedules=getUserReschedules();
-  const rows=[];
-  // Show today + next 14 days of sessions
+  const t=today();const reschedules=getUserReschedules();const rows=[];
   for(let i=0;i<=14;i++){
-    const d=new Date(t.getTime()+i*864e5);
-    const dk=dateKey(d);
+    const d=new Date(t.getTime()+i*864e5);const dk=dateKey(d);
     const sessions=(SESSIONS[dk]||[]).filter(s=>!s.archived&&!s.label.includes('EXAM'));
     sessions.forEach((s,si)=>{
-      const origIdx=(SESSIONS[dk]||[]).indexOf(s);
-      const alreadyMoved=reschedules.some(r=>r.fromKey===dk&&r.fromIdx===origIdx);
+      const origIdx=(SESSIONS[dk]||[]).indexOf(s);const alreadyMoved=reschedules.some(r=>r.fromKey===dk&&r.fromIdx===origIdx);
       const dayLbl=i===0?'Today':i===1?'Tomorrow':d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'});
       rows.push({dk,origIdx,s,dayLbl,alreadyMoved});
     });
   }
   list.innerHTML=rows.map(r=>{
-    const badgeHtml=getSubBadgeHTML(r.s,'font-size:0.52rem;');
-    const movedTag=r.alreadyMoved?'<span class="rs-moved-tag">already moved</span>':'';
-    return `<div class="rs-session-row${r.alreadyMoved?' already-moved':''}" 
-      ${!r.alreadyMoved?`onclick="selectRsSession('${r.dk}',${r.origIdx})"`:''} 
-      id="rs-row-${r.dk}-${r.origIdx}">
-      <span class="rs-sess-date">${r.dayLbl}</span>
-      ${badgeHtml}
-      <span class="rs-sess-name">${r.s.label}</span>
-      ${r.s.dur?`<span class="rs-sess-dur">${r.s.dur}</span>`:''}
-      ${movedTag}
-    </div>`;
+    const badgeHtml=getSubBadgeHTML(r.s,'font-size:0.52rem;');const movedTag=r.alreadyMoved?'<span class="rs-moved-tag">already moved</span>':'';
+    return`<div class="rs-session-row${r.alreadyMoved?' already-moved':''}" ${!r.alreadyMoved?`onclick="selectRsSession('${r.dk}',${r.origIdx})"`:''} id="rs-row-${r.dk}-${r.origIdx}">
+      <span class="rs-sess-date">${r.dayLbl}</span>${badgeHtml}<span class="rs-sess-name">${r.s.label}</span>${r.s.dur?`<span class="rs-sess-dur">${r.s.dur}</span>`:''}${movedTag}</div>`;
   }).join('');
 }
 
 function selectRsSession(fromKey,fromIdx){
   if(!window._rsSel)window._rsSel={};
-  window._rsSel.fromKey=fromKey;
-  window._rsSel.fromIdx=fromIdx;
-  window._rsSel.toKey=null;
-  // Highlight selected row
+  window._rsSel.fromKey=fromKey;window._rsSel.fromIdx=fromIdx;window._rsSel.toKey=null;
   document.querySelectorAll('.rs-session-row').forEach(el=>el.classList.remove('selected'));
-  const row=document.getElementById('rs-row-'+fromKey+'-'+fromIdx);
-  if(row)row.classList.add('selected');
-  // Show date picker
-  document.getElementById('rs-date-lbl').style.display='';
-  renderRsDateGrid(fromKey);
-  document.getElementById('rs-confirm-btn').disabled=true;
-  document.getElementById('rs-hint').textContent='Now pick a new date';
+  const row=document.getElementById('rs-row-'+fromKey+'-'+fromIdx);if(row)row.classList.add('selected');
+  document.getElementById('rs-date-lbl').style.display='';renderRsDateGrid(fromKey);
+  document.getElementById('rs-confirm-btn').disabled=true;document.getElementById('rs-hint').textContent='Now pick a new date';
 }
 
 function renderRsDateGrid(excludeKey){
-  const grid=document.getElementById('rs-date-grid');
-  const t=today();const todayK=dateKey(t);
-  const reschedules=getUserReschedules();
-  let html='';
+  const grid=document.getElementById('rs-date-grid');const t=today();const todayK=dateKey(t);const reschedules=getUserReschedules();let html='';
   for(let i=0;i<=27;i++){
-    const d=new Date(t.getTime()+i*864e5);
-    const dk=dateKey(d);
-    if(dk===excludeKey)continue; // can't move to same day
-    const isPast=dk<todayK;
-    const isExam=!!EXAM_DAYS[dk];
-    const existing=(SESSIONS[dk]||[]).filter(s=>!s.archived).length;
-    const extra=reschedules.filter(r=>r.toKey===dk).length;
-    const total=existing+extra;
-    const dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    const dayName=dayNames[d.getDay()];
-    html+=`<div class="rs-date-cell${isPast?' past':''}${isExam?' is-exam':''}${total>=3?' is-busy':''}" 
-      id="rs-dc-${dk}"
-      ${!isPast?`onclick="selectRsDate('${dk}')"`:''}
-      title="${isExam?'Exam day — ':''}${total} session${total!==1?'s':''} scheduled">
-      <div class="rs-date-day">${dayName}</div>
-      <div class="rs-date-num">${d.getDate()}</div>
-      <div class="rs-date-count">${isExam?'EXAM':total>0?total+'s':''}</div>
-    </div>`;
+    const d=new Date(t.getTime()+i*864e5);const dk=dateKey(d);if(dk===excludeKey)continue;
+    const isPast=dk<todayK;const isExam=!!EXAM_DAYS[dk];const existing=(SESSIONS[dk]||[]).filter(s=>!s.archived).length;const extra=reschedules.filter(r=>r.toKey===dk).length;const total=existing+extra;
+    const dayNames=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];const dayName=dayNames[d.getDay()];
+    html+=`<div class="rs-date-cell${isPast?' past':''}${isExam?' is-exam':''}${total>=3?' is-busy':''}" id="rs-dc-${dk}" ${!isPast?`onclick="selectRsDate('${dk}')"`:''}><div class="rs-date-day">${dayName}</div><div class="rs-date-num">${d.getDate()}</div><div class="rs-date-count">${isExam?'EXAM':total>0?total+'s':''}</div></div>`;
   }
   grid.innerHTML=html;
 }
 
 function selectRsDate(toKey){
-  if(!window._rsSel)return;
-  window._rsSel.toKey=toKey;
+  if(!window._rsSel)return;window._rsSel.toKey=toKey;
   document.querySelectorAll('.rs-date-cell').forEach(el=>el.classList.remove('selected'));
-  const cell=document.getElementById('rs-dc-'+toKey);
-  if(cell)cell.classList.add('selected');
-  const d=toDate(toKey);
-  const dLbl=d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
-  document.getElementById('rs-hint').textContent='Moving to '+dLbl;
+  const cell=document.getElementById('rs-dc-'+toKey);if(cell)cell.classList.add('selected');
+  const d=toDate(toKey);document.getElementById('rs-hint').textContent='Moving to '+d.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'});
   document.getElementById('rs-confirm-btn').disabled=false;
 }
 
 function confirmReschedule(){
-  const sel=window._rsSel;
-  if(!sel||!sel.fromKey||sel.fromIdx==null||!sel.toKey)return;
-  const reschedules=getUserReschedules();
-  // Remove any existing move for this session
-  const filtered=reschedules.filter(r=>!(r.fromKey===sel.fromKey&&r.fromIdx===sel.fromIdx));
-  filtered.push({fromKey:sel.fromKey,fromIdx:sel.fromIdx,toKey:sel.toKey,addedAt:Date.now()});
-  saveUserReschedules(filtered);
-  closeRescheduleModal();
-  // Re-render everything that uses sessions
+  const sel=window._rsSel;if(!sel||!sel.fromKey||sel.fromIdx==null||!sel.toKey)return;
+  const reschedules=getUserReschedules().filter(r=>!(r.fromKey===sel.fromKey&&r.fromIdx===sel.fromIdx));
+  reschedules.push({fromKey:sel.fromKey,fromIdx:sel.fromIdx,toKey:sel.toKey,addedAt:Date.now()});
+  saveUserReschedules(reschedules);closeRescheduleModal();
   renderToday();renderTomorrow();renderMissedThisWeek();renderWeek();
   if(document.getElementById('tab-all').classList.contains('active'))renderAllSessions();
-  updateSubjectBars();
-  // Toast
-  showToast('Session moved \u2192 '+toDate(sel.toKey).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}));
+  updateSubjectBars();showToast('Session moved \u2192 '+toDate(sel.toKey).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}));
 }
 
 function undoReschedule(fromKey,fromIdx){
-  const reschedules=getUserReschedules().filter(r=>!(r.fromKey===fromKey&&r.fromIdx===fromIdx));
-  saveUserReschedules(reschedules);
+  saveUserReschedules(getUserReschedules().filter(r=>!(r.fromKey===fromKey&&r.fromIdx===fromIdx)));
   renderToday();renderTomorrow();renderMissedThisWeek();renderWeek();
   if(document.getElementById('tab-all').classList.contains('active'))renderAllSessions();
-  updateSubjectBars();
-  showToast('Reschedule undone');
+  updateSubjectBars();showToast('Reschedule undone');
 }
 
-// ── TOAST ─────────────────────────────────────────────────────────────────────
 function showToast(msg){
   let t=document.getElementById('toast-el');
-  if(!t){t=document.createElement('div');t.id='toast-el';t.style.cssText='position:fixed;bottom:110px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:0.7rem;padding:10px 20px;border-radius:12px;box-shadow:var(--shadow-lg);z-index:9999;transition:opacity 0.3s;opacity:0;white-space:nowrap;';document.body.appendChild(t);}
-  t.textContent=msg;t.style.opacity='1';
-  clearTimeout(t._to);t._to=setTimeout(()=>{t.style.opacity='0';},2500);
+  if(!t){t=document.createElement('div');t.id='toast-el';t.style.cssText='position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border2);color:var(--text);font-family:var(--mono);font-size:0.7rem;padding:10px 20px;border-radius:12px;box-shadow:var(--shadow-lg);z-index:9999;transition:opacity 0.3s;opacity:0;white-space:nowrap;';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';clearTimeout(t._to);t._to=setTimeout(()=>{t.style.opacity='0';},2500);
 }
 
-// ── PATCH SESSION RESOLUTION TO INCLUDE USER RESCHEDULES ──────────────────────
-// Wrap the SESSIONS object access with a function that applies user reschedules
+// FIX #3: getSessionsForDate stores _origIdx on rescheduled sessions so indexOf works correctly
 function getSessionsForDate(dk){
   const base=(SESSIONS[dk]||[]).filter(s=>!s.archived);
   const reschedules=getUserReschedules();
-  // Remove sessions moved AWAY from this date
   const movedAway=reschedules.filter(r=>r.fromKey===dk).map(r=>r.fromIdx);
-  const filtered=base.filter((s,i)=>{
-    const origIdx=(SESSIONS[dk]||[]).indexOf(s);
-    return !movedAway.includes(origIdx);
-  });
-  // Add sessions moved TO this date
+  const filtered=base.filter(s=>{const origIdx=(SESSIONS[dk]||[]).indexOf(s);return !movedAway.includes(origIdx);});
   const added=reschedules.filter(r=>r.toKey===dk).map(r=>{
-    const orig=(SESSIONS[r.fromKey]||[])[r.fromIdx];
-    if(!orig)return null;
-    return {...orig,_rescheduled:true,_fromKey:r.fromKey,_fromIdx:r.fromIdx};
+    const orig=(SESSIONS[r.fromKey]||[])[r.fromIdx];if(!orig)return null;
+    // FIX #3: store _origIdx so callers don't need to re-calculate via indexOf
+    return {...orig,_rescheduled:true,_fromKey:r.fromKey,_fromIdx:r.fromIdx,_origIdx:r.fromIdx};
   }).filter(Boolean);
   return [...filtered,...added];
 }
 
-
-function init(){
-
-  seedInitialState();const t=today();
-  document.getElementById('live-date').textContent=`${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]} ${t.getFullYear()}`;
-  document.getElementById('live-phase').textContent=getPhase();
-  renderCountdowns();renderFocusCard();renderToday();renderTomorrow();renderMissedThisWeek();
-  renderWeek();renderSmartGaps();updateSubjectBars();updateEconTopicsBar();updateCSTopicsBar();renderStreak();renderTodayLog();updateTimerUI();
-  // Preload pack data in background
-  setTimeout(()=>loadPackData(()=>{}),2000);
-}
-init();
-initThemeToggle();
-
-// ── THEME TOGGLE ──────────────────────────────────────────────────────────────
-function setTheme(mode){
-  const root=document.documentElement;
-  if(mode==='light'||mode==='dark'){root.setAttribute('data-theme',mode);}
-  else{root.removeAttribute('data-theme');}
-  localStorage.setItem('theme_pref',mode);
-  // Update toggle active state
-  ['auto','light','dark'].forEach(m=>{
-    const btn=document.getElementById('tbtn-'+m);
-    if(btn)btn.classList.toggle('active',m===mode);
-  });
-}
-function initThemeToggle(){
-  const pref=localStorage.getItem('theme_pref')||'auto';
-  setTheme(pref);
-}
-
-// ── ECON + CS SESSION BARS ─────────────────────────────────────────────────────
 function updateEconTopicsBar(){
   let done=0;const total=28;
-  Object.keys(SESSIONS).forEach(dk=>{
-    const checked=lsGet('tasks_done_'+dk,[]);
-    (SESSIONS[dk]||[]).forEach((s,i)=>{
-      if(s.sub==='econ'&&!s.archived&&!s.label.includes('EXAM')&&checked.includes(i))done++;
-    });
-  });
-  const pct=Math.round(done/total*100);
-  const lbl=document.getElementById('econ-topics-lbl');const bar=document.getElementById('econ-topics-bar');
+  Object.keys(SESSIONS).forEach(dk=>{const checked=lsGet('tasks_done_'+dk,[]);(SESSIONS[dk]||[]).forEach((s,i)=>{if(s.sub==='econ'&&!s.archived&&!s.label.includes('EXAM')&&checked.includes(i))done++;});});
+  const pct=Math.round(done/total*100);const lbl=document.getElementById('econ-topics-lbl');const bar=document.getElementById('econ-topics-bar');
   if(lbl)lbl.textContent=`${done} / ${total}`;if(bar)bar.style.width=Math.max(3,Math.min(100,pct))+'%';
 }
 function updateCSTopicsBar(){
   let done=0;const total=21;
-  Object.keys(SESSIONS).forEach(dk=>{
-    const checked=lsGet('tasks_done_'+dk,[]);
-    (SESSIONS[dk]||[]).forEach((s,i)=>{
-      if(s.sub==='cs'&&!s.archived&&!s.label.includes('EXAM')&&checked.includes(i))done++;
-    });
-  });
-  const pct=Math.round(done/total*100);
-  const lbl=document.getElementById('cs-topics-lbl');const bar=document.getElementById('cs-topics-bar');
+  Object.keys(SESSIONS).forEach(dk=>{const checked=lsGet('tasks_done_'+dk,[]);(SESSIONS[dk]||[]).forEach((s,i)=>{if(s.sub==='cs'&&!s.archived&&!s.label.includes('EXAM')&&checked.includes(i))done++;});});
+  const pct=Math.round(done/total*100);const lbl=document.getElementById('cs-topics-lbl');const bar=document.getElementById('cs-topics-bar');
   if(lbl)lbl.textContent=`${done} / ${total}`;if(bar)bar.style.width=Math.max(3,Math.min(100,pct))+'%';
 }
 
+// FIX #5: Grade boundary defaults used by getLatestMock — mock_history seeded correctly
+// MOCK_DEFAULTS already excludes seeding of grade boundaries; renderGradeBounds now uses GRADE_BOUND_DEFAULTS
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+// FIX #2: No duplicate setTheme / initThemeToggle — only one definition above, called once here
+function init(){
+  seedInitialState();const t=today();
+  document.getElementById('live-date').textContent=`${DAYS[t.getDay()]} ${t.getDate()} ${MONTHS[t.getMonth()]} ${t.getFullYear()}`;
+  document.getElementById('live-phase').textContent=getPhase();
+  renderSessionWindowBanner();
+  renderCountdowns();renderFocusCard();renderToday();renderTomorrow();renderMissedThisWeek();
+  renderWeek();renderSmartGaps();updateSubjectBars();updateEconTopicsBar();updateCSTopicsBar();renderStreak();renderTodayLog();renderWeeklyLog();
+  setTimeout(()=>loadPackData(()=>{}),2000);
+}
+init();
 </script>
 </body>
 </html>
